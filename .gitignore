@@ -1,0 +1,13 @@
+# Obsidian local settings
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.log
+02_System/TOOL_REGISTRY.md.tmp
