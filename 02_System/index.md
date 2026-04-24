@@ -24,6 +24,7 @@
 * `00_Raw/hf-agents-unit3.md`
 * `00_Raw/hf-agents-bonus3.md`
 * `00_Raw/hf-agents-final-units.md`
+* `00_Raw/mcp/` - Anthropic Model Context Protocol Documentation
 
 ## System Layer
 * [[02_System/log.md|System Log]]

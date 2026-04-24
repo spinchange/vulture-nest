@@ -11,9 +11,14 @@ aliases: [mcp, a2a, agent-interoperability]
 As the ecosystem of AI agents matures, standardized protocols are emerging to ensure that models, tools, and agents can communicate seamlessly.
 
 ## Model Context Protocol (MCP)
-Developed by Anthropic, **MCP** is an open standard that acts as a "universal adapter" for AI tools.
-*   **Purpose:** Allows an agent to plug into any data source (GitHub, Slack, local DB) without custom code for each integration.
-*   **Significance:** It decouples tool development from model development.
+Developed by Anthropic, **MCP** is an open standard designed as a "USB-C port for AI applications." It provides a universal interface for connecting models to external data and tools.
+
+*   **Host/Client/Server Model:** Decouples the AI application (Host) from the capability provider (Server).
+*   **Layered Design:** Separates the message semantics (**Data Layer**) from the communication channel (**Transport Layer**).
+*   **Primitives:** Standardizes how **[[mcp-primitives|Tools, Resources, and Prompts]]** are discovered and used.
+*   **Client Capabilities:** Enables servers to leverage the host's LLM (**[[mcp-client-capabilities|Sampling]]**) or interact with the user (**Elicitation**).
+
+For a deep dive, see **[[mcp-architecture]]**.
 
 ## Agent-to-Agent (A2A)
 Developed by Google, **A2A** focuses on the collaboration between different autonomous systems.

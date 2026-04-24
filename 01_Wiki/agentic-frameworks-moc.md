@@ -45,6 +45,11 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 
 ## Protocols & Infrastructure
 * [[agentic-protocols]]: The emerging standards (MCP, A2A) for interoperability.
+* [[mcp-architecture]]: The Host/Client/Server model of MCP.
+* [[mcp-primitives]]: Tools, Resources, and Prompts.
+* [[mcp-client-capabilities]]: Sampling, Elicitation, and Roots.
+* [[mcp-transport]]: Stdio vs. HTTP/SSE communication.
+* [[mcp-development]]: SDKs and best practices for building servers.
 * [[local-agent-environments]]: Running models locally via Ollama and LiteLLM.
 
 ## Practical Use Cases
