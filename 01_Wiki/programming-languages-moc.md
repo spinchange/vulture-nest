@@ -20,6 +20,15 @@ This map organizes the various programming environments and paradigms captured w
 ## Functional & Meta-Programming
 * [[racket]]: Language-oriented programming and the Lisp heritage.
 
+## Systems & Safety
+* [[rust]]: Performance, safety, and modern systems programming.
+* [[rust-ownership]]: The core memory management model.
+* [[typescript-moc]]: Type safety for the JavaScript ecosystem.
+
+## Automation & Shell
+* [[powershell-moc]]: Automation, objects, and vault maintenance.
+* [[ps-automation-spec]]: The standard for agent-runnable system scripts.
+
 ## Comparative PKM
 * [[org-mode]]: Plain-text logic and Emacs Lisp.
 

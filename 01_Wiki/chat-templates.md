@@ -4,25 +4,24 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [chat-ml, system-messages, special-tokens]
+aliases: [jinja-templates, conversational-roles, system-user-assistant]
 ---
 # Chat Templates
 
-**Chat Templates** are the bridge between a human-readable list of messages and the raw prompt string expected by an LLM. They ensure that **Special Tokens** (like EOS tokens) are placed correctly.
+**Chat Templates** are the bridge between a human-readable list of messages and the raw, model-specific token stream required by an LLM.
 
-## Message Roles
-1.  **System Message:** Persistent instructions defining the agent's persona, behavior, and available tools. This is the "operating system" of the session.
-2.  **User Message:** The human's input or instructions.
-3.  **Assistant Message:** The agent's reasoning, actions, and final responses.
+## Conversational Roles
+Standard chat templates use three primary roles:
+*   **System**: Persistent instructions that define the agent's identity, tone, and available tools.
+*   **User**: The human-provided query or instruction.
+*   **Assistant**: The model's reasoning, tool calls, and final responses.
+*   **Tool**: (Introduced in [[function-calling]]) The role used to feed the output of a tool back into the conversation.
 
-## Special Tokens
-Models use unique delimiters to separate roles.
-*   **SmolLM2:** Uses `<|im_start|>` and `<|im_end|>`.
-*   **Llama 3:** Uses `<|start_header_id|>` and `<|eot_id|>`.
+## Technical Implementation
+Most modern frameworks (like `transformers` or `smolagents`) use **Jinja2** templates to wrap messages with special tokens (e.g., `<|im_start|>`, `[INST]`) that the model was trained on. This ensures the model correctly identifies who said what.
 
-## Agentic Importance
-For agents, the chat template must handle the **Stop and Parse** mechanism by ensuring the model stops generating immediately after an **Action** block, allowing the system to insert an **Observation**.
-
-## See Also
-* [[yanp-for-agentic-workflows]] (Protocol-level application of templates)
-* [[agentic-frameworks-moc]]
+---
+## References
+* Source: `00_Raw/hf-agents-course-unit1.md`
+* [[hf-agents-course-moc]]
+* [[function-calling]]

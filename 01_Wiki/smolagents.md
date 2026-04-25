@@ -4,32 +4,24 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [hugging-face-smolagents]
+aliases: [hugging-face-smolagents, code-agents]
 ---
 # smolagents
 
-**smolagents** is a lightweight agentic library developed by Hugging Face. It focuses on simplicity and the power of **[[code-agents]]**.
+**smolagents** is a lightweight, open-source library by Hugging Face designed for building **Code Agents**. It emphasizes "Freedom" by allowing agents to write and execute Python code directly to solve problems.
 
-## Core Philosophy
-Unlike many frameworks that rely on complex JSON parsing, `smolagents` encourages agents to write and execute Python code directly. 
+## Core Features
+*   **Code-First**: Unlike JSON-based tool calls, agents in `smolagents` write snippets of Python code to interact with their environment.
+*   **Minimal Abstractions**: Designed to be easy to understand and extend without complex class hierarchies.
+*   **Local Friendly**: Easily integrates with local models via `LiteLLMModel`.
+*   **Secure Execution**: Includes a built-in sandbox for safely running the model-generated code.
 
-### Multi-Step Agents
-The core abstraction in `smolagents` is the `MultiStepAgent`. It performs an iterative cycle:
-1. **Thought:** Internal reasoning logged in memory.
-2. **Action:** Execution of a tool call (Code or JSON).
-3. **Observation:** Capturing tool output.
+## Key Classes
+*   `CodeAgent`: The primary class that translates reasoning into executable code.
+*   `Tool`: A decorator or class for defining functions the agent can use.
 
-### Agent Types
-*   **CodeAgent:** The primary type. Generates Python snippets. Highly expressive and performs better on complex logic.
-*   **ToolCallingAgent:** Uses JSON structures for tool calls, compatible with standard model provider APIs (OpenAI/Anthropic).
-
-## Integration & Sharing
-*   **Hub Integration:** Agents can be pushed to and pulled from the Hugging Face Hub (`push_to_hub`).
-*   **Secure Execution:** Code is executed in a sandboxed environment with `additional_authorized_imports`.
-
-## Relationship to YANP
-In this vault, `smolagents` is a reference for how to implement [[wiki-pattern-operations]] using a code-first approach.
-
-## See Also
-* [[code-agents]]
+---
+## References
+* Source: `00_Raw/hf-agents-course-unit1.md`
 * [[agentic-frameworks-moc]]
+* [[hf-agents-course-moc]]

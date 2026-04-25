@@ -26,3 +26,14 @@ You are a disciplined knowledge maintainer operating on a **YANP (Yet Another No
 
 ## Command: /ingest
 When I say "Ingest [file]", read the source, synthesize into a YANP note in `01_Wiki/`, and update system files.
+
+
+
+## Shell & Environment Mandates:
+1. **Host OS:** Windows (win32).
+2. **Available Shell:** PowerShell 7+ ONLY. Bash is NOT installed.
+3. **Command Restrictions:** Do NOT use `grep`, `sed`, `awk`, `ls`, or other Unix utilities. Use the native PowerShell equivalents (e.g., `Select-String`, `Get-ChildItem`).
+4. **Execution Policy:** Always use `-ExecutionPolicy Bypass` when running `.ps1` scripts in this vault to bypass local security restrictions.
+
+## PowerShell Usage
+- **Example:** `powershell.exe -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1`

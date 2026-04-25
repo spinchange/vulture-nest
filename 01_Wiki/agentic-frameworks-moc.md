@@ -10,6 +10,10 @@ aliases: [agent-theory, autonomous-systems]
 
 This map covers the mechanics of how autonomous agents reason, act, and interact with knowledge bases.
 
+## The Knowledge Maps
+* [[hf-agents-course-moc]]: Theoretical backbone from the Hugging Face course.
+* [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
+
 ## The Thought-Action Loop
 * [[agent-thought-cycle]]: The core Thought-Action-Observation cycle.
 * [[react-pattern]]: Tactical interleaving of reasoning and acting.
@@ -25,13 +29,18 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 
 ## Frameworks & toolkits
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
+* [[openai-swarm]]: Experimental multi-agent orchestration pattern (Handoffs).
+* [[openai-agents-sdk]]: Production-ready evolution of Swarm for scalable agent systems.
+* [[agent-development-kit]]: Google's code-first toolkit for complex agent systems (ADK).
 * [[llamaindex]]: The data-augmented agent toolkit (Retrieval).
 * [[langgraph]]: Stateful orchestration for production-ready agents (Control).
 
 ## Advanced operational patterns
 * [[multi-agent-systems]]: Orchestrating specialized teams of agents.
+* [[orchestration-tradeoffs]]: Comparing Swarm (Freedom) vs. ADK (Control).
 * [[agentic-rag]]: Autonomous retrieval and self-correction.
 * [[graph-orchestration]]: Modelling behavior as deterministic workflows.
+* [[chromadb]]: Open-source embedding database for semantic memory.
 
 ## Training & Fine-Tuning
 * [[function-calling]]: Moving from prompted to learned native agency.
@@ -45,12 +54,9 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 
 ## Protocols & Infrastructure
 * [[agentic-protocols]]: The emerging standards (MCP, A2A) for interoperability.
-* [[mcp-architecture]]: The Host/Client/Server model of MCP.
-* [[mcp-primitives]]: Tools, Resources, and Prompts.
-* [[mcp-client-capabilities]]: Sampling, Elicitation, and Roots.
-* [[mcp-transport]]: Stdio vs. HTTP/SSE communication.
-* [[mcp-development]]: SDKs and best practices for building servers.
+* [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
 * [[local-agent-environments]]: Running models locally via Ollama and LiteLLM.
+* [[foundry-local]]: Microsoft's hardware-optimized local inference SDK.
 
 ## Practical Use Cases
 * [[gala-agent-use-case]]: Building a multi-tool gala assistant.

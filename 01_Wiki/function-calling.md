@@ -4,29 +4,27 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [native-tool-use, tool-calling-api, role-based-agency]
+aliases: [native-tool-use, json-mode-actions]
 ---
 # Function Calling
 
-**Function Calling** is a learned capability where an LLM is fine-tuned to detect when a tool should be invoked and to generate the structured arguments for that tool call.
+**Function Calling** is a native model capability where an LLM is fine-tuned to recognize tool definitions and generate structured output (usually JSON) that can be directly executed by an external system.
 
-## Learned vs. Prompted Agency
-*   **Prompt-based (Unit 1):** The agent relies on a "ReAct" prompt to simulate reasoning and formatting. The model "generalizes" to use the tools.
-*   **Fine-tuned (Native):** The model has been trained on thousands of examples of tool use. It is more robust, follows schemas more accurately, and requires less instruction overhead.
+## Comparison: ReAct vs. Function Calling
+| Feature | [[react-pattern|ReAct]] | Function Calling |
+|---|---|---|
+| **Mechanism** | Guided Prompting | Native Fine-Tuning |
+| **Output** | Text (Reasoning + JSON) | Structured JSON (directly) |
+| **Precision** | Lower (requires parsing) | Higher (consistent format) |
+| **Learning** | Few-Shot Examples | Learned Behavior |
 
-## Conversational Roles
-Function calling often introduces a specialized role structure in chat histories:
-1.  **User:** The request.
-2.  **Assistant:** The reasoning and the **Function Call** (Action).
-3.  **Tool:** The **Observation** returned by the system.
-4.  **Assistant:** The final synthesized response.
+## Workflow
+1.  **Definitions**: The system provides a list of functions with JSON Schemas.
+2.  **Detection**: The model identifies when a user query requires a function and generates the JSON arguments.
+3.  **Execution**: The system runs the function and returns the result using the `tool` role.
 
-## Special Tokens
-Models like Mistral use dedicated tokens to delimit these turns:
-*   `[TOOL_CALLS]`: Signals an outgoing action.
-*   `[TOOL_RESULTS]`: Signals incoming feedback from the environment.
-
-## See Also
-* [[agent-actions]]
-* [[lora]]
-* [[agentic-frameworks-moc]]
+---
+## References
+* Source: `00_Raw/hf-agents-bonus1.md`
+* [[hf-agents-course-moc]]
+* [[agent-tools]]

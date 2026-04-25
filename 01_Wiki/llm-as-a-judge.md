@@ -4,25 +4,26 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [automated-evaluation, llm-grading, judge-models]
+aliases: [automated-grading, llm-evaluation]
 ---
 # LLM-as-a-Judge
 
-**LLM-as-a-Judge** is an automated evaluation pattern where a second, typically more powerful LLM is used to grade the performance of an agent.
+**LLM-as-a-Judge** is a technique where a secondary, more capable model (e.g., GPT-4o, Claude 3.5 Sonnet) is used to automatically evaluate and score the outputs of an agent.
 
-## How it Works
-1.  **Input:** The agent's output and (optionally) the original prompt/context.
-2.  **Evaluation Prompt:** A template instructing the "Judge" to look for specific criteria (e.g., "Is this response helpful?", "Is there any toxicity?").
-3.  **Score:** The Judge returns a rating or label that is logged to the [[agent-observability|observability]] dashboard.
+## Why use it?
+*   **Scalability**: Manually grading thousands of agent turns is impossible.
+*   **Nuance**: Unlike keyword matching, a model can judge if an answer is "helpful," "safe," or "concise."
+*   **Benchmarking**: Provides a consistent metric for comparing different agent architectures or prompts.
 
-## Advantages
-*   **Scalability:** Allows for near-real-time evaluation of thousands of traces without human intervention.
-*   **Nuance:** Can judge subjective qualities like "tone" or "alignment" that simple regex checks cannot.
+## Metrics
+Common scores provided by an LLM Judge:
+1.  **Grounding**: Did the agent use the provided facts?
+2.  **Completeness**: Did the agent answer all parts of the user query?
+3.  **Toxicity**: Is the response harmful or biased?
+4.  **Efficiency**: Did the agent take too many steps to reach the answer?
 
-## Risks
-*   **Judge Bias:** The scoring LLM may have its own biases or hallucinate its evaluation.
-*   **Recursive Errors:** If the Judge is not significantly more capable than the agent, the evaluation may be unreliable.
-
-## See Also
+---
+## References
+* Source: `00_Raw/hf-agents-bonus2.md`
 * [[agent-evaluation]]
-* [[agentic-frameworks-moc]]
+* [[hf-agents-course-moc]]

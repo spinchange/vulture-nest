@@ -4,26 +4,23 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [autonomous-retrieval, reasoning-retrieval, data-agency]
+aliases: [autonomous-retrieval, reasoning-rag]
 ---
 # Agentic RAG
 
-**Agentic Retrieval-Augmented Generation (RAG)** extends traditional RAG by providing an autonomous agent with retrieval tools, allowing it to control the search process dynamically.
+**Agentic RAG** (Retrieval-Augmented Generation) moves beyond simple "retrieve-then-generate" pipelines by giving the agent the autonomy to reformulate queries, validate results, and decide if more data is needed.
 
-## Traditional RAG vs. Agentic RAG
-*   **Traditional:** Query -> Retrieve -> Generate. A static one-shot process.
-*   **Agentic:** Query -> **Reason** -> Retrieve -> **Evaluate** -> **Refine** -> Generate. An iterative loop.
+## Key Patterns
+*   **Query Expansion**: The agent generates multiple versions of a user's query to catch different semantic nuances.
+*   **Self-Correction**: If the initial retrieval is irrelevant, the agent identifies the failure and tries a different strategy or data source.
+*   **Multi-Step Reasoning**: The agent uses a tool to find one piece of information, which it then uses to form the next search query.
 
-## Advanced Strategies
-*   **Query Reformulation:** The agent rewrites the user query to better match the index.
-*   **Query Decomposition:** Breaking a complex question into multiple sub-queries.
-*   **Self-Critique:** The agent analyzes the retrieved results and decides if more information is needed.
-*   **Tool Selection:** Deciding between different knowledge bases (e.g., Wikipedia vs. Internal Docs).
+## Tooling
+Frameworks like **LlamaIndex** are specifically optimized for Agentic RAG, providing `QueryEngineTool` abstractions that let an agent treat a knowledge base as an interactive API.
 
-## Role in the Wiki
-In this vault, Agentic RAG is the goal for the [[llm-wiki-pattern]]. It allows an agent to use the `index.md` and MOCs as navigation tools to find and synthesize knowledge.
-
-## See Also
-* [[llamaindex]] (The primary RAG-focused toolkit)
-* [[agent-thought-cycle]]
+---
+## References
+* Source: `00_Raw/hf-agents-course-unit2.md`, `00_Raw/hf-agents-unit3.md`
+* [[llamaindex]]
 * [[agentic-frameworks-moc]]
+* [[hybrid-retrieval-spec]]

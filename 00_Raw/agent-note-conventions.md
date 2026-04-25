@@ -1,0 +1,220 @@
+---
+tags:
+  - agents
+  - conventions
+  - markdown
+  - workflow
+source: codex
+hostname: DESKTOP-004IHBK
+date: 2026-03-13
+status: active
+---
+
+# Agent Note Conventions
+
+This note defines the canonical convention for agent-written notes in `mnvault`.
+
+## Goals
+
+- keep notes readable by humans first
+- keep notes usable across Claude, Gemini, Codex, and human workflows
+- preserve enough structure for durable review, filtering, and trust boundaries
+- avoid decorative metadata and transcript-style noise
+
+## Small Metadata Contract
+
+For standalone durable agent-written notes, require:
+
+- `author`
+- `hostname`
+- `date`
+- `status`
+
+Strongly recommend:
+
+- `tags`
+
+Canonical order and example:
+
+```md
+---
+tags:
+  - tooling
+  - agents
+author: claude
+hostname: Nova
+date: 2026-03-29
+status: draft
+---
+```
+
+## Frontmatter Immutability
+
+Frontmatter is written once at authorship. Fields are not overwritten on subsequent edits. The only exception is correcting a factual error — and `status`, which holds the current value.
+
+- `hostname` records the system hostname where the note was *originally authored* — never updated
+- `date` records the authorship date — never updated
+- `author` records who wrote the note — never updated
+- `status` is updated to reflect current state — but every transition is recorded in `status_log`
+
+Temporal evolution and multi-session content belong in appendices, not in frontmatter rewrites.
+
+## Author Field
+
+`author` carries the specific agent or person name: `claude`, `gemini`, `codex`, or a human name. It replaces the old `source` field — the author name is sufficient to imply human or AI origin. Do not put model version strings in `author` — if version context matters, put it in the body.
+
+## Appendix Convention
+
+When adding session content to an existing note, append a dated section rather than editing existing content. Appendix headings carry their own provenance:
+
+```md
+## 2026-03-29 14:32 · Nova · claude
+```
+
+Format: `YYYY-MM-DD HH:mm · Hostname · Author`
+
+Appendices do not get their own frontmatter block. Provenance lives in the heading.
+
+## Status Policy
+
+`status` holds the current value. `status_log` holds the full transition history. Both are maintained together.
+
+### Spec values (drive tool behavior)
+
+- `draft` — default for new notes; excluded from publish output by default
+- `active` — in use; no special tool behavior
+- `archived` — excluded from active views by default
+
+### Extended vocabulary (workflow signal, no special tool behavior)
+
+Open variants:
+- `open` — not yet started
+- `in-progress` — actively being worked
+- `blocked` — waiting on something external
+- `waiting` — waiting on someone else
+
+Closed variants (treated as archived by tools that don't recognize them):
+- `done` — completed
+- `completed` — alias for done
+- `cancelled` — intentionally abandoned
+
+Unknown values are treated as open/active by conforming tools — they never error on unrecognized status values.
+
+### Status log
+
+Every transition is recorded in `status_log` — an append-only list. `status` holds the current value; `status_log` holds the full history for querying.
+
+Entry format: `value · YYYY-MM-DD HH:mm · Hostname · Author`
+
+Example:
+
+```yaml
+status: active
+status_log:
+  - draft · 2026-03-28 10:00 · Luna · claude
+  - active · 2026-03-29 14:32 · Nova · chris
+```
+
+`status_log` is never rewritten or collapsed. Conforming tools append to it whenever `status` changes.
+
+## Placement Rules
+
+Create a standalone note when the content is reusable, linkable, or likely to matter later.
+
+Append to a daily note or `inbox.md` when the content is short-lived, provisional, or not yet categorized.
+
+Default subfolders when the topic is clear:
+
+- `agents/` for agent behavior, sync, memory, and operating model notes
+- `tools/` for scripts, skills, and technical tooling notes
+- `minimal-notes/` for notes about the Minimal Notes project itself
+- `daily/`, `weekly/`, `monthly/` for time-based notes
+
+## Body Conventions
+
+Keep the prose flexible. Do not force a heavy template onto every note.
+
+When useful, prefer sections such as:
+
+- `## Summary` or `## Context`
+- `## Decisions`
+- `## Next Actions`
+- `## Open Questions`
+- `## References`
+
+Use only the sections that earn their keep.
+
+## Note Creation
+
+Use `jot new <title>` to create notes. This writes canonical frontmatter automatically — `tags`, `author`, `hostname`, `date`, `status: draft`, and an initial `status_log` entry. Do not write note files directly unless a template or special path requires it.
+
+For daily, weekly, and monthly notes use `jot daily`, `jot weekly`, and `jot monthly` respectively.
+
+## Required Behaviors
+
+- use `[[Wiki Links]]` for internal links
+- distill sessions into durable facts, decisions, and actions
+- avoid transcript dumps
+- avoid decorative YAML clutter with no workflow value
+- avoid vendor-specific lock-in markers in the note format
+- avoid boilerplate such as "generated by AI"
+
+## Append Metadata Contract
+
+When appending agent-written session material to an existing note, preserve any existing frontmatter and update it instead of replacing it.
+
+For notes that may receive repeated agent appends over time, use these metadata fields:
+
+- `authors`: list of unique contributors who have written to the note
+- `updates`: append-only list of update records with `at` and `author`
+
+Example:
+
+```md
+---
+authors:
+  - human
+  - codex
+updates:
+  - at: 2026-03-14T09:58:00-05:00
+    author: codex
+  - at: 2026-03-14T10:12:00-05:00
+    author: claude
+---
+```
+
+Append rules:
+
+- preserve existing frontmatter keys unless there is a clear reason to change them
+- add the current agent to `authors` if missing
+- append a new `updates` entry with an ISO 8601 timestamp including timezone offset and the current agent name
+- never rewrite or collapse prior `updates` entries unless the user explicitly asks for cleanup
+- when a note does not yet have frontmatter and the note is durable enough to keep, add frontmatter before appending
+
+## Append vs Standalone
+
+- Standalone: design notes, tool documentation, conventions, reusable research, project state
+- Append: daily logs, lightweight session residue, temporary troubleshooting, uncategorized fragments
+
+When appending session material, add a new dated body section instead of overwriting older session content.
+
+Appendix heading format:
+
+```md
+## 2026-03-29 14:32 · Nova · claude
+```
+
+Format: `YYYY-MM-DD HH:mm · Hostname · Author`
+
+## Why This Standard
+
+This is the adopted compromise between two failure modes:
+
+- too much schema, causing metadata rot and friction
+- too little structure, causing ambiguity and trust problems
+
+The rule is: strict at the metadata boundary, light in the prose body.
+
+## Related Notes
+
+See also: [[agent-knowledge-vault]] [[skills-and-agent-behavior]] [[agent-skills-index]]

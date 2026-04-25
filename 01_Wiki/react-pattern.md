@@ -1,28 +1,30 @@
 ---
 title: ReAct Pattern
-author: gemini-cli-cli
+author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [reasoning-and-acting, react-prompting]
+aliases: [reasoning-and-acting, chain-of-thought-actions]
 ---
 # ReAct Pattern
 
-**ReAct** (Reasoning + Acting) is a prompting technique that encourages LLMs to interleave reasoning steps with tool usage. It is the tactical implementation of the [[agent-thought-cycle]].
+**ReAct** (Reasoning + Acting) is a prompting technique that enables LLMs to generate both reasoning traces and task-specific actions in an interleaved manner.
 
-## ReAct vs. Chain-of-Thought (CoT)
-*   **CoT (Chain-of-Thought):** Focuses on internal "step-by-step" logic without external tools. Best for math and pure reasoning.
-*   **ReAct:** Combines step-by-step logic with **Actions** and **Observations**. Best for info-seeking and dynamic tasks.
+## How it Works
+Instead of generating a direct answer, the model is prompted to follow a structured sequence:
+1.  **Thought**: "I need to find the capital of France first."
+2.  **Action**: `search(query="capital of France")`
+3.  **Observation**: "Paris is the capital of France."
+4.  **Thought**: "Now I have the answer."
+5.  **Final Answer**: "The capital of France is Paris."
 
-## The ReAct Loop
-*   **Thought:** "I need to find X to answer Y."
-*   **Action:** `Search[X]`
-*   **Observation:** "Result of X is Z."
-*   **Thought:** "Since X is Z, I now know Y."
+## Benefits
+*   **Grounding**: The model bases its final answer on external facts rather than internal weights.
+*   **Error Correction**: If an observation contradicts a previous thought, the model can adjust its logic in the next "Thought" step.
+*   **Interpretability**: Provides a human-readable log of *why* an agent took a specific action.
 
-## Implementation in Training
-Modern models like DeepSeek-R1 or OpenAI o1 are fine-tuned to "think" using specific tokens (like `<think>` and `</think>`), moving ReAct from a prompting strategy to a native model capability.
-
-## See Also
+---
+## References
+* Source: `00_Raw/hf-agents-course-unit1.md`
 * [[agent-thought-cycle]]
-* [[agent-actions]]
+* [[agent-tools]]

@@ -13,13 +13,22 @@ This hub defines the architectural and philosophical standards of this vault, sp
 ## The YANP Protocol
 * [[yanp-for-agentic-workflows]]: Why we use lowercase kebab-case and strict frontmatter for AI compatibility.
 * [[yaml-for-yanp]]: The technical specification for our metadata.
+* [[agent-note-conventions]]: The canonical standard for agent-written notes.
 
 ## Wiki Architecture
 The vault is treated as a living codebase rather than a static document.
 * [[wiki-as-codebase]]: The core philosophy of "Knowledge CI/CD."
 * [[vault-audit-tool-spec]]: Machine-readable specs for our CI/CD tools.
+* [[hybrid-retrieval-spec]]: Bridging Wikilinks and Semantic Discovery.
+* [[executable-note-standard]]: Embedded logic and "Active Knowledge" protocols.
 * [[the-compounding-artifact]]: How notes gain value over time through linking.
 * [[wiki-pattern-architecture]], [[wiki-pattern-operations]], [[wiki-pattern-tooling]]: The tactical implementation of the LLM-Wiki pattern.
+
+## Agent System Standards
+Shared standards for multi-agent collaboration and memory.
+* [[agent-knowledge-vault]]: A model-agnostic knowledge base for humans and agents.
+* [[agent-skills-index]]: A directory of specialized agent capabilities.
+* [[agent-configuration-sync-strategy]]: Cross-machine state synchronization.
 
 ## Design Aesthetic
 * [[plain-plus-design]]: Minimalist, text-first UI.

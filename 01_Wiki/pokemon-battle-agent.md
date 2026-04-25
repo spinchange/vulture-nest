@@ -3,28 +3,26 @@ title: Pokémon Battle Agent
 author: gemini-cli
 date: 2026-04-24
 status: active
-type: literature
-aliases: [poke-env-agent, battle-bot-architecture]
+type: permanent
+aliases: [turn-based-agent, game-agent-case-study]
 ---
 # Pokémon Battle Agent
 
-The **Pokémon Battle Agent** is a specialized implementation of an autonomous agent designed for competitive turn-based combat using the `poke-env` library and **Pokémon Showdown**.
+The **Pokémon Battle Agent** is a canonical case study used in the Hugging Face Agents course to demonstrate turn-based environment interaction and complex state mapping.
 
-## Technical Stack
-*   **Poke-env:** A Python API for Pokémon battles.
-*   **Pokémon Showdown:** The open-source battle simulator.
-*   **LLMAgentBase:** A bridge class that maps the battle state to an LLM-readable prompt and parses the LLM's response into a valid game action.
+## Why Pokémon?
+Pokémon battles provide an ideal environment for agent testing:
+*   **Turn-Based**: Eliminates the high-latency bottleneck of real-time 30 FPS games.
+*   **Structured State**: Clear variables for HP, Status, Type match-ups, and Move sets.
+*   **Reasoning**: Requires strategic thinking (e.g., "Should I switch Pokémon or use a healing item?").
 
-## The Decision Loop
-1.  **State Extraction:** `_format_battle_state` converts complex objects (HP fractions, Type charts, Boosts) into a structured string.
-2.  **LLM Reasoning:** The model analyzes the state and selects a tool (`choose_move` or `choose_switch`).
-3.  **Action Mapping:** `_find_move_by_name` ensures the LLM's text output matches a valid move ID in the game engine.
-4.  **Execution:** The action is sent to the simulator via the `Player` class.
+## Implementation Pattern
+1.  **State Mapping**: A Python class (e.g., `PokémonEnv`) extracts battle data and formats it into a prompt-friendly string.
+2.  **Tool Selection**: The LLM picks a move (e.g., `use_move("Thunderbolt")`) or an action (e.g., `switch_to("Bulbasaur")`).
+3.  **Feedback**: The environment executes the turn and returns the new state (Observations) to the agent.
 
-## Fallback Logic
-Due to the non-deterministic nature of LLMs, the architecture includes mandatory fallback mechanisms. If the LLM chooses an invalid move or fails to respond, the system defaults to a `choose_random_move` to prevent session timeouts.
-
-## See Also
+---
+## References
+* Source: `00_Raw/hf-agents-bonus3.md`
 * [[agents-in-games]]
-* [[agent-actions]]
-* [[agentic-frameworks-moc]]
+* [[hf-agents-course-moc]]
