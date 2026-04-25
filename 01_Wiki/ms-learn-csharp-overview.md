@@ -1,6 +1,13 @@
+---
+title: "Literature: C# Overview"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://learn.microsoft.com/en-us/dotnet/csharp/
+aliases: [ms-learn-csharp-overview]
+---
 # Literature Note: C# Language Architecture & Paradigms
-Source: https://learn.microsoft.com/en-us/dotnet/csharp/
-Date: 2026-04-25
 
 C# is a modern, object-oriented, and type-safe programming language that runs on the .NET runtime.
 

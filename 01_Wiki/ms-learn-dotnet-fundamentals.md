@@ -1,6 +1,13 @@
+---
+title: "Literature: .NET Fundamentals"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://learn.microsoft.com/en-us/dotnet/fundamentals/
+aliases: [ms-learn-dotnet-fundamentals]
+---
 # Literature Note: .NET Platform Fundamentals
-Source: https://learn.microsoft.com/en-us/dotnet/fundamentals/
-Date: 2026-04-25
 
 .NET is an open-source developer platform for building cross-platform applications.
 

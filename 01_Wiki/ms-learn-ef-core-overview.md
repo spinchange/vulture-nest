@@ -1,6 +1,13 @@
+---
+title: "Literature: EF Core Overview"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://learn.microsoft.com/en-us/ef/core/
+aliases: [ms-learn-ef-core-overview]
+---
 # Literature Note: Entity Framework (EF) Core Overview
-Source: https://learn.microsoft.com/en-us/ef/core/
-Date: 2026-04-25
 
 Entity Framework Core is a lightweight, extensible, open-source, and cross-platform Object-Relational Mapper (O/RM) for .NET.
 

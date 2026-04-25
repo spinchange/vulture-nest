@@ -60,5 +60,5 @@
 ## System Layer
 * [[log|System Log]]
 * [[visitor-directives|Visitor Directives (Multi-Agent Protocol)]]
-* [[poshwiki-tools|PoShWiKi Thought API Wrapper]]
+* [[poshwiki-tools|PoShWiKi Tools API]]
 * [[TOOL_REGISTRY|Tool Registry (Machine-Readable)]]

@@ -1,6 +1,13 @@
+---
+title: "Literature: WPF Overview"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/
+aliases: [ms-learn-wpf-overview]
+---
 # Literature Note: Windows Presentation Foundation (WPF)
-Source: https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/
-Date: 2026-04-25
 
 WPF is a UI framework for building Windows desktop applications with a resolution-independent, vector-based rendering engine.
 

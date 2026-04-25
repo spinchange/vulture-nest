@@ -1,6 +1,13 @@
+---
+title: "Literature: ASP.NET Core Overview"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://learn.microsoft.com/en-us/aspnet/core/introduction/
+aliases: [ms-learn-aspnet-core-overview]
+---
 # Literature Note: ASP.NET Core Overview
-Source: https://learn.microsoft.com/en-us/aspnet/core/introduction/
-Date: 2026-04-25
 
 ASP.NET Core is a cross-platform, high-performance, open-source framework for building modern, cloud-enabled, Internet-connected apps.
 

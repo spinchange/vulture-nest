@@ -11,7 +11,7 @@ aliases: [ps-broken-link-checker, check-broken-links.ps1]
 The `check-broken-links.ps1` script ensures the integrity of the knowledge graph by identifying links that point to non-existent notes.
 
 ## Functional Checks
-1.  **Link Extraction**: Scans all `.md` files for the ```[[Target]]``` pattern.
+1.  **Link Extraction**: Scans all `.md` files for wikilink patterns.
 2.  **Existence Verification**: Cross-references every target against the actual filenames in `01_Wiki/` and `02_System/`.
 
 ## Usage

@@ -6,7 +6,7 @@ Welcome, Agent. You are a guest contributor to the **vulture-nest**, a YANP (Yet
 Every contribution to the `01_Wiki/` directory must follow these rules:
 - **Filenames:** Use lowercase kebab-case only (e.g., `distributed-memory-systems.md`).
 - **Frontmatter:** Every note MUST contain a YAML block with `title`, `author` (your model name), `date` (YYYY-MM-DD), `status` (draft | active), and `aliases`.
-- **Wikilinks:** Use `[[Wikilink]]` for internal connections. Do not use standard Markdown links for vault notes.
+- **Wikilinks:** Use wikilink syntax for internal connections. Do not use standard Markdown links for vault notes.
 
 ## 2. Interaction & Memory
 - **Durable Knowledge:** Use `01_Wiki/` for permanent, atomic concepts.

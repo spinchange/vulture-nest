@@ -10,7 +10,7 @@ This document provides a machine-readable index of the system utilities availabl
 
 ## Broken Link Auditor
 *   **File:** `02_System\check-broken-links.ps1` 
-*   **Description:** Scans all markdown files in the vault to find [[Wikilinks]] that point to non-existent notes.
+*   **Description:** Scans all markdown files in the vault to find wikilinks that point to non-existent notes.
 *   **Command:** `powershell.exe -ExecutionPolicy Bypass -File check-broken-links.ps1` 
 *   **Inputs:** None
 *   **Outputs:** None

@@ -1,6 +1,13 @@
+---
+title: "Literature: PoShWiKi Repository"
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+source: https://github.com/spinchange/PoShWiKi.git
+aliases: [ms-repo-poshwiki]
+---
 # Literature Note: PoShWiKi Repository
-Source: https://github.com/spinchange/PoShWiKi.git
-Date: 2026-04-25
 
 PoShWiKi is a minimal PowerShell 7 wiki backed by SQLite, designed for terminal use and agent scriptability.
 
