@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Dependency Injection — Vulture Portal</title>
+  <title>Cognitive Architectures — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Dependency Injection</span>
+      <span>Cognitive Architectures</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Dependency Injection</h1>
+      <h1 class="note-title">Cognitive Architectures</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-di, service-provider, generic-host</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">chain-of-thought-blueprint, agentic-workflows, project-lifecycle-patterns</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Dependency Injection</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Cognitive Architectures</span></span>
       </div>
     </header>
 
@@ -441,48 +441,68 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Dependency Injection</h1>
-<p><strong>Dependency Injection (DI)</strong> is a first-class citizen in the .NET ecosystem, particularly since the introduction of the <strong>Generic Host</strong>. It is a design pattern used to achieve <strong>Inversion of Control (IoC)</strong> between classes and their dependencies.</p>
-<h2>Core Concepts</h2>
-<h3>1. Service Collection</h3>
-<p>The container where services are registered during application startup.</p>
-<pre><code>var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddSingleton&lt;IMyService, MyService&gt;();</code></pre>
-<h3>2. Service Provider</h3>
-<p>The object that resolves and provides instances of registered services.</p>
-<h3>3. Service Lifetimes</h3>
+        <h1>Cognitive Architectures</h1>
+<p>A <strong>Cognitive Architecture</strong> for AI agents provides a structured map of how to &quot;think&quot; through a complex project. It prevents agents from getting stuck in <strong>Local Minima</strong> (fixing symptoms while missing the disease) by enforcing a clear lifecycle from discovery to verification.</p>
+<h2>The Bespoke Software Lifecycle</h2>
+<p>To build high-quality custom software, agents should follow this standard cognitive flow:</p>
+<h3>1. Research (Discovery Phase)</h3>
 <ul>
-<li><strong>Transient:</strong> A new instance is created every time it is requested.
+<li><strong>Codebase Mapping:</strong> Systematically exploring files and symbols.
 </li>
-<li><strong>Scoped:</strong> A new instance is created once per client request (within a scope).
+<li><strong>Dependency Analysis:</strong> Identifying how components interact.
 </li>
-<li><strong>Singleton:</strong> A single instance is created the first time it is requested and used by all subsequent requests.
+<li><strong>Empirical Reproduction:</strong> Confirming the current state or bug before changing anything.
 </li>
 </ul>
-<h2>The Generic Host</h2>
-<p>Modern .NET applications (Console, Web, Worker) use the <strong>Generic Host</strong> to manage application lifetime, configuration, logging, and DI.</p>
+<h3>2. Strategy (Design Phase)</h3>
 <ul>
-<li><strong>Background Services:</strong> Classes that inherit from <code>BackgroundService</code> can be registered to run long-running tasks.
+<li><strong>Architectural Alignment:</strong> Ensuring the solution fits existing patterns (e.g., YANP).
+</li>
+<li><strong>Tool Selection:</strong> Choosing the most efficient MCP tools or libraries.
+</li>
+<li><strong>Plan Formulation:</strong> Drafting a step-by-step implementation guide.
 </li>
 </ul>
-<h2>Why it Matters for Agents</h2>
-<p>DI is essential for building modular agentic frameworks:</p>
+<h3>3. Execution (The Act-Validate Loop)</h3>
 <ul>
-<li><strong>Mocking:</strong> Easily swap a live <code>ILLMService</code> with a mock during testing.
+<li><strong>Surgical Implementation:</strong> Applying targeted changes strictly related to the sub-task.
 </li>
-<li><strong>Configuration:</strong> Inject agent settings (API keys, model names) into the classes that need them.
+<li><strong>Automated Verification:</strong> Running tests or linters immediately after changes.
 </li>
-<li><strong>Extensibility:</strong> Allow users to register custom &quot;Skills&quot; or &quot;Tools&quot; that the agent can then resolve via DI.
+<li><strong>Refinement:</strong> Adjusting the approach based on feedback from the system (error messages, test failures).
 </li>
 </ul>
+<h3>4. Finalization (System Integrity)</h3>
+<ul>
+<li><strong>Cross-Linkage:</strong> Integrating new notes or code into the broader graph.
+</li>
+<li><strong>Portal Update:</strong> Synchronizing dashboards and indices.
+</li>
+</ul>
+<h2>Agentic Workflow Patterns (Andrew Ng)</h2>
+<p>Frontier models leverage these four patterns to increase performance:</p>
+<ol>
+<li><strong>Reflection:</strong> The agent critiquing its own output to fix hallucinations or logic gaps.
+</li>
+<li><strong>Planning:</strong> Breaking a high-level goal into a sequence of executable steps.
+</li>
+<li><strong>Tool Use:</strong> Leveraging external capabilities (calculators, web search, database queries).
+</li>
+<li><strong>Multi-Agent Collaboration:</strong> Dividing labor among specialized personas (e.g., Architect, Coder, Judge).
+</li>
+</ol>
+<h2>Framework Implementation: LangGraph</h2>
+<p>Frameworks like <a href="langgraph.html" class="wikilink">langgraph</a> enable these architectures by representing the lifecycle as a <strong>Stateful Graph</strong>. This ensures that the agent&#39;s &quot;shared memory&quot; (State) persists across the entire project lifecycle, allowing for loops, branches, and Human-in-the-Loop checkpoints.</p>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> (Source)
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
 </li>
-<li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>
 </li>
-<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
+<li><a href="agentic-tdd-patterns.html" class="wikilink">agentic-tdd-patterns</a>
+</li>
+<li><a href="langgraph.html" class="wikilink">langgraph</a>
 </li>
 </ul>
       </main>
@@ -497,18 +517,14 @@ builder.Services.AddSingleton&lt;IMyService, MyService&gt;();</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
-<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
-<li><a href="ms-learn-dotnet-fundamentals.html" class="">ms-learn-dotnet-fundamentals</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="agentic-tdd-patterns.html" class="">agentic-tdd-patterns</a></li>
+<li><a href="langgraph.html" class="">langgraph</a></li>
 </ul>
           </div>
         </div>
