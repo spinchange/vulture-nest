@@ -29,6 +29,10 @@ This map covers the automation suite and coding standards for the **vulture-nest
 ## Advanced Retrieval
 * [[ps-vulture-search]]: The hybrid engine linking knowledge to system capabilities.
 
+## Agent Memory & SQLite
+* [[poshwiki]]: A minimal, SQLite-backed wiki for agent memory and session logs.
+* [[ef-core-basics]]: The ORM foundation for persistent .NET/PowerShell data.
+
 ## PowerShell Patterns
 * [[ps-calculated-properties]]: Enhancing object output.
 * [[ps-classes]]: Structured logic for complex automation tasks.

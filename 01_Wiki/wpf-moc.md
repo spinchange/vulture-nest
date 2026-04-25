@@ -11,11 +11,10 @@ aliases: [windows-presentation-foundation, xaml-hub]
 Focusing on building rich, Windows-native desktop applications using XAML and the .NET framework.
 
 ## Core Concepts
-* **XAML**: The declarative language for UI layout.
-* **Dependency Properties**: The engine behind WPF data and behavior.
+* [[wpf-xaml-and-data-binding]]: XAML syntax, Data Binding engine, and Dependency Properties.
 
 ## Architecture
-* **MVVM (Model-View-ViewModel)**: The canonical pattern for WPF apps.
+* [[mvvm-pattern-dotnet]]: The canonical pattern for WPF apps.
     * **Data Binding**: Connecting the View to the ViewModel.
     * **Commands**: Handling user intent (perfect for [[hitl-ui-patterns]]).
 

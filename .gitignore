@@ -11,3 +11,9 @@ Thumbs.db
 *.tmp
 *.log
 02_System/TOOL_REGISTRY.md.tmp
+
+# Session artifacts
+stdout.txt
+stderr.txt
+00_Raw/PoShWiKi/wiki.db
+

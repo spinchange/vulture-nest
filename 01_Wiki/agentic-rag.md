@@ -13,6 +13,7 @@ aliases: [autonomous-retrieval, reasoning-rag]
 ## Key Patterns
 *   **Query Expansion**: The agent generates multiple versions of a user's query to catch different semantic nuances.
 *   **Self-Correction**: If the initial retrieval is irrelevant, the agent identifies the failure and tries a different strategy or data source.
+*   **Graph-Based Reasoning**: Using [[graphrag-concepts]] to traverse relationships and perform global summarization across the entire corpus.
 *   **Multi-Step Reasoning**: The agent uses a tool to find one piece of information, which it then uses to form the next search query.
 
 ## Tooling

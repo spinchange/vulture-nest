@@ -18,11 +18,14 @@ This hub defines the architectural and philosophical standards of this vault, sp
 ## Wiki Architecture
 The vault is treated as a living codebase rather than a static document.
 * [[wiki-as-codebase]]: The core philosophy of "Knowledge CI/CD."
+* [[llm-wiki-pattern]]: Canonical pattern for human-agent knowledge sharing.
 * [[vault-audit-tool-spec]]: Machine-readable specs for our CI/CD tools.
 * [[hybrid-retrieval-spec]]: Bridging Wikilinks and Semantic Discovery.
+* [[graphrag-concepts]]: Hierarchical knowledge graphs and global search.
 * [[executable-note-standard]]: Embedded logic and "Active Knowledge" protocols.
 * [[the-compounding-artifact]]: How notes gain value over time through linking.
 * [[wiki-pattern-architecture]], [[wiki-pattern-operations]], [[wiki-pattern-tooling]]: The tactical implementation of the LLM-Wiki pattern.
+* [[memory-spectrum]]: Balancing flat-text, relational, and semantic storage.
 
 ## Agent System Standards
 Shared standards for multi-agent collaboration and memory.

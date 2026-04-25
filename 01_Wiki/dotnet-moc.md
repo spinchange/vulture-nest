@@ -15,14 +15,21 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 
 ## Frameworks & UI
 * [[wpf-moc]]: Windows Presentation Foundation for desktop apps.
-* **ASP.NET Core**: Building high-performance APIs and MCP servers.
-* **Entity Framework (EF) Core**: Modern Object-Relational Mapping (ORM).
+* [[dotnet-clr-internals]]: JIT, Garbage Collection, and managed execution.
+* [[dotnet-dependency-injection]]: Inversion of Control and the Generic Host.
+* [[ef-core-basics]]: Object-Relational Mapping (ORM) and data access.
+    * [[ef-core-migrations]]: Managing database schema versioning.
+* [[aspnet-core-basics]]: Building high-performance APIs and MCP servers.
+
+## Agentic SDKs
+* [[ms-semantic-kernel]]: Orchestration, Plugins, and Memory for .NET.
+* [[lm-kit-dotnet]]: Local LLM inference and hardware acceleration.
+* [[csharp-mcp-sdk]]: Building MCP servers in the .NET ecosystem.
 
 ## Tools & Infrastructure
 * **NuGet**: The .NET package manager.
 * **MSBuild**: The build system for .NET projects.
 * **dotnet CLI**: The primary interface for project management.
-* **LM-Kit.NET**: Integrating LLMs into the .NET stack.
 
 ---
 ## See Also

@@ -28,6 +28,13 @@
 * `00_Raw/racket-summary.md`
 * `00_Raw/the-rust-programming-language.md`
 * `00_Raw/typescript-handbook.md`
+* `00_Raw/ms-learn-csharp-overview.md`
+* `00_Raw/ms-learn-dotnet-fundamentals.md`
+* `00_Raw/ms-learn-wpf-overview.md`
+* `00_Raw/ms-learn-ef-core-overview.md`
+* `00_Raw/ms-learn-aspnet-core-overview.md`
+* `00_Raw/ms-repo-poshwiki.md`
+* `00_Raw/PoShWiKi/` - Minimal PowerShell 7 Wiki for Agents
 * `00_Raw/agent-actions-unit.md`
 * `00_Raw/openai-agents-and-swarm.md`
 * `00_Raw/agent-note-conventions.md`
@@ -52,4 +59,6 @@
 
 ## System Layer
 * [[log|System Log]]
+* [[visitor-directives|Visitor Directives (Multi-Agent Protocol)]]
+* [[poshwiki-tools|PoShWiKi Thought API Wrapper]]
 * [[TOOL_REGISTRY|Tool Registry (Machine-Readable)]]

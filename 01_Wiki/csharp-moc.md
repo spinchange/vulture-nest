@@ -12,17 +12,17 @@ A structured traversal of the C# programming language, optimized for high-perfor
 
 ## Fundamentals
 * [[csharp-basics]]: Syntax, types, and the Common Language Runtime (CLR).
-* **Memory Management**: Value types vs. Reference types and the Garbage Collector (GC).
+* [[csharp-type-system]]: Value types vs. Reference types and the Garbage Collector (GC).
 
 ## Modern Features (.NET 8+)
-* **LINQ**: Language Integrated Query for data manipulation.
-* **Async/Await**: The core pattern for non-blocking I/O.
+* [[csharp-linq]]: Language Integrated Query for data manipulation.
+* [[csharp-async-await]]: The core pattern for non-blocking I/O.
 * **Records**: Immutable data structures for high-signal tool inputs.
 * **Pattern Matching**: Advanced control flow for complex logic.
 
 ## Integration
-* **C# MCP SDK**: Building Tier 1 servers in the .NET ecosystem.
-* **Dependency Injection**: Managing complex agentic dependencies.
+* [[csharp-mcp-sdk]]: Building Tier 1 servers in the .NET ecosystem.
+* [[dotnet-dependency-injection]]: Managing complex agentic dependencies.
 
 ---
 ## See Also
