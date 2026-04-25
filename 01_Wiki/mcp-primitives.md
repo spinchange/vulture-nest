@@ -31,4 +31,4 @@ Reusable instruction templates that guide the model's interaction.
 ---
 ## See Also
 * [[mcp-architecture]]
-* [[mcp-client-capabilities]]
+* [[mcp-client-features]]

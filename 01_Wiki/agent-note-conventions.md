@@ -32,7 +32,7 @@ When adding new content to an existing note, use dated appendix headings to pres
 ## Structural Principles
 * **Atomicity**: Keep notes focused on a single concept or entity.
 * **Readability**: Human-first prose; avoid decorative metadata or transcript noise.
-* **Wikilinks**: Use `[[Wikilink]]` for all internal connections.
+* **Wikilinks**: Use `[[the-compounding-artifact|Wikilinks]]` for all internal connections.
 
 ---
 ## References

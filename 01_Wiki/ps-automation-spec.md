@@ -52,4 +52,4 @@ The `02_System/generate-tool-registry.ps1` script is the "Compiler" for this spe
 ## References
 * [[powershell-moc]]
 * [[wiki-as-codebase]]
-* [[GEMINI.md]]
+* [[GEMINI]]

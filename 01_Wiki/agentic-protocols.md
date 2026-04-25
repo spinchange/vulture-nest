@@ -16,7 +16,7 @@ Developed by Anthropic, **MCP** is an open standard designed as a "USB-C port fo
 *   **Host/Client/Server Model:** Decouples the AI application (Host) from the capability provider (Server).
 *   **Layered Design:** Separates the message semantics (**Data Layer**) from the communication channel (**Transport Layer**).
 *   **Primitives:** Standardizes how **[[mcp-primitives|Tools, Resources, and Prompts]]** are discovered and used.
-*   **Client Capabilities:** Enables servers to leverage the host's LLM (**[[mcp-client-capabilities|Sampling]]**) or interact with the user (**Elicitation**).
+*   **Client Capabilities:** Enables servers to leverage the host's LLM (**[[mcp-client-features|Sampling]]**) or interact with the user (**Elicitation**).
 
 For a deep dive, see **[[mcp-architecture]]**.
 

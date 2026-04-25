@@ -48,5 +48,5 @@
 * [[alternative-agent-frameworks]] - CrewAI & AutoGen Comparison
 
 ## System Layer
-* [[02_System/log.md|System Log]]
-* [[02_System/TOOL_REGISTRY.md|Tool Registry (Machine-Readable)]]
+* [[log|System Log]]
+* [[TOOL_REGISTRY|Tool Registry (Machine-Readable)]]

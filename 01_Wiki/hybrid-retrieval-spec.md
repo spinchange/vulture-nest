@@ -11,7 +11,7 @@ aliases: [hybrid-rag, semantic-linking-spec, retrieval-tiers]
 This specification defines the dual-layer strategy for navigating the vault, bridging the gap between human-curated **Deterministic Links** and AI-driven **Semantic Discovery**.
 
 ## Tier 1: Deterministic Retrieval (Wikilinks)
-*   **Mechanism**: Standard `[[Wikilinks]]` and MOC structures.
+*   **Mechanism**: Standard `[[the-compounding-artifact|Wikilinks]]` and MOC structures.
 *   **Precision**: 100%.
 *   **Use Case**: Navigating established hierarchies (e.g., `[[rust-moc]]` -> `[[rust-ownership]]`).
 *   **Agent Rule**: Always follow explicit Wikilinks first. If a specific note is linked, assume it is the authoritative source for the context.

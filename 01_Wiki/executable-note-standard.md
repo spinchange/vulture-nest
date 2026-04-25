@@ -34,7 +34,7 @@ $vaultRoot = "C:\Users\executor\Documents\vulture-nest"
 ## 4. Security Boundaries (The "Golden Rules")
 1.  **Explicit Consent**: Agents **MUST NOT** execute active blocks automatically. They must present the code to the Human Architect and receive an explicit "Approve Execution" signal.
 2.  **Surgical Impact**: Scripts should be designed to modify specific targets (e.g., a single note, a specific metadata key) rather than performing global destructive actions.
-3.  **Auditability**: Every execution must be logged in the `[[02_System/log.md|System Log]]` with the note name and timestamp.
+3.  **Auditability**: Every execution must be logged in the `[[log|System Log]]` with the note name and timestamp.
 4.  **No Secrets**: Active notes must never store API keys or credentials. Use environment variables or local secret managers as per [[ps-automation-spec]].
 
 ## 5. Use Cases
@@ -47,4 +47,4 @@ $vaultRoot = "C:\Users\executor\Documents\vulture-nest"
 * [[wiki-as-codebase]]
 * [[ps-automation-spec]]
 * [[powershell-moc]]
-* [[GEMINI.md]]
+* [[GEMINI]]

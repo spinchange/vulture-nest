@@ -19,7 +19,12 @@ This map covers the automation suite and coding standards for the **vulture-nest
 * [[ps-vault-maintenance]]: The master runner for vault health.
 * [[ps-yanp-audit]]: Enforcing the Yet Another Note Protocol.
 * [[ps-orphan-check]]: Finding disconnected nodes in the graph.
-* [[ps-tool-registry-generator]]: Maintaining the machine-readable [[02_System/TOOL_REGISTRY.md|Registry]].
+* [[ps-broken-link-checker]]: Identifying dead-end links.
+* [[ps-tool-registry-generator]]: Maintaining the machine-readable [[TOOL_REGISTRY|Registry]].
+
+## Productivity & Observability
+* [[ps-note-creator]]: Scaffolding new YANP-compliant notes.
+* [[ps-vault-stats]]: High-level health and density metrics.
 
 ## Advanced Retrieval
 * [[ps-vulture-search]]: The hybrid engine linking knowledge to system capabilities.
