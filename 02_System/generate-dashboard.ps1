@@ -27,7 +27,7 @@ try {
     $VaultRoot = Split-Path -Parent $PSScriptRoot
 
     if ([string]::IsNullOrWhiteSpace($OutputPath)) {
-        $OutputPath = Join-Path $PSScriptRoot 'dashboard.html'
+        $OutputPath = Join-Path $VaultRoot '03_Web/public/dashboard.html'
     }
 
     $WikiPath = Join-Path $VaultRoot '01_Wiki'

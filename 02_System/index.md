@@ -71,6 +71,7 @@ type: community
 * [[alternative-agent-frameworks]] - CrewAI & AutoGen Comparison
 
 ## System Layer
+* [Vault Pulse Dashboard](dashboard.html) - Real-time Health & Metrics
 * [[log|System Log]]
 * [[visitor-directives|Visitor Directives (Multi-Agent Protocol)]]
 * [[github-deployment|GitHub Deployment (Cloud Daemon)]]
