@@ -39,16 +39,31 @@ try {
     function Import-SqliteAssemblies {
         if ($Script:SqliteLoaded) { return }
         if ('Microsoft.Data.Sqlite.SqliteConnection' -as [type]) { $Script:SqliteLoaded = $true; return }
+        
         $dlls = @('SQLitePCLRaw.core.dll', 'SQLitePCLRaw.provider.e_sqlite3.dll', 'SQLitePCLRaw.batteries_v2.dll', 'Microsoft.Data.Sqlite.dll')
         foreach ($dll in $dlls) {
             $path = Join-Path $LibPath $dll
-            if (Test-Path $path) { try { Add-Type -Path $path -ErrorAction SilentlyContinue } catch {} }
+            if (Test-Path $path) {
+                try {
+                    # Force load from absolute path to resolve dependencies in cloud runners
+                    [System.Reflection.Assembly]::LoadFrom($path) | Out-Null
+                } catch {
+                    Add-Type -Path $path -ErrorAction SilentlyContinue
+                }
+            }
         }
+        
         $os = if ($IsWindows) { 'win' } elseif ($IsLinux) { 'linux' } else { 'osx' }
         $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
         $nativeLibName = if ($IsWindows) { 'e_sqlite3.dll' } elseif ($IsMacOS) { 'libe_sqlite3.dylib' } else { 'libe_sqlite3.so' }
         $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLibName"
-        if (Test-Path $nativePath) { [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null }
+        
+        if (Test-Path $nativePath) {
+            try {
+                [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
+            } catch {}
+        }
+        
         try { [SQLitePCL.Batteries]::Init() } catch {}
         $Script:SqliteLoaded = $true
     }

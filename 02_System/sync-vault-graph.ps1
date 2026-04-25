@@ -31,38 +31,30 @@ function Import-SqliteAssemblies {
     foreach ($dll in $dlls) {
         $path = Join-Path $LibPath $dll
         if (Test-Path $path) {
-            Add-Type -Path $path -ErrorAction SilentlyContinue
+            try {
+                # Force load from absolute path to resolve dependencies in cloud runners
+                [System.Reflection.Assembly]::LoadFrom($path) | Out-Null
+            } catch {
+                Add-Type -Path $path -ErrorAction SilentlyContinue
+            }
         }
     }
 
-    # Native library loading logic
-    $os = if ($IsWindows) { "win" } elseif ($IsLinux) { "linux" } elseif ($IsMacOS) { "osx" } else { "unknown" }
+    # Native library loading logic (crucial for cloud runners)
+    $os = if ($IsWindows) { "win" } elseif ($IsLinux) { "linux" } else { "osx" }
     $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
-    $runtimeArch = switch ($arch) {
-        "x64" { "x64" }
-        "arm64" { "arm64" }
-        "x86" { "x86" }
-        "arm" { "arm" }
-        default { $arch }
-    }
-
     $nativeLibName = if ($IsWindows) { "e_sqlite3.dll" } elseif ($IsMacOS) { "libe_sqlite3.dylib" } else { "libe_sqlite3.so" }
-    $nativePath = Join-Path $LibPath "runtimes/$os-$runtimeArch/native/$nativeLibName"
+    $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLibName"
 
     if (Test-Path $nativePath) {
         try {
             [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
-        } catch {
-            Write-Warning "Failed to load native library via NativeLibrary.Load: $_"
-        }
+        } catch {}
     }
 
-    # Initialize SQLitePCLRaw batteries
     try {
         [SQLitePCL.Batteries]::Init()
-    } catch {
-        Write-Warning "Failed to initialize SQLite batteries: $_"
-    }
+    } catch {}
 }
 Import-SqliteAssemblies
 

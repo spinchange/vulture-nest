@@ -19,14 +19,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: recursive
 
       - name: Build Relational Substrate
         shell: pwsh
         run: |
-          # 1. Initialize the SQLite DB in the cloud runner
+          # 1. Ensure the DB is initialized in the cloud workspace
+          $dbPath = "$env:GITHUB_WORKSPACE/00_Raw/PoShWiKi/wiki.db"
           pwsh -NoProfile -ExecutionPolicy Bypass -File "00_Raw/PoShWiKi/wiki.ps1" init
           
-          # 2. Sync the graph to populate the Links table
+          # 2. Sync the graph (this populates the Links table needed for neighbors)
           pwsh -NoProfile -ExecutionPolicy Bypass -File "02_System/sync-vault-graph.ps1"
 
       - name: Compile Vulture Portal
