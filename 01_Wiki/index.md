@@ -33,37 +33,37 @@ type: community
 * [[the-vulture-portal]] - High-Density Web Interface
 
 ## Sources (Raw Data)
-* `00_Raw/LLM Wiki.md`
-* `00_Raw/llm-wiki-pattern.md`
-* `00_Raw/memex-summary.md`
-* `00_Raw/zettelkasten-summary.md`
-* `00_Raw/python-summary.md`
-* `00_Raw/racket-summary.md`
-* `00_Raw/the-rust-programming-language.md`
-* `00_Raw/typescript-handbook.md`
-* `00_Raw/ms-learn-csharp-overview.md`
-* `00_Raw/ms-learn-dotnet-fundamentals.md`
-* `00_Raw/ms-learn-wpf-overview.md`
-* `00_Raw/ms-learn-ef-core-overview.md`
-* `00_Raw/ms-learn-aspnet-core-overview.md`
-* `00_Raw/ms-repo-poshwiki.md`
-* `00_Raw/PoShWiKi/` - Minimal PowerShell 7 Wiki for Agents
-* `00_Raw/agent-actions-unit.md`
-* `00_Raw/openai-agents-and-swarm.md`
-* `00_Raw/agent-note-conventions.md`
-* `00_Raw/agent-knowledge-vault.md`
-* `00_Raw/agent-skills-index.md`
-* `00_Raw/agent-configuration-sync-strategy.md`
-* `00_Raw/adk-documentation.md`
-* `00_Raw/foundry-local.md`
-* `00_Raw/hf-agents-course-unit1.md`
-* `00_Raw/hf-agents-course-unit2.md`
-* `00_Raw/hf-agents-bonus1.md`
-* `00_Raw/hf-agents-bonus2.md`
-* `00_Raw/hf-agents-unit3.md`
-* `00_Raw/hf-agents-bonus3.md`
-* `00_Raw/hf-agents-final-units.md`
-* `00_Raw/mcp/` - Anthropic Model Context Protocol Documentation
+* [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)
+* [00_Raw/llm-wiki-pattern.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/llm-wiki-pattern.md)
+* [00_Raw/memex-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/memex-summary.md)
+* [00_Raw/zettelkasten-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/zettelkasten-summary.md)
+* [00_Raw/python-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/python-summary.md)
+* [00_Raw/racket-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/racket-summary.md)
+* [00_Raw/the-rust-programming-language.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/the-rust-programming-language.md)
+* [00_Raw/typescript-handbook.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/typescript-handbook.md)
+* [00_Raw/ms-learn-csharp-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-csharp-overview.md)
+* [00_Raw/ms-learn-dotnet-fundamentals.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-dotnet-fundamentals.md)
+* [00_Raw/ms-learn-wpf-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-wpf-overview.md)
+* [00_Raw/ms-learn-ef-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-ef-core-overview.md)
+* [00_Raw/ms-learn-aspnet-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-aspnet-core-overview.md)
+* [00_Raw/ms-repo-poshwiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-repo-poshwiki.md)
+* [00_Raw/PoShWiKi/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi) - Minimal PowerShell 7 Wiki for Agents
+* [00_Raw/agent-actions-unit.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-actions-unit.md)
+* [00_Raw/openai-agents-and-swarm.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/openai-agents-and-swarm.md)
+* [00_Raw/agent-note-conventions.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-note-conventions.md)
+* [00_Raw/agent-knowledge-vault.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-knowledge-vault.md)
+* [00_Raw/agent-skills-index.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-skills-index.md)
+* [00_Raw/agent-configuration-sync-strategy.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-configuration-sync-strategy.md)
+* [00_Raw/adk-documentation.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/adk-documentation.md)
+* [00_Raw/foundry-local.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/foundry-local.md)
+* [00_Raw/hf-agents-course-unit1.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-course-unit1.md)
+* [00_Raw/hf-agents-course-unit2.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-course-unit2.md)
+* [00_Raw/hf-agents-bonus1.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-bonus1.md)
+* [00_Raw/hf-agents-bonus2.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-bonus2.md)
+* [00_Raw/hf-agents-unit3.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-unit3.md)
+* [00_Raw/hf-agents-bonus3.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-bonus3.md)
+* [00_Raw/hf-agents-final-units.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-final-units.md)
+* [00_Raw/mcp/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/mcp) - Anthropic Model Context Protocol Documentation
 * [[docker-sandbox]] - Agent Security & Isolation
 * [[pydantic-fastapi-agents]] - Tool Schema Design
 * [[hitl-ui-patterns]] - Human Approval Workflows
