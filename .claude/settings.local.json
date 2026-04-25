@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pwsh -NonInteractive -Command \"& '.\\\\00_Raw\\\\PoShWiKi\\\\wiki.ps1' get 'Agent Feedback' 2>&1\")"
+    ]
+  }
+}

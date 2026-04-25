@@ -23,6 +23,7 @@
 * [[community-living-knowledge-system]] - The Vault as a Compiler
 * [[community-protocol-trust-substrate]] - Type-Safe Agent Governance
 * [[community-polyglot-agent-platform]] - Tiered Language Architectures
+* [[the-vulture-portal]] - High-Density Web Interface
 
 ## Sources (Raw Data)
 * `00_Raw/LLM Wiki.md`
