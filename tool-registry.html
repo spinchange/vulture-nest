@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Foundry Local — Vulture Portal</title>
+  <title>tool-registry — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,15 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Foundry Local</span>
+      <span>tool-registry</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Foundry Local</h1>
+      <h1 class="note-title">tool-registry</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Foundry Local</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">azure-ai-foundry-local, microsoft-foundry-local</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
       </div>
     </header>
 
@@ -419,57 +414,205 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Foundry Local (Microsoft Azure AI Foundry Local)</h1>
-<p><strong>Foundry Local</strong> is a lightweight SDK and runtime from Microsoft designed for building AI-powered applications with hardware-optimized, on-device inference. It prioritizes privacy, offline readiness, and low latency by keeping all data and processing on the local device.</p>
-<h2>Core Features</h2>
+        <h1>Vault Tool Registry (Agent Optimized)</h1>
+<p>This document provides a machine-readable index of the system utilities available in this vault.</p>
+<h2>YANP Compliance Auditor</h2>
 <ul>
-<li><strong>Privacy First</strong>: All inference happens locally; data never leaves the device.
+<li><strong>File:</strong> <code>02_System\audit-yanp.ps1</code>
 </li>
-<li><strong>Hardware Optimization</strong>: Automatically leverages NPUs, GPUs (via DirectML/CUDA/Metal), or CPUs.
+<li><strong>Description:</strong> Scans the 01_Wiki folder to ensure all notes follow the YANP protocol (lowercase kebab-case filenames and valid YAML frontmatter &#39;type&#39;).
 </li>
-<li><strong>OpenAI Compatibility</strong>: Provides a drop-in API replacement for existing OpenAI client libraries, making migration from cloud to local seamless.
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File audit-yanp.ps1</code>
 </li>
-<li><strong>Offline Ready</strong>: Operates without a network connection.
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
 </li>
 </ul>
-<h2>Implementation Models</h2>
+<h2>Broken Link Auditor</h2>
 <ul>
-<li><strong>Standalone</strong>: The application embeds the SDK and manages the model lifecycle directly.
+<li><strong>File:</strong> <code>02_System\check-broken-links.ps1</code>
 </li>
-<li><strong>Shared Service</strong>: Foundry Local runs as a background service, exposing an OpenAI-compatible REST API to multiple local applications.
+<li><strong>Description:</strong> Scans all markdown files in the vault to find Wikilinks that point to non-existent notes.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File check-broken-links.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
 </li>
 </ul>
-<h2>Supported Models</h2>
-<p>Foundry Local focuses on optimized <strong>ONNX</strong> models, including:</p>
+<h2>YANP Note Creator</h2>
 <ul>
-<li><strong>Phi-3.5</strong> (Microsoft)
+<li><strong>File:</strong> <code>02_System\create-yanp-note.ps1</code>
 </li>
-<li><strong>Qwen 2.5</strong> (Alibaba)
+<li><strong>Description:</strong> Scaffolds a new YANP-compliant markdown note with valid frontmatter and a kebab-case filename.
 </li>
-<li><strong>Whisper</strong> (OpenAI, for local transcription)
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File create-yanp-note.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
 </li>
 </ul>
-<h2>CLI &amp; SDK</h2>
+<h2>find-thin-nodes.ps1</h2>
 <ul>
-<li><strong>CLI</strong>: Managed via <code>foundry model run &lt;model-id&gt;</code>.
+<li><strong>File:</strong> <code>02_System\find-thin-nodes.ps1</code>
 </li>
-<li><strong>SDK</strong>: Available for C#, Python, and other languages, allowing for programmatic model management and inference.
+<li><strong>Description:</strong> No description provided.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File find-thin-nodes.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Generates the Vault Pulse dashboard as a standalone HTML file.</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\generate-dashboard.ps1</code>
+</li>
+<li><strong>Description:</strong> Builds a single-file dashboard that combines vault health metrics, graph topology, and recent activity from both log.md and the PoShWiKi SQLite database.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-dashboard.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Tool Registry Generator</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\generate-tool-registry.ps1</code>
+</li>
+<li><strong>Description:</strong> Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable tool-registry.md for agents.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-tool-registry.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Vault Stats Generator</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\generate-wiki-stats.ps1</code>
+</li>
+<li><strong>Description:</strong> Calculates high-level metrics for the vault, including note counts, link density, and health indicators.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki-stats.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Compiles wiki markdown notes into static HTML pages (Incremental).</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\generate-wiki.ps1</code>
+</li>
+<li><strong>Description:</strong> Reads all markdown files in 01_Wiki, extracts YAML frontmatter, converts a supported markdown subset to HTML, resolves wikilinks, injects graph neighbors from the PoShWiKi SQLite database, and writes HTML files into 03_Web/public using 03_Web/template.html.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Installs the Vulture Watcher as a Windows Daemon.</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\install-vulture-daemon.ps1</code>
+</li>
+<li><strong>Description:</strong> Registers the watch-wiki.ps1 script as a Windows Scheduled Task that starts automatically when the user logs in.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File install-vulture-daemon.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Orphan Note Checker</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\orphan-check.ps1</code>
+</li>
+<li><strong>Description:</strong> Scans for markdown files in 01_Wiki that have no incoming wikilinks from other notes in the vault.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File orphan-check.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>poshwiki-tools.ps1</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\poshwiki-tools.ps1</code>
+</li>
+<li><strong>Description:</strong> No description provided.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File poshwiki-tools.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Master Vault Maintenance</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\run-maintenance.ps1</code>
+</li>
+<li><strong>Description:</strong> The &quot;Knowledge CI/CD&quot; master script. Runs compliance audits, orphan checks, link checks, registry updates, generates the visual dashboard, and compiles the static portal.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File run-maintenance.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Syncs wikilinks from the vault to the PoShWiKi database (Optimized).</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\sync-vault-graph.ps1</code>
+</li>
+<li><strong>Description:</strong> Refactored for performance using a single transaction and prepared statements. Parses all Markdown files in 01_Wiki/ for wikilinks and stores the relationship graph in the &#39;Links&#39; table of the SQLite database.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File sync-vault-graph.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>The Vulture Engine: Graph-Aware Discovery (Optimized &amp; Ranked)</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\vulture-search.ps1</code>
+</li>
+<li><strong>Description:</strong> A specialized retrieval engine that uses a weighted ranking model to surface relevant knowledge and tools. Leverages the PoShWiKi graph for second-order discovery.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File vulture-search.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
+</li>
+</ul>
+<h2>Real-time Vault Watcher</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System\watch-wiki.ps1</code>
+</li>
+<li><strong>Description:</strong> Monitors the 01_Wiki folder for changes and automatically triggers a graph sync and portal compilation.
+</li>
+<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File watch-wiki.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None
+</li>
+<li><strong>Outputs:</strong> None
 </li>
 </ul>
 <hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/foundry-local.md</code>
-</li>
-<li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
-</li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
-</li>
-</ul>
-<ul>
-<li><a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a> (Local-first security patterns)
-</li>
-</ul>
+<p>*Generated by generate-tool-registry.ps1 on 2026-04-25 12:37:20*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -482,17 +625,10 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
-<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
-<li><a href="log.html" class="">log</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
-<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
+<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="ps-tool-registry-generator.html" class="">ps-tool-registry-generator</a></li>
 </ul>
           </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Foundry Local — Vulture Portal</title>
+  <title>Visitor Directives (Multi-Agent Protocol) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,19 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Foundry Local</span>
+      <span>Visitor Directives (Multi-Agent Protocol)</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Foundry Local</h1>
+      <h1 class="note-title">Visitor Directives (Multi-Agent Protocol)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Foundry Local</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">azure-ai-foundry-local, microsoft-foundry-local</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Visitor Directives (Multi-Agent Protocol)</span></span>
       </div>
     </header>
 
@@ -419,57 +418,55 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Foundry Local (Microsoft Azure AI Foundry Local)</h1>
-<p><strong>Foundry Local</strong> is a lightweight SDK and runtime from Microsoft designed for building AI-powered applications with hardware-optimized, on-device inference. It prioritizes privacy, offline readiness, and low latency by keeping all data and processing on the local device.</p>
-<h2>Core Features</h2>
+        <h1>Visitor Directives</h1>
+<p>: Multi-Agent Collaboration Protocol</p>
+<p>Welcome, Agent. You are a guest contributor to the <strong>vulture-nest</strong>, a YANP (Yet Another Note Protocol) compliant knowledge vault. To maintain system integrity and ensure seamless collaboration with the Primary Librarian (Gemini-CLI) and Human-in-the-Loop (HITL), you must adhere to the following directives.</p>
+<h2>1. Core Mandates (YANP)</h2>
+<p>Every contribution to the <code>01_Wiki/</code> directory must follow these rules:</p>
 <ul>
-<li><strong>Privacy First</strong>: All inference happens locally; data never leaves the device.
+<li><strong>Filenames:</strong> Use lowercase kebab-case only (e.g., <code>distributed-memory-systems.md</code>).
 </li>
-<li><strong>Hardware Optimization</strong>: Automatically leverages NPUs, GPUs (via DirectML/CUDA/Metal), or CPUs.
+<li><strong>Frontmatter:</strong> Every note MUST contain a YAML block with <code>title</code>, <code>author</code> (your model name), <code>date</code> (YYYY-MM-DD), <code>status</code> (draft | active), and <code>aliases</code>.
 </li>
-<li><strong>OpenAI Compatibility</strong>: Provides a drop-in API replacement for existing OpenAI client libraries, making migration from cloud to local seamless.
-</li>
-<li><strong>Offline Ready</strong>: Operates without a network connection.
+<li><strong>Wikilinks:</strong> Use wikilink syntax for internal connections. Do not use standard Markdown links for vault notes.
 </li>
 </ul>
-<h2>Implementation Models</h2>
+<h2>2. Interaction &amp; Memory</h2>
 <ul>
-<li><strong>Standalone</strong>: The application embeds the SDK and manages the model lifecycle directly.
+<li><strong>Durable Knowledge:</strong> Use <code>01_Wiki/</code> for permanent, atomic concepts.
 </li>
-<li><strong>Shared Service</strong>: Foundry Local runs as a background service, exposing an OpenAI-compatible REST API to multiple local applications.
+<li><strong>Active Work/Logs:</strong> Do NOT edit <code>01_Wiki/</code> notes for session-level tracking. Use the <strong>PoShWiKi Thought API</strong> located in <code>02_System/poshwiki-tools.ps1</code>.
+</li>
+<li><strong>Session ID:</strong> Use <code>Get-WikiSessionTitle</code> to identify the current working session.
 </li>
 </ul>
-<h2>Supported Models</h2>
-<p>Foundry Local focuses on optimized <strong>ONNX</strong> models, including:</p>
+<h2>3. Tool Usage &amp; Discovery</h2>
 <ul>
-<li><strong>Phi-3.5</strong> (Microsoft)
+<li><strong>Discovery:</strong> Before creating a new note, run <code>02_System/vulture-search.ps1</code> to check for existing coverage and second-order graph connections.
 </li>
-<li><strong>Qwen 2.5</strong> (Alibaba)
+<li><strong>Capabilities:</strong> Refer to <code>02_System/tool-registry.md</code> for a list of available PowerShell automation scripts.
 </li>
-<li><strong>Whisper</strong> (OpenAI, for local transcription)
+<li><strong>Validation:</strong> After creating or modifying a note, you are encouraged to run <code>02_System/audit-yanp.ps1</code> to verify protocol compliance.
 </li>
 </ul>
-<h2>CLI &amp; SDK</h2>
+<h2>4. Feedback &amp; Peer Review</h2>
+<p>We value your unique model-specific insights. Please provide feedback on the vault substrate:</p>
 <ul>
-<li><strong>CLI</strong>: Managed via <code>foundry model run &lt;model-id&gt;</code>.
+<li><strong>Taxonomy Feedback:</strong> (Claude-specific) Critique the MOC (Map of Content) structure for logical gaps or &quot;island&quot; clusters.
 </li>
-<li><strong>SDK</strong>: Available for C#, Python, and other languages, allowing for programmatic model management and inference.
+<li><strong>Logic Feedback:</strong> (Codex-specific) Identify optimizations for the PowerShell automation suite.
+</li>
+<li><strong>Submission:</strong> Record all feedback using <code>Invoke-WikiNote -Title &quot;Agent Feedback&quot; -Section &quot;[Your Model Name]&quot;</code> via the PoShWiKi API.
+</li>
+</ul>
+<h2>5. The Handoff (The Seam)</h2>
+<p>Before ending your session, you MUST record a &quot;Seam&quot; to ensure the next agent or human can resume your work without context drift:</p>
+<ul>
+<li>Use <code>New-WikiSeam -Goal &lt;string&gt; -Seam &lt;string&gt; -NextStep &lt;string&gt;</code>.
 </li>
 </ul>
 <hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/foundry-local.md</code>
-</li>
-<li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
-</li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
-</li>
-</ul>
-<ul>
-<li><a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a> (Local-first security patterns)
-</li>
-</ul>
+<p>*Failure to follow these directives may result in the Primary Librarian archiving your changes during the next maintenance cycle.*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -482,17 +479,8 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
-<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
-<li><a href="log.html" class="">log</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
-<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
 </ul>
           </div>
         </div>
