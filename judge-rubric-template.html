@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TypeScript Object Types — Vulture Portal</title>
+  <title>judge-rubric-template — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,15 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>TypeScript Object Types</span>
+      <span>judge-rubric-template</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">TypeScript Object Types</h1>
+      <h1 class="note-title">judge-rubric-template</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ts-objects, property-modifiers, index-signatures, extending-types</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript Object Types</span></span>
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
       </div>
     </header>
 
@@ -441,61 +436,55 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>TypeScript Object Types</h1>
-<p>Objects are the fundamental way data is grouped in JavaScript. TypeScript provides several modifiers and patterns to describe them accurately.</p>
-<h2>Property Modifiers</h2>
+        <h1>Judge Rubric Template (Multi-Agent Evaluation)</h1>
+<p>&gt; <strong>Goal:</strong> Standardized scoring for agentic contributions to the vulture-nest. &gt; <strong>Pass Criteria:</strong> [Structural Integrity = 100%] AND [Weighted Total ≥ 85/100]</p>
+<h2>Dimension 1: Structural Integrity (BINARY)</h2>
+<p>*This dimension is handled by automation (audit-yanp.ps1). Any &#39;Fail&#39; here blocks the entire contribution.*</p>
+<p>| Criteria | Status | Notes | | :--- | :--- | :--- | | <strong>YANP Filename</strong> | [Pass/Fail] | lowercase-kebab-case.md | | <strong>Valid Frontmatter</strong> | [Pass/Fail] | Contains: title, author, date, status, type | | <strong>Unique Stem</strong> | [Pass/Fail] | No naming collisions in the vault |</p>
+<h2>Dimension 2: Semantic Density (Weight: 40%)</h2>
+<p>*Handled by the LLM Judge.*</p>
 <ul>
-<li><strong>Optional Properties (<code>?</code>)</strong>: Properties that may or may not be present (e.g., <code>{ x?: number }</code>). Always check for <code>undefined</code> when reading.
+<li><strong>[0-10]</strong> Atomic focus: Does the note stick to one concept?
 </li>
-<li><strong><code>readonly</code> Properties</strong>: Properties that cannot be re-assigned after initialization (e.g., <code>{ readonly id: string }</code>). Note: This doesn&#39;t make the value itself immutable if it&#39;s an object.
+<li><strong>[0-10]</strong> Information-to-Token Ratio: Is it high-signal, or is there conversational filler?
+</li>
+<li><strong>[0-10]</strong> Synthesized Logic: Does it add new insight, or is it a raw copy-paste?
+</li>
+<li><strong>[0-10]</strong> Technical Accuracy: Is the code or logic correct for the stated domain?
 </li>
 </ul>
-<h2>Index Signatures</h2>
-<p>Used when the names of properties aren&#39;t known ahead of time but their values&#39; types are.</p>
-<pre><code>interface StringArray {
-  [index: number]: string;
-}</code></pre>
+<p><strong>Score:</strong> __ / 40</p>
+<h2>Dimension 3: Graph Integration (Weight: 30%)</h2>
+<p>*Handled by the LLM Judge.*</p>
 <ul>
-<li><strong>Constraint</strong>: All named properties must match the index signature&#39;s return type (or a union that includes it).
+<li><strong>[0-15]</strong> Inward Links: Does it correctly link to at least 2 existing notes?
+</li>
+<li><strong>[0-15]</strong> Outward Hooks: Does it provide hooks for future notes (redlinks or logic gaps)?
 </li>
 </ul>
-<h2>Excess Property Checks</h2>
-<p>TypeScript triggers errors when an object literal is assigned to a type and contains properties not defined in that type.</p>
+<p><strong>Score:</strong> __ / 30</p>
+<h2>Dimension 4: Protocol Adherence (Weight: 20%)</h2>
+<p>*Handled by the LLM Judge.*</p>
 <ul>
-<li><strong>Workarounds</strong>: Use a type assertion (<code>as</code>), add an index signature, or assign the literal to an intermediate variable first.
+<li><strong>[0-10]</strong> Visitor Directives: Did the agent follow the <code>visitor-directives.md</code> for this task?
+</li>
+<li><strong>[0-10]</strong> Language Style: Does it match the established senior-engineer tone?
 </li>
 </ul>
-<h2>Combining Types</h2>
+<p><strong>Score:</strong> __ / 20</p>
+<h2>Dimension 5: Tool Usage (Weight: 10%)</h2>
+<p>*Handled by the LLM Judge.*</p>
 <ul>
-<li><strong>Extending Interfaces (<code>extends</code>)</strong>: Copy members from other interfaces to build complex types. Supports multiple inheritance.
-</li>
-<li><strong>Intersection Types (<code>&amp;</code>)</strong>: Combine existing types. Conflicting properties result in a <code>never</code> type if they are incompatible.
+<li><strong>[0-10]</strong> Efficiency: Did the agent use the correct tools (e.g., <code>replace</code> for surgical edits vs <code>write_file</code>)?
 </li>
 </ul>
-<h2>Generic Object Types</h2>
-<p>Create reusable container types by using type parameters.</p>
-<pre><code>interface Box&lt;Type&gt; {
-  contents: Type;
-}</code></pre>
-<h2>Built-in Generic Containers</h2>
-<ul>
-<li><strong><code>Array&lt;T&gt;</code></strong>: Standard array (shorthand <code>T[]</code>).
-</li>
-<li><strong><code>ReadonlyArray&lt;T&gt;</code></strong>: Arrays that cannot be mutated (shorthand <code>readonly T[]</code>).
-</li>
-<li><strong>Tuples</strong>: Arrays with fixed length and specific types at each position (e.g., <code>[string, number]</code>). Supports optional (<code>?</code>) and rest (<code>...</code>) elements.
-</li>
-</ul>
+<p><strong>Score:</strong> __ / 10</p>
 <hr>
-<h2>References</h2>
+<h3>Final Evaluation</h3>
 <ul>
-<li>Source: <code>00_Raw/typescript-handbook.md</code>
+<li><strong>Total Weighted Score:</strong> __ / 100
 </li>
-<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>
-</li>
-<li><a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a>
-</li>
-<li><a href="typescript-generics.html" class="wikilink">typescript-generics</a>
+<li><strong>Verdict:</strong> [ACCEPTED | REVISIONS REQUIRED | REJECTED]
 </li>
 </ul>
       </main>
@@ -508,18 +497,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="typescript-classes.html" class="">typescript-classes</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

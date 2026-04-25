@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TypeScript Object Types — Vulture Portal</title>
+  <title>.NET Agent Integration — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>TypeScript Object Types</span>
+      <span>.NET Agent Integration</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">TypeScript Object Types</h1>
+      <h1 class="note-title">.NET Agent Integration</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ts-objects, property-modifiers, index-signatures, extending-types</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript Object Types</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Agent Integration</span></span>
       </div>
     </header>
 
@@ -441,61 +441,25 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>TypeScript Object Types</h1>
-<p>Objects are the fundamental way data is grouped in JavaScript. TypeScript provides several modifiers and patterns to describe them accurately.</p>
-<h2>Property Modifiers</h2>
+        <h1>.NET Agent Integration</h1>
+<p>&gt; [!IMPORTANT] &gt; This is a placeholder for the integration patterns between the .NET ecosystem and agentic protocols (MCP/Swarm).</p>
+<h2>Core Concepts</h2>
 <ul>
-<li><strong>Optional Properties (<code>?</code>)</strong>: Properties that may or may not be present (e.g., <code>{ x?: number }</code>). Always check for <code>undefined</code> when reading.
+<li><strong>Semantic Kernel Bridge</strong>: Using Microsoft&#39;s Semantic Kernel to expose .NET methods as agent tools.
 </li>
-<li><strong><code>readonly</code> Properties</strong>: Properties that cannot be re-assigned after initialization (e.g., <code>{ readonly id: string }</code>). Note: This doesn&#39;t make the value itself immutable if it&#39;s an object.
+<li><strong>MCP for .NET</strong>: Implementation patterns using the C# MCP SDK.
 </li>
-</ul>
-<h2>Index Signatures</h2>
-<p>Used when the names of properties aren&#39;t known ahead of time but their values&#39; types are.</p>
-<pre><code>interface StringArray {
-  [index: number]: string;
-}</code></pre>
-<ul>
-<li><strong>Constraint</strong>: All named properties must match the index signature&#39;s return type (or a union that includes it).
-</li>
-</ul>
-<h2>Excess Property Checks</h2>
-<p>TypeScript triggers errors when an object literal is assigned to a type and contains properties not defined in that type.</p>
-<ul>
-<li><strong>Workarounds</strong>: Use a type assertion (<code>as</code>), add an index signature, or assign the literal to an intermediate variable first.
-</li>
-</ul>
-<h2>Combining Types</h2>
-<ul>
-<li><strong>Extending Interfaces (<code>extends</code>)</strong>: Copy members from other interfaces to build complex types. Supports multiple inheritance.
-</li>
-<li><strong>Intersection Types (<code>&amp;</code>)</strong>: Combine existing types. Conflicting properties result in a <code>never</code> type if they are incompatible.
-</li>
-</ul>
-<h2>Generic Object Types</h2>
-<p>Create reusable container types by using type parameters.</p>
-<pre><code>interface Box&lt;Type&gt; {
-  contents: Type;
-}</code></pre>
-<h2>Built-in Generic Containers</h2>
-<ul>
-<li><strong><code>Array&lt;T&gt;</code></strong>: Standard array (shorthand <code>T[]</code>).
-</li>
-<li><strong><code>ReadonlyArray&lt;T&gt;</code></strong>: Arrays that cannot be mutated (shorthand <code>readonly T[]</code>).
-</li>
-<li><strong>Tuples</strong>: Arrays with fixed length and specific types at each position (e.g., <code>[string, number]</code>). Supports optional (<code>?</code>) and rest (<code>...</code>) elements.
+<li><strong>Dependency Injection for Agents</strong>: Patterns for injecting agentic capabilities into standard ASP.NET Core or WPF applications.
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/typescript-handbook.md</code>
+<li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
 </li>
-<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>
+<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
 </li>
-<li><a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a>
-</li>
-<li><a href="typescript-generics.html" class="wikilink">typescript-generics</a>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
 </ul>
       </main>
@@ -510,15 +474,13 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="typescript-classes.html" class="">typescript-classes</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
+<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
 </ul>
           </div>
         </div>

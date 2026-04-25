@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TypeScript Object Types — Vulture Portal</title>
+  <title>agent-actions-unit — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,15 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>TypeScript Object Types</span>
+      <span>agent-actions-unit</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">TypeScript Object Types</h1>
+      <h1 class="note-title">agent-actions-unit</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ts-objects, property-modifiers, index-signatures, extending-types</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript Object Types</span></span>
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
       </div>
     </header>
 
@@ -441,61 +436,30 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>TypeScript Object Types</h1>
-<p>Objects are the fundamental way data is grouped in JavaScript. TypeScript provides several modifiers and patterns to describe them accurately.</p>
-<h2>Property Modifiers</h2>
+        <h1>Actions: Enabling the Agent to Engage with Its Environment</h1>
+<p>Source: Agents Course (Unit 1) - Hugging Face</p>
+<h2>Summary</h2>
+<p>Actions are the concrete steps an AI agent takes to interact with its environment (web browsing, tool usage, API calls).</p>
+<h2>Key Concepts</h2>
 <ul>
-<li><strong>Optional Properties (<code>?</code>)</strong>: Properties that may or may not be present (e.g., <code>{ x?: number }</code>). Always check for <code>undefined</code> when reading.
+<li><strong>JSON Agent:</strong> Actions specified in JSON.
 </li>
-<li><strong><code>readonly</code> Properties</strong>: Properties that cannot be re-assigned after initialization (e.g., <code>{ readonly id: string }</code>). Note: This doesn&#39;t make the value itself immutable if it&#39;s an object.
+<li><strong>Code Agent:</strong> Agent generates executable code blocks (e.g., Python).
+</li>
+<li><strong>Function-calling Agent:</strong> Fine-tuned JSON agent for discrete tool calls.
+</li>
+<li><strong>Stop and Parse:</strong> The LLM must stop generating after the action tokens to allow an external parser to execute the tool and return control.
 </li>
 </ul>
-<h2>Index Signatures</h2>
-<p>Used when the names of properties aren&#39;t known ahead of time but their values&#39; types are.</p>
-<pre><code>interface StringArray {
-  [index: number]: string;
-}</code></pre>
+<h2>Advantages of Code Agents</h2>
 <ul>
-<li><strong>Constraint</strong>: All named properties must match the index signature&#39;s return type (or a union that includes it).
+<li>Expressiveness (loops, conditionals).
 </li>
-</ul>
-<h2>Excess Property Checks</h2>
-<p>TypeScript triggers errors when an object literal is assigned to a type and contains properties not defined in that type.</p>
-<ul>
-<li><strong>Workarounds</strong>: Use a type assertion (<code>as</code>), add an index signature, or assign the literal to an intermediate variable first.
+<li>Modularity/Reusability.
 </li>
-</ul>
-<h2>Combining Types</h2>
-<ul>
-<li><strong>Extending Interfaces (<code>extends</code>)</strong>: Copy members from other interfaces to build complex types. Supports multiple inheritance.
+<li>Enhanced debuggability.
 </li>
-<li><strong>Intersection Types (<code>&amp;</code>)</strong>: Combine existing types. Conflicting properties result in a <code>never</code> type if they are incompatible.
-</li>
-</ul>
-<h2>Generic Object Types</h2>
-<p>Create reusable container types by using type parameters.</p>
-<pre><code>interface Box&lt;Type&gt; {
-  contents: Type;
-}</code></pre>
-<h2>Built-in Generic Containers</h2>
-<ul>
-<li><strong><code>Array&lt;T&gt;</code></strong>: Standard array (shorthand <code>T[]</code>).
-</li>
-<li><strong><code>ReadonlyArray&lt;T&gt;</code></strong>: Arrays that cannot be mutated (shorthand <code>readonly T[]</code>).
-</li>
-<li><strong>Tuples</strong>: Arrays with fixed length and specific types at each position (e.g., <code>[string, number]</code>). Supports optional (<code>?</code>) and rest (<code>...</code>) elements.
-</li>
-</ul>
-<hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/typescript-handbook.md</code>
-</li>
-<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>
-</li>
-<li><a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a>
-</li>
-<li><a href="typescript-generics.html" class="wikilink">typescript-generics</a>
+<li>Direct integration with libraries.
 </li>
 </ul>
       </main>
@@ -508,18 +472,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="typescript-classes.html" class="">typescript-classes</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

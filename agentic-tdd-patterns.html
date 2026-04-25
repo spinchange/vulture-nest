@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TypeScript Object Types — Vulture Portal</title>
+  <title>Agentic TDD Patterns — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>TypeScript Object Types</span>
+      <span>Agentic TDD Patterns</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">TypeScript Object Types</h1>
+      <h1 class="note-title">Agentic TDD Patterns</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ts-objects, property-modifiers, index-signatures, extending-types</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript Object Types</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">llm-tdd, evaluation-driven-development, edd, agent-testing</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic TDD Patterns</span></span>
       </div>
     </header>
 
@@ -441,61 +441,58 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>TypeScript Object Types</h1>
-<p>Objects are the fundamental way data is grouped in JavaScript. TypeScript provides several modifiers and patterns to describe them accurately.</p>
-<h2>Property Modifiers</h2>
+        <h1>Agentic TDD Patterns</h1>
+<p>Test-Driven Development (TDD) for agents shifts the focus from deterministic unit tests to <strong>Evaluation-Driven Development (EDD)</strong>. This protocol allows frontier models to build bespoke software with high reliability by treating tests as &quot;Executable Intent.&quot;</p>
+<h2>The Agentic Red-Green-Refactor Loop</h2>
+<ol>
+<li><strong>RED (Intent):</strong> The agent (or user) defines a <strong>Scenario Note</strong> or a failing test script.
 <ul>
-<li><strong>Optional Properties (<code>?</code>)</strong>: Properties that may or may not be present (e.g., <code>{ x?: number }</code>). Always check for <code>undefined</code> when reading.
+<li>For logic: A standard test file (e.g., <code>pytest</code>, <code>Pester</code>, <code>xUnit</code>).
 </li>
-<li><strong><code>readonly</code> Properties</strong>: Properties that cannot be re-assigned after initialization (e.g., <code>{ readonly id: string }</code>). Note: This doesn&#39;t make the value itself immutable if it&#39;s an object.
+<li>For behavior: A &quot;Judge&quot; rubric or a prompt-evaluator configuration.
 </li>
 </ul>
-<h2>Index Signatures</h2>
-<p>Used when the names of properties aren&#39;t known ahead of time but their values&#39; types are.</p>
-<pre><code>interface StringArray {
-  [index: number]: string;
-}</code></pre>
+</li>
+<li><strong>GREEN (Implementation):</strong> The agent modifies the codebase or its own system prompt to satisfy the test.
+</li>
+<li><strong>REFACTOR (Optimization):</strong> The agent optimizes the implementation for performance or token cost, ensuring the suite remains &quot;Green.&quot;
+</li>
+</ol>
+<h2>High-Leverage Patterns</h2>
+<h3>1. Scenario-Based Testing</h3>
+<p>Instead of testing isolated functions, define a &quot;User Story&quot; as a test case.</p>
 <ul>
-<li><strong>Constraint</strong>: All named properties must match the index signature&#39;s return type (or a union that includes it).
+<li><strong>Example:</strong> &quot;When a user provides a raw PDF, the system must extract the title and link it to the index.&quot;
+</li>
+<li><strong>Agent Action:</strong> The agent must prove it can complete the full chain before the task is considered &quot;Done.&quot;
 </li>
 </ul>
-<h2>Excess Property Checks</h2>
-<p>TypeScript triggers errors when an object literal is assigned to a type and contains properties not defined in that type.</p>
+<h3>2. The &quot;Judge&quot; Evaluation</h3>
+<p>For non-deterministic outputs (like summaries), use a second agent (The Judge) to grade the primary agent&#39;s output against a specific rubric.</p>
 <ul>
-<li><strong>Workarounds</strong>: Use a type assertion (<code>as</code>), add an index signature, or assign the literal to an intermediate variable first.
+<li><strong>Pass Criteria:</strong> A score of ≥ 85/100 or a boolean &quot;Meets all directives.&quot;
 </li>
 </ul>
-<h2>Combining Types</h2>
+<h3>3. Property-Based Invariants</h3>
+<p>Test for things that must *always* be true, regardless of the specific text output.</p>
 <ul>
-<li><strong>Extending Interfaces (<code>extends</code>)</strong>: Copy members from other interfaces to build complex types. Supports multiple inheritance.
+<li>Every note created must be lowercase-kebab-case.
 </li>
-<li><strong>Intersection Types (<code>&amp;</code>)</strong>: Combine existing types. Conflicting properties result in a <code>never</code> type if they are incompatible.
+<li>Every note must have valid YAML frontmatter.
+</li>
+<li>No PII (secrets, keys) may ever be logged to <code>02_System/log.md</code>.
 </li>
 </ul>
-<h2>Generic Object Types</h2>
-<p>Create reusable container types by using type parameters.</p>
-<pre><code>interface Box&lt;Type&gt; {
-  contents: Type;
-}</code></pre>
-<h2>Built-in Generic Containers</h2>
-<ul>
-<li><strong><code>Array&lt;T&gt;</code></strong>: Standard array (shorthand <code>T[]</code>).
-</li>
-<li><strong><code>ReadonlyArray&lt;T&gt;</code></strong>: Arrays that cannot be mutated (shorthand <code>readonly T[]</code>).
-</li>
-<li><strong>Tuples</strong>: Arrays with fixed length and specific types at each position (e.g., <code>[string, number]</code>). Supports optional (<code>?</code>) and rest (<code>...</code>) elements.
-</li>
-</ul>
+<h2>Executable Specifications</h2>
+<p>In a bespoke software context, the <strong>Technical Design Document (TDD)</strong> serves as the &quot;Spec.&quot; Agents should read the TDD in <code>00_Raw/</code> and generate a test suite in <code>tests/</code> *before* writing a single line of production code.</p>
 <hr>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/typescript-handbook.md</code>
+<li><a href="executable-note-standard.html" class="wikilink">executable-note-standard</a>
 </li>
-<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>
 </li>
-<li><a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a>
-</li>
-<li><a href="typescript-generics.html" class="wikilink">typescript-generics</a>
+<li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
 </li>
 </ul>
       </main>
@@ -510,15 +507,13 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="typescript-classes.html" class="">typescript-classes</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
-<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
-<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 </ul>
           </div>
         </div>
