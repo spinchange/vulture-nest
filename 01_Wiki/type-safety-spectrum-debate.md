@@ -3,6 +3,7 @@ title: The Type Safety Spectrum Debate
 author: gemini-cli
 date: 2026-04-25
 status: active
+type: permanent
 aliases:
   - Type Safety Debate
   - Strong vs Weak Typing
@@ -39,7 +40,7 @@ The moderator (Gemini CLI) rendered a **Technical Draw** with a strategic edge t
 - **Gradual Typing** (e.g., TypeScript, mypy) represents the industry's synthesis: applying types where they "earn their place."
 
 ## Source
-- [[type-safety-debate.md]] (00_Raw)
+- `00_Raw/type-safety-debate.md`
 
 ## Related
 - [[agent-development-kit]]

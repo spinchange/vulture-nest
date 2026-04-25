@@ -1,3 +1,11 @@
+---
+title: Agent Actions Unit
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: literature
+aliases: [hf-agents-unit-1-actions, code-agents-summary]
+---
 # Actions: Enabling the Agent to Engage with Its Environment
 
 Source: Agents Course (Unit 1) - Hugging Face
