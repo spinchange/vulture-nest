@@ -60,7 +60,7 @@ Import-SqliteAssemblies
 
 # 3. Optimized Sync Logic
 $WikiFolder = Join-Path $VaultRoot "01_Wiki"
-$MdFiles = Get-ChildItem -Path $WikiFolder -Filter "*.md"
+$MdFiles = Get-ChildItem -Path $WikiFolder, $PSScriptRoot -Filter "*.md"
 $TotalNotes = $MdFiles.Count
 $TotalLinks = 0
 

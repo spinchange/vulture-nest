@@ -20,7 +20,7 @@ This map covers the automation suite and coding standards for the **vulture-nest
 * [[ps-yanp-audit]]: Enforcing the Yet Another Note Protocol.
 * [[ps-orphan-check]]: Finding disconnected nodes in the graph.
 * [[ps-broken-link-checker]]: Identifying dead-end links.
-* [[ps-tool-registry-generator]]: Maintaining the machine-readable [[TOOL_REGISTRY|Registry]].
+* [[ps-tool-registry-generator]]: Maintaining the machine-readable [[tool-registry|Registry]].
 
 ## Productivity & Observability
 * [[ps-note-creator]]: Scaffolding new YANP-compliant notes.

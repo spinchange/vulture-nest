@@ -147,8 +147,13 @@ try {
     function Convert-InlineMarkdown {
         param([string]$Text)
         $encoded = ConvertTo-HtmlSafe $Text
+        # 1. Standard Markdown Links: [Label](URL)
+        $encoded = [regex]::Replace($encoded, '\[([^\]]+)\]\(([^)]+)\)', '<a href="$2">$1</a>')
+        # 2. Wikilinks with Aliases: [[Target|Label]]
         $encoded = [regex]::Replace($encoded, '\[\[([^\]|]+)\|([^\]]+)\]\]', { param($match) New-WikiAnchor -Target $match.Groups[1].Value.Trim() -Label $match.Groups[2].Value.Trim() })
+        # 3. Standard Wikilinks: [[Target]]
         $encoded = [regex]::Replace($encoded, '\[\[([^\]]+)\]\]', { param($match) $target = $match.Groups[1].Value.Trim(); New-WikiAnchor -Target $target -Label $target })
+        # 4. Bold and Code
         $encoded = [regex]::Replace($encoded, '\*\*(.+?)\*\*', '<strong>$1</strong>')
         $encoded = [regex]::Replace($encoded, '(?<!`)`([^`]+)`(?!`)', '<code>$1</code>')
         return $encoded
@@ -242,7 +247,7 @@ try {
     if (-not (Test-Path $OutputDirectory)) { New-Item -ItemType Directory -Path $OutputDirectory | Out-Null }
 
     $template = Get-NormalizedContent -Path $TemplatePath
-    $wikiFiles = Get-ChildItem -Path $WikiPath -Filter '*.md' | Sort-Object Name
+    $wikiFiles = Get-ChildItem -Path $WikiPath, $PSScriptRoot -Filter '*.md' | Sort-Object Name
     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
     $results = New-Object System.Collections.Generic.List[object]
 

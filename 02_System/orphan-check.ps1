@@ -10,9 +10,12 @@
 .EXAMPLE
     pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1
 #>
-$wikiFiles = Get-ChildItem -Path 01_Wiki -Filter *.md
+$VaultRoot = Split-Path $PSScriptRoot -Parent
+$wikiPath = Join-Path $VaultRoot "01_Wiki"
+$systemPath = Join-Path $VaultRoot "02_System"
+$wikiFiles = Get-ChildItem -Path $wikiPath -Filter *.md
 $allNotes = $wikiFiles | Select-Object -ExpandProperty BaseName
-$allContent = Get-ChildItem -Path 01_Wiki, 02_System -Filter *.md | Get-Content -Raw | Out-String
+$allContent = Get-ChildItem -Path $wikiPath, $systemPath -Filter *.md | Get-Content -Raw | Out-String
 
 $orphans = foreach ($note in $allNotes) {
     # Escape for regex: [ and ]

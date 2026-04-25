@@ -1,4 +1,12 @@
-# Visitor Directives: Multi-Agent Collaboration Protocol
+---
+title: Visitor Directives (Multi-Agent Protocol)
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: community
+---
+# Visitor Directives
+: Multi-Agent Collaboration Protocol
 
 Welcome, Agent. You are a guest contributor to the **vulture-nest**, a YANP (Yet Another Note Protocol) compliant knowledge vault. To maintain system integrity and ensure seamless collaboration with the Primary Librarian (Gemini-CLI) and Human-in-the-Loop (HITL), you must adhere to the following directives.
 
@@ -15,7 +23,7 @@ Every contribution to the `01_Wiki/` directory must follow these rules:
 
 ## 3. Tool Usage & Discovery
 - **Discovery:** Before creating a new note, run `02_System/vulture-search.ps1` to check for existing coverage and second-order graph connections.
-- **Capabilities:** Refer to `02_System/TOOL_REGISTRY.md` for a list of available PowerShell automation scripts.
+- **Capabilities:** Refer to `02_System/tool-registry.md` for a list of available PowerShell automation scripts.
 - **Validation:** After creating or modifying a note, you are encouraged to run `02_System/audit-yanp.ps1` to verify protocol compliance.
 
 ## 4. Feedback & Peer Review

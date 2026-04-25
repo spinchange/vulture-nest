@@ -1,4 +1,4 @@
-﻿---
+---
 tags:
   - agents
   - adk
@@ -920,20 +920,20 @@ You'll begin by setting up your Java and Maven environment, structuring your pro
 ### **Prerequisites**
 
 - In this getting started guide, you will be programming in Java. Check if **Java** is installed on your machine. Ideally, you should be using Java 17 or more (you can check that by typing **java -version**)
-- You’ll also be using the **Maven** build tool for Java. So be sure to have [Maven installed](https://maven.apache.org/install.html) on your machine before going further (this is the case for Cloud Top or Cloud Shell, but not necessarily for your laptop).
+- You�ll also be using the **Maven** build tool for Java. So be sure to have [Maven installed](https://maven.apache.org/install.html) on your machine before going further (this is the case for Cloud Top or Cloud Shell, but not necessarily for your laptop).
 
 ### **Prepare the project structure**
 
-To get started with ADK Java, let’s create a Maven project with the following directory structure:
+To get started with ADK Java, let�s create a Maven project with the following directory structure:
 
 ```text
 adk-agents/
-├── pom.xml
-└── src/
-    └── main/
-        └── java/
-            └── agents/
-                └── ScienceTeacherAgent.java
++-- pom.xml
++-- src/
+    +-- main/
+        +-- java/
+            +-- agents/
+                +-- ScienceTeacherAgent.java
 ```
 
 Follow the instructions in [Installation](https://adk.dev/get-started/installation/index.md) page to add `pom.xml` for using the ADK package.
@@ -944,7 +944,7 @@ Feel free to use whichever name you like for the root directory of your project 
 
 ### **Running a compilation**
 
-Let’s see if Maven is happy with this build, by running a compilation (**mvn compile** command):
+Let�s see if Maven is happy with this build, by running a compilation (**mvn compile** command):
 
 ```shell
 $ mvn compile
@@ -1014,10 +1014,10 @@ We will use `Dev UI` to run this agent later. For the tool to automatically reco
 
 ### **Define environment variables**
 
-To run the server, you’ll need to export two environment variables:
+To run the server, you�ll need to export two environment variables:
 
 - a Gemini key that you can [get from AI Studio](https://ai.google.dev/gemini-api/docs/api-key),
-- a variable to specify we’re not using Agent Platform this time.
+- a variable to specify we�re not using Agent Platform this time.
 
 ```shell
 export GOOGLE_GENAI_USE_VERTEXAI=FALSE
@@ -1522,11 +1522,11 @@ Create the following folder structure with empty files:
 
 ```console
 adk-streaming/  # Project folder
-└── app/ # the web app folder
-    ├── .env # Gemini API key
-    └── google_search_agent/ # Agent folder
-        ├── __init__.py # Python package
-        └── agent.py # Agent definition
++-- app/ # the web app folder
+    +-- .env # Gemini API key
+    +-- google_search_agent/ # Agent folder
+        +-- __init__.py # Python package
+        +-- agent.py # Agent definition
 ```
 
 ### agent.py
@@ -1668,7 +1668,7 @@ The [Gemini Live API Toolkit development guide series](https://adk.dev/streaming
 
 Get started with the Agent Development Kit (ADK) through our collection of practical guides. These tutorials are designed in a simple, progressive, step-by-step fashion, introducing you to different ADK features and capabilities.
 
-This approach allows you to learn and build incrementally – starting with foundational concepts and gradually tackling more advanced agent development techniques. You'll explore how to apply these features effectively across various use cases, equipping you to build your own sophisticated agentic applications with ADK. Explore our collection below and happy building:
+This approach allows you to learn and build incrementally � starting with foundational concepts and gradually tackling more advanced agent development techniques. You'll explore how to apply these features effectively across various use cases, equipping you to build your own sophisticated agentic applications with ADK. Explore our collection below and happy building:
 
 - **Multi-tool agent**
 
@@ -1726,11 +1726,11 @@ As a reminder, ADK is a Python framework designed to streamline the development 
 
 **In this advanced tutorial, you will master:**
 
-- ✅ **Tool Definition & Usage:** Crafting Python functions (`tools`) that grant agents specific abilities (like fetching data) and instructing agents on how to use them effectively.
-- ✅ **Multi-LLM Flexibility:** Configuring agents to utilize various leading LLMs (Gemini, GPT-4o, Claude Sonnet) via LiteLLM integration, allowing you to choose the best model for each task.
-- ✅ **Agent Delegation & Collaboration:** Designing specialized sub-agents and enabling automatic routing (`auto flow`) of user requests to the most appropriate agent within a team.
-- ✅ **Session State for Memory:** Utilizing `Session State` and `ToolContext` to enable agents to remember information across conversational turns, leading to more contextual interactions.
-- ✅ **Safety Guardrails with Callbacks:** Implementing `before_model_callback` and `before_tool_callback` to inspect, modify, or block requests/tool usage based on predefined rules, enhancing application safety and control.
+- ? **Tool Definition & Usage:** Crafting Python functions (`tools`) that grant agents specific abilities (like fetching data) and instructing agents on how to use them effectively.
+- ? **Multi-LLM Flexibility:** Configuring agents to utilize various leading LLMs (Gemini, GPT-4o, Claude Sonnet) via LiteLLM integration, allowing you to choose the best model for each task.
+- ? **Agent Delegation & Collaboration:** Designing specialized sub-agents and enabling automatic routing (`auto flow`) of user requests to the most appropriate agent within a team.
+- ? **Session State for Memory:** Utilizing `Session State` and `ToolContext` to enable agents to remember information across conversational turns, leading to more contextual interactions.
+- ? **Safety Guardrails with Callbacks:** Implementing `before_model_callback` and `before_tool_callback` to inspect, modify, or block requests/tool usage based on predefined rules, enhancing application safety and control.
 
 **End State Expectation:**
 
@@ -1738,10 +1738,10 @@ By completing this tutorial, you will have built a functional multi-agent Weathe
 
 **Prerequisites:**
 
-- ✅ **Solid understanding of Python programming.**
-- ✅ **Familiarity with Large Language Models (LLMs), APIs, and the concept of agents.**
-- ❗ **Crucially: Completion of the ADK Quickstart tutorial(s) or equivalent foundational knowledge of ADK basics (Agent, Runner, SessionService, basic Tool usage).** This tutorial builds directly upon those concepts.
-- ✅ **API Keys** for the LLMs you intend to use (e.g., Google AI Studio for Gemini, OpenAI Platform, Anthropic Console).
+- ? **Solid understanding of Python programming.**
+- ? **Familiarity with Large Language Models (LLMs), APIs, and the concept of agents.**
+- ? **Crucially: Completion of the ADK Quickstart tutorial(s) or equivalent foundational knowledge of ADK basics (Agent, Runner, SessionService, basic Tool usage).** This tutorial builds directly upon those concepts.
+- ? **API Keys** for the LLMs you intend to use (e.g., Google AI Studio for Gemini, OpenAI Platform, Anthropic Console).
 
 ______________________________________________________________________
 
@@ -1840,7 +1840,7 @@ ______________________________________________________________________
 
 ## Step 1: Your First Agent - Basic Weather Lookup
 
-Let's begin by building the fundamental component of our Weather Bot: a single agent capable of performing a specific task – looking up weather information. This involves creating two core pieces:
+Let's begin by building the fundamental component of our Weather Bot: a single agent capable of performing a specific task � looking up weather information. This involves creating two core pieces:
 
 1. **A Tool:** A Python function that equips the agent with the *ability* to fetch weather data.
 1. **An Agent:** The AI "brain" that understands the user's request, knows it has a weather tool, and decides when and how to use it.
@@ -1881,9 +1881,9 @@ def get_weather(city: str) -> dict:
 
     # Mock weather data
     mock_weather_db = {
-        "newyork": {"status": "success", "report": "The weather in New York is sunny with a temperature of 25°C."},
-        "london": {"status": "success", "report": "It's cloudy in London with a temperature of 15°C."},
-        "tokyo": {"status": "success", "report": "Tokyo is experiencing light rain and a temperature of 18°C."},
+        "newyork": {"status": "success", "report": "The weather in New York is sunny with a temperature of 25�C."},
+        "london": {"status": "success", "report": "It's cloudy in London with a temperature of 15�C."},
+        "tokyo": {"status": "success", "report": "Tokyo is experiencing light rain and a temperature of 18�C."},
     }
 
     if city_normalized in mock_weather_db:
@@ -2207,7 +2207,7 @@ try:
     #         print(f"An error occurred: {e}")
 
 except Exception as e:
-    print(f"❌ Could not create or run GPT agent '{MODEL_GPT_4O}'. Check API Key and model name. Error: {e}")
+    print(f"? Could not create or run GPT agent '{MODEL_GPT_4O}'. Check API Key and model name. Error: {e}")
 ```
 
 Next, we'll do the same for Anthropic's Claude Sonnet.
@@ -2283,7 +2283,7 @@ try:
 
 
 except Exception as e:
-    print(f"❌ Could not create or run Claude agent '{MODEL_CLAUDE_SONNET}'. Check API Key and model name. Error: {e}")
+    print(f"? Could not create or run Claude agent '{MODEL_CLAUDE_SONNET}'. Check API Key and model name. Error: {e}")
 ```
 
 Observe the output carefully from both code blocks. You should see:
@@ -2401,9 +2401,9 @@ try:
         description="Handles simple greetings and hellos using the 'say_hello' tool.", # Crucial for delegation
         tools=[say_hello],
     )
-    print(f"✅ Agent '{greeting_agent.name}' created using model '{greeting_agent.model}'.")
+    print(f"? Agent '{greeting_agent.name}' created using model '{greeting_agent.model}'.")
 except Exception as e:
-    print(f"❌ Could not create Greeting agent. Check API Key ({greeting_agent.model}). Error: {e}")
+    print(f"? Could not create Greeting agent. Check API Key ({greeting_agent.model}). Error: {e}")
 
 # --- Farewell Agent ---
 farewell_agent = None
@@ -2420,9 +2420,9 @@ try:
         description="Handles simple farewells and goodbyes using the 'say_goodbye' tool.", # Crucial for delegation
         tools=[say_goodbye],
     )
-    print(f"✅ Agent '{farewell_agent.name}' created using model '{farewell_agent.model}'.")
+    print(f"? Agent '{farewell_agent.name}' created using model '{farewell_agent.model}'.")
 except Exception as e:
-    print(f"❌ Could not create Farewell agent. Check API Key ({farewell_agent.model}). Error: {e}")
+    print(f"? Could not create Farewell agent. Check API Key ({farewell_agent.model}). Error: {e}")
 ```
 
 ______________________________________________________________________
@@ -2466,10 +2466,10 @@ if greeting_agent and farewell_agent and 'get_weather' in globals():
         # Key change: Link the sub-agents here!
         sub_agents=[greeting_agent, farewell_agent]
     )
-    print(f"✅ Root Agent '{weather_agent_team.name}' created using model '{root_agent_model}' with sub-agents: {[sa.name for sa in weather_agent_team.sub_agents]}")
+    print(f"? Root Agent '{weather_agent_team.name}' created using model '{root_agent_model}' with sub-agents: {[sa.name for sa in weather_agent_team.sub_agents]}")
 
 else:
-    print("❌ Cannot create root agent because one or more sub-agents failed to initialize or 'get_weather' tool is missing.")
+    print("? Cannot create root agent because one or more sub-agents failed to initialize or 'get_weather' tool is missing.")
     if not greeting_agent: print(" - Greeting Agent is missing.")
     if not farewell_agent: print(" - Farewell Agent is missing.")
     if 'get_weather' not in globals(): print(" - get_weather function is missing.")
@@ -2509,7 +2509,7 @@ root_agent_var_name = 'root_agent' # Default name from Step 3 guide
 if 'weather_agent_team' in globals(): # Check if user used this name instead
     root_agent_var_name = 'weather_agent_team'
 elif 'root_agent' not in globals():
-    print("⚠️ Root agent ('root_agent' or 'weather_agent_team') not found. Cannot define run_team_conversation.")
+    print("?? Root agent ('root_agent' or 'weather_agent_team') not found. Cannot define run_team_conversation.")
     # Assign a dummy value to prevent NameError later if the code block runs anyway
     root_agent = None # Or set a flag to prevent execution
 
@@ -2580,7 +2580,7 @@ if root_agent_var_name in globals() and globals()[root_agent_var_name]:
 
 else:
     # This message prints if the root agent variable wasn't found earlier
-    print("\n⚠️ Skipping agent team conversation execution as the root agent was not successfully defined in a previous step.")
+    print("\n?? Skipping agent team conversation execution as the root agent was not successfully defined in a previous step.")
 ```
 
 ______________________________________________________________________
@@ -2597,7 +2597,7 @@ You've now structured your application with multiple collaborating agents. This 
 
 ## Step 4: Adding Memory and Personalization with Session State
 
-So far, our agent team can handle different tasks through delegation, but each interaction starts fresh – the agents have no memory of past conversations or user preferences within a session. To create more sophisticated and context-aware experiences, agents need **memory**. ADK provides this through **Session State**.
+So far, our agent team can handle different tasks through delegation, but each interaction starts fresh � the agents have no memory of past conversations or user preferences within a session. To create more sophisticated and context-aware experiences, agents need **memory**. ADK provides this through **Session State**.
 
 **What is Session State?**
 
@@ -2632,7 +2632,7 @@ from google.adk.sessions import InMemorySessionService
 
 # Create a NEW session service instance for this state demonstration
 session_service_stateful = InMemorySessionService()
-print("✅ New InMemorySessionService created for state demonstration.")
+print("? New InMemorySessionService created for state demonstration.")
 
 # Define a NEW session ID for this part of the tutorial
 SESSION_ID_STATEFUL = "session_state_demo_001"
@@ -2650,7 +2650,7 @@ session_stateful = await session_service_stateful.create_session(
     session_id=SESSION_ID_STATEFUL,
     state=initial_state # <<< Initialize state during creation
 )
-print(f"✅ Session '{SESSION_ID_STATEFUL}' created for user '{USER_ID_STATEFUL}'.")
+print(f"? Session '{SESSION_ID_STATEFUL}' created for user '{USER_ID_STATEFUL}'.")
 
 # Verify the initial state was set correctly
 retrieved_session = await session_service_stateful.get_session(app_name=APP_NAME,
@@ -2700,10 +2700,10 @@ def get_weather_stateful(city: str, tool_context: ToolContext) -> dict:
         # Format temperature based on state preference
         if preferred_unit == "Fahrenheit":
             temp_value = (temp_c * 9/5) + 32 # Calculate Fahrenheit
-            temp_unit = "°F"
+            temp_unit = "�F"
         else: # Default to Celsius
             temp_value = temp_c
-            temp_unit = "°C"
+            temp_unit = "�C"
 
         report = f"The weather in {city.capitalize()} is {condition} with a temperature of {temp_value:.0f}{temp_unit}."
         result = {"status": "success", "report": report}
@@ -2720,7 +2720,7 @@ def get_weather_stateful(city: str, tool_context: ToolContext) -> dict:
         print(f"--- Tool: City '{city}' not found. ---")
         return {"status": "error", "error_message": error_msg}
 
-print("✅ State-aware 'get_weather_stateful' tool defined.")
+print("? State-aware 'get_weather_stateful' tool defined.")
 ```
 
 ______________________________________________________________________
@@ -2753,9 +2753,9 @@ try:
         description="Handles simple greetings and hellos using the 'say_hello' tool.",
         tools=[say_hello],
     )
-    print(f"✅ Agent '{greeting_agent.name}' redefined.")
+    print(f"? Agent '{greeting_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Greeting agent. Error: {e}")
+    print(f"? Could not redefine Greeting agent. Error: {e}")
 
 # --- Redefine Farewell Agent (from Step 3) ---
 farewell_agent = None
@@ -2767,9 +2767,9 @@ try:
         description="Handles simple farewells and goodbyes using the 'say_goodbye' tool.",
         tools=[say_goodbye],
     )
-    print(f"✅ Agent '{farewell_agent.name}' redefined.")
+    print(f"? Agent '{farewell_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Farewell agent. Error: {e}")
+    print(f"? Could not redefine Farewell agent. Error: {e}")
 
 # --- Define the Updated Root Agent ---
 root_agent_stateful = None
@@ -2792,7 +2792,7 @@ if greeting_agent and farewell_agent and 'get_weather_stateful' in globals():
         sub_agents=[greeting_agent, farewell_agent], # Include sub-agents
         output_key="last_weather_report" # <<< Auto-save agent's final weather response
     )
-    print(f"✅ Root Agent '{root_agent_stateful.name}' created using stateful tool and output_key.")
+    print(f"? Root Agent '{root_agent_stateful.name}' created using stateful tool and output_key.")
 
     # --- Create Runner for this Root Agent & NEW Session Service ---
     runner_root_stateful = Runner(
@@ -2800,10 +2800,10 @@ if greeting_agent and farewell_agent and 'get_weather_stateful' in globals():
         app_name=APP_NAME,
         session_service=session_service_stateful # Use the NEW stateful session service
     )
-    print(f"✅ Runner created for stateful root agent '{runner_root_stateful.agent.name}' using stateful session service.")
+    print(f"? Runner created for stateful root agent '{runner_root_stateful.agent.name}' using stateful session service.")
 
 else:
-    print("❌ Cannot create stateful root agent. Prerequisites missing.")
+    print("? Cannot create stateful root agent. Prerequisites missing.")
     if not greeting_agent: print(" - greeting_agent definition missing.")
     if not farewell_agent: print(" - farewell_agent definition missing.")
     if 'get_weather_stateful' not in globals(): print(" - get_weather_stateful tool missing.")
@@ -2922,10 +2922,10 @@ if 'runner_root_stateful' in globals() and runner_root_stateful:
         # Print full state for detailed view
         # print(f"Full State Dict: {final_session.state}") # For detailed view
     else:
-        print("\n❌ Error: Could not retrieve final session state.")
+        print("\n? Error: Could not retrieve final session state.")
 
 else:
-    print("\n⚠️ Skipping state test conversation. Stateful root agent runner ('runner_root_stateful') is not available.")
+    print("\n?? Skipping state test conversation. Stateful root agent runner ('runner_root_stateful') is not available.")
 ```
 
 ______________________________________________________________________
@@ -2948,7 +2948,7 @@ ______________________________________________________________________
 
 Our agent team is becoming more capable, remembering preferences and using tools effectively. However, in real-world scenarios, we often need safety mechanisms to control the agent's behavior *before* potentially problematic requests even reach the core Large Language Model (LLM).
 
-ADK provides **Callbacks** – functions that allow you to hook into specific points in the agent's execution lifecycle. The `before_model_callback` is particularly useful for input safety.
+ADK provides **Callbacks** � functions that allow you to hook into specific points in the agent's execution lifecycle. The `before_model_callback` is particularly useful for input safety.
 
 **What is `before_model_callback`?**
 
@@ -3042,7 +3042,7 @@ def block_keyword_guardrail(
         print(f"--- Callback: Keyword not found. Allowing LLM call for {agent_name}. ---")
         return None # Returning None signals ADK to continue normally
 
-print("✅ block_keyword_guardrail function defined.")
+print("? block_keyword_guardrail function defined.")
 ```
 
 ______________________________________________________________________
@@ -3068,9 +3068,9 @@ try:
         description="Handles simple greetings and hellos using the 'say_hello' tool.",
         tools=[say_hello],
     )
-    print(f"✅ Sub-Agent '{greeting_agent.name}' redefined.")
+    print(f"? Sub-Agent '{greeting_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Greeting agent. Check Model/API Key ({greeting_agent.model}). Error: {e}")
+    print(f"? Could not redefine Greeting agent. Check Model/API Key ({greeting_agent.model}). Error: {e}")
 
 farewell_agent = None
 try:
@@ -3082,9 +3082,9 @@ try:
         description="Handles simple farewells and goodbyes using the 'say_goodbye' tool.",
         tools=[say_goodbye],
     )
-    print(f"✅ Sub-Agent '{farewell_agent.name}' redefined.")
+    print(f"? Sub-Agent '{farewell_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Farewell agent. Check Model/API Key ({farewell_agent.model}). Error: {e}")
+    print(f"? Could not redefine Farewell agent. Check Model/API Key ({farewell_agent.model}). Error: {e}")
 
 
 # --- Define the Root Agent with the Callback ---
@@ -3109,7 +3109,7 @@ if greeting_agent and farewell_agent and 'get_weather_stateful' in globals() and
         output_key="last_weather_report", # Keep output_key from Step 4
         before_model_callback=block_keyword_guardrail # <<< Assign the guardrail callback
     )
-    print(f"✅ Root Agent '{root_agent_model_guardrail.name}' created with before_model_callback.")
+    print(f"? Root Agent '{root_agent_model_guardrail.name}' created with before_model_callback.")
 
     # --- Create Runner for this Agent, Using SAME Stateful Session Service ---
     # Ensure session_service_stateful exists from Step 4
@@ -3119,12 +3119,12 @@ if greeting_agent and farewell_agent and 'get_weather_stateful' in globals() and
             app_name=APP_NAME, # Use consistent APP_NAME
             session_service=session_service_stateful # <<< Use the service from Step 4
         )
-        print(f"✅ Runner created for guardrail agent '{runner_root_model_guardrail.agent.name}', using stateful session service.")
+        print(f"? Runner created for guardrail agent '{runner_root_model_guardrail.agent.name}', using stateful session service.")
     else:
-        print("❌ Cannot create runner. 'session_service_stateful' from Step 4 is missing.")
+        print("? Cannot create runner. 'session_service_stateful' from Step 4 is missing.")
 
 else:
-    print("❌ Cannot create root agent with model guardrail. One or more prerequisites are missing or failed initialization:")
+    print("? Cannot create root agent with model guardrail. One or more prerequisites are missing or failed initialization:")
     if not greeting_agent: print("   - Greeting Agent")
     if not farewell_agent: print("   - Farewell Agent")
     if 'get_weather_stateful' not in globals(): print("   - 'get_weather_stateful' tool")
@@ -3213,10 +3213,10 @@ if 'runner_root_model_guardrail' in globals() and runner_root_model_guardrail:
         print(f"Temperature Unit: {final_session.state.get('user_preference_temperature_unit', 'Not Set')}") # Should be Fahrenheit
         # print(f"Full State Dict: {final_session.state}") # For detailed view
     else:
-        print("\n❌ Error: Could not retrieve final session state.")
+        print("\n? Error: Could not retrieve final session state.")
 
 else:
-    print("\n⚠️ Skipping model guardrail test. Runner ('runner_root_model_guardrail') is not available.")
+    print("\n?? Skipping model guardrail test. Runner ('runner_root_model_guardrail') is not available.")
 ```
 
 ______________________________________________________________________
@@ -3325,7 +3325,7 @@ def block_paris_tool_guardrail(
     print(f"--- Callback: Allowing tool '{tool_name}' to proceed. ---")
     return None # Returning None allows the actual tool function to run
 
-print("✅ block_paris_tool_guardrail function defined.")
+print("? block_paris_tool_guardrail function defined.")
 ```
 
 ______________________________________________________________________
@@ -3355,9 +3355,9 @@ try:
         description="Handles simple greetings and hellos using the 'say_hello' tool.",
         tools=[say_hello],
     )
-    print(f"✅ Sub-Agent '{greeting_agent.name}' redefined.")
+    print(f"? Sub-Agent '{greeting_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Greeting agent. Check Model/API Key ({greeting_agent.model}). Error: {e}")
+    print(f"? Could not redefine Greeting agent. Check Model/API Key ({greeting_agent.model}). Error: {e}")
 
 farewell_agent = None
 try:
@@ -3369,9 +3369,9 @@ try:
         description="Handles simple farewells and goodbyes using the 'say_goodbye' tool.",
         tools=[say_goodbye],
     )
-    print(f"✅ Sub-Agent '{farewell_agent.name}' redefined.")
+    print(f"? Sub-Agent '{farewell_agent.name}' redefined.")
 except Exception as e:
-    print(f"❌ Could not redefine Farewell agent. Check Model/API Key ({farewell_agent.model}). Error: {e}")
+    print(f"? Could not redefine Farewell agent. Check Model/API Key ({farewell_agent.model}). Error: {e}")
 
 # --- Define the Root Agent with Both Callbacks ---
 root_agent_tool_guardrail = None
@@ -3398,7 +3398,7 @@ if ('greeting_agent' in globals() and greeting_agent and
         before_model_callback=block_keyword_guardrail, # Keep model guardrail
         before_tool_callback=block_paris_tool_guardrail # <<< Add tool guardrail
     )
-    print(f"✅ Root Agent '{root_agent_tool_guardrail.name}' created with BOTH callbacks.")
+    print(f"? Root Agent '{root_agent_tool_guardrail.name}' created with BOTH callbacks.")
 
     # --- Create Runner, Using SAME Stateful Session Service ---
     if 'session_service_stateful' in globals():
@@ -3407,12 +3407,12 @@ if ('greeting_agent' in globals() and greeting_agent and
             app_name=APP_NAME,
             session_service=session_service_stateful # <<< Use the service from Step 4/5
         )
-        print(f"✅ Runner created for tool guardrail agent '{runner_root_tool_guardrail.agent.name}', using stateful session service.")
+        print(f"? Runner created for tool guardrail agent '{runner_root_tool_guardrail.agent.name}', using stateful session service.")
     else:
-        print("❌ Cannot create runner. 'session_service_stateful' from Step 4/5 is missing.")
+        print("? Cannot create runner. 'session_service_stateful' from Step 4/5 is missing.")
 
 else:
-    print("❌ Cannot create root agent with tool guardrail. Prerequisites missing.")
+    print("? Cannot create root agent with tool guardrail. Prerequisites missing.")
 ```
 
 ______________________________________________________________________
@@ -3497,10 +3497,10 @@ if 'runner_root_tool_guardrail' in globals() and runner_root_tool_guardrail:
         print(f"Temperature Unit: {final_session.state.get('user_preference_temperature_unit', 'Not Set')}") # Should be Fahrenheit
         # print(f"Full State Dict: {final_session.state}") # For detailed view
     else:
-        print("\n❌ Error: Could not retrieve final session state.")
+        print("\n? Error: Could not retrieve final session state.")
 
 else:
-    print("\n⚠️ Skipping tool guardrail test. Runner ('runner_root_tool_guardrail') is not available.")
+    print("\n?? Skipping tool guardrail test. Runner ('runner_root_tool_guardrail') is not available.")
 ```
 
 ______________________________________________________________________
@@ -3550,10 +3550,10 @@ Your Weather Bot team is a great starting point. Here are some ideas to further 
    - Use `after_tool_callback` to process or log the results returned by a tool.
    - Implement `before_agent_callback` or `after_agent_callback` for agent-level entry/exit logic.
 1. **Error Handling:** Improve how the agent handles tool errors or unexpected API responses. Maybe add retry logic within a tool.
-1. **Persistent Session Storage:** Explore alternatives to `InMemorySessionService` for storing session state persistently (e.g., using databases like Firestore or Cloud SQL – requires custom implementation or future ADK integrations).
+1. **Persistent Session Storage:** Explore alternatives to `InMemorySessionService` for storing session state persistently (e.g., using databases like Firestore or Cloud SQL � requires custom implementation or future ADK integrations).
 1. **Streaming UI:** Integrate your agent team with a web framework (like FastAPI, as shown in the ADK Streaming Quickstart) to create a real-time chat interface.
 
-The Agent Development Kit provides a robust foundation for building sophisticated LLM-powered applications. By mastering the concepts covered in this tutorial – tools, state, delegation, and callbacks – you are well-equipped to tackle increasingly complex agentic systems.
+The Agent Development Kit provides a robust foundation for building sophisticated LLM-powered applications. By mastering the concepts covered in this tutorial � tools, state, delegation, and callbacks � you are well-equipped to tackle increasingly complex agentic systems.
 
 Happy building!
 
@@ -4025,13 +4025,13 @@ Java projects generally feature the following project structure:
 
 ```console
 project_folder/
-├── pom.xml (or build.gradle)
-├── src/
-├── └── main/
-│       └── java/
-│           └── agents/
-│               └── multitool/
-└── test/
++-- pom.xml (or build.gradle)
++-- src/
++-- +-- main/
+�       +-- java/
+�           +-- agents/
+�               +-- multitool/
++-- test/
 ```
 
 ### Create `MultiToolAgent.java`
@@ -4568,14 +4568,14 @@ Using the terminal, navigate to the parent directory of your agent project (e.g.
 
 ```console
 project_folder/                <-- navigate to this directory
-├── pom.xml (or build.gradle)
-├── src/
-├── └── main/
-│       └── java/
-│           └── agents/
-│               └── multitool/
-│                   └── MultiToolAgent.java
-└── test/
++-- pom.xml (or build.gradle)
++-- src/
++-- +-- main/
+�       +-- java/
+�           +-- agents/
+�               +-- multitool/
+�                   +-- MultiToolAgent.java
++-- test/
 ```
 
 Run the following command from the terminal to launch the Dev UI.
@@ -4639,20 +4639,20 @@ Finally, on the command-line, run the following command:
 gradle runAgent
 ```
 
-### 📝 Example prompts to try
+### ?? Example prompts to try
 
 - What is the weather in New York?
 - What is the time in New York?
 - What is the weather in Paris?
 - What is the time in Paris?
 
-## 🎉 Congratulations!
+## ?? Congratulations!
 
 You've successfully created and interacted with your first agent using ADK!
 
 ______________________________________________________________________
 
-## 🛣️ Next steps
+## ??? Next steps
 
 - **Go to the tutorial**: Learn how to add memory, session, state to your agent: [tutorial](/tutorials/).
 - **Delve into advanced configuration:** Explore the [setup](/get-started/installation/) section for deeper dives into project structure, configuration, and other interfaces.
@@ -4755,7 +4755,7 @@ Supported in ADKPythonTypeScriptGoJava
 
 In Agent Development Kit (ADK), an **Agent** is a self-contained execution unit designed to act autonomously to achieve specific goals. Agents can perform tasks, interact with users, utilize external tools, and coordinate with other agents.
 
-The foundation for all agents in ADK is the `BaseAgent` class. It serves as the fundamental blueprint. To create functional agents, you typically extend `BaseAgent` in one of three main ways, catering to different needs – from intelligent reasoning to structured process control.
+The foundation for all agents in ADK is the `BaseAgent` class. It serves as the fundamental blueprint. To create functional agents, you typically extend `BaseAgent` in one of three main ways, catering to different needs � from intelligent reasoning to structured process control.
 
 ## Core Agent Categories
 
@@ -8092,7 +8092,7 @@ def call_agent(query):
         print(f"\nDEBUG EVENT: {event}\n")
         if event.is_final_response() and event.content:
             final_answer = event.content.parts[0].text.strip()
-            print("\n🟢 FINAL ANSWER\n", final_answer, "\n")
+            print("\n?? FINAL ANSWER\n", final_answer, "\n")
 
 call_agent("If it's raining in New York right now, what is the current temperature?")
 ```
@@ -9123,11 +9123,11 @@ You can compose various types of agents derived from `BaseAgent` to build these 
 - **Workflow Agents:** Specialized agents (`SequentialAgent`, `ParallelAgent`, `LoopAgent`) designed to manage the execution flow of their sub-agents. (See [Workflow Agents](https://adk.dev/agents/workflow-agents/index.md))
 - **Custom agents:** Your own agents inheriting from `BaseAgent` with specialized, non-LLM logic. (See [Custom Agents](https://adk.dev/agents/custom-agents/index.md))
 
-The following sections detail the core ADK primitives—such as agent hierarchy, workflow agents, and interaction mechanisms—that enable you to construct and manage these multi-agent systems effectively.
+The following sections detail the core ADK primitives�such as agent hierarchy, workflow agents, and interaction mechanisms�that enable you to construct and manage these multi-agent systems effectively.
 
 ## 1. ADK Primitives for Agent Composition
 
-ADK provides core building blocks—primitives—that enable you to structure and manage interactions within your multi-agent system.
+ADK provides core building blocks�primitives�that enable you to structure and manage interactions within your multi-agent system.
 
 Note
 
@@ -11973,7 +11973,7 @@ public Map<String, String> getWeather(
 
 ## Build a food tour agent with Gemma 4, ADK, and Google Maps MCP
 
-This sample shows how to build a personalized food tour agent using Gemma 4, ADK, and the Google Maps MCP server. The agent takes a user’s dish photo or text description, a location, and an optional budget, then recommends places to eat and organizes them into a walking route.
+This sample shows how to build a personalized food tour agent using Gemma 4, ADK, and the Google Maps MCP server. The agent takes a user�s dish photo or text description, a location, and an optional budget, then recommends places to eat and organizes them into a walking route.
 
 ### Prerequisites
 
@@ -11986,8 +11986,8 @@ This sample shows how to build a personalized food tour agent using Gemma 4, ADK
 
 ```bash
 food_tour_app/
-├── __init__.py
-└── agent.py
++-- __init__.py
++-- agent.py
 ```
 
 **Full project can be found [here](https://github.com/google/adk-samples/tree/main/python/agents/gemma-food-tour-guide)**
@@ -15000,7 +15000,7 @@ You can create graphs that split execution across multiple, parallel nodes, and 
 The following code snippet shows how to implement a basic ***JoinNode*** object and use it to assemble output of all the nodes:
 
 ```python
-​​from google.adk.workflow import JoinNode
+??from google.adk.workflow import JoinNode
 
 my_join_node = JoinNode(name="my_join_node")
 
@@ -15152,11 +15152,11 @@ Check out the following pre-built tools and integrations that you can use with A
 
 Filter: All Code Connectors Data Google MCP Observability Resilience Search
 
-# A2UI — Agent-to-UI for ADK
+# A2UI � Agent-to-UI for ADK
 
 Supported in ADKPython
 
-A2UI lets your agent generate **real UI** — cards, forms, charts, tables — not just text. Your agent outputs structured JSON, and a renderer on the client turns it into interactive components.
+A2UI lets your agent generate **real UI** � cards, forms, charts, tables � not just text. Your agent outputs structured JSON, and a renderer on the client turns it into interactive components.
 
 It's transport-agnostic: A2UI payloads work over A2A, MCP, REST, WebSockets, or any other protocol. The agent describes *what* to show; the client decides *how* to render it.
 
@@ -15195,7 +15195,7 @@ The schema manager will automatically detect the A2UI version from incoming clie
 
 Tip
 
-If you omit the `catalogs` parameter, the schema manager uses the [Basic Catalog](https://a2ui.org/concepts/catalogs/) maintained by the A2UI team, which includes common components like Text, Card, Button, Image, and more. You can also create [custom catalogs](#custom-catalogs) with domain-specific components, or mix the basic catalog with your own — see [Advanced patterns](#advanced-patterns) below.
+If you omit the `catalogs` parameter, the schema manager uses the [Basic Catalog](https://a2ui.org/concepts/catalogs/) maintained by the A2UI team, which includes common components like Text, Card, Button, Image, and more. You can also create [custom catalogs](#custom-catalogs) with domain-specific components, or mix the basic catalog with your own � see [Advanced patterns](#advanced-patterns) below.
 
 ### 2. Generate the system prompt
 
@@ -15258,7 +15258,7 @@ A2UI payloads are wrapped in A2A `DataPart` with the MIME type `application/json
 from a2ui.a2a import create_a2ui_part
 
 part = create_a2ui_part({"type": "Card", "props": {"title": "Hello"}})
-# → DataPart(data={...}, metadata={"mimeType": "application/json+a2ui"})
+# ? DataPart(data={...}, metadata={"mimeType": "application/json+a2ui"})
 ```
 
 ## Advanced patterns
@@ -15366,7 +15366,7 @@ The A2UI repository includes ADK sample agents you can run immediately:
 
 Supported in ADKPythonTypeScript
 
-The [Adspirer MCP Server](https://github.com/amekala/ads-mcp) connects your ADK agent to [Adspirer](https://www.adspirer.com/), an AI-powered advertising platform with 100+ tools across Google Ads, Meta Ads, LinkedIn Ads, and TikTok Ads. This integration gives your agent the ability to create, manage, and optimize ad campaigns using natural language — from keyword research and audience planning to campaign launch and performance analysis.
+The [Adspirer MCP Server](https://github.com/amekala/ads-mcp) connects your ADK agent to [Adspirer](https://www.adspirer.com/), an AI-powered advertising platform with 100+ tools across Google Ads, Meta Ads, LinkedIn Ads, and TikTok Ads. This integration gives your agent the ability to create, manage, and optimize ad campaigns using natural language � from keyword research and audience planning to campaign launch and performance analysis.
 
 ## How it works
 
@@ -15374,9 +15374,9 @@ Adspirer is a remote MCP server that acts as a bridge between your ADK agent and
 
 The typical workflow looks like this:
 
-1. **Connect** — Your ADK agent connects to `https://mcp.adspirer.com/mcp` and authenticates via OAuth 2.1. On first run, a browser window opens for you to sign in and authorize access to your ad accounts.
-1. **Discover** — The agent discovers available tools based on your connected ad platforms (Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads).
-1. **Execute** — The agent can now execute the full campaign lifecycle through natural language: research keywords, plan audiences, create campaigns, analyze performance, optimize budgets, and manage ads — all without touching a dashboard.
+1. **Connect** � Your ADK agent connects to `https://mcp.adspirer.com/mcp` and authenticates via OAuth 2.1. On first run, a browser window opens for you to sign in and authorize access to your ad accounts.
+1. **Discover** � The agent discovers available tools based on your connected ad platforms (Google Ads, Meta Ads, LinkedIn Ads, TikTok Ads).
+1. **Execute** � The agent can now execute the full campaign lifecycle through natural language: research keywords, plan audiences, create campaigns, analyze performance, optimize budgets, and manage ads � all without touching a dashboard.
 
 Adspirer handles OAuth token management, ad platform API calls, and safety guardrails (e.g., cannot delete campaigns or modify existing budgets) so your agent can operate autonomously with built-in protections.
 
@@ -15386,12 +15386,12 @@ Adspirer handles OAuth token management, ad platform API calls, and safety guard
 - **Performance Analysis**: Analyze campaign metrics across all connected ad platforms. Ask questions like "Which campaigns have the best ROAS?" or "Where am I wasting spend?" and get actionable insights with optimization recommendations.
 - **Keyword Research & Planning**: Research keywords using Google Keyword Planner with real CPC data, search volumes, and competition analysis. Build keyword strategies and add them directly to campaigns.
 - **Budget Optimization**: Identify underperforming campaigns, detect budget inefficiencies, and get AI-driven recommendations for spend allocation across channels and campaigns.
-- **Ad Management**: Add new ad groups, ad sets, and ads to existing campaigns. A/B test creatives, update ad copy, manage keywords, and pause or resume campaigns — all through your agent.
+- **Ad Management**: Add new ad groups, ad sets, and ads to existing campaigns. A/B test creatives, update ad copy, manage keywords, and pause or resume campaigns � all through your agent.
 
 ## Prerequisites
 
 - An [Adspirer](https://www.adspirer.com/) account (free tier available)
-- At least one connected ad platform (Google Ads, Meta Ads, LinkedIn Ads, or TikTok Ads) — connect via your Adspirer dashboard after signing up
+- At least one connected ad platform (Google Ads, Meta Ads, LinkedIn Ads, or TikTok Ads) � connect via your Adspirer dashboard after signing up
 - See the [Quickstart guide](https://www.adspirer.com/docs/quickstart) for step-by-step setup instructions
 
 ## Use with agent
@@ -15610,7 +15610,7 @@ src/app/page.tsx
   defaultOpen={true}
   labels={{
     title: "Popup Assistant",
-    initial: "👋 Hi, there! You're chatting with an agent. This agent comes with a few tools to get you started..."
+    initial: "?? Hi, there! You're chatting with an agent. This agent comes with a few tools to get you started..."
   }}
 />
 ```
@@ -16151,7 +16151,7 @@ Integrating AgentOps into your ADK application is straightforward:
    )
    ```
 
-   > 🚨 🔑 You can find your AgentOps API key on your [AgentOps Dashboard](https://app.agentops.ai/) after signing up. It's recommended to set it as an environment variable (`AGENTOPS_API_KEY`).
+   > ?? ?? You can find your AgentOps API key on your [AgentOps Dashboard](https://app.agentops.ai/) after signing up. It's recommended to set it as an environment variable (`AGENTOPS_API_KEY`).
 
 Once initialized, AgentOps will automatically begin instrumenting your ADK agent.
 
@@ -16206,7 +16206,7 @@ To get started, [create an AgentOps account](http://app.agentops.ai). For featur
 
 ### Extra links
 
-🐦 [Twitter](http://x.com/agentopsai) • 📢 [Discord](http://x.com/agentopsai) • 🖇️ [AgentOps Dashboard](http://app.agentops.ai) • 📙 [Documentation](http://docs.agentops.ai)
+?? [Twitter](http://x.com/agentopsai) � ?? [Discord](http://x.com/agentopsai) � ??? [AgentOps Dashboard](http://app.agentops.ai) � ?? [Documentation](http://docs.agentops.ai)
 
 # AgentPhone MCP tool for ADK
 
@@ -16667,11 +16667,11 @@ Set up your project structure and create the required files:
 
 ```console
 project_root_folder
-├── .env
-└── my_agent
-    ├── __init__.py
-    ├── agent.py
-    └── tools.py
++-- .env
++-- my_agent
+    +-- __init__.py
+    +-- agent.py
+    +-- tools.py
 ```
 
 When running the agent, make sure to run `adk web` from the `project_root_folder`.
@@ -16680,9 +16680,9 @@ Set up your project structure and create the required files:
 
 ```console
   project_root_folder
-  └── my_agent
-      ├── agent.java
-      └── pom.xml
+  +-- my_agent
+      +-- agent.java
+      +-- pom.xml
 ```
 
 When running the agent, make sure to run the commands from the `project_root_folder`.
@@ -17471,9 +17471,9 @@ Create your agent project folder with an `App` object that includes the plugin. 
 
 ```text
 my_bq_agent/
-├── __init__.py
-├── agent.py
-└── requirements.txt
++-- __init__.py
++-- agent.py
++-- requirements.txt
 ```
 
 my_bq_agent/__init__.py
@@ -18103,9 +18103,9 @@ The plugin automatically detects calls to ADK's synthetic HITL tools and emits d
 
 The following HITL tool names are recognized:
 
-- `adk_request_credential` — Request for user credentials (e.g., OAuth tokens)
-- `adk_request_confirmation` — Request for user confirmation before proceeding
-- `adk_request_input` — Request for free-form user input
+- `adk_request_credential` � Request for user credentials (e.g., OAuth tokens)
+- `adk_request_confirmation` � Request for user confirmation before proceeding
+- `adk_request_input` � Request for free-form user input
 
 | **Event Type**                        | **Trigger**                            | **Content (JSON) Structure**                            |
 | ------------------------------------- | -------------------------------------- | ------------------------------------------------------- |
@@ -18864,7 +18864,7 @@ The [Cartesia MCP Server](https://github.com/cartesia-ai/cartesia-mcp) connects 
 ## Use cases
 
 - **Text-to-Speech Generation**: Convert text into natural-sounding speech using Cartesia's diverse voice library, with control over voice selection and output format.
-- **Voice Localization**: Transform existing voices into different languages while preserving the original speaker's characteristics—ideal for multilingual content creation.
+- **Voice Localization**: Transform existing voices into different languages while preserving the original speaker's characteristics�ideal for multilingual content creation.
 - **Audio Infill**: Fill gaps between audio segments to create smooth transitions, useful for podcast editing or audiobook production.
 - **Voice Transformation**: Convert audio clips to sound like different voices from Cartesia's library.
 
@@ -19152,12 +19152,12 @@ The following example will assume the following agent directory structure:
 
 ```text
 working_dir/
-├── weather_agent/
-│   ├── agent.py
-│   └── __init__.py
-└── deploy_agent_engine.py
-└── deploy_fast_api_app.py
-└── agent_runner.py
++-- weather_agent/
+�   +-- agent.py
+�   +-- __init__.py
++-- deploy_agent_engine.py
++-- deploy_fast_api_app.py
++-- agent_runner.py
 ```
 
 ```python
@@ -19376,7 +19376,7 @@ The `AgentEngineCodeExecutor` Tool maintains a single sandbox throughout an agen
 - **Low-latency performance:** Designed for speed, allowing agents to execute complex tool-use workflows efficiently without significant overhead.
 - **Flexible compute configurations:** Create sandboxes with specific programming language, processing power, and memory configurations.
 
-## System requirements¶
+## System requirements�
 
 The following requirements must be met to successfully use the Agent Runtime Code Execution tool with your ADK agents:
 
@@ -20988,7 +20988,7 @@ Go to [Freeplay](https://freeplay.ai/) to sign up for an account, and check out 
 
 [Galileo](https://app.galileo.ai/) is an AI evaluation and observability platform that delivers end-to-end tracing, evaluation, and monitoring for AI applications. Galileo supports direct OpenTelemetry (OTel) trace ingestion from ADK for agent runs, tool calls, and model requests.
 
-For more information, see Galileo’s [Google ADK integration](https://v2docs.galileo.ai/sdk-api/third-party-integrations/opentelemetry-and-openinference/google-adk) docs.
+For more information, see Galileo�s [Google ADK integration](https://v2docs.galileo.ai/sdk-api/third-party-integrations/opentelemetry-and-openinference/google-adk) docs.
 
 ## Prerequisites
 
@@ -21486,7 +21486,7 @@ There are two integration approaches:
 
 - **Persistent memory for agents**: Give your agents long-term memory that they can rely on across conversations.
 - **Hands-free, multimodal memory management**: Automatically saves and retrieves information in conversations, including user messages, agent responses, and file attachments (PDF, DOCX, etc.).
-- **Never start from scratch**: Agents recall who you are, what you've discussed, and solutions you've already worked through — saving tokens and avoiding redundant work.
+- **Never start from scratch**: Agents recall who you are, what you've discussed, and solutions you've already worked through � saving tokens and avoiding redundant work.
 
 ## Prerequisites
 
@@ -22087,8 +22087,8 @@ export { rootAgent };
 | ----------------------------- | ---------------------------------------------------------- |
 | Spaces Semantic Search        | Find the best AI Apps via natural language queries         |
 | Papers Semantic Search        | Find ML Research Papers via natural language queries       |
-| Model Search                  | Search for ML models with filters for task, library, etc…  |
-| Dataset Search                | Search for datasets with filters for author, tags, etc…    |
+| Model Search                  | Search for ML models with filters for task, library, etc�  |
+| Dataset Search                | Search for datasets with filters for author, tags, etc�    |
 | Documentation Semantic Search | Search the Hugging Face documentation library              |
 | Hub Repository Details        | Get detailed information about Models, Datasets and Spaces |
 
@@ -22099,7 +22099,7 @@ To configure which tools are available in your Hugging Face Hub MCP server, visi
 To configure the local MCP server, you can use the following environment variables:
 
 - `TRANSPORT`: The transport type to use (`stdio`, `sse`, `streamableHttp`, or `streamableHttpJson`)
-- `DEFAULT_HF_TOKEN`: ⚠️ Requests are serviced with the `HF_TOKEN` received in the Authorization: Bearer header. The DEFAULT_HF_TOKEN is used if no header was sent. Only set this in Development / Test environments or for local STDIO Deployments. ⚠️
+- `DEFAULT_HF_TOKEN`: ?? Requests are serviced with the `HF_TOKEN` received in the Authorization: Bearer header. The DEFAULT_HF_TOKEN is used if no header was sent. Only set this in Development / Test environments or for local STDIO Deployments. ??
 - If running with stdio transport, `HF_TOKEN` is used if `DEFAULT_HF_TOKEN` is not set.
 - `HF_API_TIMEOUT`: Timeout for Hugging Face API requests in milliseconds (default: 12500ms / 12.5 seconds)
 - `USER_CONFIG_API`: URL to use for User settings (defaults to Local front-end)
@@ -22218,7 +22218,7 @@ await session_service.create_session(
     session_id=session_id,
 )
 
-# Run the agent — all interactions will be traced
+# Run the agent � all interactions will be traced
 async for event in runner.run_async(
     user_id=user_id,
     session_id=session_id,
@@ -22599,7 +22599,7 @@ export { rootAgent };
 
 | Variable             | Required | Default | Description              |
 | -------------------- | -------- | ------- | ------------------------ |
-| `MAILGUN_API_KEY`    | Yes      | —       | Your Mailgun API key     |
+| `MAILGUN_API_KEY`    | Yes      | �       | Your Mailgun API key     |
 | `MAILGUN_API_REGION` | No       | `us`    | API region: `us` or `eu` |
 
 ## Additional resources
@@ -22614,7 +22614,7 @@ Supported in ADKPythonTypescriptGo
 
 [MCP Toolbox for Databases](https://github.com/googleapis/mcp-toolbox) is an open source MCP server for databases. It was designed with enterprise-grade and production-quality in mind. It enables you to develop tools easier, faster, and more securely by handling the complexities such as connection pooling, authentication, and more.
 
-Google’s Agent Development Kit (ADK) has built in support for MCP Toolbox. For more information on [getting started](https://mcp-toolbox.dev/documentation/introduction/) or [configuring](https://mcp-toolbox.dev/documentation/configuration/) MCP Toolbox, see the [documentation](https://mcp-toolbox.dev/documentation/introduction/).
+Google�s Agent Development Kit (ADK) has built in support for MCP Toolbox. For more information on [getting started](https://mcp-toolbox.dev/documentation/introduction/) or [configuring](https://mcp-toolbox.dev/documentation/configuration/) MCP Toolbox, see the [documentation](https://mcp-toolbox.dev/documentation/introduction/).
 
 ## Supported Data Sources
 
@@ -22876,7 +22876,7 @@ MCP Toolbox has a variety of features to make developing Gen AI tools for databa
 
 Supported in ADKPython
 
-[MLflow AI Gateway](https://mlflow.org/docs/latest/genai/governance/ai-gateway/) is a database-backed LLM proxy built into the MLflow tracking server (MLflow ≥ 3.0). It provides a unified OpenAI-compatible API across dozens of providers, including Gemini, Anthropic, Mistral, Bedrock, Ollama, and more, with built-in secrets management, fallback/retry, traffic splitting, and budget tracking, all configured through the MLflow UI.
+[MLflow AI Gateway](https://mlflow.org/docs/latest/genai/governance/ai-gateway/) is a database-backed LLM proxy built into the MLflow tracking server (MLflow = 3.0). It provides a unified OpenAI-compatible API across dozens of providers, including Gemini, Anthropic, Mistral, Bedrock, Ollama, and more, with built-in secrets management, fallback/retry, traffic splitting, and budget tracking, all configured through the MLflow UI.
 
 Since MLflow AI Gateway exposes an OpenAI-compatible endpoint, you can connect ADK agents to it using the [LiteLLM](/agents/models/litellm/) model connector.
 
@@ -22910,7 +22910,7 @@ mlflow server --host 127.0.0.1 --port 5000
 
 The MLflow UI will be available at `http://localhost:5000`.
 
-Create a gateway endpoint by navigating to the MLflow UI at `http://localhost:5000`, then go to **AI Gateway → Create Endpoint**. Select a provider (e.g., Google Gemini) and model (e.g., `gemini-flash-latest`), and enter your provider API key, which is stored encrypted on the server.
+Create a gateway endpoint by navigating to the MLflow UI at `http://localhost:5000`, then go to **AI Gateway ? Create Endpoint**. Select a provider (e.g., Google Gemini) and model (e.g., `gemini-flash-latest`), and enter your provider API key, which is stored encrypted on the server.
 
 See the [MLflow AI Gateway documentation](https://mlflow.org/docs/latest/genai/governance/ai-gateway/endpoints/) for more details on endpoint configuration.
 
@@ -23694,7 +23694,7 @@ export { rootAgent };
 
 | Tool                     | Description                                                                                                                                                       |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `notion-search`          | Search across your Notion workspace and connected tools like Slack, Google Drive, and Jira. Falls back to basic workspace search if AI features aren’t available. |
+| `notion-search`          | Search across your Notion workspace and connected tools like Slack, Google Drive, and Jira. Falls back to basic workspace search if AI features aren�t available. |
 | `notion-fetch`           | Retrieves content from a Notion page or database by its URL                                                                                                       |
 | `notion-create-pages`    | Creates one or more Notion pages with specified properties and content.                                                                                           |
 | `notion-update-page`     | Update a Notion page's properties or content.                                                                                                                     |
@@ -23707,7 +23707,7 @@ export { rootAgent };
 | `notion-get-teams`       | Retrieves a list of teams (teamspaces) in the current workspace.                                                                                                  |
 | `notion-get-users`       | Lists all users in the workspace with their details.                                                                                                              |
 | `notion-get-user`        | Retrieve your user information by ID                                                                                                                              |
-| `notion-get-self`        | Retrieves information about your own bot user and the Notion workspace you’re connected to.                                                                       |
+| `notion-get-self`        | Retrieves information about your own bot user and the Notion workspace you�re connected to.                                                                       |
 
 ## Additional resources
 
@@ -25051,10 +25051,10 @@ The [StackOne ADK Plugin](https://github.com/StackOneHQ/stackone-adk-plugin) con
 
 ## Use cases
 
-- **Sales and Revenue Operations**: Build agents that find leads in your CRM (e.g. HubSpot, Salesforce), enrich contact data, draft personalized outreach, and log activity back — all within one conversation.
-- **People Operations**: Create agents that screen candidates in your ATS (e.g. Greenhouse, Ashby), check availability in your calendar tool (e.g. Google Calendar, Calendly), collect interview scorecards, move applicants through pipeline stages, and automate onboarding into your HRIS (e.g. BambooHR, Workday) — covering the full employee lifecycle without manual intervention.
+- **Sales and Revenue Operations**: Build agents that find leads in your CRM (e.g. HubSpot, Salesforce), enrich contact data, draft personalized outreach, and log activity back � all within one conversation.
+- **People Operations**: Create agents that screen candidates in your ATS (e.g. Greenhouse, Ashby), check availability in your calendar tool (e.g. Google Calendar, Calendly), collect interview scorecards, move applicants through pipeline stages, and automate onboarding into your HRIS (e.g. BambooHR, Workday) � covering the full employee lifecycle without manual intervention.
 - **Marketing Automation**: Build campaign agents that sync audience segments from your CRM to your email platform (e.g. Mailchimp, Klaviyo), trigger email sequences, and report on engagement metrics across channels.
-- **Product Delivery**: Create agents that triage incoming feedback from your support tools (e.g. Intercom, Zendesk, Slack), prioritize and create issues in your project management tool (e.g. Linear, Jira), and resolve incidents using insights from an observability platform (e.g. PagerDuty, Datadog) — uniting product research, delivery, and reliability in a single workflow.
+- **Product Delivery**: Create agents that triage incoming feedback from your support tools (e.g. Intercom, Zendesk, Slack), prioritize and create issues in your project management tool (e.g. Linear, Jira), and resolve incidents using insights from an observability platform (e.g. PagerDuty, Datadog) � uniting product research, delivery, and reliability in a single workflow.
 
 ## Prerequisites
 
@@ -25591,7 +25591,7 @@ from temporalio.workflow import ActivityConfig
 async def get_weather(city: str) -> str:
     """Get current weather for a city."""
     # Your weather API call here
-    return f"72°F and sunny in {city}"
+    return f"72�F and sunny in {city}"
 
 # Wrap the activity as an ADK tool.  This tool will get memoized, retried, and timed out.
 weather_tool = activity_tool(
@@ -25737,7 +25737,7 @@ agent = Agent(
 
 For ease of local development, the Temporal wrappers automatically fall back to direct execution when run outside a Temporal Workflow, so you can use `adk web` and other ADK development commands without a running Temporal server. You won't get the benefits of durable execution in this mode, nor will you be precisely testing the production behavior.
 
-- `TemporalModel` and `activity_tool` work automatically — they detect they're outside a workflow and call the underlying LLM or function directly.
+- `TemporalModel` and `activity_tool` work automatically � they detect they're outside a workflow and call the underlying LLM or function directly.
 - `TemporalMcpToolSet` requires the `not_in_workflow_toolset` parameter (shown in the MCP example above) so it knows how to instantiate the toolset locally.
 
 ## How it works
@@ -26273,7 +26273,7 @@ Before building your own tools for ADK, check out the **[ADK Tools and Integrati
 
 In the context of ADK, a Tool represents a specific capability provided to an AI agent, enabling it to perform actions and interact with the world beyond its core text generation and reasoning abilities. What distinguishes capable agents from basic language models is often their effective use of tools.
 
-Technically, a tool is typically a modular code component—**like a Python, Java, or TypeScript function**, a class method, or even another specialized agent—designed to execute a distinct, predefined task. These tasks often involve interacting with external systems or data.
+Technically, a tool is typically a modular code component�**like a Python, Java, or TypeScript function**, a class method, or even another specialized agent�designed to execute a distinct, predefined task. These tasks often involve interacting with external systems or data.
 
 ### Key Characteristics
 
@@ -26308,7 +26308,7 @@ ADK offers flexibility by supporting several types of tools:
 
 Navigate to the respective documentation pages linked above for detailed information and examples for each tool type.
 
-## Referencing Tool in Agent’s Instructions
+## Referencing Tool in Agent�s Instructions
 
 Within an agent's instructions, you can directly reference a tool by using its **function name.** If the tool's **function name** and **docstring** are sufficiently descriptive, your instructions can primarily focus on **when the Large Language Model (LLM) should utilize the tool**. This promotes clarity and helps the model understand the intended use of each tool.
 
@@ -29809,11 +29809,11 @@ ADK offers several ways to create functions tools, each suited to different leve
 
 ## Function Tools
 
-Transforming a Python function into a tool is a straightforward way to integrate custom logic into your agents. When you assign a function to an agent’s `tools` list, the framework automatically wraps it as a `FunctionTool`.
+Transforming a Python function into a tool is a straightforward way to integrate custom logic into your agents. When you assign a function to an agent�s `tools` list, the framework automatically wraps it as a `FunctionTool`.
 
 ### How it Works
 
-The ADK framework automatically inspects your Python function's signature—including its name, docstring, parameters, type hints, and default values—to generate a schema. This schema is what the LLM uses to understand the tool's purpose, when to use it, and what arguments it requires.
+The ADK framework automatically inspects your Python function's signature�including its name, docstring, parameters, type hints, and default values�to generate a schema. This schema is what the LLM uses to understand the tool's purpose, when to use it, and what arguments it requires.
 
 ### Defining Function Signatures
 
@@ -32125,7 +32125,7 @@ Grounding Lite provides tools that allow LLMs to access the following Google Map
 
 #### Step 1: Enable the Maps Grounding Lite service on your Google Cloud project
 
-1. [Set up your Google Cloud project](https://developers.google.com/maps/get-started#create-project) if you haven’t got one.
+1. [Set up your Google Cloud project](https://developers.google.com/maps/get-started#create-project) if you haven�t got one.
 1. In the [Google Cloud Console](https://console.developers.google.com), choose the project you want to use for Grounding Lite.
 1. Enable Grounding Lite in the [Google Cloud Console API Library](https://console.developers.google.com/apis/library/mapstools.googleapis.com).
 1. [Get a Google Maps Platform API Key](https://developers.google.com/maps/get-started#api-key)
@@ -32203,7 +32203,7 @@ from . import agent
 
    - Select the `travel_planner_agent`.
    - Try prompts like:
-     - "I will be in San Francisco tomorrow. What’s the weather like?"
+     - "I will be in San Francisco tomorrow. What�s the weather like?"
      - "Find coffee shops near Golden Gate Park."
      - "Get directions from GooglePlex to SFO."
 
@@ -32688,10 +32688,10 @@ When deploying ADK agents that use MCP tools to production environments like Clo
 
 ### Critical Deployment Requirement: Synchronous Agent Definition
 
-**⚠️ Important:** When deploying agents with MCP tools, the agent and its McpToolset must be defined **synchronously** in your `agent.py` file. While `adk web` allows for asynchronous agent creation, deployment environments require synchronous instantiation.
+**?? Important:** When deploying agents with MCP tools, the agent and its McpToolset must be defined **synchronously** in your `agent.py` file. While `adk web` allows for asynchronous agent creation, deployment environments require synchronous instantiation.
 
 ```python
-# ✅ CORRECT: Synchronous agent definition for deployment
+# ? CORRECT: Synchronous agent definition for deployment
 import os
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.tools.mcp_tool import McpToolset
@@ -32725,7 +32725,7 @@ root_agent = LlmAgent(
 ```
 
 ```python
-# ❌ WRONG: Asynchronous patterns don't work in deployment
+# ? WRONG: Asynchronous patterns don't work in deployment
 async def get_agent():  # This won't work for deployment
     toolset = await create_mcp_toolset_async()
     return LlmAgent(tools=[toolset])
@@ -32976,19 +32976,19 @@ spec:
 
 When deploying agents with MCP tools to production:
 
-**✅ Connection Lifecycle**
+**? Connection Lifecycle**
 
 - Ensure proper cleanup of MCP connections using exit_stack patterns
 - Configure appropriate timeouts for connection establishment and requests
 - Implement retry logic for transient connection failures
 
-**✅ Resource Management**
+**? Resource Management**
 
 - Monitor memory usage for stdio MCP servers (each spawns a process)
 - Configure appropriate CPU/memory limits for MCP server processes
 - Consider connection pooling for remote MCP servers
 
-**✅ Security**
+**? Security**
 
 - Use authentication headers for remote MCP connections
 - Restrict network access between ADK agents and MCP servers
@@ -32997,13 +32997,13 @@ When deploying agents with MCP tools to production:
 - Use restrictive file paths for filesystem MCP servers (e.g., `os.path.dirname(os.path.abspath(__file__))`)
 - Consider read-only tool filters for production environments
 
-**✅ Monitoring & Observability**
+**? Monitoring & Observability**
 
 - Log MCP connection establishment and teardown events
 - Monitor MCP tool execution times and success rates
 - Set up alerts for MCP connection failures
 
-**✅ Scalability**
+**? Scalability**
 
 - For high-volume deployments, prefer remote MCP servers over stdio
 - Configure session affinity if using stateful MCP servers
@@ -33545,11 +33545,11 @@ When users ask for multiple pieces of information, always call functions in
 parallel.
 
   Examples:
-  - "Get weather for London and currency rate USD to EUR" → Call both functions
+  - "Get weather for London and currency rate USD to EUR" ? Call both functions
     simultaneously
-  - "Compare cities A and B" → Call get_weather, get_population, get_distance in
+  - "Compare cities A and B" ? Call get_weather, get_population, get_distance in
     parallel
-  - "Analyze multiple stocks" → Call get_stock_price for each stock in parallel
+  - "Analyze multiple stocks" ? Call get_stock_price for each stock in parallel
 
   Always prefer multiple specific function calls over single complex calls.
 ```
@@ -33841,7 +33841,7 @@ Pub/Sub and Eventarc deliver events to your agent as HTTP POST requests. When a 
 
 1. **Parses the request** according to the source format (Pub/Sub push message or CloudEvent).
 1. **Decodes the payload.** Base64-encoded message data is decoded and, if possible, parsed as JSON.
-1. **Creates a session** automatically with a generated UUID. Unlike the `/run` endpoint, you do not need to enable `--auto_create_session` — trigger endpoints always create a new session per event.
+1. **Creates a session** automatically with a generated UUID. Unlike the `/run` endpoint, you do not need to enable `--auto_create_session` � trigger endpoints always create a new session per event.
 1. **Runs your agent** with the decoded event as a user message.
 1. **Returns a status code.** A `200` response tells Pub/Sub or Eventarc that the event was processed successfully. A `500` response signals a failure, and the event source retries delivery based on its retry policy.
 
@@ -34333,8 +34333,8 @@ For TypeScript, you should be inside the agent project directory itself.
 
 ```console
 parent_folder/
-└── my_sample_agent/  <-- For TypeScript, run commands from here
-    └── agent.py (or Agent.java or agent.ts)
++-- my_sample_agent/  <-- For TypeScript, run commands from here
+    +-- agent.py (or Agent.java or agent.ts)
 ```
 
 **Launch the Local Server**
@@ -34730,7 +34730,7 @@ This starts an interactive session where you can type queries and see agent resp
 ```shell
 Running agent my_agent, type exit to exit.
 [user]: What's the weather in New York?
-[my_agent]: The weather in New York is sunny with a temperature of 25°C.
+[my_agent]: The weather in New York is sunny with a temperature of 25�C.
 [user]: exit
 ```
 
@@ -34820,7 +34820,7 @@ At its heart, the ADK Runtime operates on an **Event Loop**. This loop facilitat
 In simple terms:
 
 1. The `Runner` receives a user query and asks the main `Agent` to start processing.
-1. The `Agent` (and its associated logic) runs until it has something to report (like a response, a request to use a tool, or a state change) – it then **yields** or **emits** an `Event`.
+1. The `Agent` (and its associated logic) runs until it has something to report (like a response, a request to use a tool, or a state change) � it then **yields** or **emits** an `Event`.
 1. The `Runner` receives this `Event`, processes any associated actions (like saving state changes via `Services`), and forwards the event onwards (e.g., to the user interface).
 1. The `Agent`'s logic **resumes** from where it paused only *after* the `Runner` has processed the event, and then potentially sees the effects of the changes committed by the Runner.
 1. This cycle repeats until the agent has no more events to yield for the current user query.
@@ -35642,7 +35642,7 @@ Supported in ADKPython v0.1.0Typescript v0.2.0Go v0.1.0Java v0.1.0
 
 `RunConfig` defines runtime behavior and options for agents in ADK. It controls speech and streaming settings, function calling, artifact saving, and limits on LLM calls.
 
-When constructing an agent run, you can pass a `RunConfig` to customize how the agent interacts with models, handles audio, and streams responses. By default, no streaming is enabled and inputs aren’t retained as artifacts. Use `RunConfig` to override these defaults.
+When constructing an agent run, you can pass a `RunConfig` to customize how the agent interacts with models, handles audio, and streams responses. By default, no streaming is enabled and inputs aren�t retained as artifacts. Use `RunConfig` to override these defaults.
 
 ## Class Definition
 
@@ -36389,12 +36389,12 @@ Organize your project files as follows:
 
 ```text
 your-project-directory/
-├── capital_agent/
-│   ├── __init__.py
-│   └── agent.py       # Your agent code (see "Agent sample" tab)
-├── main.py            # FastAPI application entry point
-├── requirements.txt   # Python dependencies
-└── Dockerfile         # Container build instructions
++-- capital_agent/
+�   +-- __init__.py
+�   +-- agent.py       # Your agent code (see "Agent sample" tab)
++-- main.py            # FastAPI application entry point
++-- requirements.txt   # Python dependencies
++-- Dockerfile         # Container build instructions
 ```
 
 Create the following files (`main.py`, `requirements.txt`, `Dockerfile`) in the root of `your-project-directory/`.
@@ -36484,13 +36484,13 @@ Example structure:
 
 ```text
 your-project-directory/
-├── capital_agent/
-│   ├── __init__.py
-│   └── agent.py       # contains `root_agent` definition
-├── population_agent/
-│   ├── __init__.py
-│   └── agent.py       # contains `root_agent` definition
-└── ...
++-- capital_agent/
+�   +-- __init__.py
+�   +-- agent.py       # contains `root_agent` definition
++-- population_agent/
+�   +-- __init__.py
+�   +-- agent.py       # contains `root_agent` definition
++-- ...
 ```
 
 #### Deploy using `gcloud`
@@ -36769,14 +36769,14 @@ Organize your project files as follows:
 
 ```text
 your-project-directory/
-├── src/
-│   └── main/
-│       └── java/
-│             └── agents/
-│                 ├── capitalagent/
-│                     └── CapitalAgent.java    # Your agent code
-├── pom.xml                                    # Java adk and adk-dev dependencies
-└── Dockerfile                                 # Container build instructions
++-- src/
+�   +-- main/
+�       +-- java/
+�             +-- agents/
+�                 +-- capitalagent/
+�                     +-- CapitalAgent.java    # Your agent code
++-- pom.xml                                    # Java adk and adk-dev dependencies
++-- Dockerfile                                 # Container build instructions
 ```
 
 Create the `pom.xml` and `Dockerfile` in the root of your project directory. Your Agent code file (`CapitalAgent.java`) inside a directory as shown above.
@@ -37077,12 +37077,12 @@ To proceed, organize your project files as follows:
 
 ```text
 your-project-directory/
-├── capital_agent/
-│   ├── __init__.py
-│   └── agent.py       # Your agent code (see "Capital Agent example" below)
-├── main.py            # FastAPI application entry point
-├── requirements.txt   # Python dependencies
-└── Dockerfile         # Container build instructions
++-- capital_agent/
+�   +-- __init__.py
+�   +-- agent.py       # Your agent code (see "Capital Agent example" below)
++-- main.py            # FastAPI application entry point
++-- requirements.txt   # Python dependencies
++-- Dockerfile         # Container build instructions
 ```
 
 ### Code files
@@ -37631,7 +37631,7 @@ The deployment *does not* include the ADK API server or the ADK web user interfa
 
 Supported in ADKPython
 
-This deployment procedure describes how to perform a deployment using [agents-cli](https://google.github.io/agents-cli/) and the ADK. Deploying to Agent Runtime via agents-cli provides an accelerated path to a production-ready environment. agents-cli automatically configures Google Cloud resources, CI/CD pipelines, and Infrastructure-as-Code (Terraform) to support the entire development lifecycle. As a best practice, always ensure you review the generated configurations to align with your organization’s security and compliance standards before production deployment.
+This deployment procedure describes how to perform a deployment using [agents-cli](https://google.github.io/agents-cli/) and the ADK. Deploying to Agent Runtime via agents-cli provides an accelerated path to a production-ready environment. agents-cli automatically configures Google Cloud resources, CI/CD pipelines, and Infrastructure-as-Code (Terraform) to support the entire development lifecycle. As a best practice, always ensure you review the generated configurations to align with your organization�s security and compliance standards before production deployment.
 
 This deployment guide uses agents-cli to apply a project template to your existing project, add deployment artifacts, and prepare your agent project for deployment. These instructions show you how to use agents-cli to provision a Google Cloud project with services needed for deploying your ADK project, as follows:
 
@@ -37647,8 +37647,8 @@ For information on testing a deployed agent, see [Test deployed agent](https://a
 You need the following resources configured to use this deployment path:
 
 - **Google Cloud Project and Permissions**: A Google Cloud project with [billing enabled](https://cloud.google.com/billing/docs/how-to/modify-project). You can use an existing project or create a new one. You must have one of the following IAM roles assigned within this project:
-  - **Agent Platform User role** — sufficient to deploy an agent to Agent Runtime.
-  - **Owner role** — required for the full production setup (Terraform infrastructure provisioning, CI/CD pipelines, IAM configuration).
+  - **Agent Platform User role** � sufficient to deploy an agent to Agent Runtime.
+  - **Owner role** � required for the full production setup (Terraform infrastructure provisioning, CI/CD pipelines, IAM configuration).
 
 Note
 
@@ -37671,10 +37671,10 @@ To prepare your ADK project for deployment to Agent Runtime:
 
    ```text
    your-project-directory/
-   ├── my_agent/
-   │   ├── __init__.py
-   │   ├── agent.py
-   │   └── .env
+   +-- my_agent/
+   �   +-- __init__.py
+   �   +-- agent.py
+   �   +-- .env
    ```
 
    Navigate to `your-project-directory/`
@@ -37761,26 +37761,26 @@ The agents-cli tools add more files to your project for deployment. The procedur
 
 ```text
 my_agent/
-├─ __init__.py
-├─ agent.py
-└─ .env
++- __init__.py
++- agent.py
++- .env
 ```
 
 After running the agents-cli scaffold enhance command to add Agent Runtime deployment information, the new structure is as follows:
 
 ```text
 my-agent/
-├─ app/                 # Core application code
-│   ├─ agent.py         # Main agent logic
-│   ├─ agent_engine_app.py # Agent Runtime application logic
-│   └─ utils/           # Utility functions and helpers
-├─ .cloudbuild/         # CI/CD pipeline configurations for Google Cloud Build
-├─ deployment/          # Infrastructure and deployment scripts
-├─ notebooks/           # Jupyter notebooks for prototyping and evaluation
-├─ tests/               # Unit, integration, and load tests
-├─ Makefile             # Makefile for common commands
-├─ GEMINI.md            # AI-assisted development guide
-└─ pyproject.toml       # Project dependencies and configuration
++- app/                 # Core application code
+�   +- agent.py         # Main agent logic
+�   +- agent_engine_app.py # Agent Runtime application logic
+�   +- utils/           # Utility functions and helpers
++- .cloudbuild/         # CI/CD pipeline configurations for Google Cloud Build
++- deployment/          # Infrastructure and deployment scripts
++- notebooks/           # Jupyter notebooks for prototyping and evaluation
++- tests/               # Unit, integration, and load tests
++- Makefile             # Makefile for common commands
++- GEMINI.md            # AI-assisted development guide
++- pyproject.toml       # Project dependencies and configuration
 ```
 
 See the *README.md* file in your updated ADK project folder for more information. For more information on using agents-cli, see the [agents-cli documentation](https://google.github.io/agents-cli/).
@@ -37866,9 +37866,9 @@ With your Google Cloud and coding environment prepared, you're ready to deploy y
 
 ```shell
 multi_tool_agent/
-├── .env
-├── __init__.py
-└── agent.py
++-- .env
++-- __init__.py
++-- agent.py
 ```
 
 For more details on the project files and format, see the [multi_tool_agent](https://github.com/google/adk-docs/tree/main/examples/python/snippets/get-started/multi_tool_agent) code sample.
@@ -38426,7 +38426,7 @@ The trajectory is just a list of steps the agent took before it returned to the 
 
 ### Evaluating trajectory and tool use
 
-Before responding to a user, an agent typically performs a series of actions, which we refer to as a 'trajectory.' It might compare the user input with session history to disambiguate a term, or lookup a policy document, search a knowledge base or invoke an API to save a ticket. We call this a ‘trajectory’ of actions. Evaluating an agent's performance requires comparing its actual trajectory to an expected, or ideal, one. This comparison can reveal errors and inefficiencies in the agent's process. The expected trajectory represents the ground truth -- the list of steps we anticipate the agent should take.
+Before responding to a user, an agent typically performs a series of actions, which we refer to as a 'trajectory.' It might compare the user input with session history to disambiguate a term, or lookup a policy document, search a knowledge base or invoke an API to save a ticket. We call this a �trajectory� of actions. Evaluating an agent's performance requires comparing its actual trajectory to an expected, or ideal, one. This comparison can reveal errors and inefficiencies in the agent's process. The expected trajectory represents the ground truth -- the list of steps we anticipate the agent should take.
 
 For example:
 
@@ -38883,7 +38883,7 @@ This metric is particularly valuable for:
 - **Workflow validation:** Verifying that agents correctly follow predefined workflows that require specific API calls in a specific order.
 - **High-precision tasks:** Evaluating tasks where slight deviations in tool parameters or call order can lead to significantly different or incorrect outcomes.
 
-Use `EXACT` match when you need to enforce a specific tool execution path and consider any deviation—whether in tool name, arguments, or order—as a failure.
+Use `EXACT` match when you need to enforce a specific tool execution path and consider any deviation�whether in tool name, arguments, or order�as a failure.
 
 Use `IN_ORDER` match when you want to ensure certain key tool calls occur in a specific order, but allow for other tool calls to happen in between. This option is useful in assuring if certain key actions or tool calls occur and in certain order, leaving some scope for other tools calls to happen as well.
 
@@ -39565,7 +39565,7 @@ Here is an example of providing `metric_info` for a custom metric that returns a
 
 Supported in ADKPython v1.24.0
 
-When evaluating agents that rely on external dependencies — such as APIs, databases, or third-party services — running those tools live during testing can be slow, costly, or unreliable. The **Environment Simulator** lets you safely intercept these tool calls during agent execution and replace them with controlled, deterministic responses, without modifying the agent itself. This approach can fill a critical gap in the agent improvement loop, allowing you to create hermetic, offline test runs that isolate your agent logic for reliable scoring.
+When evaluating agents that rely on external dependencies � such as APIs, databases, or third-party services � running those tools live during testing can be slow, costly, or unreliable. The **Environment Simulator** lets you safely intercept these tool calls during agent execution and replace them with controlled, deterministic responses, without modifying the agent itself. This approach can fill a critical gap in the agent improvement loop, allowing you to create hermetic, offline test runs that isolate your agent logic for reliable scoring.
 
 Overall, this feature lets you:
 
@@ -39583,7 +39583,7 @@ releases.
 
 ## How it works
 
-While [User Simulation](/evaluate/user-sim/) drives the conversation forward, Environment Simulation provides the stable backend. At a high level, the Environment Simulator sits between your agent and its tools. When the agent calls a tool, the simulator intercepts the call and decides whether to return a synthetic response — either a predefined injection or an LLM-generated mock — or to let the real tool execute.
+While [User Simulation](/evaluate/user-sim/) drives the conversation forward, Environment Simulation provides the stable backend. At a high level, the Environment Simulator sits between your agent and its tools. When the agent calls a tool, the simulator intercepts the call and decides whether to return a synthetic response � either a predefined injection or an LLM-generated mock � or to let the real tool execute.
 
 The decision logic follows this order for each configured tool:
 
@@ -39595,8 +39595,8 @@ The decision logic follows this order for each configured tool:
 
 The `EnvironmentSimulationFactory` class provides two integration points:
 
-- `create_callback()` — Returns an async callable suitable for use as a `before_tool_callback` on any `LlmAgent`.
-- `create_plugin()` — Returns an `EnvironmentSimulationPlugin` instance that integrates with the ADK plugin system.
+- `create_callback()` � Returns an async callable suitable for use as a `before_tool_callback` on any `LlmAgent`.
+- `create_plugin()` � Returns an `EnvironmentSimulationPlugin` instance that integrates with the ADK plugin system.
 
 ### Using as a callback
 
@@ -39700,7 +39700,7 @@ Controls a single synthetic response that can be injected into a tool call. Exac
 | `injected_response`        | `Dict[str, Any] \| None` | `None`  | Fixed response dict to return (mutually exclusive with `injected_error`).                               |
 | `injection_probability`    | `float`                  | `1.0`   | Probability `[0.0, 1.0]` that this injection fires.                                                     |
 | `match_args`               | `Dict[str, Any] \| None` | `None`  | If set, the injection only fires when the tool's arguments contain all key-value pairs in `match_args`. |
-| `injected_latency_seconds` | `float`                  | `0.0`   | Artificial delay (≤ 120 s) added before returning the injection result.                                 |
+| `injected_latency_seconds` | `float`                  | `0.0`   | Artificial delay (= 120 s) added before returning the injection result.                                 |
 | `random_seed`              | `int \| None`            | `None`  | Seed for the probability check, enabling deterministic injection behavior.                              |
 
 ### `InjectedError`
@@ -39835,13 +39835,13 @@ ToolSimulationConfig(
 
 ## Mock strategy mode
 
-When you want the simulator to generate plausible responses automatically — rather than returning hand-crafted values — use `MOCK_STRATEGY_TOOL_SPEC`.
+When you want the simulator to generate plausible responses automatically � rather than returning hand-crafted values � use `MOCK_STRATEGY_TOOL_SPEC`.
 
 The simulator uses an LLM to:
 
 1. Analyze the schemas of all tools the agent has access to, and identify *stateful dependencies* between them (e.g., a `create_order` tool produces an `order_id` that `get_order` consumes).
 1. Track a **state store** of IDs and resources created during the session.
-1. Generate a response that is consistent with the tool's schema and the current state — returning a 404-style error if a consuming tool requests a resource that was never created.
+1. Generate a response that is consistent with the tool's schema and the current state � returning a 404-style error if a consuming tool requests a resource that was never created.
 
 ```python
 from google.adk.tools.environment_simulation.environment_simulation_config import (
@@ -40205,7 +40205,7 @@ The `--user_simulation_config_file` expects a JSON file matching the `Conversati
 
 Supported in ADKPythonTypeScriptGoJava
 
-As AI agents grow in capability, ensuring they operate safely, securely, and align with your brand values is paramount. Uncontrolled agents can pose risks, including executing misaligned or harmful actions, such as data exfiltration, and generating inappropriate content that can impact your brand’s reputation. **Sources of risk include vague instructions, model hallucination, jailbreaks and prompt injections from adversarial users, and indirect prompt injections via tool use.**
+As AI agents grow in capability, ensuring they operate safely, securely, and align with your brand values is paramount. Uncontrolled agents can pose risks, including executing misaligned or harmful actions, such as data exfiltration, and generating inappropriate content that can impact your brand�s reputation. **Sources of risk include vague instructions, model hallucination, jailbreaks and prompt injections from adversarial users, and indirect prompt injections via tool use.**
 
 [Google Cloud Agent Platform](https://cloud.google.com/vertex-ai/generative-ai/docs/overview) provides a multi-layered approach to mitigate these risks, enabling you to build powerful *and* trustworthy agents. It offers several mechanisms to establish strict boundaries, ensuring agents only perform actions you've explicitly allowed:
 
@@ -40241,7 +40241,7 @@ Before implementing safety measures, perform a thorough risk assessment specific
   - Misinterpreting complex or ambiguous instructions
 - **Harmful content generation, including brand safety**
   - Generating toxic, hateful, biased, sexually explicit, discriminatory, or illegal content
-  - Brand safety risks such as Using language that goes against the brand’s values or off-topic conversations
+  - Brand safety risks such as Using language that goes against the brand�s values or off-topic conversations
 - **Unsafe actions**
   - Executing commands that damage systems
   - Making unauthorized purchases or financial transactions.
@@ -40551,7 +40551,7 @@ agent, _ := llmagent.New(llmagent.Config{
 })
 ```
 
-- **System instructions for safety**: [System instructions](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/safety-system-instructions) for Gemini models on Agent Platform provide direct guidance to the model on how to behave and what type of content to generate. By providing specific instructions, you can proactively steer the model away from generating undesirable content to meet your organization’s unique needs. You can craft system instructions to define content safety guidelines, such as prohibited and sensitive topics, and disclaimer language, as well as brand safety guidelines to ensure the model's outputs align with your brand's voice, tone, values, and target audience.
+- **System instructions for safety**: [System instructions](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/safety-system-instructions) for Gemini models on Agent Platform provide direct guidance to the model on how to behave and what type of content to generate. By providing specific instructions, you can proactively steer the model away from generating undesirable content to meet your organization�s unique needs. You can craft system instructions to define content safety guidelines, such as prohibited and sensitive topics, and disclaimer language, as well as brand safety guidelines to ensure the model's outputs align with your brand's voice, tone, values, and target audience.
 
 While these measures are robust against content safety, you need additional checks to reduce agent misalignment, unsafe actions, and brand safety risks.
 
@@ -40725,7 +40725,7 @@ Some examples include:
 
 - **Gemini as a Judge Plugin**: This plugin uses Gemini Flash Lite to evaluate user inputs, tool input and output, and agent's response for appropriateness, prompt injection, and jailbreak detection. The plugin configures Gemini to act as a safety filter to mitigate against content safety, brand safety, and agent misalignment. The plugin is configured to pass user input, tool input and output, and model output to Gemini Flash Lite, who decides if the input to the agent is safe or unsafe. If Gemini decides the input is unsafe, the agent returns a predetermined response: "Sorry I cannot help with that. Can I help you with something else?".
 - **Model Armor Plugin**: A plugin that queries the model armor API to check for potential content safety violations at specified points of agent execution. Similar to the *Gemini as a Judge* plugin, if Model Armor finds matches of harmful content, it returns a predetermined response to the user.
-- **PII Redaction Plugin**: A specialized plugin with design for the [Before Tool Callback](/plugins/#tool-callbacks) and specifically created to redact personally identifiable information before it’s processed by a tool or sent to an external service.
+- **PII Redaction Plugin**: A specialized plugin with design for the [Before Tool Callback](/plugins/#tool-callbacks) and specifically created to redact personally identifiable information before it�s processed by a tool or sent to an external service.
 
 ### Sandboxed Code Execution
 
@@ -42696,8 +42696,8 @@ ADK provides services to manage these concepts:
 
 **In Summary:**
 
-- **`Session` & `State`**: Focus on the **current interaction** – the history and data of the *single, active conversation*. Managed primarily by a `SessionService`.
-- **Memory**: Focuses on the **past and external information** – a *searchable archive* potentially spanning across conversations. Managed by a `MemoryService`.
+- **`Session` & `State`**: Focus on the **current interaction** � the history and data of the *single, active conversation*. Managed primarily by a `SessionService`.
+- **Memory**: Focuses on the **past and external information** � a *searchable archive* potentially spanning across conversations. Managed by a `MemoryService`.
 
 ## What's Next?
 
@@ -42740,7 +42740,7 @@ The ADK offers two distinct `MemoryService` implementations, each tailored to di
 | **Search Capability** | Basic keyword matching.                                                           | Advanced semantic search.                                                                                                                                                                                          |
 | **Setup Complexity**  | None. It's the default.                                                           | Low. Requires an [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/memory-bank/overview) instance on Agent Platform.                                                               |
 | **Dependencies**      | None.                                                                             | Google Cloud Project, Agent Platform API                                                                                                                                                                           |
-| **When to use it**    | When you want to search across multiple sessions’ chat histories for prototyping. | When you want your agent to remember and learn from past interactions.                                                                                                                                             |
+| **When to use it**    | When you want to search across multiple sessions� chat histories for prototyping. | When you want your agent to remember and learn from past interactions.                                                                                                                                             |
 
 ## In-Memory Memory
 
@@ -43488,7 +43488,7 @@ For example, your agent could use the framework-configured `InMemoryMemoryServic
 
 #### Example: Using Two Memory Services
 
-Here’s how you could implement that in your agent's code:
+Here�s how you could implement that in your agent's code:
 
 ```python
 from google.adk.agents import Agent
@@ -43549,7 +43549,7 @@ Conceptually, `session.state` is a collection (dictionary or Map) holding key-va
    - Data is stored as `key: value`.
    - **Keys:** Always strings (`str`). Use clear names (e.g., `'departure_city'`, `'user:language_preference'`).
    - **Values:** Must be **serializable**. This means they can be easily saved and loaded by the `SessionService`. Stick to basic types in the specific languages (Python/Go/Java/TypeScript) like strings, numbers, booleans, and simple lists or dictionaries containing *only* these basic types. (See API documentation for precise details).
-   - **⚠️ Avoid Complex Objects:** **Do not store non-serializable objects** (custom class instances, functions, connections, etc.) directly in the state. Store simple identifiers if needed, and retrieve the complex object elsewhere.
+   - **?? Avoid Complex Objects:** **Do not store non-serializable objects** (custom class instances, functions, connections, etc.) directly in the state. Store simple identifiers if needed, and retrieve the complex object elsewhere.
 
 1. **Mutability: It Changes**
 
@@ -43712,7 +43712,7 @@ Some ADK examples use Python f-strings in instructions, such as `f"Topic: {{init
 
 #### Using `InstructionProvider` for Full Control
 
-In some cases, you may need full control over the instruction string — for example, when your instructions contain literal curly braces (e.g., JSON examples, templating syntax) that would otherwise be interpreted as state variable placeholders.
+In some cases, you may need full control over the instruction string � for example, when your instructions contain literal curly braces (e.g., JSON examples, templating syntax) that would otherwise be interpreted as state variable placeholders.
 
 To achieve this, provide a function to the `instruction` parameter instead of a string. This function is called an `InstructionProvider`. When you use an `InstructionProvider`, the ADK will **not** attempt to inject state variables, and the returned string will be passed to the model as-is.
 
@@ -43724,7 +43724,7 @@ from google.adk.agents.readonly_context import ReadonlyContext
 
 # This is an InstructionProvider
 def my_instruction_provider(context: ReadonlyContext) -> str:
-    # No state injection occurs — curly braces are treated as literal text.
+    # No state injection occurs � curly braces are treated as literal text.
     return 'Format your output as JSON: {"city": "<name>", "population": <number>}'
 
 agent = LlmAgent(
@@ -43739,7 +43739,7 @@ import { LlmAgent, ReadonlyContext } from "@google/adk";
 
 // This is an InstructionProvider
 function myInstructionProvider(context: ReadonlyContext): string {
-    // No state injection occurs — curly braces are treated as literal text.
+    // No state injection occurs � curly braces are treated as literal text.
     return 'Format your output as JSON: {"city": "<name>", "population": <number>}';
 }
 
@@ -43769,7 +43769,7 @@ import io.reactivex.rxjava3.core.Single;
 // This is an Instruction.Provider
 Instruction.Provider myInstructionProvider = new Instruction.Provider(
     (ReadonlyContext context) -> {
-        // No state injection occurs — curly braces are treated as literal text.
+        // No state injection occurs � curly braces are treated as literal text.
         return Single.just("Format your output as JSON: {\"city\": \"<name>\", \"population\": <number>}");
     }
 );
@@ -44471,7 +44471,7 @@ public class MyAgentCallbacks {
 - Updates the session's `last_update_time`.
 - Ensures thread-safety for concurrent updates.
 
-### ⚠️ A Warning About Direct State Modification
+### ?? A Warning About Direct State Modification
 
 Avoid directly modifying the `session.state` collection (dictionary/Map) on a `Session` object that was obtained directly from the `SessionService` (e.g., via `session_service.get_session()` or `session_service.create_session()`) *outside* of the managed lifecycle of an agent invocation (i.e., not through a `CallbackContext` or `ToolContext`). For example, code like `retrieved_session = await session_service.get_session(...); retrieved_session.state['key'] = value` is problematic.
 
@@ -44508,7 +44508,7 @@ When a user starts interacting with your agent, the `SessionService` creates a `
   - `id`: A unique identifier for *this specific* conversation thread, essential for retrieving it later. A SessionService object can handle multiple `Session`(s). This field identifies which particular session object are we referring to. For example, "test_id_modification".
   - `app_name`: Identifies which agent application this conversation belongs to. For example, "id_modifier_workflow".
   - `userId`: Links the conversation to a particular user.
-- **History (`events`):** A chronological sequence of all interactions (`Event` objects – user messages, agent responses, tool actions) that have occurred within this specific thread.
+- **History (`events`):** A chronological sequence of all interactions (`Event` objects � user messages, agent responses, tool actions) that have occurred within this specific thread.
 - **Session State (`state`):** A place to store temporary data relevant *only* to this specific, ongoing conversation. This acts as a scratchpad for the agent during the interaction. We will cover how to use and manage `state` in detail in the next section.
 - **Activity Tracking (`lastUpdateTime`):** A timestamp indicating the last time an event occurred in this conversation thread.
 
@@ -44779,7 +44779,7 @@ The schema for the session database changed in ADK Python v1.22.0, which require
 
 ## The Session Lifecycle
 
-Here’s a simplified flow of how `Session` and `SessionService` work together during a conversation turn:
+Here�s a simplified flow of how `Session` and `SessionService` work together during a conversation turn:
 
 1. **Start or Resume:** Your application needs to use the `SessionService` to either `create_session` (for a new chat) or use an existing session id.
 1. **Context Provided:** The `Runner` gets the appropriate `Session` object from the appropriate service method, providing the agent with access to the corresponding Session's `state` and `events`.
@@ -45080,12 +45080,12 @@ When the ADK framework encounters a point where a callback can run (e.g., just b
 1. **`return <Specific Object>` (Override Default Behavior):**
 
    - Returning a *specific type of object* (instead of `None`) is how you **override** the ADK agent's default behavior. The framework will use the object you return and *skip* the step that would normally follow or *replace* the result that was just generated.
-   - **`before_agent_callback` → `types.Content`**: Skips the agent's main execution logic (`_run_async_impl` / `_run_live_impl`). The returned `Content` object is immediately treated as the agent's final output for this turn. Useful for handling simple requests directly or enforcing access control.
-   - **`before_model_callback` → `LlmResponse`**: Skips the call to the external Large Language Model. The returned `LlmResponse` object is processed as if it were the actual response from the LLM. Ideal for implementing input guardrails, prompt validation, or serving cached responses.
-   - **`before_tool_callback` → `dict` or `Map`**: Skips the execution of the actual tool function (or sub-agent). The returned `dict` is used as the result of the tool call, which is then typically passed back to the LLM. Perfect for validating tool arguments, applying policy restrictions, or returning mocked/cached tool results.
-   - **`after_agent_callback` → `types.Content`**: *Replaces* the `Content` that the agent's run logic just produced.
-   - **`after_model_callback` → `LlmResponse`**: *Replaces* the `LlmResponse` received from the LLM. Useful for sanitizing outputs, adding standard disclaimers, or modifying the LLM's response structure.
-   - **`after_tool_callback` → `dict` or `Map`**: *Replaces* the `dict` result returned by the tool. Allows for post-processing or standardization of tool outputs before they are sent back to the LLM.
+   - **`before_agent_callback` ? `types.Content`**: Skips the agent's main execution logic (`_run_async_impl` / `_run_live_impl`). The returned `Content` object is immediately treated as the agent's final output for this turn. Useful for handling simple requests directly or enforcing access control.
+   - **`before_model_callback` ? `LlmResponse`**: Skips the call to the external Large Language Model. The returned `LlmResponse` object is processed as if it were the actual response from the LLM. Ideal for implementing input guardrails, prompt validation, or serving cached responses.
+   - **`before_tool_callback` ? `dict` or `Map`**: Skips the execution of the actual tool function (or sub-agent). The returned `dict` is used as the result of the tool call, which is then typically passed back to the LLM. Perfect for validating tool arguments, applying policy restrictions, or returning mocked/cached tool results.
+   - **`after_agent_callback` ? `types.Content`**: *Replaces* the `Content` that the agent's run logic just produced.
+   - **`after_model_callback` ? `LlmResponse`**: *Replaces* the `LlmResponse` received from the LLM. Useful for sanitizing outputs, adding standard disclaimers, or modifying the LLM's response structure.
+   - **`after_tool_callback` ? `dict` or `Map`**: *Replaces* the `dict` result returned by the tool. Allows for post-processing or standardization of tool outputs before they are sent back to the LLM.
 
 **Conceptual Code Example (Guardrail):**
 
@@ -49195,7 +49195,7 @@ public class ArtifactDataExample {
 
 - **Identifier:** A simple string used to name and retrieve an artifact within its specific namespace.
 - **Uniqueness:** Filenames must be unique within their scope (either the session or the user namespace).
-- **Best Practice:** Use descriptive names, potentially including file extensions (e.g., `"monthly_report.pdf"`, `"user_avatar.jpg"`), although the extension itself doesn't dictate behavior – the `mime_type` does.
+- **Best Practice:** Use descriptive names, potentially including file extensions (e.g., `"monthly_report.pdf"`, `"user_avatar.jpg"`), although the extension itself doesn't dictate behavior � the `mime_type` does.
 
 ### Versioning
 
@@ -50154,7 +50154,7 @@ To use artifacts effectively and maintainably:
 - **Understand Versioning:** Remember that `load_artifact()` without a specific `version` argument retrieves the *latest* version. If your logic depends on a specific historical version of an artifact, be sure to provide the integer version number when loading.
 - **Use Namespacing (`user:`) Deliberately:** Only use the `"user:"` prefix for filenames when the data truly belongs to the user and should be accessible across all their sessions. For data specific to a single conversation or session, use regular filenames without the prefix.
 - **Error Handling:**
-  - Always check if an `artifact_service` is actually configured before calling context methods (`save_artifact`, `load_artifact`, `list_artifacts`) – they will raise a `ValueError` if the service is `None`.
+  - Always check if an `artifact_service` is actually configured before calling context methods (`save_artifact`, `load_artifact`, `list_artifacts`) � they will raise a `ValueError` if the service is `None`.
   - Check the return value of `load_artifact`, as it will be `None` if the artifact or version doesn't exist. Don't assume it always returns a `Part`.
   - Be prepared to handle exceptions from the underlying storage service, especially with `GcsArtifactService` (e.g., `google.api_core.exceptions.Forbidden` for permission issues, `NotFound` if the bucket doesn't exist, network errors).
 - **Size Considerations:** Artifacts are suitable for typical file sizes, but be mindful of potential costs and performance impacts with extremely large files, especially with cloud storage. `InMemoryArtifactService` can consume significant memory if storing many large artifacts. Evaluate if very large data might be better handled through direct GCS links or other specialized storage solutions rather than passing entire byte arrays in-memory.
@@ -52289,7 +52289,7 @@ Refer to the [MCP Tools](/tools-custom/mcp-tools/) documentation on how you can 
 
 ## MCP Servers for Google Cloud Genmedia
 
-[MCP Tools for Genmedia Services](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia) is a set of open-source MCP servers that enable you to integrate Google Cloud generative media services—such as Imagen, Veo, Chirp 3 HD voices, and Lyria—into your AI applications.
+[MCP Tools for Genmedia Services](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia) is a set of open-source MCP servers that enable you to integrate Google Cloud generative media services�such as Imagen, Veo, Chirp 3 HD voices, and Lyria�into your AI applications.
 
 Agent Development Kit (ADK) and [Genkit](https://genkit.dev/) provide built-in support for these MCP tools, allowing your AI agents to effectively orchestrate generative media workflows. For implementation guidance, refer to the [ADK example agent](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/adk) and the [Genkit example](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/genkit).
 
@@ -52565,12 +52565,12 @@ This quickstart covers the most common starting point for any developer: **"Ther
 This sample demonstrates the **Agent2Agent (A2A)** architecture in the Agent Development Kit (ADK), showcasing how multiple agents can work together to handle complex tasks. The sample implements an agent that can roll dice and check if numbers are prime.
 
 ```text
-┌─────────────────┐    ┌──────────────────┐    ┌────────────────────┐
-│   Root Agent    │───▶│   Roll Agent     │    │   Remote Prime     │
-│  (Local)        │    │   (Local)        │    │   Agent            │
-│                 │    │                  │    │  (localhost:8001)  │
-│                 │───▶│                  │◀───│                    │
-└─────────────────┘    └──────────────────┘    └────────────────────┘
++-----------------+    +------------------+    +--------------------+
+�   Root Agent    �---?�   Roll Agent     �    �   Remote Prime     �
+�  (Local)        �    �   (Local)        �    �   Agent            �
+�                 �    �                  �    �  (localhost:8001)  �
+�                 �---?�                  �?---�                    �
++-----------------+    +------------------+    +--------------------+
 ```
 
 The A2A Basic sample consists of:
@@ -52597,12 +52597,12 @@ As you'll see, the folder structure is as follows:
 
 ```text
 a2a_basic/
-├── remote_a2a/
-│   └── check_prime_agent/
-│       └── main.go
-├── go.mod
-├── go.sum
-└── main.go # local root agent
++-- remote_a2a/
+�   +-- check_prime_agent/
+�       +-- main.go
++-- go.mod
++-- go.sum
++-- main.go # local root agent
 ```
 
 #### Main Agent (`a2a_basic/main.go`)
@@ -52753,11 +52753,11 @@ This quickstart covers the most common starting point for any developer: **"Ther
 This sample demonstrates the **Agent2Agent (A2A)** architecture in the Agent Development Kit (ADK) for Java, showcasing how multiple agents can work together to handle complex tasks.
 
 ```text
-┌─────────────────┐    ┌─────────────────┐    ┌────────────────────────┐
-│   Root Agent    │───▶│   Roll Agent    │    │   Remote Prime Agent   │
-│   (Local)       │    │   (Local)       │    │   (localhost:8001)     │
-│                 │───▶│                 │◀───│                        │
-└─────────────────┘    └─────────────────┘    └────────────────────────┘
++-----------------+    +-----------------+    +------------------------+
+�   Root Agent    �---?�   Roll Agent    �    �   Remote Prime Agent   �
+�   (Local)       �    �   (Local)       �    �   (localhost:8001)     �
+�                 �---?�                 �?---�                        �
++-----------------+    +-----------------+    +------------------------+
 ```
 
 The A2A Basic sample consists of:
@@ -52870,12 +52870,12 @@ This quickstart covers the most common starting point for any developer: **"Ther
 This sample demonstrates the **Agent2Agent (A2A)** architecture in the Agent Development Kit (ADK), showcasing how multiple agents can work together to handle complex tasks. The sample implements an agent that can roll dice and check if numbers are prime.
 
 ```text
-┌─────────────────┐    ┌──────────────────┐    ┌────────────────────┐
-│   Root Agent    │───▶│   Roll Agent     │    │   Remote Prime     │
-│  (Local)        │    │   (Local)        │    │   Agent            │
-│                 │    │                  │    │  (localhost:8001)  │
-│                 │───▶│                  │◀───│                    │
-└─────────────────┘    └──────────────────┘    └────────────────────┘
++-----------------+    +------------------+    +--------------------+
+�   Root Agent    �---?�   Roll Agent     �    �   Remote Prime     �
+�  (Local)        �    �   (Local)        �    �   Agent            �
+�                 �    �                  �    �  (localhost:8001)  �
+�                 �---?�                  �?---�                    �
++-----------------+    +------------------+    +--------------------+
 ```
 
 The A2A Basic sample consists of:
@@ -52908,14 +52908,14 @@ As you'll see, the folder structure is as follows:
 
 ```text
 a2a_basic/
-├── remote_a2a/
-│   └── check_prime_agent/
-│       ├── __init__.py
-│       ├── agent.json
-│       └── agent.py
-├── README.md
-├── __init__.py
-└── agent.py # local root agent
++-- remote_a2a/
+�   +-- check_prime_agent/
+�       +-- __init__.py
+�       +-- agent.json
+�       +-- agent.py
++-- README.md
++-- __init__.py
++-- agent.py # local root agent
 ```
 
 #### Main Agent (`a2a_basic/agent.py`)
@@ -53173,10 +53173,10 @@ This sample demonstrates how you can easily expose an ADK agent so that it can b
 In Go, you expose an agent by using the A2A launcher, which dynamically generates an agent card for you.
 
 ```text
-┌─────────────────┐                             ┌───────────────────────────────┐
-│   Root Agent    │       A2A Protocol          │ A2A-Exposed Check Prime Agent │
-│                 │────────────────────────────▶│      (localhost: 8001)        │
-└─────────────────┘                             └───────────────────────────────┘
++-----------------+                             +-------------------------------+
+�   Root Agent    �       A2A Protocol          � A2A-Exposed Check Prime Agent �
+�                 �----------------------------?�      (localhost: 8001)        �
++-----------------+                             +-------------------------------+
 ```
 
 The sample consists of :
@@ -53202,12 +53202,12 @@ As you'll see, the folder structure is as follows:
 
 ```text
 a2a_basic/
-├── remote_a2a/
-│   └── check_prime_agent/
-│       └── main.go    # Remote Prime Agent
-├── go.mod
-├── go.sum
-└── main.go            # Root agent
++-- remote_a2a/
+�   +-- check_prime_agent/
+�       +-- main.go    # Remote Prime Agent
++-- go.mod
++-- go.sum
++-- main.go            # Root agent
 ```
 
 #### Root Agent (`a2a_basic/main.go`)
@@ -53356,10 +53356,10 @@ This sample demonstrates how you can expose an ADK agent using Quarkus so that i
 In Java, you build an A2A server natively by relying on the ADK A2A extension. This uses the Quarkus framework, meaning you just configure your agent directly within your standard Quarkus `@ApplicationScoped` bindings.
 
 ```text
-┌─────────────────┐                             ┌───────────────────────────────┐
-│   Root Agent    │       A2A Protocol          │ A2A-Exposed Check Prime Agent │
-│                 │────────────────────────────▶│       (localhost:9090)        │
-└─────────────────┘                             └───────────────────────────────┘
++-----------------+                             +-------------------------------+
+�   Root Agent    �       A2A Protocol          � A2A-Exposed Check Prime Agent �
+�                 �----------------------------?�       (localhost:9090)        �
++-----------------+                             +-------------------------------+
 ```
 
 ## Exposing the Remote Agent with Quarkus
@@ -53482,22 +53482,22 @@ This quickstart will focus on `to_a2a()`, as it is the easiest way to expose you
 
 ```text
 Before:
-                                                ┌────────────────────┐
-                                                │ Hello World Agent  │
-                                                │  (Python Object)   │
-                                                | without agent card │
-                                                └────────────────────┘
+                                                +--------------------+
+                                                � Hello World Agent  �
+                                                �  (Python Object)   �
+                                                | without agent card �
+                                                +--------------------+
 
-                                                          │
-                                                          │ to_a2a()
-                                                          ▼
+                                                          �
+                                                          � to_a2a()
+                                                          ?
 
 After:
-┌────────────────┐                             ┌───────────────────────────────┐
-│   Root Agent   │       A2A Protocol          │ A2A-Exposed Hello World Agent │
-│(RemoteA2aAgent)│────────────────────────────▶│      (localhost: 8001)         │
-│(localhost:8000)│                             └───────────────────────────────┘
-└────────────────┘
++----------------+                             +-------------------------------+
+�   Root Agent   �       A2A Protocol          � A2A-Exposed Hello World Agent �
+�(RemoteA2aAgent)�----------------------------?�      (localhost: 8001)         �
+�(localhost:8000)�                             +-------------------------------+
++----------------+
 ```
 
 The sample consists of :
@@ -53591,12 +53591,12 @@ As you'll see, the folder structure is as follows:
 
 ```text
 a2a_root/
-├── remote_a2a/
-│   └── hello_world/    
-│       ├── __init__.py
-│       └── agent.py    # Remote Hello World Agent
-├── README.md
-└── agent.py            # Root agent
++-- remote_a2a/
+�   +-- hello_world/    
+�       +-- __init__.py
+�       +-- agent.py    # Remote Hello World Agent
++-- README.md
++-- agent.py            # Root agent
 ```
 
 #### Root Agent (`a2a_root/agent.py`)
@@ -54115,7 +54115,7 @@ Here are some sample queries to test:
 
 Google's Agent Development Kit ([ADK](https://adk.dev)) provides a production-ready framework for building Bidi-streaming applications with Gemini models. This guide introduces ADK's streaming architecture, which enables real-time, two-way communication between users and AI agents through multimodal channels (text, audio, video).
 
-**What you'll learn**: This part covers the fundamentals of Bidi-streaming, the underlying Live API technology (Gemini Live API and Gemini Live API (Agent Platform)), ADK's architectural components (`LiveRequestQueue`, `Runner`, `Agent`), and a complete FastAPI implementation example. You'll understand how ADK handles session management, tool orchestration, and platform abstraction—reducing months of infrastructure development to declarative configuration.
+**What you'll learn**: This part covers the fundamentals of Bidi-streaming, the underlying Live API technology (Gemini Live API and Gemini Live API (Agent Platform)), ADK's architectural components (`LiveRequestQueue`, `Runner`, `Agent`), and a complete FastAPI implementation example. You'll understand how ADK handles session management, tool orchestration, and platform abstraction�reducing months of infrastructure development to declarative configuration.
 
 ## ADK Gemini Live API Toolkit Demo
 
@@ -54139,14 +54139,14 @@ For installation instructions and usage details, see the [demo README](https://g
 
 Bidi-streaming (Bidirectional streaming) represents a fundamental shift from traditional AI interactions. Instead of the rigid "ask-and-wait" pattern, it enables **real-time, two-way communication** where both human and AI can speak, listen, and respond simultaneously. This creates natural, human-like conversations with immediate responses and the revolutionary ability to interrupt ongoing interactions.
 
-Think of the difference between sending emails and having a phone conversation. Traditional AI interactions are like emails—you send a complete message, wait for a complete response, then send another complete message. Bidi-streaming is like a phone conversation—fluid, natural, with the ability to interrupt, clarify, and respond in real-time.
+Think of the difference between sending emails and having a phone conversation. Traditional AI interactions are like emails�you send a complete message, wait for a complete response, then send another complete message. Bidi-streaming is like a phone conversation�fluid, natural, with the ability to interrupt, clarify, and respond in real-time.
 
 ### Key Characteristics
 
 These characteristics distinguish Bidi-streaming from traditional AI interactions and make it uniquely powerful for creating engaging user experiences:
 
 - **Two-way Communication**: Continuous data exchange without waiting for complete responses. Users can interrupt the AI mid-response with new input, creating a natural conversational flow. The AI responds after detecting the user has finished speaking (via automatic voice activity detection or explicit activity signals).
-- **Responsive Interruption**: Perhaps the most important feature for the natural user experience—users can interrupt the agent mid-response with new input, just like in human conversation. If an AI is explaining quantum physics and you suddenly ask "wait, what's an electron?", the AI stops immediately and addresses your question.
+- **Responsive Interruption**: Perhaps the most important feature for the natural user experience�users can interrupt the agent mid-response with new input, just like in human conversation. If an AI is explaining quantum physics and you suddenly ask "wait, what's an electron?", the AI stops immediately and addresses your question.
 - **Best for Multimodal**: Bidi-streaming excels at multimodal interactions because it can process different input types simultaneously through a single connection. Users can speak while showing documents, type follow-up questions during voice calls, or seamlessly switch between communication modes without losing context. This unified approach eliminates the complexity of managing separate channels for each modality.
 
 ```
@@ -54171,8 +54171,8 @@ Streaming Types Comparison
 
 **Bidi-streaming** differs fundamentally from other streaming approaches:
 
-- **Server-Side Streaming**: One-way data flow from server to client. Like watching a live video stream—you receive continuous data but can't interact with it in real-time. Useful for dashboards or live feeds, but not for conversations.
-- **Token-Level Streaming**: Sequential text token delivery without interruption. The AI generates response word-by-word, but you must wait for completion before sending new input. Like watching someone type a message in real-time—you see it forming, but can't interrupt.
+- **Server-Side Streaming**: One-way data flow from server to client. Like watching a live video stream�you receive continuous data but can't interact with it in real-time. Useful for dashboards or live feeds, but not for conversations.
+- **Token-Level Streaming**: Sequential text token delivery without interruption. The AI generates response word-by-word, but you must wait for completion before sending new input. Like watching someone type a message in real-time�you see it forming, but can't interrupt.
 - **Bidi-streaming**: Full two-way communication with interruption support. True conversational AI where both parties can speak, listen, and respond simultaneously. This is what enables natural dialogue where you can interrupt, clarify, or change topics mid-conversation.
 
 ### Real-World Applications
@@ -54292,16 +54292,16 @@ ADK transforms these challenges into simple, declarative APIs. Instead of spendi
 
 | Feature                              | Raw Live API (`google-genai` SDK)                | ADK Gemini Live API Toolkit (`adk-python` and `adk-java` SDK)                                                                                                                                                                      |
 | ------------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Agent Framework**                  | ❌ Not available                                 | ✅ Single agent, multi-agent with sub-agents, and sequential workflow agents, Tool ecosystem, Deployment ready, Evaluation, Security and more (see [ADK Agent docs](/agents/))                                                     |
-| **Tool Execution**                   | ❌ Manual tool execution and response handling   | ✅ Automatic tool execution (see [Part 3: Tool Call Events](https://adk.dev/streaming/dev-guide/part3/#tool-call-events))                                                                                                          |
-| **Connection Management**            | ❌ Manual reconnection and session resumption    | ✅ Automatic reconnection and session resumption (see [Part 4: Live API Session Resumption](https://adk.dev/streaming/dev-guide/part4/#live-api-session-resumption))                                                               |
-| **Event Model**                      | ❌ Custom event structures and serialization     | ✅ Unified event model with metadata (see [Part 3: Event Handling](https://adk.dev/streaming/dev-guide/part3/index.md))                                                                                                            |
-| **Async Event Processing Framework** | ❌ Manual async coordination and stream handling | ✅ `LiveRequestQueue`, `run_live()` async generator, automatic bidirectional flow coordination (see [Part 2](https://adk.dev/streaming/dev-guide/part2/index.md) and [Part 3](https://adk.dev/streaming/dev-guide/part3/index.md)) |
-| **App-level Session Persistence**    | ❌ Manual implementation                         | ✅ SQL databases (PostgreSQL, MySQL, SQLite), Agent Platform, in-memory (see [ADK Session docs](/sessions/))                                                                                                                       |
+| **Agent Framework**                  | ? Not available                                 | ? Single agent, multi-agent with sub-agents, and sequential workflow agents, Tool ecosystem, Deployment ready, Evaluation, Security and more (see [ADK Agent docs](/agents/))                                                     |
+| **Tool Execution**                   | ? Manual tool execution and response handling   | ? Automatic tool execution (see [Part 3: Tool Call Events](https://adk.dev/streaming/dev-guide/part3/#tool-call-events))                                                                                                          |
+| **Connection Management**            | ? Manual reconnection and session resumption    | ? Automatic reconnection and session resumption (see [Part 4: Live API Session Resumption](https://adk.dev/streaming/dev-guide/part4/#live-api-session-resumption))                                                               |
+| **Event Model**                      | ? Custom event structures and serialization     | ? Unified event model with metadata (see [Part 3: Event Handling](https://adk.dev/streaming/dev-guide/part3/index.md))                                                                                                            |
+| **Async Event Processing Framework** | ? Manual async coordination and stream handling | ? `LiveRequestQueue`, `run_live()` async generator, automatic bidirectional flow coordination (see [Part 2](https://adk.dev/streaming/dev-guide/part2/index.md) and [Part 3](https://adk.dev/streaming/dev-guide/part3/index.md)) |
+| **App-level Session Persistence**    | ? Manual implementation                         | ? SQL databases (PostgreSQL, MySQL, SQLite), Agent Platform, in-memory (see [ADK Session docs](/sessions/))                                                                                                                       |
 
 ### Platform Flexibility
 
-One of ADK's most powerful features is its transparent support for both [Gemini Live API](https://ai.google.dev/gemini-api/docs/live) and [Gemini Live API (Agent Platform)](https://cloud.google.com/vertex-ai/generative-ai/docs/live-api). This platform flexibility enables a seamless development-to-production workflow: develop locally with Gemini API using free API keys, then deploy to production with Agent Platform using enterprise Google Cloud infrastructure—all **without changing application code**, only environment configuration.
+One of ADK's most powerful features is its transparent support for both [Gemini Live API](https://ai.google.dev/gemini-api/docs/live) and [Gemini Live API (Agent Platform)](https://cloud.google.com/vertex-ai/generative-ai/docs/live-api). This platform flexibility enables a seamless development-to-production workflow: develop locally with Gemini API using free API keys, then deploy to production with Agent Platform using enterprise Google Cloud infrastructure�all **without changing application code**, only environment configuration.
 
 #### How Platform Selection Works
 
@@ -54310,7 +54310,7 @@ ADK uses the `GOOGLE_GENAI_USE_VERTEXAI` environment variable to determine which
 - `GOOGLE_GENAI_USE_VERTEXAI=FALSE` (or not set): Uses Gemini Live API via Google AI Studio
 - `GOOGLE_GENAI_USE_VERTEXAI=TRUE`: Uses Gemini Live API (Agent Platform) via Google Cloud
 
-This environment variable is read by the underlying `google-genai` SDK when ADK creates the LLM connection. No code changes are needed when switching platforms—only environment configuration changes.
+This environment variable is read by the underlying `google-genai` SDK when ADK creates the LLM connection. No code changes are needed when switching platforms�only environment configuration changes.
 
 ##### Development Phase: Gemini Live API (Google AI Studio)
 
@@ -54519,7 +54519,7 @@ These components are created once when your application starts and shared across
 
 #### Define Your Agent
 
-The `Agent` is the core of your streaming application—it defines what your AI can do, how it should behave, and which AI model powers it. You configure your agent with a specific model, tools it can use (like Google Search or custom APIs), and instructions that shape its personality and behavior.
+The `Agent` is the core of your streaming application�it defines what your AI can do, how it should behave, and which AI model powers it. You configure your agent with a specific model, tools it can use (like Google Search or custom APIs), and instructions that shape its personality and behavior.
 
 Demo implementation: <a href="https://github.com/google/adk-samples/blob/31847c0723fbf16ddf6eed411eb070d1c76afd1a/python/agents/bidi-demo/app/google_search_agent/agent.py#L10-L15" target="_blank">agent.py:10-15</a>
 
@@ -54541,7 +54541,7 @@ agent = Agent(
 )
 ```
 
-The agent instance is **stateless and reusable**—you create it once and use it for all streaming sessions. Agent configuration is covered in the [ADK Agent documentation](/agents/).
+The agent instance is **stateless and reusable**�you create it once and use it for all streaming sessions. Agent configuration is covered in the [ADK Agent documentation](/agents/).
 
 Model Availability
 
@@ -54584,7 +54584,7 @@ For production applications, choose a persistent session service based on your i
 - You need tight integration with Agent Platform features
 - Example: `VertexAiSessionService(project="my-project")`
 
-Both provide session persistence capabilities—choose based on your infrastructure and scale requirements. With persistent session services, the state of the `Session` will be preserved even after application shutdown. See the [ADK Session Management documentation](/sessions/) for more details.
+Both provide session persistence capabilities�choose based on your infrastructure and scale requirements. With persistent session services, the state of the `Session` will be preserved even after application shutdown. See the [ADK Session Management documentation](/sessions/) for more details.
 
 #### Define Your Runner
 
@@ -54625,7 +54625,7 @@ For a detailed comparison with sequence diagrams, see [Part 4: ADK `Session` vs 
 
 Sessions are identified by three parameters: `app_name`, `user_id`, and `session_id`. This three-level hierarchy enables multi-tenant applications where each user can have multiple concurrent sessions.
 
-Both `user_id` and `session_id` are **arbitrary string identifiers** that you define based on your application's needs. ADK performs no format validation beyond `.strip()` on `session_id`—you can use any string values that make sense for your application:
+Both `user_id` and `session_id` are **arbitrary string identifiers** that you define based on your application's needs. ADK performs no format validation beyond `.strip()` on `session_id`�you can use any string values that make sense for your application:
 
 - **`user_id` examples**: User UUIDs (`"550e8400-e29b-41d4-a716-446655440000"`), email addresses (`"alice@example.com"`), database IDs (`"user_12345"`), or simple identifiers (`"demo-user"`)
 - **`session_id` examples**: Custom session tokens, UUIDs, timestamp-based IDs (`"session_2025-01-27_143022"`), or simple identifiers (`"demo-session"`)
@@ -54635,7 +54635,7 @@ Both `user_id` and `session_id` are **arbitrary string identifiers** that you de
 **Organizational hierarchy**: These identifiers organize sessions in a three-level structure:
 
 ```text
-app_name → user_id → session_id → Session
+app_name ? user_id ? session_id ? Session
 ```
 
 This design enables scenarios like:
@@ -54675,7 +54675,7 @@ This pattern works correctly in all scenarios:
 
 #### Create RunConfig
 
-[RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) defines the streaming behavior for this specific session—which modalities to use (text or audio), whether to enable transcription, voice activity detection, proactivity, and other advanced features.
+[RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) defines the streaming behavior for this specific session�which modalities to use (text or audio), whether to enable transcription, voice activity detection, proactivity, and other advanced features.
 
 Demo implementation: <a href="https://github.com/google/adk-samples/blob/31847c0723fbf16ddf6eed411eb070d1c76afd1a/python/agents/bidi-demo/app/main.py#L110-L124" target="_blank">main.py:110-124</a>
 
@@ -54694,7 +54694,7 @@ run_config = RunConfig(
 )
 ```
 
-`RunConfig` is **session-specific**—each streaming session can have different configuration. For example, one user might prefer text-only responses while another uses voice mode. See [Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) for complete configuration options.
+`RunConfig` is **session-specific**�each streaming session can have different configuration. For example, one user might prefer text-only responses while another uses voice mode. See [Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) for complete configuration options.
 
 #### Create LiveRequestQueue
 
@@ -54708,7 +54708,7 @@ from google.adk.agents.live_request_queue import LiveRequestQueue
 live_request_queue = LiveRequestQueue()
 ```
 
-`LiveRequestQueue` is **session-specific and stateful**—you create a new queue for each streaming session and close it when the session ends. Unlike `Agent` and `Runner`, queues cannot be reused across sessions.
+`LiveRequestQueue` is **session-specific and stateful**�you create a new queue for each streaming session and close it when the session ends. Unlike `Agent` and `Runner`, queues cannot be reused across sessions.
 
 One Queue Per Session
 
@@ -54718,7 +54718,7 @@ The close signal persists in the queue (see [`live_request_queue.py:66-67`](http
 
 ### Phase 3: Bidi-streaming with `run_live()` event loop
 
-Once the streaming loop is running, you can send messages to the agent and receive responses **concurrently**—this is Bidi-streaming in action. The agent can be generating a response while you're sending new input, enabling natural interruption-based conversation.
+Once the streaming loop is running, you can send messages to the agent and receive responses **concurrently**�this is Bidi-streaming in action. The agent can be generating a response while you're sending new input, enabling natural interruption-based conversation.
 
 #### Send Messages to the Agent
 
@@ -54741,13 +54741,13 @@ audio_blob = types.Blob(
 live_request_queue.send_realtime(audio_blob)
 ```
 
-These methods are **non-blocking**—they immediately add messages to the queue without waiting for processing. This enables smooth, responsive user experiences even during heavy AI processing.
+These methods are **non-blocking**�they immediately add messages to the queue without waiting for processing. This enables smooth, responsive user experiences even during heavy AI processing.
 
 See [Part 2: Sending messages with LiveRequestQueue](https://adk.dev/streaming/dev-guide/part2/index.md) for detailed API documentation.
 
 #### Receive and Process Events
 
-The `run_live()` async generator continuously yields `Event` objects as the agent processes input and generates responses. Each event represents a discrete occurrence—partial text generation, audio chunks, tool execution, transcription, interruption, or turn completion.
+The `run_live()` async generator continuously yields `Event` objects as the agent processes input and generates responses. Each event represents a discrete occurrence�partial text generation, audio chunks, tool execution, transcription, interruption, or turn completion.
 
 Demo implementation: <a href="https://github.com/google/adk-samples/blob/31847c0723fbf16ddf6eed411eb070d1c76afd1a/python/agents/bidi-demo/app/main.py#L219-L234" target="_blank">main.py:219-234</a>
 
@@ -54762,7 +54762,7 @@ async for event in runner.run_live(
     await websocket.send_text(event_json)
 ```
 
-Events are designed for **streaming delivery**—you receive partial responses as they're generated, not just complete messages. This enables real-time UI updates and responsive user experiences.
+Events are designed for **streaming delivery**�you receive partial responses as they're generated, not just complete messages. This enables real-time UI updates and responsive user experiences.
 
 See [Part 3: Event handling with run_live()](https://adk.dev/streaming/dev-guide/part3/index.md) for comprehensive event handling patterns.
 
@@ -54918,7 +54918,7 @@ All code examples in this guide assume you're running in an async context (e.g.,
 
 ### Key Concepts
 
-**Upstream Task (WebSocket → LiveRequestQueue)**
+**Upstream Task (WebSocket ? LiveRequestQueue)**
 
 The upstream task continuously receives messages from the WebSocket client and forwards them to the `LiveRequestQueue`. This enables the user to send messages to the agent at any time, even while the agent is generating a response.
 
@@ -54936,7 +54936,7 @@ async def upstream_task() -> None:
         pass  # Client disconnected
 ```
 
-**Downstream Task (run_live() → WebSocket)**
+**Downstream Task (run_live() ? WebSocket)**
 
 The downstream task continuously receives `Event` objects from `run_live()` and sends them to the WebSocket client. This streams the agent's responses, tool executions, transcriptions, and other events to the user in real-time.
 
@@ -54973,7 +54973,7 @@ finally:
     live_request_queue.close()  # Always cleanup
 ```
 
-This pattern—concurrent upstream/downstream tasks with guaranteed cleanup—is the foundation of production-ready streaming applications. The lifecycle pattern (initialize once, stream many times) enables efficient resource usage and clean separation of concerns, with application components remaining stateless and reusable while session-specific state is isolated in `LiveRequestQueue`, `RunConfig`, and session records.
+This pattern�concurrent upstream/downstream tasks with guaranteed cleanup�is the foundation of production-ready streaming applications. The lifecycle pattern (initialize once, stream many times) enables efficient resource usage and clean separation of concerns, with application components remaining stateless and reusable while session-specific state is isolated in `LiveRequestQueue`, `RunConfig`, and session records.
 
 #### Production Considerations
 
@@ -55035,15 +55035,15 @@ While this guide covers ADK-specific concepts thoroughly, familiarity with these
 
 ## Summary
 
-In this introduction, you learned how ADK transforms complex real-time streaming infrastructure into a developer-friendly framework. We covered the fundamentals of Live API's bidirectional streaming capabilities, examined how ADK simplifies the streaming complexity through abstractions like `LiveRequestQueue`, `Runner`, and `run_live()`, and explored the complete application lifecycle from initialization through session termination. You now understand how ADK handles the heavy lifting—LLM-side streaming connection management, state persistence, platform differences, and event coordination—so you can focus on building intelligent agent experiences. With this foundation in place, you're ready to dive into the specifics of sending messages, handling events, configuring sessions, and implementing multimodal features in the following parts.
+In this introduction, you learned how ADK transforms complex real-time streaming infrastructure into a developer-friendly framework. We covered the fundamentals of Live API's bidirectional streaming capabilities, examined how ADK simplifies the streaming complexity through abstractions like `LiveRequestQueue`, `Runner`, and `run_live()`, and explored the complete application lifecycle from initialization through session termination. You now understand how ADK handles the heavy lifting�LLM-side streaming connection management, state persistence, platform differences, and event coordination�so you can focus on building intelligent agent experiences. With this foundation in place, you're ready to dive into the specifics of sending messages, handling events, configuring sessions, and implementing multimodal features in the following parts.
 
 ______________________________________________________________________
 
-[Next: Part 2: Sending Messages with LiveRequestQueue](https://adk.dev/streaming/dev-guide/part2/index.md) →
+[Next: Part 2: Sending Messages with LiveRequestQueue](https://adk.dev/streaming/dev-guide/part2/index.md) ?
 
 # Part 2: Sending messages with LiveRequestQueue
 
-In Part 1, you learned the four-phase lifecycle of ADK Gemini Live API Toolkit applications. This part focuses on the upstream flow—how your application sends messages to the agent using `LiveRequestQueue`.
+In Part 1, you learned the four-phase lifecycle of ADK Gemini Live API Toolkit applications. This part focuses on the upstream flow�how your application sends messages to the agent using `LiveRequestQueue`.
 
 Unlike traditional APIs where different message types require different endpoints or channels, ADK provides a single unified interface through `LiveRequestQueue` and its `LiveRequest` message model. This part covers:
 
@@ -55071,7 +55071,7 @@ class LiveRequest(BaseModel):
 
 This streamlined design handles every streaming scenario you'll encounter. The `content` and `blob` fields handle different data types, the `activity_start` and `activity_end` fields enable activity signaling, and the `close` flag provides graceful termination semantics.
 
-The `content` and `blob` fields are mutually exclusive—only one can be set per LiveRequest. While ADK does not enforce this client-side and will attempt to send both if set, the Live API backend will reject this with a validation error. ADK's convenience methods `send_content()` and `send_realtime()` automatically ensure this constraint is met by setting only one field, so **using these methods (rather than manually creating `LiveRequest` objects) is the recommended approach**.
+The `content` and `blob` fields are mutually exclusive�only one can be set per LiveRequest. While ADK does not enforce this client-side and will attempt to send both if set, the Live API backend will reject this with a validation error. ADK's convenience methods `send_content()` and `send_realtime()` automatically ensure this constraint is met by setting only one field, so **using these methods (rather than manually creating `LiveRequest` objects) is the recommended approach**.
 
 The following diagram illustrates how different message types flow from your application through `LiveRequestQueue` methods, into `LiveRequest` containers, and finally to the Live API:
 
@@ -55148,7 +55148,7 @@ While the Gemini API `Part` type supports many fields (`inline_data`, `file_data
 
 ### send_realtime(): Sends Audio, Image and Video in Real-Time
 
-The `send_realtime()` method sends binary data streams—primarily audio, image and video—flow through the `Blob` type, which handles transmission in realtime mode. Unlike text content that gets processed in turn-by-turn mode, blobs are designed for continuous streaming scenarios where data arrives in chunks. You provide raw bytes, and Pydantic automatically handles base64 encoding during JSON serialization for safe network transmission (configured in `LiveRequest.model_config`). The MIME type helps the model understand the content format.
+The `send_realtime()` method sends binary data streams�primarily audio, image and video�flow through the `Blob` type, which handles transmission in realtime mode. Unlike text content that gets processed in turn-by-turn mode, blobs are designed for continuous streaming scenarios where data arrives in chunks. You provide raw bytes, and Pydantic automatically handles base64 encoding during JSON serialization for safe network transmission (configured in `LiveRequest.model_config`). The MIME type helps the model understand the content format.
 
 Demo implementation: <a href="https://github.com/google/adk-samples/blob/31847c0723fbf16ddf6eed411eb070d1c76afd1a/python/agents/bidi-demo/app/main.py#L181-L184" target="_blank">main.py:181-184</a>
 
@@ -55282,13 +55282,13 @@ This pattern mixes async I/O operations with sync CPU operations naturally. The 
 Always create `LiveRequestQueue` within an async context (async function or coroutine) to ensure it uses the correct event loop:
 
 ```python
-# ✅ Recommended - Create in async context
+# ? Recommended - Create in async context
 async def main():
     queue = LiveRequestQueue()  # Uses existing event loop from async context
     # This is the preferred pattern - ensures queue uses the correct event loop
     # that will run your streaming operations
 
-# ❌ Not recommended - Creates event loop automatically
+# ? Not recommended - Creates event loop automatically
 queue = LiveRequestQueue()  # Works but ADK auto-creates new loop
 # This works due to ADK's safety mechanism, but may cause issues with
 # loop coordination in complex applications or multi-threaded scenarios
@@ -55303,22 +55303,22 @@ queue = LiveRequestQueue()  # Works but ADK auto-creates new loop
 | Guarantee                | Description                                                                 | Impact                                                                                                                                                                |
 | ------------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **FIFO ordering**        | Messages processed in send order (guaranteed by underlying `asyncio.Queue`) | Maintains conversation context and interaction consistency                                                                                                            |
-| **No coalescing**        | Each message delivered independently                                        | No automatic batching—each send operation creates one request                                                                                                         |
+| **No coalescing**        | Each message delivered independently                                        | No automatic batching�each send operation creates one request                                                                                                         |
 | **Unbounded by default** | Queue accepts unlimited messages without blocking                           | **Benefit**: Simplifies client code (no blocking on send) **Risk**: Memory growth if sending faster than processing **Mitigation**: Monitor queue depth in production |
 
 > **Production Tip**: For high-throughput audio/video streaming, monitor `live_request_queue._queue.qsize()` to detect backpressure. If the queue depth grows continuously, slow down your send rate or implement batching. Note: `_queue` is an internal attribute and may change in future releases; use with caution.
 
 ## Summary
 
-In this part, you learned how `LiveRequestQueue` provides a unified interface for sending messages to ADK streaming agents within an async event loop. We covered the `LiveRequest` message model and explored how to send different message types: text content via `send_content()`, audio/video blobs via `send_realtime()`, activity signals for manual turn control, and control signals for graceful termination via `close()`. You also learned best practices for async queue management, creating queues in async context, resource cleanup, and message ordering. You now understand how to use `LiveRequestQueue` as the upstream communication channel in your Bidi-streaming applications, enabling users to send messages concurrently while receiving agent responses. Next, you'll learn how to handle the downstream flow—processing the events that agents generate in response to these messages.
+In this part, you learned how `LiveRequestQueue` provides a unified interface for sending messages to ADK streaming agents within an async event loop. We covered the `LiveRequest` message model and explored how to send different message types: text content via `send_content()`, audio/video blobs via `send_realtime()`, activity signals for manual turn control, and control signals for graceful termination via `close()`. You also learned best practices for async queue management, creating queues in async context, resource cleanup, and message ordering. You now understand how to use `LiveRequestQueue` as the upstream communication channel in your Bidi-streaming applications, enabling users to send messages concurrently while receiving agent responses. Next, you'll learn how to handle the downstream flow�processing the events that agents generate in response to these messages.
 
 ______________________________________________________________________
 
-← [Previous: Part 1: Introduction to ADK Gemini Live API Toolkit](https://adk.dev/streaming/dev-guide/part1/index.md) | [Next: Part 3: Event Handling with run_live()](https://adk.dev/streaming/dev-guide/part3/index.md) →
+? [Previous: Part 1: Introduction to ADK Gemini Live API Toolkit](https://adk.dev/streaming/dev-guide/part1/index.md) | [Next: Part 3: Event Handling with run_live()](https://adk.dev/streaming/dev-guide/part3/index.md) ?
 
 # Part 3: Event handling with run_live()
 
-The `run_live()` method is ADK's primary entry point for streaming conversations, implementing an async generator that yields events as the conversation unfolds. This part focuses on understanding and handling these events—the core communication mechanism that enables real-time interaction between your application, users, and AI models.
+The `run_live()` method is ADK's primary entry point for streaming conversations, implementing an async generator that yields events as the conversation unfolds. This part focuses on understanding and handling these events�the core communication mechanism that enables real-time interaction between your application, users, and AI models.
 
 You'll learn how to process different event types (text, audio, transcriptions, tool calls), manage conversation flow with interruption and turn completion signals, serialize events for network transport, and leverage ADK's automatic tool execution. Understanding event handling is essential for building responsive streaming applications that feel natural and real-time to users.
 
@@ -55328,7 +55328,7 @@ All `run_live()` code requires async context. See [Part 1: FastAPI Application E
 
 ## How run_live() Works
 
-`run_live()` is an async generator that streams conversation events in real-time. It yields events immediately as they're generated—no buffering, no polling, no callbacks. Events are streamed without internal buffering. Overall memory depends on session persistence (e.g., in-memory vs database), making it suitable for both quick exchanges and extended sessions.
+`run_live()` is an async generator that streams conversation events in real-time. It yields events immediately as they're generated�no buffering, no polling, no callbacks. Events are streamed without internal buffering. Overall memory depends on session persistence (e.g., in-memory vs database), making it suitable for both quick exchanges and extended sessions.
 
 ### Method Signature and Flow
 
@@ -55349,7 +55349,7 @@ async def run_live(
 ) -> AsyncGenerator[Event, None]:           # Generator yielding conversation events
 ```
 
-As its signature tells, every streaming conversation needs identity (user_id), continuity (session_id), communication (live_request_queue), and configuration (run_config). The return type—an async generator of Events—promises real-time delivery without overwhelming system resources.
+As its signature tells, every streaming conversation needs identity (user_id), continuity (session_id), communication (live_request_queue), and configuration (run_config). The return type�an async generator of Events�promises real-time delivery without overwhelming system resources.
 
 ```
 sequenceDiagram
@@ -55429,12 +55429,12 @@ The `run_live()` event loop can exit under various conditions. Understanding the
 
 | Exit Condition          | Trigger                                                | Graceful?            | Description                                                                |
 | ----------------------- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------------- |
-| **Manual close**        | `live_request_queue.close()`                           | ✅ Yes               | User explicitly closes the queue, sending `LiveRequest(close=True)` signal |
-| **All agents complete** | Last agent in SequentialAgent calls `task_completed()` | ✅ Yes               | After all sequential agents finish their tasks                             |
-| **Session timeout**     | Live API duration limit reached                        | ⚠️ Connection closed | Session exceeds maximum duration (see limits below)                        |
-| **Early exit**          | `end_invocation` flag set                              | ✅ Yes               | Set during preprocessing or by tools/callbacks to terminate early          |
-| **Empty event**         | Queue closure signal                                   | ✅ Yes               | Internal signal indicating event stream has ended                          |
-| **Errors**              | Connection errors, exceptions                          | ❌ No                | Unhandled exceptions or connection failures                                |
+| **Manual close**        | `live_request_queue.close()`                           | ? Yes               | User explicitly closes the queue, sending `LiveRequest(close=True)` signal |
+| **All agents complete** | Last agent in SequentialAgent calls `task_completed()` | ? Yes               | After all sequential agents finish their tasks                             |
+| **Session timeout**     | Live API duration limit reached                        | ?? Connection closed | Session exceeds maximum duration (see limits below)                        |
+| **Early exit**          | `end_invocation` flag set                              | ? Yes               | Set during preprocessing or by tools/callbacks to terminate early          |
+| **Empty event**         | Queue closure signal                                   | ? Yes               | Internal signal indicating event stream has ended                          |
+| **Errors**              | Connection errors, exceptions                          | ? No                | Unhandled exceptions or connection failures                                |
 
 SequentialAgent Behavior
 
@@ -55475,7 +55475,7 @@ To save audio conversations to the ADK `Session` for review or resumption, enabl
 
 ## Understanding Events
 
-Events are the core communication mechanism in ADK Gemini Live API Toolkit's streaming system. This section explores the complete lifecycle of events—from how they're generated through multiple pipeline layers, to concurrent processing patterns that enable true real-time interaction, to practical handling of interruptions and turn completion. You'll learn about event types (text, audio, transcriptions, tool calls), serialization strategies for network transport, and the connection lifecycle that manages streaming sessions across both Gemini Live API and Gemini Live API platforms.
+Events are the core communication mechanism in ADK Gemini Live API Toolkit's streaming system. This section explores the complete lifecycle of events�from how they're generated through multiple pipeline layers, to concurrent processing patterns that enable true real-time interaction, to practical handling of interruptions and turn completion. You'll learn about event types (text, audio, transcriptions, tool calls), serialization strategies for network transport, and the connection lifecycle that manages streaming sessions across both Gemini Live API and Gemini Live API platforms.
 
 ### The Event Class
 
@@ -55559,7 +55559,7 @@ In live streaming mode, the `Event.author` field follows special semantics to ma
 
 This transformation ensures that transcribed user input is correctly attributed to the user in your application's conversation history, even though it flows through the model's response stream.
 
-- Example: Input audio transcription → `Event(author="user", input_transcription=..., content.role="user")`
+- Example: Input audio transcription ? `Event(author="user", input_transcription=..., content.role="user")`
 
 **Why this matters**:
 
@@ -55657,7 +55657,7 @@ async for event in runner.run_live(..., run_config=run_config):
 
 Learn More
 
-- **`response_modalities` controls how the model generates output**—you must choose either `["TEXT"]` for text responses or `["AUDIO"]` for audio responses per session. You cannot use both modalities simultaneously. See [Part 4: Response Modalities](https://adk.dev/streaming/dev-guide/part4/#response-modalities) for configuration details.
+- **`response_modalities` controls how the model generates output**�you must choose either `["TEXT"]` for text responses or `["AUDIO"]` for audio responses per session. You cannot use both modalities simultaneously. See [Part 4: Response Modalities](https://adk.dev/streaming/dev-guide/part4/#response-modalities) for configuration details.
 - For comprehensive coverage of audio formats, sending/receiving audio, and audio processing flow, see [Part 5: How to Use Audio, Image and Video](https://adk.dev/streaming/dev-guide/part5/index.md).
 
 ### Audio Events with File Data
@@ -55778,7 +55778,7 @@ async for event in runner.run_live(...):
                 # ADK handles execution automatically
 ```
 
-ADK processes tool calls automatically—you typically don't need to handle these directly unless implementing custom tool execution logic.
+ADK processes tool calls automatically�you typically don't need to handle these directly unless implementing custom tool execution logic.
 
 Learn More
 
@@ -55872,7 +55872,7 @@ if event.error_code == "UNAVAILABLE":
 
 User Notifications
 
-For brief transient errors (lasting \<1 second), don't notify the user—they won't notice the hiccup. But if the error persists or impacts the user experience (e.g., streaming pauses for >3 seconds), notify them gracefully: "Experiencing connection issues, retrying..."
+For brief transient errors (lasting \<1 second), don't notify the user�they won't notice the hiccup. But if the error persists or impacts the user experience (e.g., streaming pauses for >3 seconds), notify them gracefully: "Experiencing connection issues, retrying..."
 
 ______________________________________________________________________
 
@@ -56010,8 +56010,8 @@ async for event in runner.run_live(...):
 
 **`partial` Flag Semantics:**
 
-- `partial=True`: The text in this event is **incremental**—it contains ONLY the new text since the last event
-- `partial=False`: The text in this event is **complete**—it contains the full merged text for this response segment
+- `partial=True`: The text in this event is **incremental**�it contains ONLY the new text since the last event
+- `partial=False`: The text in this event is **complete**�it contains the full merged text for this response segment
 
 Note
 
@@ -56034,7 +56034,7 @@ Event 4: partial=False, text="",             turn_complete=True  # Turn done
 
 - `partial=False` can occur **multiple times** in a turn (e.g., after each sentence)
 - `turn_complete=True` occurs **once** at the very end of the model's complete response, in a **separate event**
-- You may receive: `partial=False` (sentence 1) → `partial=False` (sentence 2) → `turn_complete=True`
+- You may receive: `partial=False` (sentence 1) ? `partial=False` (sentence 2) ? `turn_complete=True`
 - The merged text event (`partial=False` with content) is always yielded **before** the `turn_complete=True` event
 
 Note
@@ -56043,7 +56043,7 @@ ADK internally accumulates all text from `partial=True` events. When you receive
 
 - You can safely ignore all `partial=True` events and only process `partial=False` events if you don't need streaming display
 - If you do display `partial=True` events, the `partial=False` event provides the complete merged text for validation or storage
-- This accumulation is handled automatically by ADK's `StreamingResponseAggregator`—you don't need to manually concatenate partial text chunks
+- This accumulation is handled automatically by ADK's `StreamingResponseAggregator`�you don't need to manually concatenate partial text chunks
 
 #### Handling `interrupted` Flag
 
@@ -56068,9 +56068,9 @@ async for event in runner.run_live(...):
 ```text
 Model: "The weather in San Francisco is currently..."
 User: [interrupts] "Actually, I meant San Diego"
-→ event.interrupted=True received
-→ Your app: stop rendering model response, clear UI
-→ Model processes new input
+? event.interrupted=True received
+? Your app: stop rendering model response, clear UI
+? Model processes new input
 Model: "The weather in San Diego is..."
 ```
 
@@ -56186,16 +56186,16 @@ async def downstream_task() -> None:
 
 **When to use `model_dump_json()`:**
 
-- ✅ Streaming events over network (WebSocket, SSE)
-- ✅ Logging/persistence to JSON files
-- ✅ Debugging and inspection
-- ✅ Integration with JSON-based APIs
+- ? Streaming events over network (WebSocket, SSE)
+- ? Logging/persistence to JSON files
+- ? Debugging and inspection
+- ? Integration with JSON-based APIs
 
 **When NOT to use it:**
 
-- ❌ In-memory processing (use event objects directly)
-- ❌ High-frequency events where serialization overhead matters
-- ❌ When you only need a few fields (extract them directly instead)
+- ? In-memory processing (use event objects directly)
+- ? High-frequency events where serialization overhead matters
+- ? When you only need a few fields (extract them directly instead)
 
 Performance Warning
 
@@ -56415,7 +56415,7 @@ async for event in runner.run_live(...):
         print(f"Tool result: {event.get_function_responses()[0].response}")
 ```
 
-You don't need to handle the execution yourself—ADK does it automatically. You just observe the events as they flow through the conversation.
+You don't need to handle the execution yourself�ADK does it automatically. You just observe the events as they flow through the conversation.
 
 Learn More
 
@@ -56467,7 +56467,7 @@ The difference between raw Live API tool use and ADK is stark:
 | **Streaming Integration** | Manual coordination             | Automatic event yielding        |
 | **Developer Experience**  | Complex, error-prone            | Declarative, simple             |
 
-This automatic handling is one of the core value propositions of ADK—it transforms the complexity of Live API tool use into a simple, declarative developer experience.
+This automatic handling is one of the core value propositions of ADK�it transforms the complexity of Live API tool use into a simple, declarative developer experience.
 
 ## InvocationContext: The Execution State Container
 
@@ -56475,7 +56475,7 @@ Source Reference
 
 See InvocationContext implementation in [`invocation_context.py`](https://github.com/google/adk-python/blob/427a983b18088bdc22272d02714393b0a779ecdf/src/google/adk/agents/invocation_context.py)
 
-While `run_live()` returns an AsyncGenerator for consuming events, internally it creates and manages an `InvocationContext`—ADK's unified state carrier that encapsulates everything needed for a complete conversation invocation. **One InvocationContext corresponds to one `run_live()` loop**—it's created when you call `run_live()` and persists for the entire streaming session.
+While `run_live()` returns an AsyncGenerator for consuming events, internally it creates and manages an `InvocationContext`�ADK's unified state carrier that encapsulates everything needed for a complete conversation invocation. **One InvocationContext corresponds to one `run_live()` loop**�it's created when you call `run_live()` and persists for the entire streaming session.
 
 Think of it as a traveling notebook that accompanies a conversation from start to finish, collecting information, tracking progress, and providing context to every component along the way. It's ADK's runtime implementation of the Context concept, providing the execution-time state and services needed during a live conversation. For a broader overview of context in ADK, see [Context in ADK](/context/).
 
@@ -56493,9 +56493,9 @@ This is distinct from an **agent call** (execution of a single agent's logic) an
 The hierarchy looks like this:
 
 ```text
-   ┌─────────────────────── invocation ──────────────────────────┐
-   ┌──────────── llm_agent_call_1 ────────────┐ ┌─ agent_call_2 ─┐
-   ┌──── step_1 ────────┐ ┌───── step_2 ──────┐
+   +----------------------- invocation --------------------------+
+   +------------ llm_agent_call_1 ------------+ +- agent_call_2 -+
+   +---- step_1 --------+ +----- step_2 ------+
    [call_llm] [call_tool] [call_llm] [transfer]
 ```
 
@@ -56504,7 +56504,7 @@ The hierarchy looks like this:
 InvocationContext serves different audiences at different levels:
 
 - **ADK's internal components** (primary users): Runner, Agent, LLMFlow, and GeminiLlmConnection all receive, read from, and write to the InvocationContext as it flows through the stack. This shared context enables seamless coordination without tight coupling.
-- **Application developers** (indirect beneficiaries): You don't typically create or manipulate InvocationContext directly in your application code. Instead, you benefit from the clean, simplified APIs that InvocationContext enables behind the scenes—like the elegant `async for event in runner.run_live()` pattern.
+- **Application developers** (indirect beneficiaries): You don't typically create or manipulate InvocationContext directly in your application code. Instead, you benefit from the clean, simplified APIs that InvocationContext enables behind the scenes�like the elegant `async for event in runner.run_live()` pattern.
 - **Tool and callback developers** (direct access): When you implement custom tools or callbacks, you receive InvocationContext as a parameter. This gives you direct access to conversation state, session services, and control flags (like `end_invocation`) to implement sophisticated behaviors.
 
 #### What InvocationContext Contains
@@ -56604,7 +56604,7 @@ def task_completed():
 
 ### Recommended Pattern: Transparent Sequential Flow
 
-The key insight is that **agent transitions happen transparently** within the same `run_live()` event stream. Your application doesn't need to manage transitions—just consume events uniformly:
+The key insight is that **agent transitions happen transparently** within the same `run_live()` event stream. Your application doesn't need to manage transitions�just consume events uniformly:
 
 **Usage:**
 
@@ -56694,12 +56694,12 @@ Use one event loop for all agents in the sequence:
 **Usage:**
 
 ```python
-# ✅ CORRECT: One loop handles all agents
+# ? CORRECT: One loop handles all agents
 async for event in runner.run_live(...):
     # Your event handling logic here
     await handle_event(event)  # Works for Agent1, Agent2, Agent3...
 
-# ❌ INCORRECT: Don't break the loop or create multiple loops
+# ? INCORRECT: Don't break the loop or create multiple loops
 for agent in agents:
     async for event in runner.run_live(...):  # WRONG!
         ...
@@ -56711,21 +56711,21 @@ The same `LiveRequestQueue` serves all agents:
 
 ```text
 # User input flows to whichever agent is currently active
-User speaks → Queue → Agent1 (researcher)
-                ↓
-User speaks → Queue → Agent2 (writer)
-                ↓
-User speaks → Queue → Agent3 (reviewer)
+User speaks ? Queue ? Agent1 (researcher)
+                ?
+User speaks ? Queue ? Agent2 (writer)
+                ?
+User speaks ? Queue ? Agent3 (reviewer)
 ```
 
 **Don't create new queues per agent:**
 
 ```python
-# ❌ INCORRECT: New queue per agent
+# ? INCORRECT: New queue per agent
 for agent in agents:
     new_queue = LiveRequestQueue()  # WRONG!
 
-# ✅ CORRECT: Single queue for entire workflow
+# ? CORRECT: Single queue for entire workflow
 queue = LiveRequestQueue()
 async for event in runner.run_live(live_request_queue=queue):
     ...
@@ -56766,7 +56766,7 @@ async for event in runner.run_live(...):
                 part.function_response.name == "task_completed"):
                 # Your logic to display transition notification
                 await display_notification(
-                    f"✓ {event.author} completed. Handing off to next agent..."
+                    f"? {event.author} completed. Handing off to next agent..."
                 )
                 continue
 
@@ -56781,7 +56781,7 @@ Understanding these two functions helps you choose the right multi-agent pattern
 | Function            | Agent Pattern                 | When `run_live()` Exits                                          | Use Case                                  |
 | ------------------- | ----------------------------- | ---------------------------------------------------------------- | ----------------------------------------- |
 | `transfer_to_agent` | Coordinator (dynamic routing) | `LiveRequestQueue.close()`                                       | Route user to specialist based on intent  |
-| `task_completed`    | Sequential (pipeline)         | `LiveRequestQueue.close()` or `task_completed` of the last agent | Fixed workflow: research → write → review |
+| `task_completed`    | Sequential (pipeline)         | `LiveRequestQueue.close()` or `task_completed` of the last agent | Fixed workflow: research ? write ? review |
 
 **transfer_to_agent example:**
 
@@ -56813,19 +56813,19 @@ Event: author="writer", text="Based on the research..."
 | Handle events uniformly                 | All agents produce the same event types   |
 | Let `task_completed` signal transitions | Don't manually manage sequential flow     |
 
-The SequentialAgent design ensures smooth transitions—your application simply sees a continuous stream of events from different agents in sequence, with automatic handoffs managed by ADK.
+The SequentialAgent design ensures smooth transitions�your application simply sees a continuous stream of events from different agents in sequence, with automatic handoffs managed by ADK.
 
 ## Summary
 
-In this part, you mastered event handling in ADK Gemini Live API Toolkit's streaming architecture. We explored the different event types that agents generate—text responses, audio chunks, transcriptions, tool calls, and control signals—and learned how to process each event type effectively. You now understand how to handle interruptions and turn completion signals for natural conversation flow, serialize events for network transport using Pydantic's model serialization, leverage ADK's automatic tool execution to simplify agent workflows, and access InvocationContext for advanced state management scenarios. With these event handling patterns in place, you're equipped to build responsive streaming applications that provide real-time feedback to users. Next, you'll learn how to configure sophisticated streaming behaviors through RunConfig, including multimodal interactions, session resumption, and cost controls.
+In this part, you mastered event handling in ADK Gemini Live API Toolkit's streaming architecture. We explored the different event types that agents generate�text responses, audio chunks, transcriptions, tool calls, and control signals�and learned how to process each event type effectively. You now understand how to handle interruptions and turn completion signals for natural conversation flow, serialize events for network transport using Pydantic's model serialization, leverage ADK's automatic tool execution to simplify agent workflows, and access InvocationContext for advanced state management scenarios. With these event handling patterns in place, you're equipped to build responsive streaming applications that provide real-time feedback to users. Next, you'll learn how to configure sophisticated streaming behaviors through RunConfig, including multimodal interactions, session resumption, and cost controls.
 
 ______________________________________________________________________
 
-← [Previous: Part 2: Sending Messages with LiveRequestQueue](https://adk.dev/streaming/dev-guide/part2/index.md) | [Next: Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) →
+? [Previous: Part 2: Sending Messages with LiveRequestQueue](https://adk.dev/streaming/dev-guide/part2/index.md) | [Next: Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md) ?
 
 # Part 4: Understanding RunConfig
 
-In Part 3, you learned how to handle events from `run_live()` to process model responses, tool calls, and streaming updates. This part shows you how to configure those streaming sessions through `RunConfig`—controlling response formats, managing session lifecycles, and enforcing production constraints.
+In Part 3, you learned how to handle events from `run_live()` to process model responses, tool calls, and streaming updates. This part shows you how to configure those streaming sessions through `RunConfig`�controlling response formats, managing session lifecycles, and enforcing production constraints.
 
 **What you'll learn**: This part covers response modalities and their constraints, explores the differences between BIDI and SSE streaming modes, examines the relationship between ADK Sessions and Live API sessions, and shows how to manage session duration with session resumption and context window compression. You'll understand how to handle concurrent session quotas, implement architectural patterns for quota management, and configure cost controls through `max_llm_calls` and audio persistence options. With RunConfig mastery, you can build production-ready streaming applications that balance feature richness with operational constraints.
 
@@ -56885,7 +56885,7 @@ The `RunConfig` class itself and `StreamingMode` enum are imported from `google.
 
 ## Response Modalities
 
-Response modalities control how the model generates output—as text or audio. Both Gemini Live API and Gemini Live API (Agent Platform) have the same restriction: only one response modality per session.
+Response modalities control how the model generates output�as text or audio. Both Gemini Live API and Gemini Live API (Agent Platform) have the same restriction: only one response modality per session.
 
 **Configuration:**
 
@@ -56904,13 +56904,13 @@ run_config = RunConfig(
     streaming_mode=StreamingMode.BIDI  # Bidirectional WebSocket communication
 )
 
-# ✅ CORRECT: Text-only responses
+# ? CORRECT: Text-only responses
 run_config = RunConfig(
     response_modalities=["TEXT"],  # Model responds with text only
     streaming_mode=StreamingMode.BIDI  # Still uses bidirectional streaming
 )
 
-# ✅ CORRECT: Audio-only responses (explicit)
+# ? CORRECT: Audio-only responses (explicit)
 run_config = RunConfig(
     response_modalities=["AUDIO"],  # Model responds with audio only
     streaming_mode=StreamingMode.BIDI  # Bidirectional WebSocket communication
@@ -56920,7 +56920,7 @@ run_config = RunConfig(
 Both Gemini Live API and Gemini Live API (Agent Platform) restrict sessions to a single response modality. Attempting to use both will result in an API error:
 
 ```python
-# ❌ INCORRECT: Both modalities not supported
+# ? INCORRECT: Both modalities not supported
 run_config = RunConfig(
     response_modalities=["TEXT", "AUDIO"],  # ERROR: Cannot use both
     streaming_mode=StreamingMode.BIDI
@@ -56936,7 +56936,7 @@ When `response_modalities` is not specified, ADK's `run_live()` method automatic
 
 - You must choose either `TEXT` or `AUDIO` at session start. **Cannot switch between modalities mid-session**
 - You must choose `AUDIO` for [Native Audio models](https://adk.dev/streaming/dev-guide/part5/#understanding-audio-model-architectures). If you want to receive both audio and text responses from native audio models, use the Audio Transcript feature which provides text transcripts of the audio output. See [Audio Transcription](https://adk.dev/streaming/dev-guide/part5/#audio-transcription) for details
-- Response modality only affects model output—**you can always send text, voice, or video input (if the model supports those input modalities)** regardless of the chosen response modality
+- Response modality only affects model output�**you can always send text, voice, or video input (if the model supports those input modalities)** regardless of the chosen response modality
 
 ## StreamingMode: BIDI or SSE
 
@@ -56993,20 +56993,20 @@ sequenceDiagram
     Note over ADK,Queue: Can send while receiving
 
     App->>Queue: send_content(text)
-    Queue->>Gemini: → Content (via WebSocket)
+    Queue->>Gemini: ? Content (via WebSocket)
     App->>Queue: send_realtime(audio)
-    Queue->>Gemini: → Audio blob (via WebSocket)
+    Queue->>Gemini: ? Audio blob (via WebSocket)
 
-    Gemini-->>ADK: ← Partial response (partial=True)
-    ADK-->>App: ← Event: partial text/audio
-    Gemini-->>ADK: ← Partial response (partial=True)
-    ADK-->>App: ← Event: partial text/audio
+    Gemini-->>ADK: ? Partial response (partial=True)
+    ADK-->>App: ? Event: partial text/audio
+    Gemini-->>ADK: ? Partial response (partial=True)
+    ADK-->>App: ? Event: partial text/audio
 
     App->>Queue: send_content(interrupt)
-    Queue->>Gemini: → New content
+    Queue->>Gemini: ? New content
 
-    Gemini-->>ADK: ← turn_complete=True
-    ADK-->>App: ← Event: turn complete
+    Gemini-->>ADK: ? turn_complete=True
+    ADK-->>App: ? Event: turn complete
 
     deactivate Gemini
 
@@ -57031,15 +57031,15 @@ sequenceDiagram
 
     Note over ADK,Gemini: Request sent completely, then stream response
 
-    Gemini-->>ADK: ← Partial chunk (partial=True)
-    ADK-->>App: ← Event: partial text
-    Gemini-->>ADK: ← Partial chunk (partial=True)
-    ADK-->>App: ← Event: partial text
-    Gemini-->>ADK: ← Partial chunk (partial=True)
-    ADK-->>App: ← Event: partial text
+    Gemini-->>ADK: ? Partial chunk (partial=True)
+    ADK-->>App: ? Event: partial text
+    Gemini-->>ADK: ? Partial chunk (partial=True)
+    ADK-->>App: ? Event: partial text
+    Gemini-->>ADK: ? Partial chunk (partial=True)
+    ADK-->>App: ? Event: partial text
 
-    Gemini-->>ADK: ← Final chunk (finish_reason=STOP)
-    ADK-->>App: ← Event: complete response
+    Gemini-->>ADK: ? Final chunk (finish_reason=STOP)
+    ADK-->>App: ? Event: complete response
 
     deactivate Gemini
 
@@ -57099,7 +57099,7 @@ SSE mode uses the standard Gemini API (`generate_content_async`) via HTTP stream
 
 ### Standard Gemini Models (1.5 Series) Accessed via SSE
 
-While this guide focuses on Bidi-streaming with Gemini 2.0 Live models, ADK also supports the Gemini 1.5 model family through SSE streaming. These models offer different trade-offs—larger context windows and proven stability, but without real-time audio/video features. Here's what the 1.5 series supports when accessed via SSE:
+While this guide focuses on Bidi-streaming with Gemini 2.0 Live models, ADK also supports the Gemini 1.5 model family through SSE streaming. These models offer different trade-offs�larger context windows and proven stability, but without real-time audio/video features. Here's what the 1.5 series supports when accessed via SSE:
 
 **Models:**
 
@@ -57108,17 +57108,17 @@ While this guide focuses on Bidi-streaming with Gemini 2.0 Live models, ADK also
 
 **Supported:**
 
-- ✅ Text input/output (`response_modalities=["TEXT"]`)
-- ✅ SSE streaming (`StreamingMode.SSE`)
-- ✅ Function calling with automatic execution
-- ✅ Large context windows (up to 2M tokens for 1.5-pro)
+- ? Text input/output (`response_modalities=["TEXT"]`)
+- ? SSE streaming (`StreamingMode.SSE`)
+- ? Function calling with automatic execution
+- ? Large context windows (up to 2M tokens for 1.5-pro)
 
 **Not Supported:**
 
-- ❌ Live audio features (audio I/O, transcription, VAD)
-- ❌ Bidi-streaming via `run_live()`
-- ❌ Proactivity and affective dialog
-- ❌ Video input
+- ? Live audio features (audio I/O, transcription, VAD)
+- ? Bidi-streaming via `run_live()`
+- ? Proactivity and affective dialog
+- ? Video input
 
 ## Understanding Live API Connections and Sessions
 
@@ -57207,7 +57207,7 @@ sequenceDiagram
 - Conversation continuity is maintained through ADK Session's persistent storage
 - SessionService manages the persistence layer (in-memory, database, or Agent Platform)
 
-Now that we understand the difference between ADK `Session` objects and Live API sessions, let's focus on Live API connections and sessions—the backend infrastructure that powers real-time bidirectional streaming.
+Now that we understand the difference between ADK `Session` objects and Live API sessions, let's focus on Live API connections and sessions�the backend infrastructure that powers real-time bidirectional streaming.
 
 ### Live API Connections and Sessions
 
@@ -57243,9 +57243,9 @@ Source References
 
 ## Live API Session Resumption
 
-By default, the Live API limits connection duration to approximately 10 minutes—each WebSocket connection automatically closes after this duration. To overcome this limit and enable longer conversations, the **Live API provides [Session Resumption](https://ai.google.dev/gemini-api/docs/live#session-resumption)**, a feature that transparently migrates a session across multiple connections. When enabled, the Live API generates resumption handles that allow reconnecting to the same session context, preserving the full conversation history and state.
+By default, the Live API limits connection duration to approximately 10 minutes�each WebSocket connection automatically closes after this duration. To overcome this limit and enable longer conversations, the **Live API provides [Session Resumption](https://ai.google.dev/gemini-api/docs/live#session-resumption)**, a feature that transparently migrates a session across multiple connections. When enabled, the Live API generates resumption handles that allow reconnecting to the same session context, preserving the full conversation history and state.
 
-**ADK automates this entirely**: When you enable session resumption in RunConfig, ADK automatically handles all reconnection logic—detecting connection closures, caching resumption handles, and reconnecting seamlessly in the background. You don't need to write any reconnection code. Sessions continue seamlessly beyond the 10-minute connection limit, handling connection timeouts, network disruptions, and planned reconnections automatically.
+**ADK automates this entirely**: When you enable session resumption in RunConfig, ADK automatically handles all reconnection logic�detecting connection closures, caching resumption handles, and reconnecting seamlessly in the background. You don't need to write any reconnection code. Sessions continue seamlessly beyond the 10-minute connection limit, handling connection timeouts, network disruptions, and planned reconnections automatically.
 
 ### Scope of ADK's Reconnection Management
 
@@ -57257,7 +57257,7 @@ ADK manages the **ADK-to-Live API connection** (the WebSocket between ADK and th
 - Implementing client-side reconnection logic if needed
 - Handling network failures between clients and your application
 
-When ADK reconnects to the Live API, your application's event loop continues normally—you keep receiving events from `run_live()` without interruption. From your application's perspective, the Live API session continues seamlessly.
+When ADK reconnects to the Live API, your application's event loop continues normally�you keep receiving events from `run_live()` without interruption. From your application's perspective, the Live API session continues seamlessly.
 
 **Configuration:**
 
@@ -57294,7 +57294,7 @@ While session resumption is supported by both Gemini Live API and Gemini Live AP
 
 Implementation Detail
 
-During reconnection, ADK retrieves the cached handle from `InvocationContext.live_session_resumption_handle` and includes it in the new `LiveConnectConfig` for the `live.connect()` call. This is handled entirely by ADK's internal reconnection loop—developers never need to access or manage these handles directly.
+During reconnection, ADK retrieves the cached handle from `InvocationContext.live_session_resumption_handle` and includes it in the new `LiveConnectConfig` for the `live.connect()` call. This is handled entirely by ADK's internal reconnection loop�developers never need to access or manage these handles directly.
 
 ### Sequence Diagram: Automatic Reconnection
 
@@ -57319,10 +57319,10 @@ sequenceDiagram
     Note over ADK,API: Bidirectional Streaming (0-10 minutes)
 
     App->>ADK: send_content(text) / send_realtime(audio)
-    ADK->>API: → Content via WebSocket
+    ADK->>API: ? Content via WebSocket
     API->>LiveSession: Update conversation history
-    API-->>ADK: ← Streaming response
-    ADK-->>App: ← yield event
+    API-->>ADK: ? Streaming response
+    ADK-->>App: ? yield event
 
     Note over API,LiveSession: Live API sends resumption handle updates
     API-->>ADK: session_resumption_update { new_handle: "abc123" }
@@ -57347,10 +57347,10 @@ sequenceDiagram
     Note over ADK,API: Bidirectional Streaming Continues
 
     App->>ADK: send_content(text) / send_realtime(audio)
-    ADK->>API: → Content via WebSocket
+    ADK->>API: ? Content via WebSocket
     API->>LiveSession: Update conversation history
-    API-->>ADK: ← Streaming response
-    ADK-->>App: ← yield event
+    API-->>ADK: ? Streaming response
+    ADK-->>App: ? yield event
 
     Note over App,LiveSession: Session continues until duration limit or explicit close
 
@@ -57364,7 +57364,7 @@ For details on which events are saved to the ADK `Session` versus which are only
 
 ## Live API Context Window Compression
 
-**Problem:** Live API sessions face two critical constraints that limit conversation duration. First, **session duration limits** impose hard time caps: without compression, Gemini Live API limits audio-only sessions to 15 minutes and audio+video sessions to just 2 minutes, while Agent Platform limits all sessions to 10 minutes. Second, **context window limits** restrict conversation length: models have finite token capacities (128k tokens for `gemini-2.5-flash-native-audio-preview-12-2025`, 32k-128k for Agent Platform models). Long conversations—especially extended customer support sessions, tutoring interactions, or multi-hour voice dialogues—will hit either the time limit or the token limit, causing the session to terminate or lose critical conversation history.
+**Problem:** Live API sessions face two critical constraints that limit conversation duration. First, **session duration limits** impose hard time caps: without compression, Gemini Live API limits audio-only sessions to 15 minutes and audio+video sessions to just 2 minutes, while Agent Platform limits all sessions to 10 minutes. Second, **context window limits** restrict conversation length: models have finite token capacities (128k tokens for `gemini-2.5-flash-native-audio-preview-12-2025`, 32k-128k for Agent Platform models). Long conversations�especially extended customer support sessions, tutoring interactions, or multi-hour voice dialogues�will hit either the time limit or the token limit, causing the session to terminate or lose critical conversation history.
 
 **Solution:** [Context window compression](https://ai.google.dev/gemini-api/docs/live-session#context-window-compression) solves both constraints simultaneously. It uses a sliding-window approach to automatically compress or summarize earlier conversation history when the token count reaches a configured threshold. The Live API preserves recent context in full detail while compressing older portions. **Critically, enabling context window compression extends session duration to unlimited time**, removing the session duration limits (15 minutes for audio-only / 2 minutes for audio+video on Gemini Live API; 10 minutes for all sessions on Agent Platform) while also preventing token limit exhaustion. However, there is a trade-off: as the feature summarizes earlier conversation history rather than retaining it all, the detail of past context will be gradually lost over time. The model will have access to compressed summaries of older exchanges, not the full verbatim history.
 
@@ -57377,7 +57377,7 @@ Session duration management and context window compression are **Live API platfo
 - [Gemini Live API Documentation](https://ai.google.dev/gemini-api/docs/live)
 - [Gemini Live API (Agent Platform) Documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/live-api)
 
-ADK provides an easy way to configure context window compression through RunConfig. However, developers are responsible for appropriately configuring the compression parameters (`trigger_tokens` and `target_tokens`) based on their specific requirements—model context window size, expected conversation patterns, and quality needs:
+ADK provides an easy way to configure context window compression through RunConfig. However, developers are responsible for appropriately configuring the compression parameters (`trigger_tokens` and `target_tokens`) based on their specific requirements�model context window size, expected conversation patterns, and quality needs:
 
 ```python
 from google.genai import types
@@ -57425,10 +57425,10 @@ The examples above use 78% for `trigger_tokens` and 62% for `target_tokens`. Her
 1. Allows for multiple turns before next compression
 1. Balances preservation of context with compression frequency
 1. **Adjusting for your use case**:
-1. **Long turns** (detailed technical discussions): Increase buffer → 70% trigger, 50% target
-1. **Short turns** (quick Q&A): Tighter margins → 85% trigger, 70% target
-1. **Context-critical** (requires historical detail): Higher target → 80% trigger, 70% target
-1. **Performance-sensitive** (minimize compression overhead): Lower trigger → 70% trigger, 50% target
+1. **Long turns** (detailed technical discussions): Increase buffer ? 70% trigger, 50% target
+1. **Short turns** (quick Q&A): Tighter margins ? 85% trigger, 70% target
+1. **Context-critical** (requires historical detail): Higher target ? 80% trigger, 70% target
+1. **Performance-sensitive** (minimize compression overhead): Lower trigger ? 70% trigger, 50% target
 
 Always test with your actual conversation patterns to find optimal values.
 
@@ -57448,14 +57448,14 @@ While compression enables unlimited session duration, consider these trade-offs:
 
 **Common Use Cases:**
 
-✅ **Enable compression when:**
+? **Enable compression when:**
 
 - Sessions need to exceed platform duration limits (15/2/10 minutes)
 - Extended conversations may hit token limits (128k for 2.5-flash)
 - Customer support sessions that can last hours
 - Educational tutoring with long interactions
 
-❌ **Disable compression when:**
+? **Disable compression when:**
 
 - All sessions complete within duration limits
 - Precision recall of early conversation is critical
@@ -57468,10 +57468,10 @@ While compression enables unlimited session duration, consider these trade-offs:
 
 ### Essential: Enable Session Resumption
 
-- ✅ **Always enable session resumption** in RunConfig for production applications
-- ✅ This enables ADK to automatically handle Gemini's ~10 minute connection timeouts transparently
-- ✅ Sessions continue seamlessly across multiple WebSocket connections without user interruption
-- ✅ Session resumption handle caching and management
+- ? **Always enable session resumption** in RunConfig for production applications
+- ? This enables ADK to automatically handle Gemini's ~10 minute connection timeouts transparently
+- ? Sessions continue seamlessly across multiple WebSocket connections without user interruption
+- ? Session resumption handle caching and management
 
 ```python
 from google.genai import types
@@ -57484,11 +57484,11 @@ run_config = RunConfig(
 
 ### Recommended: Enable Context Window Compression for Unlimited Sessions
 
-- ✅ **Enable context window compression** if you need sessions longer than 15 minutes (audio-only) or 2 minutes (audio+video)
-- ✅ Once enabled, session duration becomes unlimited—no need to monitor time-based limits
-- ✅ Configure `trigger_tokens` and `target_tokens` based on your model's context window
-- ✅ Test compression settings with realistic conversation patterns
-- ⚠️ **Use judiciously**: Compression adds latency during summarization and may lose conversational nuance—only enable when extended sessions are truly necessary for your use case
+- ? **Enable context window compression** if you need sessions longer than 15 minutes (audio-only) or 2 minutes (audio+video)
+- ? Once enabled, session duration becomes unlimited�no need to monitor time-based limits
+- ? Configure `trigger_tokens` and `target_tokens` based on your model's context window
+- ? Test compression settings with realistic conversation patterns
+- ?? **Use judiciously**: Compression adds latency during summarization and may lose conversational nuance�only enable when extended sessions are truly necessary for your use case
 
 ```python
 from google.genai import types
@@ -57508,11 +57508,11 @@ run_config = RunConfig(
 
 **Only applies if NOT using context window compression:**
 
-- ✅ Focus on **session duration limits**, not connection timeouts (ADK handles those automatically)
-- ✅ **Gemini Live API**: Monitor for 15-minute limit (audio-only) or 2-minute limit (audio+video)
-- ✅ **Gemini Live API (Agent Platform)**: Monitor for 10-minute session limit
-- ✅ Warn users 1-2 minutes before session duration limits
-- ✅ Implement graceful session transitions for conversations exceeding session limits
+- ? Focus on **session duration limits**, not connection timeouts (ADK handles those automatically)
+- ? **Gemini Live API**: Monitor for 15-minute limit (audio-only) or 2-minute limit (audio+video)
+- ? **Gemini Live API (Agent Platform)**: Monitor for 10-minute session limit
+- ? Warn users 1-2 minutes before session duration limits
+- ? Implement graceful session transitions for conversations exceeding session limits
 
 ## Concurrent Live API Sessions and Quota Management
 
@@ -57557,12 +57557,12 @@ To request an increase for Live API concurrent sessions, navigate to the [Quotas
 
 **Key differences:**
 
-1. **Gemini Live API**: Concurrent session limits scale dramatically with API tier (50 → 1,000 sessions). Best for applications with unpredictable or rapidly scaling user bases willing to pay for higher tiers.
+1. **Gemini Live API**: Concurrent session limits scale dramatically with API tier (50 ? 1,000 sessions). Best for applications with unpredictable or rapidly scaling user bases willing to pay for higher tiers.
 1. **Gemini Live API (Agent Platform)**: Rate-limited by connection establishment rate (10/min) but supports up to 1,000 total concurrent sessions. Best for enterprise applications with gradual scaling patterns and existing Google Cloud infrastructure. Additionally, you can request quota increases to prepare for production deployments with higher concurrency requirements.
 
 ### Architectural Patterns for Managing Quotas
 
-Once you understand your concurrent session quotas, the next challenge is architecting your application to operate effectively within those limits. The right approach depends on your expected user concurrency, scaling requirements, and tolerance for queueing. This section presents two architectural patterns—from simple direct mapping for low-concurrency applications to session pooling with queueing for applications that may exceed quota limits during peak usage. Choose the pattern that matches your current scale and design it to evolve as your user base grows.
+Once you understand your concurrent session quotas, the next challenge is architecting your application to operate effectively within those limits. The right approach depends on your expected user concurrency, scaling requirements, and tolerance for queueing. This section presents two architectural patterns�from simple direct mapping for low-concurrency applications to session pooling with queueing for applications that may exceed quota limits during peak usage. Choose the pattern that matches your current scale and design it to evolve as your user base grows.
 
 **Choosing the Right Architecture:**
 
@@ -57618,7 +57618,7 @@ For applications that may exceed concurrent session limits during peak usage, tr
 1. Notify them they're waiting for an available slot
 1. **As sessions end:** Automatically process the queue to start sessions for waiting users
 
-This provides graceful degradation—users wait briefly during peak times rather than experiencing hard connection failures.
+This provides graceful degradation�users wait briefly during peak times rather than experiencing hard connection failures.
 
 ## Miscellaneous Controls
 
@@ -57774,16 +57774,16 @@ This enables seamless metadata propagation across agent boundaries in multi-agen
 **Best practices:**
 
 - Use consistent key naming conventions across your application
-- Avoid storing sensitive data (PII, credentials) in metadata—use encryption if necessary
+- Avoid storing sensitive data (PII, credentials) in metadata�use encryption if necessary
 - Keep metadata size reasonable to minimize storage overhead
 - Document your metadata schema for team consistency
 - Consider using metadata for session filtering and search in production debugging
 
 ### support_cfc (Experimental)
 
-This parameter enables Compositional Function Calling (CFC), allowing the model to orchestrate multiple tools in sophisticated patterns—calling tools in parallel, chaining outputs as inputs to other tools, or conditionally executing tools based on intermediate results.
+This parameter enables Compositional Function Calling (CFC), allowing the model to orchestrate multiple tools in sophisticated patterns�calling tools in parallel, chaining outputs as inputs to other tools, or conditionally executing tools based on intermediate results.
 
-**⚠️ Experimental Feature:** CFC support is experimental and subject to change.
+**?? Experimental Feature:** CFC support is experimental and subject to change.
 
 **Critical behavior:** When `support_cfc=True`, ADK **always uses the Live API** (WebSocket) internally, regardless of the `streaming_mode` setting. This is because only the Live API backend supports CFC capabilities.
 
@@ -57799,15 +57799,15 @@ run_config = RunConfig(
 
 ADK validates CFC compatibility at session initialization and will raise an error if the model is unsupported:
 
-- ✅ **Supported**: `gemini-2.x` models (e.g., `gemini-2.5-flash-native-audio-preview-12-2025`)
-- ❌ **Not supported**: `gemini-1.5-x` models
+- ? **Supported**: `gemini-2.x` models (e.g., `gemini-2.5-flash-native-audio-preview-12-2025`)
+- ? **Not supported**: `gemini-1.5-x` models
 - **Validation**: ADK checks that the model name starts with `gemini-2` when `support_cfc=True` ([`runners.py:1354-1360`](https://github.com/google/adk-python/blob/427a983b18088bdc22272d02714393b0a779ecdf/src/google/adk/runners.py#L1354-L1360))
 - **Code executor**: ADK automatically injects `BuiltInCodeExecutor` when CFC is enabled for safe parallel tool execution
 
 **CFC capabilities:**
 
 - **Parallel execution**: Call multiple independent tools simultaneously (e.g., fetch weather for multiple cities at once)
-- **Function chaining**: Use one tool's output as input to another (e.g., `get_location()` → `get_weather(location)`)
+- **Function chaining**: Use one tool's output as input to another (e.g., `get_location()` ? `get_weather(location)`)
 - **Conditional execution**: Execute tools based on intermediate results from prior tool calls
 
 **Use cases:**
@@ -57829,11 +57829,11 @@ CFC is designed for complex, multi-step workflows that benefit from intelligent 
 
 ## Summary
 
-In this part, you learned how RunConfig enables sophisticated control over ADK Gemini Live API Toolkit sessions through declarative configuration. We covered response modalities and their constraints, explored the differences between BIDI and SSE streaming modes, examined the relationship between ADK Sessions and Live API sessions, and learned how to manage session duration with session resumption and context window compression. You now understand how to handle concurrent session quotas, implement architectural patterns for quota management, configure cost controls through `max_llm_calls` and audio persistence options. With RunConfig mastery, you can build production-ready streaming applications that balance feature richness with operational constraints—enabling extended conversations, managing platform limits, controlling costs effectively, and monitoring resource consumption.
+In this part, you learned how RunConfig enables sophisticated control over ADK Gemini Live API Toolkit sessions through declarative configuration. We covered response modalities and their constraints, explored the differences between BIDI and SSE streaming modes, examined the relationship between ADK Sessions and Live API sessions, and learned how to manage session duration with session resumption and context window compression. You now understand how to handle concurrent session quotas, implement architectural patterns for quota management, configure cost controls through `max_llm_calls` and audio persistence options. With RunConfig mastery, you can build production-ready streaming applications that balance feature richness with operational constraints�enabling extended conversations, managing platform limits, controlling costs effectively, and monitoring resource consumption.
 
 ______________________________________________________________________
 
-← [Previous: Part 3: Event Handling with run_live()](https://adk.dev/streaming/dev-guide/part3/index.md) | [Next: Part 5: How to Use Audio, Image and Video](https://adk.dev/streaming/dev-guide/part5/index.md) →
+? [Previous: Part 3: Event Handling with run_live()](https://adk.dev/streaming/dev-guide/part3/index.md) | [Next: Part 5: How to Use Audio, Image and Video](https://adk.dev/streaming/dev-guide/part5/index.md) ?
 
 # Part 5: How to Use Audio, Image and Video
 
@@ -57873,7 +57873,7 @@ live_request_queue.send_realtime(audio_blob)
    - **Balanced** (recommended): 50-100ms chunks (~1600-3200 bytes @ 16kHz)
    - **Lower overhead**: 100-200ms chunks (~3200-6400 bytes @ 16kHz)
 
-   Use consistent chunk sizes throughout the session for optimal performance. Example: 100ms @ 16kHz = 16000 samples/sec × 0.1 sec × 2 bytes/sample = 3200 bytes.
+   Use consistent chunk sizes throughout the session for optimal performance. Example: 100ms @ 16kHz = 16000 samples/sec � 0.1 sec � 2 bytes/sample = 3200 bytes.
 
 1. **Prompt Forwarding**: ADK's `LiveRequestQueue` forwards each chunk promptly without coalescing or batching. Choose chunk sizes that meet your latency and bandwidth requirements. Don't wait for model responses before sending next chunks.
 
@@ -58046,11 +58046,11 @@ async for event in runner.run_live(
 
 Automatic Base64 Decoding
 
-The Live API wire protocol transmits audio data as base64-encoded strings. The google.genai types system uses Pydantic's base64 serialization feature (`val_json_bytes='base64'`) to automatically decode base64 strings into bytes when deserializing API responses. When you access `part.inline_data.data`, you receive ready-to-use bytes—no manual base64 decoding needed.
+The Live API wire protocol transmits audio data as base64-encoded strings. The google.genai types system uses Pydantic's base64 serialization feature (`val_json_bytes='base64'`) to automatically decode base64 strings into bytes when deserializing API responses. When you access `part.inline_data.data`, you receive ready-to-use bytes�no manual base64 decoding needed.
 
 #### Handling Audio Events at the Client
 
-The bidi-demo uses a different architectural approach: instead of processing audio on the server, it forwards all events (including audio data) to the WebSocket client and handles audio playback in the browser. This pattern separates concerns—the server focuses on ADK event streaming while the client handles media playback using Web Audio API.
+The bidi-demo uses a different architectural approach: instead of processing audio on the server, it forwards all events (including audio data) to the WebSocket client and handles audio playback in the browser. This pattern separates concerns�the server focuses on ADK event streaming while the client handles media playback using Web Audio API.
 
 Demo implementation: <a href="https://github.com/google/adk-samples/blob/31847c0723fbf16ddf6eed411eb070d1c76afd1a/python/agents/bidi-demo/app/main.py#L225-L233" target="_blank">main.py:225-233</a>
 
@@ -58141,7 +58141,7 @@ export async function startAudioPlayerWorklet() {
     const audioPlayerNode = new AudioWorkletNode(audioContext, 'pcm-player-processor');
 
     // Connect the player node to the audio destination (speakers/headphones)
-    // This establishes the audio graph: AudioWorklet → AudioContext.destination
+    // This establishes the audio graph: AudioWorklet ? AudioContext.destination
     audioPlayerNode.connect(audioContext.destination);
 
     return [audioPlayerNode, audioContext];
@@ -58425,7 +58425,7 @@ For implementing custom video streaming tools that process and yield video frame
 
 When building voice applications with the Live API, one of the most important decisions is selecting the right audio model architecture. The Live API supports two fundamentally different type of models for audio processing: **Native Audio** and **Half-Cascade**. These model architectures differ in how they process audio input and generate audio output, which directly impacts response naturalness, tool execution reliability, latency characteristics, and overall use case suitability.
 
-Understanding these architectures helps you make informed model selection decisions based on your application's requirements—whether you prioritize natural conversational AI, production reliability, or specific feature availability.
+Understanding these architectures helps you make informed model selection decisions based on your application's requirements�whether you prioritize natural conversational AI, production reliability, or specific feature availability.
 
 ### Native Audio Models
 
@@ -58606,8 +58606,8 @@ from google.genai import types
 @dataclass
 class Event:
     content: Optional[Content]  # Audio/text content
-    input_transcription: Optional[types.Transcription]  # User speech → text
-    output_transcription: Optional[types.Transcription]  # Model speech → text
+    input_transcription: Optional[types.Transcription]  # User speech ? text
+    output_transcription: Optional[types.Transcription]  # Model speech ? text
     # ... other fields
 ```
 
@@ -58783,9 +58783,9 @@ if (adkEvent.outputTranscription && adkEvent.outputTranscription.text) {
 
 1. **Partial vs Finished States**: Use the `finished` flag to determine whether to show typing indicators:
 
-1. `finished: false` → Show typing indicator (e.g., "...")
+1. `finished: false` ? Show typing indicator (e.g., "...")
 
-1. `finished: true` → Remove typing indicator, finalize bubble
+1. `finished: true` ? Remove typing indicator, finalize bubble
 
 1. **Bubble State Management**: Track current transcription bubbles separately for input and output using IDs. Create new bubbles only when starting fresh transcriptions:
 
@@ -59052,15 +59052,15 @@ Voice configuration is supported on both platforms, but voice availability may v
 
 **Gemini Live API:**
 
-- ✅ Fully supported with documented voice options
-- ✅ Half-cascade models: 8 voices (Puck, Charon, Kore, Fenrir, Aoede, Leda, Orus, Zephyr)
-- ✅ Native audio models: Extended voice list (see [documentation](https://ai.google.dev/gemini-api/docs/live-guide))
+- ? Fully supported with documented voice options
+- ? Half-cascade models: 8 voices (Puck, Charon, Kore, Fenrir, Aoede, Leda, Orus, Zephyr)
+- ? Native audio models: Extended voice list (see [documentation](https://ai.google.dev/gemini-api/docs/live-guide))
 
 **Gemini Live API (Agent Platform):**
 
-- ✅ Voice configuration supported
-- ⚠️ **Platform-specific difference**: Voice availability may differ from Gemini Live API
-- ⚠️ **Verification required**: Check [Agent Platform documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/live-api) for the current list of supported voices
+- ? Voice configuration supported
+- ?? **Platform-specific difference**: Voice availability may differ from Gemini Live API
+- ?? **Verification required**: Check [Agent Platform documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/live-api) for the current list of supported voices
 
 **Best practice**: Always test your chosen voice configuration on your target platform during development. If a voice is not supported on your platform/model combination, the Live API will return an error at connection time.
 
@@ -59295,7 +59295,7 @@ audioRecorderNode.port.onmessage = (event) => {
 1. **RMS-Based Voice Detection**: The AudioWorklet processor calculates Root Mean Square (RMS) of audio samples to detect voice activity. RMS provides a simple but effective measure of audio energy that can distinguish speech from silence.
 1. **Adjustable Threshold**: The `threshold` value (0.05 in the example) can be tuned based on the environment. Lower thresholds are more sensitive (detect quieter speech but may trigger on background noise), higher thresholds require louder speech.
 1. **Silence Timeout**: Use a timeout (e.g., 2000ms) before sending `activity_end` to avoid prematurely ending a turn during natural pauses in speech. This creates a more natural conversation flow.
-1. **State Management**: Track `isSilence` state to detect transitions between silence and speech. Send `activity_start` only on silence→speech transitions, and `activity_end` only after sustained silence.
+1. **State Management**: Track `isSilence` state to detect transitions between silence and speech. Send `activity_start` only on silence?speech transitions, and `activity_end` only after sustained silence.
 1. **Conditional Audio Streaming**: Only send audio chunks when `!isSilence` to reduce bandwidth. This can save ~50-90% of network traffic depending on the conversation's speech-to-silence ratio.
 1. **AudioWorklet Thread Separation**: The VAD processor runs on the audio rendering thread, ensuring real-time performance without being affected by main thread JavaScript execution or network delays.
 
@@ -59396,13 +59396,13 @@ These features are **model-specific** and have platform implications:
 
 **Gemini Live API:**
 
-- ✅ Supported on `gemini-2.5-flash-native-audio-preview-12-2025` (native audio model)
-- ❌ Not supported on `gemini-live-2.5-flash-preview` (half-cascade model)
+- ? Supported on `gemini-2.5-flash-native-audio-preview-12-2025` (native audio model)
+- ? Not supported on `gemini-live-2.5-flash-preview` (half-cascade model)
 
 **Gemini Live API (Agent Platform):**
 
-- ❌ Not currently supported on `gemini-live-2.5-flash` (half-cascade model)
-- ⚠️ **Platform-specific difference**: Proactivity and affective dialog require native audio models, which are currently only available on Gemini Live API
+- ? Not currently supported on `gemini-live-2.5-flash` (half-cascade model)
+- ?? **Platform-specific difference**: Proactivity and affective dialog require native audio models, which are currently only available on Gemini Live API
 
 **Key insight**: If your application requires proactive audio or affective dialog features, you must use Gemini Live API with a native audio model. Half-cascade models on either platform do not support these features.
 
@@ -59441,11 +59441,11 @@ Consider disabling proactivity/affective dialog for:
 
 ## Summary
 
-In this part, you learned how to implement multimodal features in ADK Gemini Live API Toolkit applications, focusing on audio, image, and video capabilities. We covered audio specifications and format requirements, explored the differences between native audio and half-cascade architectures, examined how to send and receive audio streams through LiveRequestQueue and Events, and learned about advanced features like audio transcription, voice activity detection, and proactive/affective dialog. You now understand how to build natural voice-enabled AI experiences with proper audio handling, implement video streaming for visual context, and configure model-specific features based on platform capabilities. With this comprehensive understanding of ADK's multimodal streaming features, you're equipped to build production-ready applications that handle text, audio, image, and video seamlessly—creating rich, interactive AI experiences across diverse use cases.
+In this part, you learned how to implement multimodal features in ADK Gemini Live API Toolkit applications, focusing on audio, image, and video capabilities. We covered audio specifications and format requirements, explored the differences between native audio and half-cascade architectures, examined how to send and receive audio streams through LiveRequestQueue and Events, and learned about advanced features like audio transcription, voice activity detection, and proactive/affective dialog. You now understand how to build natural voice-enabled AI experiences with proper audio handling, implement video streaming for visual context, and configure model-specific features based on platform capabilities. With this comprehensive understanding of ADK's multimodal streaming features, you're equipped to build production-ready applications that handle text, audio, image, and video seamlessly�creating rich, interactive AI experiences across diverse use cases.
 
 **Congratulations!** You've completed the ADK Gemini Live API Toolkit Developer Guide. You now have a comprehensive understanding of how to build production-ready real-time streaming AI applications with Google's Agent Development Kit.
 
-← [Previous: Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md)
+? [Previous: Part 4: Understanding RunConfig](https://adk.dev/streaming/dev-guide/part4/index.md)
 
 # Grounding agents with data
 
@@ -59945,10 +59945,10 @@ Join the [ADK Community Google Group](https://groups.google.com/g/adk-community)
 
 Community-provided translations of the ADK documentation.
 
-- [🇨🇳 Chinese (中文) Documentation](https://adk.wiki/)
-- [🇰🇷 Korean (한국어) Documentation](https://adk-labs.github.io/adk-docs/ko/)
-- [🇯🇵 Japanese (日本語) Documentation](https://adk-labs.github.io/adk-docs/ja/)
-- [🇪🇸 Spanish (Español) Documentation](https://adk-es.fabian-castro-c.dev/)
+- [???? Chinese (??) Documentation](https://adk.wiki/)
+- [???? Korean (???) Documentation](https://adk-labs.github.io/adk-docs/ko/)
+- [???? Japanese (???) Documentation](https://adk-labs.github.io/adk-docs/ja/)
+- [???? Spanish (Espa�ol) Documentation](https://adk-es.fabian-castro-c.dev/)
 
 ## Contributing Your Resource
 
@@ -59956,7 +59956,7 @@ Have an ADK resource to share (tutorial, translation, tool, video, or example)?
 
 Refer to the steps in the **[Contributing Guide](/community/contributing-guide/)** for more information on how to get involved!
 
-Thank you for your contributions to Agent Development Kit! ❤️
+Thank you for your contributions to Agent Development Kit! ??
 
 Thank you for your interest in contributing to Agent Development Kit (ADK)! We welcome contributions to the core frameworks, documentation, and related components, which are listed below.
 

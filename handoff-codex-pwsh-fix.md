@@ -37,7 +37,7 @@ Despite running in `pwsh`, the script `02_System/generate-dashboard.ps1` frequen
 - Updated `02_System/run-maintenance.ps1` to invoke all child scripts through `pwsh` and to stop on child-script failures.
 - Updated `02_System/generate-tool-registry.ps1` to emit `pwsh` commands instead of `powershell.exe`.
 - Reordered maintenance so the tool registry is regenerated before the broken-link audit, preventing stale-registry false positives.
-- Sanitized generated registry text so help metadata containing wikilinks no longer creates broken links in `TOOL_REGISTRY.md`.
+- Sanitized generated registry text so help metadata containing wikilinks no longer creates broken links in `tool-registry.md`.
 - Updated remaining `02_System/*.ps1` help examples that still advertised `powershell.exe`.
 
 ## Verification

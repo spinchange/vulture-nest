@@ -2,13 +2,13 @@
 .SYNOPSIS
     Tool Registry Generator
 .DESCRIPTION
-    Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable TOOL_REGISTRY.md for agents.
+    Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable tool-registry.md for agents.
 .EXAMPLE
     pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-tool-registry.ps1
 #>
 
-$systemPath = "02_System"
-$outputPath = "02_System/TOOL_REGISTRY.md"
+$systemPath = $PSScriptRoot
+$outputPath = Join-Path $PSScriptRoot "tool-registry.md"
 $scripts = Get-ChildItem -Path $systemPath -Filter "*.ps1"
 
 function Convert-RegistrySafeText {

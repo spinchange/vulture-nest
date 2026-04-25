@@ -14,7 +14,7 @@ Param(
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $VaultRoot = Split-Path -Parent $PSScriptRoot
 $wikiPath = Join-Path $VaultRoot "01_Wiki"
-$registryPath = Join-Path $VaultRoot "02_System/TOOL_REGISTRY.md"
+$registryPath = Join-Path $VaultRoot "02_System/tool-registry.md"
 $dbPath = $env:POSHWIKI_DB_PATH
 if ([string]::IsNullOrWhiteSpace($dbPath)) { $dbPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/wiki.db" }
 $LibPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/lib"

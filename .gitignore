@@ -10,7 +10,7 @@ Thumbs.db
 # Temp files
 *.tmp
 *.log
-02_System/TOOL_REGISTRY.md.tmp
+02_System/tool-registry.md.tmp
 
 # Session artifacts
 stdout.txt

@@ -14,7 +14,7 @@ aliases: [living-knowledge, knowledge-ci-cd-community, compiling-wiki]
 
 This community crystallizes a single radical claim: *a note is not data, it is code.* The wikilink is not a citation — it is an import. The MOC is not a table of contents — it is a module manifest. When an LLM reads this vault, it does not retrieve documents; it executes a knowledge graph.
 
-The convergence of [[llm-wiki-pattern]] and [[wiki-as-codebase]] with agentic execution patterns means the distinction between "writing notes" and "programming behavior" is collapsing. A note with `status: active` is a live contract. An [[executable-note-standard]] note *runs*. [[graphrag-concepts]] extracts a typed AST from the corpus. The vault has a build system ([[ps-vault-maintenance]]), a linter ([[ps-yanp-audit]]), a linker ([[ps-orphan-check]]), and a package registry ([[TOOL_REGISTRY]]).
+The convergence of [[llm-wiki-pattern]] and [[wiki-as-codebase]] with agentic execution patterns means the distinction between "writing notes" and "programming behavior" is collapsing. A note with `status: active` is a live contract. An [[executable-note-standard]] note *runs*. [[graphrag-concepts]] extracts a typed AST from the corpus. The vault has a build system ([[ps-vault-maintenance]]), a linter ([[ps-yanp-audit]]), a linker ([[ps-orphan-check]]), and a package registry ([[tool-registry]]).
 
 The YANP protocol's strict conventions (lowercase kebab-case filenames, mandatory frontmatter fields) exist not for aesthetics but for parse-correctness — the same reason a compiler requires semicolons. The [[anti-ai-aesthetic]] preference for dense, high-signal notes is an optimization pass: removing noise before the knowledge reaches the inference layer.
 

@@ -9,11 +9,12 @@
     pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/check-broken-links.ps1
 #>
 
-$wikiPath = "01_Wiki"
-$systemPath = "02_System"
+$VaultRoot = Split-Path $PSScriptRoot -Parent
+$wikiPath = Join-Path $VaultRoot "01_Wiki"
+$systemPath = Join-Path $VaultRoot "02_System"
 
 # 1. Get all valid note names (BaseNames)
-$validNotes = (Get-ChildItem -Path $wikiPath, $systemPath, "." -Filter "*.md").BaseName | Select-Object -Unique
+$validNotes = (Get-ChildItem -Path $wikiPath, $systemPath, $VaultRoot -Filter "*.md").BaseName | Select-Object -Unique
 
 
 # 2. Scan for links

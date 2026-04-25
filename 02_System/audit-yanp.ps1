@@ -13,7 +13,7 @@
 # YANP Compliance Auditor
 # This script scans the 01_Wiki folder to ensure all notes follow the YANP protocol.
 
-$wikiPath = "C:\Users\executor\Documents\vulture-nest\01_Wiki"
+$wikiPath = Join-Path (Split-Path $PSScriptRoot -Parent) "01_Wiki"
 $notes = Get-ChildItem -Path $wikiPath -Filter "*.md"
 
 $report = foreach ($note in $notes) {

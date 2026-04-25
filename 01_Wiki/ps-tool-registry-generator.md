@@ -13,7 +13,7 @@ aliases: [ps-tool-registry-generator, generate-tool-registry.ps1]
 ## Functional Mechanism
 1.  **Scanning**: Iterates through all `.ps1` files in `02_System/`.
 2.  **Extraction**: Uses the `Get-Help` cmdlet to extract structured data from `.SYNOPSIS`, `.DESCRIPTION`, `.INPUTS`, and `.OUTPUTS` blocks.
-3.  **Compilation**: Generates a machine-readable Markdown file: `[[TOOL_REGISTRY|TOOL_REGISTRY.md]]`.
+3.  **Compilation**: Generates a machine-readable Markdown file: `[[tool-registry|tool-registry.md]]`.
 
 ## Why it Matters
 This script ensures that any new automation added by a human developer is immediately discoverable and usable by AI agents without manual documentation updates.
@@ -21,4 +21,4 @@ This script ensures that any new automation added by a human developer is immedi
 ---
 ## References
 * [[ps-automation-spec]]
-* [[TOOL_REGISTRY]]
+* [[tool-registry]]

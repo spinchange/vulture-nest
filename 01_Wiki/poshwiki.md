@@ -31,7 +31,7 @@ PoShWiKi introduces several "agent-optimized" commands:
 In this vault, PoShWiKi serves as a **Sidekick Database**. While the primary knowledge is stored in `01_Wiki/` as YANP-compliant Markdown, PoShWiKi can be used for:
 - **Session Logs:** Tracking step-by-step progress during a task.
 - **Transient State:** Storing temporary variables or findings that don't yet warrant a permanent note.
-- **Tooling Metadata:** Managing the `TOOL_REGISTRY` or other system-level lists.
+- **Tooling Metadata:** Managing the `tool-registry` or other system-level lists.
 
 ## Agent Governance
 The `PoShWiKi` project includes a formal **Agent Governance** framework (`docs/tracking/agent-governance.md`) that defines roles and rules for agentic collaboration:

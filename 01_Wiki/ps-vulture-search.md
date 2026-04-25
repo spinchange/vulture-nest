@@ -13,7 +13,7 @@ aliases: [ps-vulture-search, vulture-search.ps1, context-packet]
 ## Mechanism
 When queried, the engine performs a two-pass search:
 1.  **Knowledge Pass**: Scans `01_Wiki/` for matching titles, content, and `aliases`.
-2.  **Capability Pass**: Scans `02_System/TOOL_REGISTRY.md` to identify scripts that can act on the search subject.
+2.  **Capability Pass**: Scans `02_System/tool-registry.md` to identify scripts that can act on the search subject.
 
 ## The Context Packet
 The script outputs a "Context Packet" which provides an agent with:
