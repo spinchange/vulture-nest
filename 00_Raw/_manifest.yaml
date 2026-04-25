@@ -1,0 +1,28 @@
+# vulture-nest Raw Data Manifest
+# Metadata to guide RAG pipeline reasoning and synthesis.
+
+sources:
+  - file: LLM Wiki.md
+    domain: architecture
+    status: raw
+    source: community-capture
+
+  - file: llm-wiki-pattern.md
+    domain: design-patterns
+    status: processed
+    source: internal-synthesis
+
+  - file: mcp/
+    domain: protocols
+    status: raw
+    source: anthropic-docs
+
+  - file: python-standard-library.md
+    domain: programming
+    status: processed
+    source: official-docs-crawl
+
+  - file: the-rust-programming-language.md
+    domain: programming
+    status: raw
+    source: official-docs

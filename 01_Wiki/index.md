@@ -12,6 +12,7 @@ type: community
 * [[pkm-history-moc]] - Lineage & Vision
 * [[pkm-methods-moc]] - Systems & Workflow
 * [[agentic-frameworks-moc]] - Agency & Mechanics
+* [[agentic-tdd-patterns]] - Executable Intent & EDD
 * [[orchestration-tradeoffs]] - Swarm vs. ADK Comparison
 * [[hf-agents-course-moc]] - Hugging Face Agents Course Reference
 * [[mcp-moc]] - Model Context Protocol Reference
@@ -26,6 +27,11 @@ type: community
 * [[javascript-moc]] - Runtimes & Desktop Apps
 * [[hybrid-retrieval-spec]] - Deterministic + Semantic Strategy (Design)
 
+## Protocol Bridges
+* [[agentic-protocols]] - MCP↔Agent Spec
+* [[csharp-mcp-sdk]] - High-Performance .NET Tooling
+* [[dotnet-agent-integration]] - Bridging Ecosystems
+
 ## Emergent Communities
 * [[community-living-knowledge-system]] - The Vault as a Compiler
 * [[community-protocol-trust-substrate]] - Type-Safe Agent Governance
@@ -38,6 +44,7 @@ type: community
 * [00_Raw/memex-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/memex-summary.md)
 * [00_Raw/zettelkasten-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/zettelkasten-summary.md)
 * [00_Raw/python-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/python-summary.md)
+* [00_Raw/python-standard-library.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/python-standard-library.md)
 * [00_Raw/racket-summary.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/racket-summary.md)
 * [00_Raw/the-rust-programming-language.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/the-rust-programming-language.md)
 * [00_Raw/typescript-handbook.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/typescript-handbook.md)

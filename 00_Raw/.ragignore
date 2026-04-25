@@ -1,0 +1,13 @@
+# RAG Exclusion Rules
+# These files should not be indexed for retrieval.
+
+02_System/**
+03_Web/**
+00_Raw/PoShWiKi/**
+*.dll
+*.exe
+*.db
+*.tmp
+*.log
+.git/**
+.obsidian/**
