@@ -34,6 +34,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[agent-development-kit]]: Google's code-first toolkit for complex agent systems (ADK).
 * [[llamaindex]]: The data-augmented agent toolkit (Retrieval).
 * [[langgraph]]: Stateful orchestration for production-ready agents (Control).
+* [[alternative-agent-frameworks]]: Exploring CrewAI and Microsoft AutoGen.
 
 ## Advanced operational patterns
 * [[multi-agent-systems]]: Orchestrating specialized teams of agents.
@@ -57,6 +58,8 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
 * [[local-agent-environments]]: Running models locally via Ollama and LiteLLM.
 * [[foundry-local]]: Microsoft's hardware-optimized local inference SDK.
+* [[docker-sandbox]]: Secure environment isolation for agents.
+* [[hardware-aware-inference]]: Optimizing for CUDA, MLX, and NPUs.
 
 ## Practical Use Cases
 * [[gala-agent-use-case]]: Building a multi-tool gala assistant.
