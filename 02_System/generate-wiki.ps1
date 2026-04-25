@@ -231,7 +231,10 @@ try {
         $sections = New-Object System.Collections.Generic.List[string]
         if ($Incoming.Count -gt 0) { $sections.Add('<span class="graph-section-label">Links To This Note</span>'); $sections.Add('<ul>'); foreach ($note in $Incoming) { $sections.Add("<li>$(New-WikiAnchor -Target $note -Label $note -CssClass '')</li>") }; $sections.Add('</ul>') }
         if ($Outgoing.Count -gt 0) { $sections.Add('<span class="graph-section-label">Links From This Note</span>'); $sections.Add('<ul>'); foreach ($note in $Outgoing) { $sections.Add("<li>$(New-WikiAnchor -Target $note -Label $note -CssClass '')</li>") }; $sections.Add('</ul>') }
-        return if ($sections.Count -eq 0) { '<div class="graph-empty">No graph neighbors recorded.</div>' } else { ($sections -join [Environment]::NewLine) }
+        if ($sections.Count -eq 0) {
+            return '<div class="graph-empty">No graph neighbors recorded.</div>'
+        }
+        return ($sections -join [Environment]::NewLine)
     }
 
     Import-SqliteAssemblies
