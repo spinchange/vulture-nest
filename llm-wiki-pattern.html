@@ -405,12 +405,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">LLM Wiki Pattern</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">wiki-pattern, agentic-wiki</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-23</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">wiki-pattern, agentic-wiki</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LLM Wiki Pattern</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -420,7 +420,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>LLM Wiki Pattern</h1>
-<p>The <strong>LLM Wiki Pattern</strong> is a method for building personal knowledge bases where an LLM acts as an active maintainer of a persistent, interlinked markdown wiki. Unlike standard RAG (Retrieval-Augmented Generation), it focuses on the incremental synthesis of knowledge.</p>
+<p>The <strong>LLM Wiki Pattern</strong> is a method for building personal knowledge bases where an LLM acts as an active maintainer of a persistent, interlinked markdown wiki. Unlike standard RAG (Retrieval-Augmented Generation), it treats knowledge synthesis as a <strong>compile-time problem</strong>, not a runtime one. The distinction is load-bearing.</p>
 <h2>Core Components</h2>
 <p>The pattern is defined by its structure and its functional lifecycle:</p>
 <ul>
@@ -431,10 +431,54 @@
 <li><strong><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a></strong>: The principle that the knowledge base grows in value with every interaction.
 </li>
 </ul>
+<h2>The Case Against Vector-Only RAG</h2>
+<p>A vector database is a lossy compression of meaning. It maps text into a high-dimensional space where proximity is a proxy for semantic similarity — but proximity is not equivalence, and approximation is not understanding.</p>
+<p>The structural problems with pure vector retrieval:</p>
+<p><strong>No graph.</strong> Chunks float in an undifferentiated space. There is no concept of &quot;this idea connects to that idea via a specific, named relationship.&quot; A wiki link is a typed edge. A vector neighbor is a statistical correlation.</p>
+<p><strong>No provenance.</strong> A retrieved chunk carries no author, no date, no status. The agent cannot know whether it is reading a settled conclusion, a speculative draft, or a retracted hypothesis. YANP frontmatter encodes this metadata explicitly and durably.</p>
+<p><strong>No auditability.</strong> When a vector database is updated, the mutation is invisible. There is no diff, no commit, no reviewable change. Every wiki mutation is a git commit — inspectable, reversible, attributable to a specific agent at a specific time.</p>
+<p><strong>No centrality.</strong> All chunks are equal peers in a vector space. A wiki graph has <strong>hubs</strong> — notes with many inbound links that represent settled, load-bearing knowledge. The link graph is a natural importance signal that vectors cannot replicate.</p>
+<h2>Auditable Memory: The Git Invariant</h2>
+<p>The wiki&#39;s most underappreciated property is <strong>auditability</strong>. Every synthesis the LLM produces is a git diff. This creates the Git Invariant:</p>
+<p>&gt; Any change to the knowledge base is traceable to a specific agent, at a specific time, with a specific rationale preserved in the commit message.</p>
+<p>This is not an academic distinction. It means:</p>
+<ul>
+<li>Regressions are catchable: if a note encodes an incorrect conclusion, <code>git blame</code> traces the error to its source commit.
+</li>
+<li>Multi-agent collaboration is safe: when Gemini and Claude both edit the vault, write conflicts are resolved by merge, not by silent overwrite.
+</li>
+<li>The human retains a hard gate: changes do not propagate until <code>git push</code>. No vector database offers this control point.
+</li>
+</ul>
+<p>The <a href="the-compounding-artifact.html" class="wikilink">Compounding Artifact</a> depends on auditability. A knowledge base that cannot be inspected cannot be trusted. A knowledge base that cannot be trusted cannot compound.</p>
+<h2>Ahead-of-Time vs. Just-In-Time Synthesis</h2>
+<p>RAG defers synthesis to query time. Every query triggers: retrieve → stuff context → LLM synthesizes. This is <strong>Just-in-Time (JIT)</strong> — cheap to populate, expensive and inconsistent to query. Synthesis quality varies by query phrasing, context window pressure, and the retrieval lottery.</p>
+<p>The LLM Wiki Pattern inverts this. Contradictions are resolved at ingestion. Cross-references are established during triage. Emergent theories are extracted and promoted to permanent notes before anyone asks for them. This is <strong>Ahead-of-Time (AOT) Synthesis</strong> — expensive to maintain, cheap and deterministic to read.</p>
+<p>The wiki is a <strong>pre-compiled knowledge graph</strong>. When a query arrives, the synthesis work is already done. The inference call becomes verification, not discovery.</p>
+<h2>The Thin Node Problem</h2>
+<p>A &quot;Thin Node&quot; is a hub note that connects many ideas but contains no original synthesis. It is a junction without substance — a table of contents masquerading as an essay.</p>
+<p>Thin Nodes are dangerous precisely because they look healthy. The graph shows high connectivity. The content is hollow. The solution is deliberate densification: every hub must contain <strong>Vulture Theory</strong> — original argument derived from the connections it manages, not merely a list of them.</p>
+<p>A hub that lists its neighbors without synthesizing them is a map with no terrain. It tells you where things are. It does not tell you what they mean together.</p>
 <h2>Connection to History</h2>
-<p>The pattern is inspired by Vannevar Bush&#39;s <a href="memex.html" class="wikilink">memex</a> (1945), specifically the idea of &quot;associative trails&quot; between documents.</p>
-<h2>Relationship to Other Methods</h2>
-<p>While distinct from the <a href="zettelkasten.html" class="wikilink">zettelkasten</a> method, it shares the principle of atomicity and connectivity, using the LLM to manage the &quot;slip box&quot; logic.</p>
+<p>The pattern descends from Vannevar Bush&#39;s <a href="memex.html" class="wikilink">memex</a> (1945) — specifically the concept of &quot;associative trails&quot; between documents — and Douglas Engelbart&#39;s <a href="augmenting-human-intellect.html" class="wikilink">augmenting-human-intellect</a> program. The key difference is execution: Bush imagined microfilm and mechanical linkage; we have markdown, git, and LLMs operating at token scale.</p>
+<p>The <a href="zettelkasten.html" class="wikilink">zettelkasten</a> method provides the atomicity principle: one idea per note, explicit links between notes. The LLM adds the active maintenance layer that Luhmann had to perform manually across decades of physical slips.</p>
+<h2>See Also</h2>
+<ul>
+<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>
+</li>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
+</li>
+<li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
+</li>
+<li><a href="wiki-pattern-architecture.html" class="wikilink">wiki-pattern-architecture</a>
+</li>
+<li><a href="wiki-pattern-operations.html" class="wikilink">wiki-pattern-operations</a>
+</li>
+<li><a href="memex.html" class="wikilink">memex</a>
+</li>
+<li><a href="augmenting-human-intellect.html" class="wikilink">augmenting-human-intellect</a>
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -469,10 +513,13 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
 <li><a href="memex.html" class="">memex</a></li>
 <li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
 <li><a href="wiki-pattern-architecture.html" class="">wiki-pattern-architecture</a></li>
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
+<li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 <li><a href="zettelkasten.html" class="">zettelkasten</a></li>
 </ul>
           </div>

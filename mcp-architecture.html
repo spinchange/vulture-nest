@@ -405,12 +405,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">MCP Architecture</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-model, mcp-layers, mcp-lifecycle</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-model, mcp-layers, mcp-lifecycle, mcp-standard-model</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP Architecture</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -420,40 +420,63 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Architecture</h1>
-<p>The <strong>Model Context Protocol (MCP)</strong> follows a structured, layered architecture designed for interoperability between AI applications and external systems.</p>
+<p>The <strong>Model Context Protocol (MCP)</strong> is the USB-C specification for agent-to-tool communication. Before MCP, every AI application that needed to access external tools — filesystems, databases, APIs, web browsers, code executors — built a bespoke integration. The result was a combinatorial explosion of incompatible interfaces: each model vendor had their own function-calling format, each tool had its own auth scheme, and every new capability required custom glue code. MCP collapses this to a single, negotiated standard.</p>
 <h2>Participants</h2>
 <ul>
-<li><strong>MCP Host:</strong> The main AI application (e.g., Claude Desktop, VS Code) that users interact with. It coordinates multiple MCP clients.
+<li><strong>MCP Host</strong>: The AI application (Claude Desktop, VS Code Copilot, a custom agent loop) that users interact with. It coordinates multiple MCP Clients and owns the security context for the session.
 </li>
-<li><strong>MCP Client:</strong> A protocol-level component within the Host that maintains a dedicated connection to a single MCP Server.
+<li><strong>MCP Client</strong>: A protocol-level component *within* the Host that maintains a dedicated, stateful connection to a single MCP Server. The Host can run many Clients simultaneously; each is isolated.
 </li>
-<li><strong>MCP Server:</strong> A lightweight program that exposes specific data (Resources), actions (Tools), or templates (Prompts).
+<li><strong>MCP Server</strong>: A lightweight process that exposes a typed capability set: Resources, Tools, or Prompts. It has no visibility into other Servers in the same Host.
 </li>
 </ul>
+<p>The Host/Client/Server separation enforces <strong>capability isolation</strong>. A filesystem MCP Server does not automatically receive network access because a network MCP Server is also connected. Each Server&#39;s scope is defined by what it exposes, not by what the Host has access to.</p>
+<h2>The Three Primitives: A Complete Ontology</h2>
+<p>MCP exposes exactly three primitive types to agents. This is not an arbitrary decomposition — it is a claim that these three cover the full surface area of agent-to-world interaction.</p>
+<p><strong>Resources</strong> (nouns): Read-only data sources with URIs and optional MIME types. Files, database rows, API responses, configuration values. An agent reads a Resource; it does not execute it. Resources describe the state of the world.</p>
+<p><strong>Tools</strong> (verbs): Callable actions with side effects. <code>write_file</code>, <code>run_query</code>, <code>send_email</code>, <code>create_event</code>. They have JSON Schema–typed input parameters and return structured results. Tools modify the state of the world.</p>
+<p><strong>Prompts</strong> (grammar): Reusable, parameterized prompt templates. They allow server authors to encode domain-specific interaction patterns — a <code>git_commit_message</code> prompt, a <code>code_review</code> prompt — that the Host can inject into the conversation at the appropriate moment. Prompts structure communication about state.</p>
+<p>Every meaningful agentic capability decomposes into one of these three primitives, or it reveals a gap in the protocol specification. This ontological completeness is what makes MCP a <strong>Standard Model</strong> rather than just another integration format.</p>
 <h2>Protocol Layers</h2>
+<p><strong>Data Layer (Inner):</strong> JSON-RPC 2.0. Every MCP message is a JSON-RPC call or notification. JSON-RPC provides standard request/response pairing, error propagation with typed error codes, and batch processing — capabilities that HTTP alone does not specify. Using an existing standard here is intentional: it means any JSON-RPC tooling (debuggers, proxies, logging middleware) works with MCP out of the box.</p>
+<p><strong>Transport Layer (Outer):</strong> Stdio or HTTP/SSE. Stdio is the local-first choice: the Host spawns the Server as a subprocess and communicates over stdin/stdout. No networking, no port binding, no firewall configuration. HTTP/SSE enables remote Servers and multi-tenant deployments. The <a href="mcp-transport.html" class="wikilink">mcp-transport</a> note covers the tradeoffs; the key point is that the Data Layer is transport-agnostic by design.</p>
+<h2>Stateful Connections and Capability Negotiation</h2>
+<p>MCP is a <strong>stateful protocol</strong>. The connection lifecycle has three phases:</p>
 <ol>
-<li><strong>Data Layer (Inner):</strong> Implements the JSON-RPC 2.0 based exchange protocol. It handles lifecycle management and core primitives.
+<li><strong>Initialize</strong>: The Client sends its capabilities (protocol version, supported features, client info). The Server responds with its capabilities. Neither party assumes the other is compliant with any particular version — they negotiate to a common subset.
 </li>
-<li><strong>Transport Layer (Outer):</strong> Manages the communication channel (Stdio or HTTP/SSE) and authentication.
+<li><strong>Confirmed</strong>: The Client sends <code>notifications/initialized</code>. The handshake is complete. Both parties now know exactly what they can do together.
+</li>
+<li><strong>Dynamic Updates</strong>: Servers send <code>list_changed</code> notifications (e.g., <code>notifications/tools/list_changed</code>) when their capability set changes at runtime — when a user authenticates, when a resource becomes available, when a plugin loads.
 </li>
 </ol>
-<h2>Lifecycle Management</h2>
-<p>MCP is a <strong>stateful protocol</strong>. The connection follows a specific sequence:</p>
-<ol>
-<li><strong>Initialize:</strong> Capability negotiation (versions, features supported).
-</li>
-<li><strong>Notifications:</strong> The client sends a &quot;notifications/initialized&quot; message.
-</li>
-<li><strong>Dynamic Updates:</strong> Servers can send &quot;list_changed&quot; notifications (e.g., <code>notifications/tools/list_changed</code>) to trigger client refreshes.
-</li>
-</ol>
+<p>The statefulness is not a performance optimization — it is a <strong>security model</strong>. A stateless API treats every caller identically. A stateful MCP Server knows who it is talking to, what capabilities were negotiated at initialization, and what the current authorization scope is. Trust is negotiated, not assumed.</p>
+<h2>The Discovery Problem: MCP vs. Static APIs</h2>
+<p>Traditional API integration is a design-time workflow. A human developer reads documentation, understands the schema, and writes client code. The integration is hardcoded; any change to the API requires code changes.</p>
+<p>MCP enables <strong>runtime discovery</strong>. An agent cold-starting in an unknown environment calls <code>list_tools</code> on available Servers and builds a complete map of its current capability set — without prior documentation, without hardcoded assumptions. This is architecturally transformative.</p>
+<p>It means agent capability is <strong>dynamic</strong>: a Server can expose new Tools after authentication, after user configuration, after loading a plugin. It means agent capability is <strong>composable</strong>: an agent with MCP Servers for filesystem, database, email, and calendar is not four separately integrated systems — it is one agent with a runtime-assembled capability set.</p>
+<p>An agent that can discover its own capabilities at runtime can also reason about what it *lacks* — and potentially request new capability by requesting a new MCP Server connection. This is the foundation of self-extending agency.</p>
+<h2>MCP in the Vulture Nest</h2>
+<p>Within the Vulture Nest architecture, MCP Servers are the mechanism by which agents access the PoShWiKi database, the vault filesystem, and external knowledge sources. The <a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a> pattern uses MCP Servers to package reusable agent capabilities as composable units — a specialization of the general MCP model for agentic knowledge work.</p>
+<p>The <a href="mcp-security.html" class="wikilink">mcp-security</a> constraints apply here with particular force: an agent with write access to the vault filesystem has write access to the knowledge base itself. MCP&#39;s per-Server capability scoping is the mechanism that keeps this manageable.</p>
+<h2>The Standard Model Argument</h2>
+<p>In physics, the Standard Model doesn&#39;t describe all of reality — it describes the fundamental particles and forces from which all observable phenomena are built. MCP makes an analogous claim: Resources, Tools, and Prompts are the fundamental particles from which all agent-to-world capabilities compose.</p>
+<p>Whether this claim holds at full scale is an open empirical question. What MCP has already achieved is eliminating the proprietary integration layer: any MCP-compatible Host can use any MCP-compatible Server without custom glue code. The interoperability gain is real, measurable, and compounding — every new MCP Server that is built is available to every MCP-compatible agent, forever.</p>
 <h2>See Also</h2>
 <ul>
-<li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
-</li>
 <li><a href="mcp-transport.html" class="wikilink">mcp-transport</a>
 </li>
-<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
+<li><a href="mcp-security.html" class="wikilink">mcp-security</a>
+</li>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+</li>
+<li><a href="mcp-sdks.html" class="wikilink">mcp-sdks</a>
+</li>
+<li><a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a>
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a>
 </li>
 </ul>
       </main>
@@ -485,12 +508,17 @@
 <li><a href="mcp-versioning.html" class="">mcp-versioning</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
-<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="mcp-security.html" class="">mcp-security</a></li>
+<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
 </ul>
           </div>
         </div>
