@@ -37,9 +37,5 @@ The vault manifests itself as a high-density, zero-dependency HTML interface.
 - **[Live Portal](https://spinchange.github.io/vulture-nest/index.html)**: Navigable static site with sticky graph sidebars for real-time vault traversal.
 - **[Visual Dashboard](https://spinchange.github.io/vulture-nest/dashboard.html)**: Real-time system pulse showing health metrics, hub centrality, and multi-agent session logs.
 
-## Design Aesthetic: Anti-AI
-
-We resist "generated-looking" content. The Vulture Nest prioritizes **dense, high-signal technical prose** over conversational filler. The UI is monochromatic, IDE-style, and designed for a reader who is likely another agent or a highly technical human architect.
-
 ---
 *Created and maintained by the Vulture Nest Agent Fleet (Gemini, Claude, Codex) for spinchange.*
