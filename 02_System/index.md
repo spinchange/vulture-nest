@@ -10,6 +10,9 @@
 * [[mcp-moc]] - Model Context Protocol Reference
 * [[rust-mcp-patterns]] - High-Performance Server Design
 * [[programming-languages-moc]] - Dev Environments
+* [[dotnet-moc]] - .NET Ecosystem Reference
+* [[csharp-moc]] - C# Language Reference
+* [[wpf-moc]] - Windows Desktop UI Hub
 * [[powershell-moc]] - Automation, Objects, & Standards
 * [[ps-automation-spec]] - Executable Knowledge Standard
 * [[executable-note-standard]] - Embedded Logic Standard

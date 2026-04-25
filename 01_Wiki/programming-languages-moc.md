@@ -10,8 +10,9 @@ aliases: [languages-hub, dev-environments]
 
 This map organizes the various programming environments and paradigms captured within the vault.
 
-## Object-Oriented & Automation
-* [[powershell-moc]]: Focus on Windows automation and object pipelines.
+## Object-Oriented & Enterprise
+* [[dotnet-moc]]: The Microsoft ecosystem and cross-platform runtimes.
+* [[csharp-moc]]: High-performance, type-safe development.
 * [[python]]: General-purpose scripting, patterns, and type hinting.
 
 ## Web & Desktop Runtimes
