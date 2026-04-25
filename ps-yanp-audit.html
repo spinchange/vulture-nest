@@ -358,6 +358,28 @@
       text-align: center;
     }
 
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
     /* ── Responsive ──────────────────────────────────────────────── */
     @media (max-width: 820px) {
       .layout {
@@ -405,12 +427,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">PS: YANP Audit</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-yanp-audit, audit-yanp.ps1</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PS: YANP Audit</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-yanp-audit, audit-yanp.ps1</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
