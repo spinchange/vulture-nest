@@ -45,7 +45,6 @@ try {
             $path = Join-Path $LibPath $dll
             if (Test-Path $path) {
                 try {
-                    # Force load from absolute path to resolve dependencies in cloud runners
                     [System.Reflection.Assembly]::LoadFrom($path) | Out-Null
                 } catch {
                     Add-Type -Path $path -ErrorAction SilentlyContinue
@@ -59,9 +58,7 @@ try {
         $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLibName"
         
         if (Test-Path $nativePath) {
-            try {
-                [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
-            } catch {}
+            try { [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null } catch {}
         }
         
         try { [SQLitePCL.Batteries]::Init() } catch {}
@@ -255,12 +252,12 @@ try {
         Write-Host "Compiling $noteName..." -ForegroundColor Gray
         $content = Get-NormalizedContent -Path $file.FullName
         $parts = Split-Frontmatter -Content $content
-        $frontmatter = $parts.Frontmatter
-        $title = if ($frontmatter.Contains('title') -and -not [string]::IsNullOrWhiteSpace([string]$frontmatter['title'])) { [string]$frontmatter['title'] } else { $noteName }
         $bodyHtml = Convert-MarkdownToHtml -Markdown $parts.Body
-        $frontmatterHtml = Convert-FrontmatterToHtml -Frontmatter $frontmatter
+        $frontmatterHtml = Convert-FrontmatterToHtml -Frontmatter $parts.Frontmatter
         $neighbors = Get-GraphNeighbors -NoteName $noteName
         $graphHtml = Convert-GraphNeighborsToHtml -Incoming $neighbors.Incoming -Outgoing $neighbors.Outgoing
+        
+        $title = if ($parts.Frontmatter.Contains('title')) { [string]$parts.Frontmatter['title'] } else { $noteName }
         $pageHtml = $template.Replace('{{TITLE}}', (ConvertTo-HtmlSafe $title)).Replace('{{CONTENT}}', $bodyHtml).Replace('{{FRONTMATTER}}', $frontmatterHtml).Replace('{{GRAPH_NEIGHBORS}}', $graphHtml)
         [System.IO.File]::WriteAllText($outputPath, $pageHtml, $utf8NoBom)
         $results.Add([PSCustomObject]@{ Note = $noteName; Title = $title; OutputPath = $outputPath; Incoming = $neighbors.Incoming.Count; Outgoing = $neighbors.Outgoing.Count })
