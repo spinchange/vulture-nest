@@ -12,6 +12,7 @@ type: community
 * [[pkm-history-moc]] - Lineage & Vision
 * [[pkm-methods-moc]] - Systems & Workflow
 * [[agentic-frameworks-moc]] - Agency & Mechanics
+* [[cognitive-architectures]] - Chain of Thought Blueprint
 * [[agentic-tdd-patterns]] - Executable Intent & EDD
 * [[orchestration-tradeoffs]] - Swarm vs. ADK Comparison
 * [[hf-agents-course-moc]] - Hugging Face Agents Course Reference
