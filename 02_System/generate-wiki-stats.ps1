@@ -6,7 +6,7 @@
 .OUTPUTS
     A summary table of vault statistics.
 .EXAMPLE
-    powershell.exe -ExecutionPolicy Bypass -File 02_System/generate-wiki-stats.ps1
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-wiki-stats.ps1
 #>
 
 $wikiPath = "01_Wiki"

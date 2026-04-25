@@ -19,6 +19,11 @@
 * [[javascript-moc]] - Runtimes & Desktop Apps
 * [[hybrid-retrieval-spec]] - Deterministic + Semantic Strategy (Design)
 
+## Emergent Communities
+* [[community-living-knowledge-system]] - The Vault as a Compiler
+* [[community-protocol-trust-substrate]] - Type-Safe Agent Governance
+* [[community-polyglot-agent-platform]] - Tiered Language Architectures
+
 ## Sources (Raw Data)
 * `00_Raw/LLM Wiki.md`
 * `00_Raw/llm-wiki-pattern.md`

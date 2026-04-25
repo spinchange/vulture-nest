@@ -8,7 +8,7 @@
 .OUTPUTS
     A list of orphaned notes.
 .EXAMPLE
-    powershell.exe -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1
 #>
 $wikiFiles = Get-ChildItem -Path 01_Wiki -Filter *.md
 $allNotes = $wikiFiles | Select-Object -ExpandProperty BaseName

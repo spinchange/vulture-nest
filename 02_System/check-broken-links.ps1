@@ -6,7 +6,7 @@
 .OUTPUTS
     A table of source files and their broken link targets.
 .EXAMPLE
-    powershell.exe -ExecutionPolicy Bypass -File 02_System/check-broken-links.ps1
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/check-broken-links.ps1
 #>
 
 $wikiPath = "01_Wiki"

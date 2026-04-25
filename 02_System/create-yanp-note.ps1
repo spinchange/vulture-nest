@@ -10,7 +10,7 @@
 .PARAMETER Author
     The author of the note (defaults to gemini-cli).
 .EXAMPLE
-    powershell.exe -ExecutionPolicy Bypass -File 02_System/create-yanp-note.ps1 -Title "My New Note" -Type "permanent"
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/create-yanp-note.ps1 -Title "My New Note" -Type "permanent"
 #>
 
 Param(

@@ -6,7 +6,7 @@
     Parses all Markdown files in 01_Wiki/ for wikilinks and stores the relationship graph 
     in the 'Links' table of the SQLite database.
 .EXAMPLE
-    powershell.exe -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1
 #>
 
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition

@@ -4,12 +4,25 @@
 .DESCRIPTION
     Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable TOOL_REGISTRY.md for agents.
 .EXAMPLE
-    powershell.exe -ExecutionPolicy Bypass -File 02_System/generate-tool-registry.ps1
+    pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-tool-registry.ps1
 #>
 
 $systemPath = "02_System"
 $outputPath = "02_System/TOOL_REGISTRY.md"
 $scripts = Get-ChildItem -Path $systemPath -Filter "*.ps1"
+
+function Convert-RegistrySafeText {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Text
+    )
+
+    $normalized = ($Text -replace "`r`n", ' ') -replace "`n", ' '
+    $normalized = $normalized -replace '\[\[([^\]|]+)\|([^\]]+)\]\]', '$2'
+    $normalized = $normalized -replace '\[\[([^\]]+)\]\]', '$1'
+    $normalized = $normalized -replace '\s+', ' '
+    return $normalized.Trim()
+}
 
 $registryContent = @"
 # Vault Tool Registry (Agent Optimized)
@@ -23,15 +36,15 @@ foreach ($script in $scripts) {
     $help = Get-Help $script.FullName -ErrorAction SilentlyContinue
     
     if ($help -and $help.Synopsis) {
-        $synopsis = $help.Synopsis.Trim()
-        $description = if ($help.Description.Text) { $help.Description.Text.Trim() } else { "No description provided." }
+        $synopsis = Convert-RegistrySafeText -Text $help.Synopsis
+        $description = if ($help.Description.Text) { Convert-RegistrySafeText -Text ($help.Description.Text -join ' ') } else { "No description provided." }
         $inputs = if ($help.Inputs.inputTypeName.Text) { ($help.Inputs.inputTypeName.Text | ForEach-Object { $_.Trim() }) -join ', ' } else { "None" }
         $outputs = if ($help.Outputs.outputTypeName.Text) { ($help.Outputs.outputTypeName.Text | ForEach-Object { $_.Trim() }) -join ', ' } else { "None" }
 
         $registryContent += "## $synopsis`n"
         $registryContent += "*   **File:** ``$($script.FullName.Replace('C:\Users\executor\Documents\vulture-nest\', ''))`` `n"
         $registryContent += "*   **Description:** $description`n"
-        $registryContent += "*   **Command:** ``powershell.exe -ExecutionPolicy Bypass -File $($script.Name)`` `n"
+        $registryContent += "*   **Command:** ``pwsh -NoProfile -ExecutionPolicy Bypass -File $($script.Name)`` `n"
         $registryContent += "*   **Inputs:** $inputs`n"
         $registryContent += "*   **Outputs:** $outputs`n`n"
     } else {
