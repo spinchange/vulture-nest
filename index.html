@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MCP SDKs — Vulture Portal</title>
+  <title>index — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,15 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>MCP SDKs</span>
+      <span>index</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">MCP SDKs</h1>
+      <h1 class="note-title">index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-libraries, python-mcp-sdk, typescript-mcp-sdk</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP SDKs</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
       </div>
     </header>
 
@@ -419,39 +414,141 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>MCP SDKs</h1>
-<p>The Model Context Protocol (MCP) provides official SDKs to streamline the development of servers and clients. These SDKs are categorized into tiers based on their feature completeness and maintenance level.</p>
-<h2>SDK Tiering System</h2>
+        <h1>Wiki Index (YANP Compliant)</h1>
+<h2>The Maps (MOCs)</h2>
 <ul>
-<li><strong>Tier 1 (Core)</strong>: Full feature parity, protocol compliance, and primary maintenance commitment.
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> - Philosophy &amp; YANP
 </li>
-<li><strong>Tier 2 (Advanced)</strong>: High feature support, active maintenance.
+<li><a href="pkm-history-moc.html" class="wikilink">pkm-history-moc</a> - Lineage &amp; Vision
 </li>
-<li><strong>Tier 3 (Emerging)</strong>: Essential protocol support, community or specialized maintenance.
+<li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> - Systems &amp; Workflow
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> - Agency &amp; Mechanics
+</li>
+<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a> - Swarm vs. ADK Comparison
+</li>
+<li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a> - Hugging Face Agents Course Reference
+</li>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a> - Model Context Protocol Reference
+</li>
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> - High-Performance Server Design
+</li>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> - Dev Environments
+</li>
+<li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a> - .NET Ecosystem Reference
+</li>
+<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a> - C# Language Reference
+</li>
+<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a> - Windows Desktop UI Hub
+</li>
+<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a> - Automation, Objects, &amp; Standards
+</li>
+<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> - Executable Knowledge Standard
+</li>
+<li><a href="executable-note-standard.html" class="wikilink">executable-note-standard</a> - Embedded Logic Standard
+</li>
+<li><a href="javascript-moc.html" class="wikilink">javascript-moc</a> - Runtimes &amp; Desktop Apps
+</li>
+<li><a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a> - Deterministic + Semantic Strategy (Design)
 </li>
 </ul>
-<h2>Available SDKs</h2>
-<p>| Language | Tier | Repository | | :--- | :--- | :--- | | <strong>TypeScript</strong> | 1 | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) | | <strong>Python</strong> | 1 | [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) | | <strong>C#</strong> | 1 | [modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) | | <strong>Go</strong> | 1 | [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk) | | <strong>Java</strong> | 2 | [modelcontextprotocol/java-sdk](https://github.com/modelcontextprotocol/java-sdk) | | <strong>Rust</strong> | 2 | [modelcontextprotocol/rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) | | <strong>Swift</strong> | 3 | [modelcontextprotocol/swift-sdk](https://github.com/modelcontextprotocol/swift-sdk) | | <strong>Ruby</strong> | 3 | [modelcontextprotocol/ruby-sdk](https://github.com/modelcontextprotocol/ruby-sdk) | | <strong>PHP</strong> | 3 | [modelcontextprotocol/php-sdk](https://github.com/modelcontextprotocol/php-sdk) |</p>
-<h2>Standard Capabilities</h2>
-<p>Regardless of the language, all official MCP SDKs support:</p>
+<h2>Emergent Communities</h2>
 <ul>
-<li><strong>Server Creation</strong>: Exposing <a href="mcp-primitives.html" class="wikilink">Tools, Resources, and Prompts</a>.
+<li><a href="community-living-knowledge-system.html" class="wikilink">community-living-knowledge-system</a> - The Vault as a Compiler
 </li>
-<li><strong>Client Integration</strong>: Connecting to any valid MCP server.
+<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> - Type-Safe Agent Governance
 </li>
-<li><strong>Transport Protocols</strong>: Support for both Stdio and HTTP/SSE.
+<li><a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> - Tiered Language Architectures
 </li>
-<li><strong>Type Safety</strong>: Native language-specific typing for protocol messages.
+<li><a href="the-vulture-portal.html" class="wikilink">the-vulture-portal</a> - High-Density Web Interface
 </li>
 </ul>
-<hr>
-<h2>References</h2>
+<h2>Sources (Raw Data)</h2>
 <ul>
-<li>Source: <code>00_Raw/mcp/SDKs.md</code>
+<li><code>00_Raw/LLM Wiki.md</code>
 </li>
-<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+<li><code>00_Raw/llm-wiki-pattern.md</code>
 </li>
-<li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
+<li><code>00_Raw/memex-summary.md</code>
+</li>
+<li><code>00_Raw/zettelkasten-summary.md</code>
+</li>
+<li><code>00_Raw/python-summary.md</code>
+</li>
+<li><code>00_Raw/racket-summary.md</code>
+</li>
+<li><code>00_Raw/the-rust-programming-language.md</code>
+</li>
+<li><code>00_Raw/typescript-handbook.md</code>
+</li>
+<li><code>00_Raw/ms-learn-csharp-overview.md</code>
+</li>
+<li><code>00_Raw/ms-learn-dotnet-fundamentals.md</code>
+</li>
+<li><code>00_Raw/ms-learn-wpf-overview.md</code>
+</li>
+<li><code>00_Raw/ms-learn-ef-core-overview.md</code>
+</li>
+<li><code>00_Raw/ms-learn-aspnet-core-overview.md</code>
+</li>
+<li><code>00_Raw/ms-repo-poshwiki.md</code>
+</li>
+<li><code>00_Raw/PoShWiKi/</code> - Minimal PowerShell 7 Wiki for Agents
+</li>
+<li><code>00_Raw/agent-actions-unit.md</code>
+</li>
+<li><code>00_Raw/openai-agents-and-swarm.md</code>
+</li>
+<li><code>00_Raw/agent-note-conventions.md</code>
+</li>
+<li><code>00_Raw/agent-knowledge-vault.md</code>
+</li>
+<li><code>00_Raw/agent-skills-index.md</code>
+</li>
+<li><code>00_Raw/agent-configuration-sync-strategy.md</code>
+</li>
+<li><code>00_Raw/adk-documentation.md</code>
+</li>
+<li><code>00_Raw/foundry-local.md</code>
+</li>
+<li><code>00_Raw/hf-agents-course-unit1.md</code>
+</li>
+<li><code>00_Raw/hf-agents-course-unit2.md</code>
+</li>
+<li><code>00_Raw/hf-agents-bonus1.md</code>
+</li>
+<li><code>00_Raw/hf-agents-bonus2.md</code>
+</li>
+<li><code>00_Raw/hf-agents-unit3.md</code>
+</li>
+<li><code>00_Raw/hf-agents-bonus3.md</code>
+</li>
+<li><code>00_Raw/hf-agents-final-units.md</code>
+</li>
+<li><code>00_Raw/mcp/</code> - Anthropic Model Context Protocol Documentation
+</li>
+<li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a> - Agent Security &amp; Isolation
+</li>
+<li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a> - Tool Schema Design
+</li>
+<li><a href="hitl-ui-patterns.html" class="wikilink">hitl-ui-patterns</a> - Human Approval Workflows
+</li>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> - Hardware Acceleration Reference
+</li>
+<li><a href="alternative-agent-frameworks.html" class="wikilink">alternative-agent-frameworks</a> - CrewAI &amp; AutoGen Comparison
+</li>
+</ul>
+<h2>System Layer</h2>
+<ul>
+<li><a href="log.html" class="wikilink">System Log</a>
+</li>
+<li><a href="visitor-directives.html" class="wikilink">Visitor Directives (Multi-Agent Protocol)</a>
+</li>
+<li><a href="github-deployment.html" class="wikilink">GitHub Deployment (Cloud Daemon)</a>
+</li>
+<li><a href="poshwiki-tools.html" class="wikilink">PoShWiKi Tools API</a>
+</li>
+<li><a href="TOOL_REGISTRY.html" class="wikilink">Tool Registry (Machine-Readable)</a>
 </li>
 </ul>
       </main>
@@ -464,17 +561,39 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
+            <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
+<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
+<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
+<li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
+<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="github-deployment.html" class="">github-deployment</a></li>
+<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
+<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
+<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
+<li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
-<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
-<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
+<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
+<li><a href="TOOL_REGISTRY.html" class="">TOOL_REGISTRY</a></li>
+<li><a href="visitor-directives.html" class="">visitor-directives</a></li>
+<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
 </ul>
           </div>
         </div>
