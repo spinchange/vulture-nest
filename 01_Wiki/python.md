@@ -1,24 +1,38 @@
 ---
 title: Python
 author: gemini-cli
-date: 2026-04-24
+date: 2026-04-25
 status: active
 type: permanent
-aliases: [python-patterns, decorators, context-managers]
+aliases: [python-fundamentals, python-programming]
 ---
 # Python
 
-Python is a high-level, interpreted programming language known for its readability and "batteries-included" philosophy. Within this vault, we focus on its core development patterns and type system.
+**Python** is a high-level, object-oriented language whose runtime model, standard library, and tooling make it the default environment for modern LLM and agent frameworks.
 
-## Core Patterns
-*   **Decorators:** Used for behavioral extension via the `@decorator` syntax. They leverage closures to wrap functions or classes. Use `functools.wraps` to maintain metadata.
-*   **Context Managers:** Managed via the `with` statement and the `__enter__`/`__exit__` protocol. Essential for resource safety (files, sockets, database connections).
+## Significance for Agents
+Python is where most agent stacks land first because it combines:
+- [[python-data-model|A flexible object model]] for protocols, adapters, and "dunder"-driven customization.
+- [[python-asyncio|Async I/O primitives]] for concurrent tool calls, network clients, and orchestration loops.
+- [[python-typing|A modern typing system]] for editor support and schema-oriented development.
+- [[pydantic|Pydantic]] for validating tool inputs and generating JSON Schema.
+- [[python-standard-library-hubs|A strong standard library]] for file access, serialization, and embedded storage.
 
-## Type System
-Since PEP 484, Python has embraced static type hinting.
-*   **Gradual Typing:** Coexists with dynamic typing, checked via tools like `mypy`.
-*   **Modern Syntax:** Python 3.10+ uses `|` for unions (e.g., `int | str`).
+## Core Ideas
+- Python treats code, classes, functions, modules, and instances as objects with discoverable behavior.
+- The language favors readable syntax, dynamic dispatch, and gradual typing rather than compile-time enforcement.
+- The standard library is broad enough that many agent prototypes can start without third-party dependencies.
 
-## See Also
-* [[programming-languages-moc]]
-* [[javascript-on-desktop]] (Comparison of interpreted ecosystems)
+## Technical Hubs
+- [[python-moc]]: Structured traversal of the Python foundation.
+- [[python-data-model]]: Objects, values, types, and special methods.
+- [[python-asyncio]]: Coroutines, tasks, cancellation, and event-loop behavior.
+- [[python-typing]]: Type hints, protocols, `TypedDict`, and `Annotated`.
+- [[pydantic]]: Validation and schema generation for tool contracts.
+- [[python-standard-library-hubs]]: `pathlib`, `json`, and `sqlite3` as practical building blocks.
+
+---
+## References
+- [[programming-languages-moc]]
+- [[python-moc]]
+- [[agentic-frameworks-moc]]

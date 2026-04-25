@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Python — Vulture Portal</title>
+  <title>Python Typing — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Python</span>
+      <span>Python Typing</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Python</h1>
+      <h1 class="note-title">Python Typing</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-type-hints, gradual-typing</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python Typing</span></span>
       </div>
     </header>
 
@@ -419,54 +419,53 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Python</h1>
-<p><strong>Python</strong> is a high-level, object-oriented language whose runtime model, standard library, and tooling make it the default environment for modern LLM and agent frameworks.</p>
+        <h1>Python Typing</h1>
+<p>Python typing adds optional type information for humans, editors, linters, and schema-oriented libraries without changing Python into a statically typed language at runtime.</p>
+<h2>Core Concepts</h2>
+<ul>
+<li>Type hints describe expected shapes using annotations like <code>str</code>, <code>list[int]</code>, and <code>dict[str, Any]</code>.
+</li>
+<li><code>Protocol</code> enables structural typing: an object is accepted if it behaves correctly, even without inheriting from a base class.
+</li>
+<li><code>TypedDict</code> describes JSON-like mappings by key and value shape.
+</li>
+<li><code>Annotated</code> attaches metadata to a type, which downstream libraries can use for validation or schema generation.
+</li>
+<li><code>Literal</code>, <code>Union</code> or <code>|</code>, <code>Optional</code>, <code>Final</code>, and generics make contracts more precise.
+</li>
+</ul>
 <h2>Significance for Agents</h2>
-<p>Python is where most agent stacks land first because it combines:</p>
 <ul>
-<li><a href="python-data-model.html" class="wikilink">A flexible object model</a> for protocols, adapters, and &quot;dunder&quot;-driven customization.
+<li>Agents work best with explicit contracts. Type hints make tool surfaces easier to review, autocomplete, validate, and convert into schemas.
 </li>
-<li><a href="python-asyncio.html" class="wikilink">Async I/O primitives</a> for concurrent tool calls, network clients, and orchestration loops.
+<li><code>TypedDict</code> and <code>Annotated</code> are especially useful for tool-calling payloads because they map cleanly to JSON structures.
 </li>
-<li><a href="python-typing.html" class="wikilink">A modern typing system</a> for editor support and schema-oriented development.
+<li>Protocols let framework code depend on behavior rather than inheritance, which fits adapter-heavy agent systems.
 </li>
-<li><a href="pydantic.html" class="wikilink">Pydantic</a> for validating tool inputs and generating JSON Schema.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">A strong standard library</a> for file access, serialization, and embedded storage.
+<li>Typing is also the substrate Pydantic uses to infer runtime parsing rules and schema output.
 </li>
 </ul>
-<h2>Core Ideas</h2>
+<h2>Practical Heuristics</h2>
 <ul>
-<li>Python treats code, classes, functions, modules, and instances as objects with discoverable behavior.
+<li>Keep public tool inputs narrow and explicit.
 </li>
-<li>The language favors readable syntax, dynamic dispatch, and gradual typing rather than compile-time enforcement.
+<li>Prefer <code>TypedDict</code> for plain request or response envelopes and classes when behavior matters.
 </li>
-<li>The standard library is broad enough that many agent prototypes can start without third-party dependencies.
+<li>Use <code>Annotated</code> only when the metadata has a real consumer such as Pydantic or FastAPI.
 </li>
-</ul>
-<h2>Technical Hubs</h2>
-<ul>
-<li><a href="python-moc.html" class="wikilink">python-moc</a>: Structured traversal of the Python foundation.
-</li>
-<li><a href="python-data-model.html" class="wikilink">python-data-model</a>: Objects, values, types, and special methods.
-</li>
-<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a>: Coroutines, tasks, cancellation, and event-loop behavior.
-</li>
-<li><a href="python-typing.html" class="wikilink">python-typing</a>: Type hints, protocols, <code>TypedDict</code>, and <code>Annotated</code>.
-</li>
-<li><a href="pydantic.html" class="wikilink">pydantic</a>: Validation and schema generation for tool contracts.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>: <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> as practical building blocks.
+<li>Treat typing as a design aid, not a substitute for runtime validation.
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
+<li><a href="python.html" class="wikilink">python</a>
 </li>
 <li><a href="python-moc.html" class="wikilink">python-moc</a>
 </li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+<li><a href="pydantic.html" class="wikilink">pydantic</a>
+</li>
+<li>[typing](https://docs.python.org/3.12/library/typing.html)
 </li>
 </ul>
       </main>
@@ -481,25 +480,15 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="code-agents.html" class="">code-agents</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
-<li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
-<li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
           </div>
         </div>

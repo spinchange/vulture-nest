@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Python — Vulture Portal</title>
+  <title>Python Data Model — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Python</span>
+      <span>Python Data Model</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Python</h1>
+      <h1 class="note-title">Python Data Model</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dunder-methods, python-objects</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python Data Model</span></span>
       </div>
     </header>
 
@@ -419,54 +419,64 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Python</h1>
-<p><strong>Python</strong> is a high-level, object-oriented language whose runtime model, standard library, and tooling make it the default environment for modern LLM and agent frameworks.</p>
+        <h1>Python Data Model</h1>
+<p>The Python data model explains how objects behave, how the interpreter dispatches operations, and why special methods shape nearly every abstraction in Python.</p>
+<h2>Core Concepts</h2>
+<ul>
+<li>Every Python value is an object with an <strong>identity</strong>, <strong>type</strong>, and <strong>value</strong>.
+</li>
+<li>An object&#39;s type determines supported operations and whether its value is mutable or immutable.
+</li>
+<li>Containers hold references to other objects, so mutability questions often depend on whether the container itself can change or whether the referenced objects can change.
+</li>
+<li>Python behavior is largely protocol-driven: operations like attribute access, iteration, comparison, calling, awaiting, and context management are delegated through special methods.
+</li>
+</ul>
+<h2>Special Methods That Matter</h2>
+<ul>
+<li>Construction and representation: <code>__new__</code>, <code>__init__</code>, <code>__repr__</code>, <code>__str__</code>
+</li>
+<li>Collections and iteration: <code>__len__</code>, <code>__iter__</code>, <code>__getitem__</code>, <code>__contains__</code>
+</li>
+<li>Attribute control: <code>__getattr__</code>, <code>__getattribute__</code>, <code>__setattr__</code>
+</li>
+<li>Numeric and comparison behavior: <code>__add__</code>, <code>__eq__</code>, <code>__lt__</code>
+</li>
+<li>Context management: <code>__enter__</code>, <code>__exit__</code>, <code>__aenter__</code>, <code>__aexit__</code>
+</li>
+<li>Async integration: <code>__await__</code>, <code>__aiter__</code>, <code>__anext__</code>
+</li>
+</ul>
 <h2>Significance for Agents</h2>
-<p>Python is where most agent stacks land first because it combines:</p>
 <ul>
-<li><a href="python-data-model.html" class="wikilink">A flexible object model</a> for protocols, adapters, and &quot;dunder&quot;-driven customization.
+<li>Agent frameworks depend heavily on Python protocols rather than rigid interfaces. Objects become tools, models, iterables, context managers, or awaitables by implementing the right methods.
 </li>
-<li><a href="python-asyncio.html" class="wikilink">Async I/O primitives</a> for concurrent tool calls, network clients, and orchestration loops.
+<li>Understanding identity versus value helps avoid state bugs when mutable lists, dicts, and caches are shared across tool invocations.
 </li>
-<li><a href="python-typing.html" class="wikilink">A modern typing system</a> for editor support and schema-oriented development.
+<li>The data model is the basis for ergonomic abstractions such as model classes, descriptors, validators, and custom serialization hooks.
 </li>
-<li><a href="pydantic.html" class="wikilink">Pydantic</a> for validating tool inputs and generating JSON Schema.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">A strong standard library</a> for file access, serialization, and embedded storage.
+<li>Async support is part of the same model: <code>await</code>, <code>async with</code>, and <code>async for</code> are language-level protocol dispatch, not one-off syntax.
 </li>
 </ul>
-<h2>Core Ideas</h2>
+<h2>Practical Heuristics</h2>
 <ul>
-<li>Python treats code, classes, functions, modules, and instances as objects with discoverable behavior.
+<li>Prefer immutable values for configuration and message payloads when possible.
 </li>
-<li>The language favors readable syntax, dynamic dispatch, and gradual typing rather than compile-time enforcement.
+<li>Be explicit when objects own mutable shared state.
 </li>
-<li>The standard library is broad enough that many agent prototypes can start without third-party dependencies.
+<li>Reach for protocol behavior only when it clarifies the abstraction; do not overload dunder methods just to be clever.
 </li>
-</ul>
-<h2>Technical Hubs</h2>
-<ul>
-<li><a href="python-moc.html" class="wikilink">python-moc</a>: Structured traversal of the Python foundation.
-</li>
-<li><a href="python-data-model.html" class="wikilink">python-data-model</a>: Objects, values, types, and special methods.
-</li>
-<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a>: Coroutines, tasks, cancellation, and event-loop behavior.
-</li>
-<li><a href="python-typing.html" class="wikilink">python-typing</a>: Type hints, protocols, <code>TypedDict</code>, and <code>Annotated</code>.
-</li>
-<li><a href="pydantic.html" class="wikilink">pydantic</a>: Validation and schema generation for tool contracts.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>: <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> as practical building blocks.
+<li>Treat <code>__repr__</code> as observability infrastructure because agent debugging is often log-driven.
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
+<li><a href="python.html" class="wikilink">python</a>
 </li>
 <li><a href="python-moc.html" class="wikilink">python-moc</a>
 </li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+<li>[Python Data Model](https://docs.python.org/3.12/reference/datamodel.html)
 </li>
 </ul>
       </main>
@@ -481,25 +491,13 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="code-agents.html" class="">code-agents</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
-<li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
-<li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
           </div>
         </div>

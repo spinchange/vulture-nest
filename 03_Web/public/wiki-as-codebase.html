@@ -405,12 +405,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki as Codebase</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ide-metaphor, wiki-engineering</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki as Codebase</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki as Codebase</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ide-metaphor, wiki-engineering</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -420,27 +420,84 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki as Codebase</h1>
-<p>A powerful metaphor for the <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a> is treating the personal knowledge base as a software project.</p>
-<h2>The Metaphor</h2>
+<p>The personal knowledge base is a software project. This is not metaphor — it is an architectural claim with engineering implications. Every component of a mature software development workflow has a direct analogue in the <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>, and mapping these analogues reveals what a knowledge system must have to be rigorous rather than merely organized.</p>
+<h2>The Role Map</h2>
 <ul>
-<li><strong>The Wiki is the Codebase:</strong> A structured, interlinked collection of logic (knowledge).
+<li><strong>The Wiki</strong> = the codebase: a structured, interlinked collection of logic expressed in a formal notation (Markdown + YANP frontmatter).
 </li>
-<li><strong>Obsidian is the IDE:</strong> The environment where the codebase is viewed, searched, and debugged.
+<li><strong>Obsidian</strong> = the IDE: the environment for navigating, searching, and debugging the knowledge graph.
 </li>
-<li><strong>The LLM is the Programmer:</strong> The agent responsible for writing, refactoring, and maintaining the code.
+<li><strong>The LLM</strong> = the programmer: the agent responsible for writing, refactoring, and maintaining the notes.
 </li>
-<li><strong>The Human is the Architect:</strong> The one who sets the vision, curates the sources (requirements), and directs the exploration.
+<li><strong>The Human</strong> = the architect: sets vision, curates sources (requirements), reviews changes, and gates deployments to <code>main</code>.
+</li>
+<li><strong>Git</strong> = version control: tracks every mutation, enables rollback, and enforces the Git Invariant on all agent writes.
 </li>
 </ul>
-<h2>Engineering Practices for Knowledge</h2>
+<h2>The Compilation Model</h2>
+<p><code>generate-wiki.ps1</code> is a compiler. This is literal, not figurative.</p>
+<p>It takes markdown source files (<code>.md</code>) as input — the &quot;source code&quot; — and produces HTML artifacts (<code>.html</code>) as output — the &quot;compiled binary.&quot; During this process it:</p>
+<ol>
+<li>Parses YANP frontmatter (type-checking the metadata schema).
+</li>
+<li>Resolves wikilinks to valid targets (link validation = symbol resolution at link-time).
+</li>
+<li>Injects graph neighbor data from the PoShWiKi SQLite database (an enrichment pass over the compiled object).
+</li>
+<li>Renders against <code>template.html</code> (linking against a standard library).
+</li>
+</ol>
+<p>The output portal at <code>03_Web/public/</code> is the <strong>build artifact</strong>. Editing the HTML directly is like editing a compiled binary — possible in principle, immediately overwritten on the next build. The source of truth is the markdown. Everything else is derived.</p>
+<p>This framing has a practical consequence: if the portal looks wrong, the fix lives in the source files or the compiler, never in the output. Debugging the artifact rather than the source is a category error.</p>
+<h2>The Type System</h2>
+<p>YANP frontmatter is a type system for knowledge. Every note has a declared type:</p>
 <ul>
-<li><strong>Refactoring:</strong> Periodically &quot;linting&quot; the wiki to combine redundant notes or split over-large ones.
+<li><code>permanent</code> — a settled conclusion, load-bearing for other notes. Claims here are defended and cross-referenced.
 </li>
-<li><strong>Version Control:</strong> Using <strong>Git</strong> to track changes, branch new research ideas, and collaborate with others.
+<li><code>literature</code> — a processed summary of an external source. Attribution matters; originality is not the goal.
 </li>
-<li><strong>Vibe-Coding:</strong> Using the LLM to quickly script custom tools (like search scripts or frontmatter fixers) to help manage the vault.
+<li><code>fleeting</code> — a transient capture, expected to be promoted or discarded. Not load-bearing.
+</li>
+<li><code>moc</code> — Map of Content: a structural index, not a knowledge claim. Its job is navigation, not argument.
 </li>
 </ul>
+<p>Writing a <code>moc</code> note that makes original arguments is a <strong>type error</strong>. Writing a <code>permanent</code> note that merely lists external links without synthesis is a <strong>type error</strong>. The type system encodes epistemic intent and enforces it at lint time.</p>
+<p>The <code>status</code> field adds a lifecycle dimension: <code>raw</code> → <code>draft</code> → <code>active</code> → <code>archived</code>. An LLM can synthesize a <code>raw</code> source into a <code>draft</code>; the human validates and promotes to <code>active</code>. This is exactly a pull request workflow: the agent proposes, the architect approves.</p>
+<h2>CI/CD for Knowledge</h2>
+<p><code>run-maintenance.ps1</code> is the build pipeline — the CI/CD system for the knowledge base. On every vault change (via the <code>watch-wiki.ps1</code> daemon) and on every GitHub Actions deployment run, it executes:</p>
+<ol>
+<li><strong><code>audit-yanp.ps1</code></strong> — the linter. Checks for missing frontmatter fields, invalid type values, non-kebab-case filenames. A note with a broken schema is a compile error.
+</li>
+<li><strong><code>check-broken-links.ps1</code></strong> — the type-checker. A wikilink to a non-existent note is a dangling pointer — a runtime error caught at build time.
+</li>
+<li><strong><code>orphan-check.ps1</code></strong> — the dead-code detector. A note with no inbound links is unreachable from the graph. May be valid; flagged as a warning.
+</li>
+<li><strong><code>sync-vault-graph.ps1</code></strong> — the dependency resolver. Writes the relational graph to SQLite, making the implicit link structure queryable and exposing circular dependencies.
+</li>
+<li><strong><code>generate-wiki.ps1</code></strong> — the compiler. Produces the static HTML portal from markdown source.
+</li>
+<li><strong><code>generate-dashboard.ps1</code></strong> — the coverage report. Visualizes vault health metrics, link density, and graph topology.
+</li>
+</ol>
+<p>The vault has a <strong>green build</strong> or it does not ship. Entropy is treated as a test failure, not a cosmetic issue.</p>
+<h2>Refactoring as Epistemic Discipline</h2>
+<p>Good code does not accumulate — it refactors. The same discipline applies to knowledge.</p>
+<p>The pathological end-state of a knowledge base is the &quot;Digital Junk Drawer&quot;: an ever-growing collection of notes with no pruning, no consolidation, and no structural improvement. It grows in volume while shrinking in utility. Retrieval becomes harder as the signal-to-noise ratio degrades.</p>
+<p>The wiki-as-codebase metaphor enforces the refactoring instinct:</p>
+<ul>
+<li><strong>Split</strong> an over-large note that covers two distinct concepts (a function doing too much — violating single responsibility).
+</li>
+<li><strong>Merge</strong> two notes that have drifted toward redundancy (duplicate code paths — DRY violation).
+</li>
+<li><strong>Rename</strong> a note when understanding of the concept has matured (renaming a variable when its purpose becomes clear after deeper use).
+</li>
+<li><strong>Delete</strong> a note that was speculative and has been superseded (dead code removal — it occupies graph space without contributing to traversals).
+</li>
+</ul>
+<p>Refactoring the knowledge base is not housekeeping. It is active synthesis. The act of deciding that two notes should merge forces the question of what they have in common — which is itself a knowledge claim.</p>
+<h2>The Pull Request as Human Gate</h2>
+<p>The LLM does not have unilateral commit rights to <code>main</code>. Significant batches of agent-written notes are produced on a branch. The human reviews the diff. Merging to <code>main</code> is the final validation step — the moment the human architect endorses the agent programmer&#39;s work.</p>
+<p>This mirrors the PR workflow deliberately. It encodes the principle that the <strong>human is the final arbiter</strong> of what is promoted to permanent knowledge. The agent proposes; the architect approves. The <a href="yanp-for-agentic-workflows.html" class="wikilink">YANP <code>status</code> field</a> makes this workflow machine-readable: <code>draft</code> notes are pending review; <code>active</code> notes have passed it.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>
@@ -448,6 +505,10 @@
 <li><a href="wiki-pattern-operations.html" class="wikilink">wiki-pattern-operations</a>
 </li>
 <li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
+</li>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
+</li>
+<li><a href="plain-plus-design.html" class="wikilink">plain-plus-design</a>
 </li>
 </ul>
       </main>
@@ -465,11 +526,15 @@
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
 <li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
+<li><a href="daemon-design-pattern.html" class="">daemon-design-pattern</a></li>
 <li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="github-deployment.html" class="">github-deployment</a></li>
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
+<li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
 <li><a href="powershell-objects.html" class="">powershell-objects</a></li>
@@ -480,11 +545,15 @@
 <li><a href="racket.html" class="">racket</a></li>
 <li><a href="rust-moc.html" class="">rust-moc</a></li>
 <li><a href="tauri.html" class="">tauri</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
 <li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
+<li><a href="plain-plus-design.html" class="">plain-plus-design</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
 <li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 </ul>

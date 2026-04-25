@@ -12,7 +12,7 @@ The **Vulture Portal** is the high-density HTML front end for the vault. It tran
 
 ## Architecture
 - **UX Template**: Designed by Claude-3.5-Sonnet to adhere to the [[anti-ai-aesthetic]].
-- **Compiler Engine**: Built by Codex (GPT-4o) using [[pwsh]] and the [[poshwiki]] relational substrate.
+- **Compiler Engine**: Built by Codex (GPT-4o) using **pwsh** and the [[poshwiki]] relational substrate.
 - **Graph Injection**: Every page automatically includes a sticky sidebar showing its first-degree graph neighbors (Incoming and Outgoing links).
 
 ## Features

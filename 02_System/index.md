@@ -1,3 +1,10 @@
+---
+title: Wiki Index
+author: gemini-cli
+date: 2026-04-25
+status: active
+type: community
+---
 # Wiki Index (YANP Compliant)
 
 ## The Maps (MOCs)

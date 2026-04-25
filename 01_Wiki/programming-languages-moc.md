@@ -13,7 +13,7 @@ This map organizes the various programming environments and paradigms captured w
 ## Object-Oriented & Enterprise
 * [[dotnet-moc]]: The Microsoft ecosystem and cross-platform runtimes.
 * [[csharp-moc]]: High-performance, type-safe development.
-* [[python]]: General-purpose scripting, patterns, and type hinting.
+* [[python-moc]]: The Python foundation for agent runtimes, typing, and standard-library workflows.
 
 ## Web & Desktop Runtimes
 * [[javascript-moc]]: JS/TS ecosystems, Bun, Deno, and Tauri.
@@ -37,3 +37,4 @@ This map organizes the various programming environments and paradigms captured w
 ## See Also
 * [[wiki-as-codebase]]
 * [[javascript-on-desktop]]
+* [[python]]

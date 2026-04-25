@@ -405,12 +405,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">PoShWiKi Tools API</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">poshwiki-api, thought-api</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">poshwiki-api, thought-api, sidecar-database</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PoShWiKi Tools API</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -420,20 +420,55 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>PoShWiKi Tools API</h1>
-<p>The <strong>PoShWiKi Tools API</strong> is a high-level PowerShell wrapper around the PoShWiKi CLI. It standardizes how agents record durable thoughts, session logs, and goal states.</p>
-<h2>Core Functions</h2>
+<p>The <strong>PoShWiKi Tools API</strong> (<code>02_System/poshwiki-tools.ps1</code>) is a high-level PowerShell 7 wrapper around the core PoShWiKi engine. It serves as the primary interface for agents to record their internal state, session logs, and collaborative findings without needing to manage low-level SQLite CLI arguments.</p>
+<h2>1. The Relational Sidecar Pattern</h2>
+<p>In the <strong>vulture-nest</strong>, we distinguish between <strong>Durable Knowledge</strong> (stored in flat YANP files in <code>01_Wiki/</code>) and <strong>Ephemeral/Procedural Memory</strong>. The PoShWiKi API implements the &quot;Relational Sidecar&quot; pattern:</p>
 <ul>
-<li><strong><code>Invoke-WikiNote</code></strong>: Standardizes section-level updates (upserts).
+<li><strong>YANP Files:</strong> The human-readable source of truth. Version-controlled via Git. High latency for atomic updates.
 </li>
-<li><strong><code>Invoke-WikiLog</code></strong>: Appends chronological progress to the <code>## Actions</code> section.
-</li>
-<li><strong><code>New-WikiSeam</code></strong>: Records a session handoff point (Goal, Seam, Next Step).
-</li>
-<li><strong><code>Get-WikiSessionTitle</code></strong>: Generates a daily session ID.
+<li><strong>PoShWiKi (SQLite):</strong> The agent-runnable substrate. Low latency for atomic updates. High queryability via SQL/LINQ.
 </li>
 </ul>
-<h2>Standardized Usage</h2>
-<p>Agents should use this API to ensure that session-level data is stored relatiionally while the primary knowledge base remains in flat YANP files.</p>
+<p>The API bridges these by allowing agents to &quot;emit&quot; thoughts into the database, which can later be &quot;compiled&quot; or promoted into durable YANP notes.</p>
+<h2>2. Core API Surface</h2>
+<h3><code>Invoke-WikiNote</code> (The Atomic Upsert)</h3>
+<p>Standardizes section-level updates. Instead of overwriting an entire file, an agent can target a specific <code>## Heading</code>.</p>
+<ul>
+<li><strong>Behavior:</strong> If the page or section doesn&#39;t exist, it is created. If it exists, only that section is updated.
+</li>
+<li><strong>Use Case:</strong> Maintaining a &quot;Project Status&quot; or &quot;Current Assumptions&quot; list across multiple turns.
+</li>
+</ul>
+<h3><code>Invoke-WikiLog</code> (Chronological Append)</h3>
+<p>Appends progress to a dedicated <code>## Actions</code> section on the current session page.</p>
+<ul>
+<li><strong>Behavior:</strong> Automatically targets the page returned by <code>Get-WikiSessionTitle</code>.
+</li>
+<li><strong>Use Case:</strong> Step-by-step logging of an agent&#39;s technical execution.
+</li>
+</ul>
+<h3><code>New-WikiSeam</code> (State Synchronization)</h3>
+<p>A specialized protocol for session handoffs. It records three critical vectors:</p>
+<ol>
+<li><strong>The Goal:</strong> What we were trying to achieve.
+</li>
+<li><strong>The Seam:</strong> The exact technical boundary where we stopped.
+</li>
+<li><strong>Next Step:</strong> The immediate follow-up required by the next agent or human session.
+</li>
+</ol>
+<h2>3. Collaborative Benefits</h2>
+<p>The API is designed for <strong>Heterogeneous Multi-Agent</strong> environments:</p>
+<ul>
+<li><strong>Unified Context:</strong> Claude and Gemini can both write to the same <code>Session 2026-04-25</code> page, creating a shared &quot;short-term memory.&quot;
+</li>
+<li><strong>Standardized Reporting:</strong> The <a href="visitor-directives.html" class="wikilink">Visitor Protocol</a> requires all guests to use this API, ensuring that no matter which model is working, the logs remain queryable and structured.
+</li>
+<li><strong>Discovery:</strong> The <code>vulture-search.ps1</code> engine queries this substrate to provide agents with &quot;Actionable Context&quot; from previous sessions.
+</li>
+</ul>
+<h2>4. Technical Implementation</h2>
+<p>The wrapper is built on <strong>PowerShell 7</strong> and uses the <code>Microsoft.Data.Sqlite</code> library. It includes robust error handling to prevent database locking during concurrent agent access and returns <code>PSCustomObject</code> for machine-readability.</p>
 <hr>
 <h2>References</h2>
 <ul>
@@ -442,6 +477,10 @@
 <li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
 </li>
 <li><a href="visitor-directives.html" class="wikilink">visitor-directives</a>
+</li>
+<li><a href="daemon-design-pattern.html" class="wikilink">daemon-design-pattern</a>
+</li>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
 </li>
 </ul>
       </main>
@@ -454,10 +493,18 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links From This Note</span>
+            <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="automation-test.html" class="">automation-test</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="daemon-design-pattern.html" class="">daemon-design-pattern</a></li>
 <li><a href="poshwiki.html" class="">poshwiki</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="visitor-directives.html" class="">visitor-directives</a></li>
 </ul>
           </div>

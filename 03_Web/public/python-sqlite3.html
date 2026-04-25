@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Python — Vulture Portal</title>
+  <title>Python sqlite3 — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -397,20 +397,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Python</span>
+      <span>Python sqlite3</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Python</h1>
+      <h1 class="note-title">Python sqlite3</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-sqlite, sqlite3-module</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python sqlite3</span></span>
       </div>
     </header>
 
@@ -419,54 +419,45 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Python</h1>
-<p><strong>Python</strong> is a high-level, object-oriented language whose runtime model, standard library, and tooling make it the default environment for modern LLM and agent frameworks.</p>
+        <h1>Python sqlite3</h1>
+<p><code>sqlite3</code> is Python&#39;s built-in DB-API 2.0 interface for SQLite. It gives agents a local, serverless database for persistence, indexing, and durable intermediate state.</p>
+<h2>Core Concepts</h2>
+<ul>
+<li>SQLite stores data in a single file and does not require a separate database server.
+</li>
+<li>The Python module exposes connections, cursors, transactions, parameterized queries, and row factories.
+</li>
+<li><code>sqlite3.Row</code> is useful when results should behave like mappings as well as tuples.
+</li>
+</ul>
 <h2>Significance for Agents</h2>
-<p>Python is where most agent stacks land first because it combines:</p>
 <ul>
-<li><a href="python-data-model.html" class="wikilink">A flexible object model</a> for protocols, adapters, and &quot;dunder&quot;-driven customization.
+<li>Embedded storage is a strong fit for local agent memory, caches, work queues, and audit trails.
 </li>
-<li><a href="python-asyncio.html" class="wikilink">Async I/O primitives</a> for concurrent tool calls, network clients, and orchestration loops.
+<li>SQLite is durable enough for many single-user or single-node workflows without adding operational overhead.
 </li>
-<li><a href="python-typing.html" class="wikilink">A modern typing system</a> for editor support and schema-oriented development.
-</li>
-<li><a href="pydantic.html" class="wikilink">Pydantic</a> for validating tool inputs and generating JSON Schema.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">A strong standard library</a> for file access, serialization, and embedded storage.
+<li>Parameterized queries matter because prompt-derived strings should never be interpolated directly into SQL.
 </li>
 </ul>
-<h2>Core Ideas</h2>
+<h2>Practical Heuristics</h2>
 <ul>
-<li>Python treats code, classes, functions, modules, and instances as objects with discoverable behavior.
+<li>Use placeholders instead of string-built SQL.
 </li>
-<li>The language favors readable syntax, dynamic dispatch, and gradual typing rather than compile-time enforcement.
+<li>Decide transaction boundaries explicitly for write-heavy workflows.
 </li>
-<li>The standard library is broad enough that many agent prototypes can start without third-party dependencies.
+<li>Set a row factory when downstream code benefits from named-column access.
 </li>
-</ul>
-<h2>Technical Hubs</h2>
-<ul>
-<li><a href="python-moc.html" class="wikilink">python-moc</a>: Structured traversal of the Python foundation.
-</li>
-<li><a href="python-data-model.html" class="wikilink">python-data-model</a>: Objects, values, types, and special methods.
-</li>
-<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a>: Coroutines, tasks, cancellation, and event-loop behavior.
-</li>
-<li><a href="python-typing.html" class="wikilink">python-typing</a>: Type hints, protocols, <code>TypedDict</code>, and <code>Annotated</code>.
-</li>
-<li><a href="pydantic.html" class="wikilink">pydantic</a>: Validation and schema generation for tool contracts.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>: <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> as practical building blocks.
+<li>Treat SQLite as a local systems primitive, not a substitute for a distributed database.
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
+<li><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>
 </li>
 <li><a href="python-moc.html" class="wikilink">python-moc</a>
 </li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+<li>[sqlite3](https://docs.python.org/3.12/library/sqlite3.html)
 </li>
 </ul>
       </main>
@@ -481,25 +472,13 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="code-agents.html" class="">code-agents</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
-<li><a href="python-data-model.html" class="">python-data-model</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
-<li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>
           </div>
         </div>

@@ -32,3 +32,4 @@ Pydantic V2 acts as the source of truth for the LLM's `inputSchema`.
 * [[mcp-server-development]]
 * [[agent-tools]]
 * [[agentic-frameworks-moc]]
+* [[pydantic]]
