@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vault Pulse Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #11151a;
+      --panel-2: #161c22;
+      --text: #e7ecef;
+      --muted: #95a1aa;
+      --line: #2a333c;
+      --accent: #d7f75b;
+      --accent-soft: rgba(215, 247, 91, 0.12);
+      --danger: #ff8a80;
+      --mono: "Cascadia Code", "IBM Plex Mono", "Consolas", monospace;
+      --sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(215, 247, 91, 0.08), transparent 28%),
+        linear-gradient(180deg, #0b0d10 0%, #090b0d 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)), var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .terminal {
+      font-family: var(--mono);
+      letter-spacing: 0.02em;
+    }
+
+    .eyebrow, .feed-meta, .metric-label, .kicker {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 11px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 0.95;
+      margin-top: 8px;
+    }
+
+    .subhead {
+      margin-top: 12px;
+      color: var(--muted);
+      max-width: 58ch;
+    }
+
+    .stamp {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .hero-score {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100%;
+      background: linear-gradient(180deg, var(--accent-soft), transparent 45%), var(--panel-2);
+    }
+
+    .score {
+      font-family: var(--mono);
+      font-size: clamp(56px, 8vw, 96px);
+      color: var(--accent);
+      line-height: 0.9;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .metrics {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .metric {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-value {
+      font-family: var(--mono);
+      font-size: clamp(28px, 4vw, 42px);
+      margin-top: 16px;
+    }
+
+    .metric-foot {
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .topology { grid-column: span 5; }
+    .activity { grid-column: span 7; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    td.value {
+      text-align: right;
+      color: var(--accent);
+    }
+
+    ul.feed {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    ul.feed li {
+      border-left: 2px solid var(--line);
+      padding-left: 12px;
+    }
+
+    .feed-text {
+      display: block;
+      margin-top: 4px;
+      white-space: pre-wrap;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .callout {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .health-ok { color: var(--accent); }
+    .health-warn { color: var(--danger); }
+
+    @media (max-width: 980px) {
+      .masthead, .metrics, .split { grid-template-columns: 1fr; }
+      .topology, .activity { grid-column: span 12; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="masthead">
+      <div class="panel">
+        <div class="eyebrow terminal">Vault Pulse / Live Substrate Dashboard</div>
+        <h1>Vulture Engine<br>Operational Surface</h1>
+        <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
+        <div class="stamp">
+          <span>Generated 2026-04-25 12:10</span>
+          <span>Source: SQLite + Markdown</span>
+        </div>
+      </div>
+      <div class="panel hero-score">
+        <div class="kicker terminal">Vault Health</div>
+        <div class="score">100%</div>
+        <div class="health-ok terminal">orphan=0 / broken=0</div>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="panel metric">
+        <div class="metric-label terminal">Total Notes</div>
+        <div class="metric-value">187</div>
+        <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Link Density</div>
+        <div class="metric-value">5.57</div>
+        <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Total Wikilinks</div>
+        <div class="metric-value">1041</div>
+        <div class="metric-foot">All wikilinks counted across <span class="terminal">01_Wiki</span> and <span class="terminal">02_System</span>.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">PoShWiKi Pages</div>
+        <div class="metric-value">3</div>
+        <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel topology">
+        <div class="eyebrow terminal">Knowledge Topology</div>
+        <h2>Top 5 Hubs</h2>
+        <table>
+          <thead>
+            <tr><th>Note</th><th style="text-align:right">Incoming</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class='rank'>agentic-frameworks-moc</td><td class='value'>34</td></tr>
+<tr><td class='rank'>llm-wiki-pattern</td><td class='value'>28</td></tr>
+<tr><td class='rank'>wiki-as-codebase</td><td class='value'>28</td></tr>
+<tr><td class='rank'>mcp-architecture</td><td class='value'>27</td></tr>
+<tr><td class='rank'>rust-moc</td><td class='value'>21</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">Centrality is computed from the <span class="terminal">Links</span> table in PoShWiKi by incoming link count.</div>
+      </article>
+
+      <article class="panel activity">
+        <div class="eyebrow terminal">Activity Feed</div>
+        <h2>Recent Motion</h2>
+        <div class="split">
+          <section>
+            <h3>PoShWiKi Session</h3>
+            <div class="callout">Latest session page: <span class="terminal">Session 2026-04-25</span></div>
+            <ul class="feed">
+              <li><span class='feed-meta'>2026-04-25 17:07:08 | Session Actions</span><span class='feed-text'>Verified the Thought API wrapper. | Implemented and verified the Thought API wrapper (poshwiki-tools.ps1) via sub-agent delegation.</span></li>
+<li><span class='feed-meta'>2026-04-25 17:07:08 | Session Goal</span><span class='feed-text'>Standardize the automation layer on PowerShell 7 and eliminate the dashboard SQLite runtime mismatch.</span></li>
+<li><span class='feed-meta'>2026-04-25 17:07:08 | Current Seam</span><span class='feed-text'>Hardened generate-dashboard.ps1 for PowerShell 7, standardized maintenance and registry execution on pwsh, and verified a full clean run-maintenance.ps1 pass with dashboard health at 100.</span></li>
+<li><span class='feed-meta'>2026-04-25 17:07:08 | Next Steps</span><span class='feed-text'>Implement batched transactional inserts plus Links(Source) / Links(Target) indexes. | Replace per-note second-order traversal with one ranked set-based SQL query and verify EF Core returns hub-linked notes.</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>log.md Major Actions</h3>
+            <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
+            <ul class="feed">
+              <li><span class='feed-text'>- 2026-04-25 14:30: Ingested C#, .NET, and WPF documentation from Microsoft Learn. Created literature notes and 7 permanent notes. Updated C#, .NET, and WPF MOCs.</span></li>
+<li><span class='feed-text'>- 2026-04-25 14:45: Ingested Entity Framework (EF) Core documentation. Created literature note and permanent notes for Basics and Migrations. Updated .NET Ecosystem MOC.</span></li>
+<li><span class='feed-text'>- 2026-04-25 15:00: Cloned PoShWiKi repository and initialized its SQLite database. Created literature note and permanent note. Integrated into PowerShell MOC as an agent-memory system.</span></li>
+<li><span class='feed-text'>- 2026-04-25 15:15: Built the PoShWiKi &quot;Thought API&quot; Wrapper (poshwiki-tools) for standardized agent logging. Verified log appending, note upsertion, and machine-readable output.</span></li>
+<li><span class='feed-text'>- 2026-04-25 15:30: Finalized .NET foundation with ASP.NET Core basics. Resolved vault &quot;islands&quot; by linking GraphRAG and LLM Wiki patterns into the Core Patterns MOC. Performed final graph sync.</span></li>
+            </ul>
+          </section>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
