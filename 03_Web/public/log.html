@@ -358,6 +358,28 @@
       text-align: center;
     }
 
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
     /* ── Responsive ──────────────────────────────────────────────── */
     @media (max-width: 820px) {
       .layout {
@@ -548,34 +570,13 @@
 </li>
 </ul>
 <p>[2026-04-24] research | Established the architectural framework for the Microsoft stack. Created the <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>, <a href="csharp-moc.html" class="wikilink">csharp-moc</a>, and <a href="wpf-moc.html" class="wikilink">wpf-moc</a>. Stubbed <a href="csharp-basics.html" class="wikilink">csharp-basics</a> to provide a foundation for future .NET ingestion.</p>
-<ul>
-<li><strong>2026-04-25 14:30</strong>: Ingested C#, .NET, and WPF documentation from Microsoft Learn. Created literature notes and 7 permanent notes. Updated C#, .NET, and WPF MOCs.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 14:45</strong>: Ingested Entity Framework (EF) Core documentation. Created literature note and permanent notes for Basics and Migrations. Updated .NET Ecosystem MOC.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 15:00</strong>: Cloned PoShWiKi repository and initialized its SQLite database. Created literature note and permanent note. Integrated into PowerShell MOC as an agent-memory system.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 15:15</strong>: Built the PoShWiKi &quot;Thought API&quot; Wrapper (<a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>) for standardized agent logging. Verified log appending, note upsertion, and machine-readable output.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 15:30</strong>: Finalized .NET foundation with ASP.NET Core basics. Resolved vault &quot;islands&quot; by linking GraphRAG and LLM Wiki patterns into the Core Patterns MOC. Performed final graph sync.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 16:00</strong>: Renamed <code>02_System/tool-registry.md</code> to <code>tool-registry.md</code> for YANP compliance and fixed dead links in <code>01_Wiki/index.md</code> and <code>02_System/index.md</code>.
-</li>
-</ul>
-<ul>
-<li><strong>2026-04-25 16:30</strong>: Created <code>llms.txt</code> in vault root and public portal to provide machine-readable architecture and protocol guidance for visiting agents.
-</li>
-</ul>
+<div class="log-entry"><span class="log-time">2026-04-25 14:30</span><span class="log-content">Ingested C#, .NET, and WPF documentation from Microsoft Learn. Created literature notes and 7 permanent notes. Updated C#, .NET, and WPF MOCs.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 14:45</span><span class="log-content">Ingested Entity Framework (EF) Core documentation. Created literature note and permanent notes for Basics and Migrations. Updated .NET Ecosystem MOC.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:00</span><span class="log-content">Cloned PoShWiKi repository and initialized its SQLite database. Created literature note and permanent note. Integrated into PowerShell MOC as an agent-memory system.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:15</span><span class="log-content">Built the PoShWiKi &quot;Thought API&quot; Wrapper (<a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>) for standardized agent logging. Verified log appending, note upsertion, and machine-readable output.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:30</span><span class="log-content">Finalized .NET foundation with ASP.NET Core basics. Resolved vault &quot;islands&quot; by linking GraphRAG and LLM Wiki patterns into the Core Patterns MOC. Performed final graph sync.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 16:00</span><span class="log-content">Renamed <code>02_System/tool-registry.md</code> to <code>tool-registry.md</code> for YANP compliance and fixed dead links in <code>01_Wiki/index.md</code> and <code>02_System/index.md</code>.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 16:30</span><span class="log-content">Created <code>llms.txt</code> in vault root and public portal to provide machine-readable architecture and protocol guidance for visiting agents.</span></div>
       </main>
 
       <!-- Zone 3: Graph Discovery -->

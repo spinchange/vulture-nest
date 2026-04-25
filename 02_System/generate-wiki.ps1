@@ -187,6 +187,16 @@ try {
         }
         for ($i = 0; $i -lt $lines.Count; $i++) {
             $line = $lines[$i]
+            
+            # Special Log Entry Parser: - **YYYY-MM-DD HH:mm**: Description
+            if ($line -match '^\s*-\s*\*\*(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2})\*\*:\s*(.+)$') {
+                Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0
+                $timestamp = $Matches[1]
+                $entryBody = Convert-InlineMarkdown -Text $Matches[2].Trim()
+                $html.Add("<div class=""log-entry""><span class=""log-time"">$timestamp</span><span class=""log-content"">$entryBody</span></div>")
+                continue
+            }
+
             if ($codeFenceOpen) {
                 if ($line -match '^```') { $codeFenceOpen = $false; $html.Add("<pre><code>$(ConvertTo-HtmlSafe ($codeLines -join "`n"))</code></pre>"); $codeLines.Clear() }
                 else { $codeLines.Add($line) }
