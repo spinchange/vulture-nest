@@ -19,20 +19,32 @@ To build high-quality custom software, agents should follow this standard cognit
 - **Codebase Mapping:** Systematically exploring files and symbols.
 - **Dependency Analysis:** Identifying how components interact.
 - **Empirical Reproduction:** Confirming the current state or bug before changing anything.
+- **Scope Confirmation (Gate):** Explicitly listing what is **out of scope** to prevent intent drift.
+- **Output:** A **Scope Confirmation block** defining the task perimeter.
 
 ### 2. Strategy (Design Phase)
 - **Architectural Alignment:** Ensuring the solution fits existing patterns (e.g., YANP).
 - **Tool Selection:** Choosing the most efficient MCP tools or libraries.
 - **Plan Formulation:** Drafting a step-by-step implementation guide.
+- **Safety & Boundaries Checkpoint:** A mandatory pre-flight check before Execution:
+    1. Are all planned write targets within authorized scope?
+    2. Does the plan include irreversible operations (delete, push, overwrite uncommitted changes)?
+    3. Is there a human-review requirement for this action class?
+    4. Does any planned action touch secrets, credentials, or PII?
+- **Output:** A written **Implementation Plan** (even a 3-bullet list).
 
 ### 3. Execution (The Act-Validate Loop)
 - **Surgical Implementation:** Applying targeted changes strictly related to the sub-task.
 - **Automated Verification:** Running tests or linters immediately after changes.
-- **Refinement:** Adjusting the approach based on feedback from the system (error messages, test failures).
+- **Refinement:** Adjusting the approach based on system feedback.
+- **Loop Termination:** If verification fails after **3 iterations**, the agent must stop, record the failure state, and escalate to human review.
+- **Output:** A **Passing Test Run** or a detailed Failure Report.
 
 ### 4. Finalization (System Integrity)
 - **Cross-Linkage:** Integrating new notes or code into the broader graph.
+- **Regression Check:** Running broken-link and orphan scanners to ensure no side-effect errors were introduced.
 - **Portal Update:** Synchronizing dashboards and indices.
+- **Output:** A green **run-maintenance.ps1** result.
 
 ## Agentic Workflow Patterns (Andrew Ng)
 

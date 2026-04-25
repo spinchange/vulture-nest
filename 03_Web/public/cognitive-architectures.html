@@ -427,12 +427,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Cognitive Architectures</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">chain-of-thought-blueprint, agentic-workflows, project-lifecycle-patterns</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Cognitive Architectures</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">chain-of-thought-blueprint, agentic-workflows, project-lifecycle-patterns</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Cognitive Architectures</span></span>
       </div>
     </header>
 
@@ -453,6 +453,10 @@
 </li>
 <li><strong>Empirical Reproduction:</strong> Confirming the current state or bug before changing anything.
 </li>
+<li><strong>Scope Confirmation (Gate):</strong> Explicitly listing what is <strong>out of scope</strong> to prevent intent drift.
+</li>
+<li><strong>Output:</strong> A <strong>Scope Confirmation block</strong> defining the task perimeter.
+</li>
 </ul>
 <h3>2. Strategy (Design Phase)</h3>
 <ul>
@@ -462,6 +466,24 @@
 </li>
 <li><strong>Plan Formulation:</strong> Drafting a step-by-step implementation guide.
 </li>
+<li><strong>Safety &amp; Boundaries Checkpoint:</strong> A mandatory pre-flight check before Execution:
+<ul>
+<li>
+<ol>
+<li>Are all planned write targets within authorized scope?
+</li>
+<li>Does the plan include irreversible operations (delete, push, overwrite uncommitted changes)?
+</li>
+<li>Is there a human-review requirement for this action class?
+</li>
+<li>Does any planned action touch secrets, credentials, or PII?
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>Output:</strong> A written <strong>Implementation Plan</strong> (even a 3-bullet list).
+</li>
 </ul>
 <h3>3. Execution (The Act-Validate Loop)</h3>
 <ul>
@@ -469,14 +491,22 @@
 </li>
 <li><strong>Automated Verification:</strong> Running tests or linters immediately after changes.
 </li>
-<li><strong>Refinement:</strong> Adjusting the approach based on feedback from the system (error messages, test failures).
+<li><strong>Refinement:</strong> Adjusting the approach based on system feedback.
+</li>
+<li><strong>Loop Termination:</strong> If verification fails after <strong>3 iterations</strong>, the agent must stop, record the failure state, and escalate to human review.
+</li>
+<li><strong>Output:</strong> A <strong>Passing Test Run</strong> or a detailed Failure Report.
 </li>
 </ul>
 <h3>4. Finalization (System Integrity)</h3>
 <ul>
 <li><strong>Cross-Linkage:</strong> Integrating new notes or code into the broader graph.
 </li>
+<li><strong>Regression Check:</strong> Running broken-link and orphan scanners to ensure no side-effect errors were introduced.
+</li>
 <li><strong>Portal Update:</strong> Synchronizing dashboards and indices.
+</li>
+<li><strong>Output:</strong> A green <strong>run-maintenance.ps1</strong> result.
 </li>
 </ul>
 <h2>Agentic Workflow Patterns (Andrew Ng)</h2>

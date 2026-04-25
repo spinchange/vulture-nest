@@ -427,11 +427,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">.NET Agent Integration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Agent Integration</span></span>
       </div>
     </header>
@@ -443,13 +443,29 @@
       <main class="content-zone" id="content">
         <h1>.NET Agent Integration</h1>
 <p>&gt; [!IMPORTANT] &gt; This is a placeholder for the integration patterns between the .NET ecosystem and agentic protocols (MCP/Swarm).</p>
-<h2>Core Concepts</h2>
+<h2>Core Integration Patterns</h2>
+<h3>1. The Kernel Plugin (Attribute-Based Discovery)</h3>
+<p>Leverages Microsoft&#39;s <strong>Semantic Kernel</strong> to turn static C# classes into dynamic agent tools.</p>
 <ul>
-<li><strong>Semantic Kernel Bridge</strong>: Using Microsoft&#39;s Semantic Kernel to expose .NET methods as agent tools.
+<li><strong>Mechanism:</strong> Decorate classes with <code>[KernelFunction]</code> and <code>[Description]</code>.
 </li>
-<li><strong>MCP for .NET</strong>: Implementation patterns using the C# MCP SDK.
+<li><strong>Leverage:</strong> SK introspects the method signature (parameters, XML docs) at runtime to generate the <strong>JSON Schema</strong> the LLM requires for tool calling, handling all deserialization and invocation automatically.
 </li>
-<li><strong>Dependency Injection for Agents</strong>: Patterns for injecting agentic capabilities into standard ASP.NET Core or WPF applications.
+</ul>
+<h3>2. The Schema Registry (Contract First)</h3>
+<p>Establishes a shared library of JSON Schema files that define the &quot;Shape of Truth&quot; for both the .NET backend and the Python/JS agents.</p>
+<ul>
+<li><strong>Mechanism:</strong> Use <code>System.Text.Json</code> to enforce schema compliance at the API boundary.
+</li>
+<li><strong>Leverage:</strong> Prevents &quot;Interface Hallucination&quot; where agents guess parameter names or types that don&#39;t exist in the compiled code.
+</li>
+</ul>
+<h3>3. Dependency Injection for Agency</h3>
+<p>Treats an AI Agent as a first-class service within the .NET <code>IServiceCollection</code>.</p>
+<ul>
+<li><strong>Mechanism:</strong> Registering <code>IAgentService</code> with scoped lifetimes.
+</li>
+<li><strong>Leverage:</strong> Allows standard .NET applications (ASP.NET Core/WPF) to &quot;inject&quot; reasoning capabilities into existing business logic without tight coupling.
 </li>
 </ul>
 <hr>
