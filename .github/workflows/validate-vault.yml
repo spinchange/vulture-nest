@@ -1,0 +1,44 @@
+name: Validate Vault
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  maintenance-check:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Initialize Relational Substrate
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "00_Raw/PoShWiKi/wiki.ps1" init
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "02_System/sync-vault-graph.ps1"
+
+      - name: Run Full Maintenance
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "02_System/run-maintenance.ps1"
+
+      - name: Ensure Generated Files Are Committed
+        shell: pwsh
+        run: |
+          $diff = git diff --name-only -- . ':(exclude)00_Raw/PoShWiKi/wiki.db'
+          if ($diff) {
+            Write-Host "The following files changed during maintenance and should be committed:" -ForegroundColor Red
+            $diff | ForEach-Object { Write-Host " - $_" -ForegroundColor Red }
+            exit 1
+          }
