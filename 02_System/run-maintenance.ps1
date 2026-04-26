@@ -33,17 +33,19 @@ try {
 
     Write-Host "--- Starting Vault Maintenance ---" -ForegroundColor Cyan
 
-    Invoke-MaintenanceStep -Label "`n[1/6] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
+    Invoke-MaintenanceStep -Label "`n[1/7] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[2/6] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
+    Invoke-MaintenanceStep -Label "`n[2/7] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[3/6] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
+    Invoke-MaintenanceStep -Label "`n[3/7] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[4/6] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
+    Invoke-MaintenanceStep -Label "`n[4/7] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[5/6] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
+    Invoke-MaintenanceStep -Label "`n[5/7] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[6/6] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
+    Invoke-MaintenanceStep -Label "`n[6/7] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
+
+    Invoke-MaintenanceStep -Label "`n[7/7] Checking Tier-2 Compliance..." -ScriptName 'test-tier-compliance.ps1'
 
     Write-Host "`n--- Maintenance Complete! ---" -ForegroundColor Green
 } catch {
