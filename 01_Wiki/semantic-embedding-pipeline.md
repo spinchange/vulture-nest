@@ -125,8 +125,8 @@ First run against the full vault:
 ## Related
 
 - [[poshwiki]]
-- [[sync-vault-graph]]
-- [[vulture-search]]
+- [[ps-vault-maintenance]]
+- [[ps-vulture-search]]
 - [[karpathy-vision-gap-analysis]]
 - [[wiki-as-codebase]]
 - [[the-compounding-artifact]]
