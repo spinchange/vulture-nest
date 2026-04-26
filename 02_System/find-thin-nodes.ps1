@@ -1,3 +1,6 @@
+$ErrorActionPreference = 'Stop'
+
+try {
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 . (Join-Path $PSScriptRoot "sync-vault-graph.ps1") | Out-Null
 
@@ -21,3 +24,7 @@ foreach ($h in $hubs) {
 }
 
 $results | Sort-Object Incoming -Descending | Format-Table -AutoSize
+} catch {
+    Write-Error "find-thin-nodes.ps1 failed: $_"
+    exit 1
+}

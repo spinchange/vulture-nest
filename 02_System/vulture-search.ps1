@@ -10,14 +10,16 @@ Param(
     [Parameter(Mandatory=$true)]
     [string]$Query
 )
+$ErrorActionPreference = 'Stop'
 
-$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$VaultRoot = Split-Path -Parent $PSScriptRoot
-$wikiPath = Join-Path $VaultRoot "01_Wiki"
-$registryPath = Join-Path $VaultRoot "02_System/tool-registry.md"
-$dbPath = $env:POSHWIKI_DB_PATH
-if ([string]::IsNullOrWhiteSpace($dbPath)) { $dbPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/wiki.db" }
-$LibPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/lib"
+try {
+    $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
+    $VaultRoot = Split-Path -Parent $PSScriptRoot
+    $wikiPath = Join-Path $VaultRoot "01_Wiki"
+    $registryPath = Join-Path $VaultRoot "02_System/tool-registry.md"
+    $dbPath = $env:POSHWIKI_DB_PATH
+    if ([string]::IsNullOrWhiteSpace($dbPath)) { $dbPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/wiki.db" }
+    $LibPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/lib"
 
 # --- 1. Load SQLite Assemblies ---
 function Import-SqliteAssemblies {
@@ -43,7 +45,7 @@ function Import-SqliteAssemblies {
     }
     try { [SQLitePCL.Batteries]::Init() } catch {}
 }
-Import-SqliteAssemblies
+    Import-SqliteAssemblies
 
 # --- 2. Ranking & Retrieval Functions ---
 function Get-GraphContext([string[]]$SeedNotes) {
@@ -84,71 +86,75 @@ function Get-GraphContext([string[]]$SeedNotes) {
 }
 
 # --- 3. Execution ---
-Write-Host "`n=== VULTURE ENGINE: RANKED CONTEXT FOR '$($Query.ToUpper())' ===" -ForegroundColor Cyan
+    Write-Host "`n=== VULTURE ENGINE: RANKED CONTEXT FOR '$($Query.ToUpper())' ===" -ForegroundColor Cyan
 
 # Tokenize query for better matching
-$tokens = $Query.Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)
+    $tokens = $Query.Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)
 
 # Primary Search with basic scoring
-$primaryScores = @{}
-$MdFiles = Get-ChildItem -Path $wikiPath -Filter *.md
-foreach ($file in $MdFiles) {
-    $score = 0
-    $name = $file.BaseName
-    $content = Get-Content $file.FullName -Raw
-    
-    foreach ($token in $tokens) {
-        $t = [regex]::Escape($token)
-        if ($name -match $t) { $score += 10 }
-        if ($content -match "aliases: .*$t") { $score += 8 }
-        if ($content -match "(?m)^# .*$t") { $score += 5 }
-        if ($content -match $t) { $score += 1 }
+    $primaryScores = @{}
+    $MdFiles = Get-ChildItem -Path $wikiPath -Filter *.md
+    foreach ($file in $MdFiles) {
+        $score = 0
+        $name = $file.BaseName
+        $content = Get-Content $file.FullName -Raw
+
+        foreach ($token in $tokens) {
+            $t = [regex]::Escape($token)
+            if ($name -match $t) { $score += 10 }
+            if ($content -match "aliases: .*$t") { $score += 8 }
+            if ($content -match "(?m)^# .*$t") { $score += 5 }
+            if ($content -match $t) { $score += 1 }
+        }
+
+        if ($score -gt 0) { $primaryScores[$name] = $score }
     }
-    
-    if ($score -gt 0) { $primaryScores[$name] = $score }
-}
 
-$sortedPrimary = $primaryScores.GetEnumerator() | Sort-Object Value -Descending
-$topSeeds = $sortedPrimary | Select-Object -First 5 -ExpandProperty Key
+    $sortedPrimary = $primaryScores.GetEnumerator() | Sort-Object Value -Descending
+    $topSeeds = $sortedPrimary | Select-Object -First 5 -ExpandProperty Key
 
-# Graph expansion
-$relatedRaw = Get-GraphContext -SeedNotes $topSeeds
-$relatedScores = @{}
-foreach ($rel in $relatedRaw) {
-    # Score = (Connection to seed weight) + (Hub weight) + (MOC bonus)
-    $seedWeight = $primaryScores[$rel.Via]
-    if ($null -eq $seedWeight) { $seedWeight = 1 }
-    
-    $current = if ($relatedScores.ContainsKey($rel.Note)) { $relatedScores[$rel.Note] } else { 0 }
-    $mocBonus = if ($rel.Note -match "-moc$") { 15 } else { 0 }
-    
-    $relatedScores[$rel.Note] = $current + $seedWeight + $rel.HubWeight + $mocBonus
-}
+    # Graph expansion
+    $relatedRaw = Get-GraphContext -SeedNotes $topSeeds
+    $relatedScores = @{}
+    foreach ($rel in $relatedRaw) {
+        # Score = (Connection to seed weight) + (Hub weight) + (MOC bonus)
+        $seedWeight = $primaryScores[$rel.Via]
+        if ($null -eq $seedWeight) { $seedWeight = 1 }
 
-# --- 4. Tool Search ---
-$tools = if (Test-Path $registryPath) {
-    $regContent = Get-Content $registryPath -Raw
-    $regContent -split '(?=## )' | Where-Object { 
-        $block = $_; $tokens | Where-Object { $block -match [regex]::Escape($_) } 
-    } | ForEach-Object { if ($_ -match "## (.*)") { $matches[1].Trim() } }
-}
+        $current = if ($relatedScores.ContainsKey($rel.Note)) { $relatedScores[$rel.Note] } else { 0 }
+        $mocBonus = if ($rel.Note -match "-moc$") { 15 } else { 0 }
+
+        $relatedScores[$rel.Note] = $current + $seedWeight + $rel.HubWeight + $mocBonus
+    }
+
+    # --- 4. Tool Search ---
+    $tools = if (Test-Path $registryPath) {
+        $regContent = Get-Content $registryPath -Raw
+        $regContent -split '(?=## )' | Where-Object {
+            $block = $_; $tokens | Where-Object { $block -match [regex]::Escape($_) }
+        } | ForEach-Object { if ($_ -match "## (.*)") { $matches[1].Trim() } }
+    }
 
 # --- 5. Output ---
-Write-Host "`n[PRIMARY KNOWLEDGE]" -ForegroundColor Yellow
-if ($sortedPrimary) {
-    $sortedPrimary | Select-Object -First 8 | ForEach-Object { 
-        Write-Host " - [[$($_.Key)]] (Score: $($_.Value))" 
-    }
-} else { Write-Host " - No primary matches." }
+    Write-Host "`n[PRIMARY KNOWLEDGE]" -ForegroundColor Yellow
+    if ($sortedPrimary) {
+        $sortedPrimary | Select-Object -First 8 | ForEach-Object {
+            Write-Host " - [[$($_.Key)]] (Score: $($_.Value))"
+        }
+    } else { Write-Host " - No primary matches." }
 
-Write-Host "`n[SECOND-ORDER DISCOVERY (Ranked Graph)]" -ForegroundColor Green
-if ($relatedScores.Count -gt 0) {
-    $relatedScores.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 10 | ForEach-Object {
-        Write-Host " - [[$($_.Key)]] (Rank: $($_.Value))"
-    }
-} else { Write-Host " - No graph neighbors identified." }
+    Write-Host "`n[SECOND-ORDER DISCOVERY (Ranked Graph)]" -ForegroundColor Green
+    if ($relatedScores.Count -gt 0) {
+        $relatedScores.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 10 | ForEach-Object {
+            Write-Host " - [[$($_.Key)]] (Rank: $($_.Value))"
+        }
+    } else { Write-Host " - No graph neighbors identified." }
 
-Write-Host "`n[AVAILABLE TOOLS]" -ForegroundColor Yellow
-if ($tools) { $tools | ForEach-Object { Write-Host " - Match: $_" } } else { Write-Host " - No tool matches." }
+    Write-Host "`n[AVAILABLE TOOLS]" -ForegroundColor Yellow
+    if ($tools) { $tools | ForEach-Object { Write-Host " - Match: $_" } } else { Write-Host " - No tool matches." }
 
-Write-Host "`n=== PACKET COMPLETE ===" -ForegroundColor Cyan
+    Write-Host "`n=== PACKET COMPLETE ===" -ForegroundColor Cyan
+} catch {
+    Write-Error "vulture-search.ps1 failed: $_"
+    exit 1
+}

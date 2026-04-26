@@ -22,23 +22,25 @@ Param(
     
     [string]$Author = "gemini-cli"
 )
+$ErrorActionPreference = 'Stop'
 
-# 1. Sanitize Title to kebab-case
-$fileName = $Title.ToLower().Replace(" ", "-").Replace(":", "").Replace("?", "").Replace("/", "-")
-if ($fileName -notmatch "\.md$") { $fileName += ".md" }
+try {
+    # 1. Sanitize Title to kebab-case
+    $fileName = $Title.ToLower().Replace(" ", "-").Replace(":", "").Replace("?", "").Replace("/", "-")
+    if ($fileName -notmatch "\.md$") { $fileName += ".md" }
 
-$outputPath = "01_Wiki/$fileName"
+    $outputPath = "01_Wiki/$fileName"
 
-if (Test-Path $outputPath) {
-    Write-Error "Note already exists at $outputPath"
-    exit 1
-}
+    if (Test-Path $outputPath) {
+        Write-Error "Note already exists at $outputPath"
+        exit 1
+    }
 
-# 2. Build Frontmatter
-$date = Get-Date -Format "yyyy-MM-dd"
-$status = if ($Type -eq "fleeting") { "draft" } else { "active" }
+    # 2. Build Frontmatter
+    $date = Get-Date -Format "yyyy-MM-dd"
+    $status = if ($Type -eq "fleeting") { "draft" } else { "active" }
 
-$template = @"
+    $template = @"
 ---
 title: $Title
 author: $Author
@@ -56,7 +58,11 @@ aliases: []
 * 
 "@
 
-# 3. Write File
-Set-Content -Path $outputPath -Value $template -Encoding utf8
-Write-Host "Successfully created YANP note: [[$($fileName.Replace('.md',''))]]" -ForegroundColor Green
-Write-Host "Path: $outputPath"
+    # 3. Write File
+    Set-Content -Path $outputPath -Value $template -Encoding utf8
+    Write-Host "Successfully created YANP note: [[$($fileName.Replace('.md',''))]]" -ForegroundColor Green
+    Write-Host "Path: $outputPath"
+} catch {
+    Write-Error "create-yanp-note.ps1 failed: $_"
+    exit 1
+}
