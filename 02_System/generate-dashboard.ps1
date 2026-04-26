@@ -351,6 +351,9 @@ LIMIT 1;
         try {
             $recentCommits = (& git rev-list --count --since='7 days ago' HEAD 2>$null).Trim()
             $headShort = (& git rev-parse --short HEAD 2>$null).Trim()
+            $recentCommitLines = @(
+                & git log --since='7 days ago' --pretty=format:'%h %s' --max-count=8 2>$null
+            )
 
             if ([string]::IsNullOrWhiteSpace($recentCommits)) {
                 $recentCommits = '0'
@@ -359,11 +362,13 @@ LIMIT 1;
             return [PSCustomObject]@{
                 RecentCommits7d = $recentCommits
                 HeadShort       = $headShort
+                RecentCommitLines = @($recentCommitLines)
             }
         } catch {
             return [PSCustomObject]@{
                 RecentCommits7d = 'n/a'
                 HeadShort       = 'n/a'
+                RecentCommitLines = @()
             }
         }
     }
@@ -705,6 +710,52 @@ LIMIT 1;
       font-size: 13px;
     }
 
+    .commit-strip {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .commit-strip h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .commit-track {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-color: var(--line) transparent;
+    }
+
+    .commit-track::-webkit-scrollbar { height: 6px; }
+    .commit-track::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+
+    .commit-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.02);
+      flex: 0 0 auto;
+    }
+
+    .commit-pill .sha {
+      color: var(--accent);
+    }
+
     .health-ok { color: var(--accent); }
     .health-warn { color: var(--danger); }
 
@@ -773,11 +824,6 @@ LIMIT 1;
         <div class="metric-value">$($tier2Stats.CompliantScripts)/$($tier2Stats.TotalScripts)</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: $($tier2Stats.NonCompliant).</div>
       </article>
-      <article class="panel metric">
-        <div class="metric-label terminal">Git Commits / 7d</div>
-        <div class="metric-value">$($gitStats.RecentCommits7d)</div>
-        <div class="metric-foot">Recent repository commits. HEAD: <span class="terminal">$(ConvertTo-HtmlSafe $gitStats.HeadShort)</span>.</div>
-      </article>
     </section>
 
     <section class="grid">
@@ -820,6 +866,25 @@ LIMIT 1;
         </div>
       </article>
     </section>
+
+    <section class="commit-strip">
+      <h3>Recent Commits</h3>
+      <div class="commit-track">
+        $(
+            if ($gitStats.RecentCommitLines.Count -gt 0) {
+                ($gitStats.RecentCommitLines | ForEach-Object {
+                    if ($_ -match '^([0-9a-f]+)\s+(.+)$') {
+                        "<span class='commit-pill'><span class='sha'>$($matches[1])</span><span>$([System.Net.WebUtility]::HtmlEncode($matches[2]))</span></span>"
+                    } else {
+                        "<span class='commit-pill'>$([System.Net.WebUtility]::HtmlEncode($_))</span>"
+                    }
+                }) -join [Environment]::NewLine
+            } else {
+                "<span class='commit-pill'>No recent commits found.</span>"
+            }
+        )
+      </div>
+    </section>
   </main>
 </body>
 </html>
@@ -839,6 +904,7 @@ LIMIT 1;
         Tier2Compliant = $tier2Stats.CompliantScripts
         Tier2Total     = $tier2Stats.TotalScripts
         RecentCommits7d = $gitStats.RecentCommits7d
+        RecentCommitLines = $gitStats.RecentCommitLines.Count
         SessionTitle   = $sessionTitle
         LogActionCount = $logActions.Count
     }

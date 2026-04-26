@@ -234,6 +234,52 @@
       font-size: 13px;
     }
 
+    .commit-strip {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .commit-strip h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .commit-track {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-color: var(--line) transparent;
+    }
+
+    .commit-track::-webkit-scrollbar { height: 6px; }
+    .commit-track::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+
+    .commit-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.02);
+      flex: 0 0 auto;
+    }
+
+    .commit-pill .sha {
+      color: var(--accent);
+    }
+
     .health-ok { color: var(--accent); }
     .health-warn { color: var(--danger); }
 
@@ -260,7 +306,7 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-04-25 23:29</span>
+          <span>Generated 2026-04-25 23:34</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
@@ -301,11 +347,6 @@
         <div class="metric-label terminal">Tier-2 Compliance</div>
         <div class="metric-value">17/17</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
-      </article>
-      <article class="panel metric">
-        <div class="metric-label terminal">Git Commits / 7d</div>
-        <div class="metric-value">54</div>
-        <div class="metric-foot">Recent repository commits. HEAD: <span class="terminal">48b4fa1</span>.</div>
       </article>
     </section>
 
@@ -360,6 +401,20 @@
           </section>
         </div>
       </article>
+    </section>
+
+    <section class="commit-strip">
+      <h3>Recent Commits</h3>
+      <div class="commit-track">
+        <span class='commit-pill'><span class='sha'>8ce6dd0</span><span>Feat: Add session and git activity metrics to dashboard</span></span>
+<span class='commit-pill'><span class='sha'>48b4fa1</span><span>Fix: Seed PoShWiKi pages in deploy and add dashboard breadcrumb</span></span>
+<span class='commit-pill'><span class='sha'>e707265</span><span>Feat: Expand dashboard activity feed and add portal handoff</span></span>
+<span class='commit-pill'><span class='sha'>2850861</span><span>Chore: Update log for portal breadcrumbs and table rendering session</span></span>
+<span class='commit-pill'><span class='sha'>3e089ed</span><span>Fix: Add portal breadcrumbs and pipe-table rendering</span></span>
+<span class='commit-pill'><span class='sha'>8132f70</span><span>Chore: Record Tier-2 compliance rollout</span></span>
+<span class='commit-pill'><span class='sha'>fc055ce</span><span>Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)</span></span>
+<span class='commit-pill'><span class='sha'>6af178b</span><span>Fix: Apply ps-automation-spec error-handling to all 02_System scripts</span></span>
+      </div>
     </section>
   </main>
 </body>
