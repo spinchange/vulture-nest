@@ -23,8 +23,9 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[aspnet-core-basics]]: Building high-performance APIs and MCP servers.
 
 ## Agentic SDKs
+* [[dotnet-agent-integration]]: **Bridge note** — maps all .NET components to the agentic-frameworks-moc taxonomy with a decision protocol.
 * [[ms-semantic-kernel]]: Orchestration, Plugins, and Memory for .NET.
-* [[lm-kit-dotnet]]: Local LLM inference and hardware acceleration.
+* [[lm-kit-dotnet]]: Local LLM inference via llama.cpp (GGUF models, hardware-accelerated).
 * [[csharp-mcp-sdk]]: Building MCP servers in the .NET ecosystem.
 * [[dotnet-mcp-server-patterns]]: Concrete blueprint for an MCP server backed by local SQLite.
 * [[sqlite-type-safety-rust-vs-csharp]]: Comparing Rust `sqlx` guarantees with direct C# SQLite access.
