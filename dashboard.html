@@ -36,6 +36,39 @@
       padding: 24px;
     }
 
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .topbar .brand {
+      color: var(--accent);
+    }
+
+    .topbar .sep {
+      color: var(--line);
+    }
+
+    .topbar a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      color: var(--accent);
+    }
+
     .masthead {
       display: grid;
       grid-template-columns: 1.3fr .7fr;
@@ -212,13 +245,22 @@
 </head>
 <body>
   <main class="shell">
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>DASHBOARD</span>
+    </nav>
     <section class="masthead">
       <div class="panel">
         <div class="eyebrow terminal">Vault Pulse / Live Substrate Dashboard</div>
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-04-26 04:15</span>
+          <span>Generated 2026-04-26 04:27</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
@@ -247,12 +289,12 @@
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">PoShWiKi Pages</div>
-        <div class="metric-value">0</div>
+        <div class="metric-value">3</div>
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
-        <div class="metric-value">16/16</div>
+        <div class="metric-value">17/17</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
       </article>
     </section>
@@ -282,13 +324,17 @@
         <div class="split">
           <section>
             <h3>PoShWiKi Session</h3>
-            <div class="callout">Latest session page: <span class="terminal">No session page</span></div>
+            <div class="callout">Latest session page: <span class="terminal">Session 2026-04-25</span></div>
             <ul class="feed">
-              <li><span class='feed-text'>No recent PoShWiKi session actions found.</span></li>
+              <li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Spot-checked all 15 02_System scripts against ps-automation-spec. Result: 3 compliant, 12 non-compliant. Wrote codex-ps-compliance-handoff with the exact per-script breakdown and two-deliverable spec for Codex.</span></li>
+<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Codex applied ps-automation-spec scaffolding to the 12 non-compliant 02_System scripts, added test-tier-compliance.ps1, wired run-maintenance.ps1 step [7/7], and verified Tier-2 enforcement live at 100/100.</span></li>
+<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Wrote claude-portal-breadcrumbs-handoff for Claude covering portal breadcrumbs, index-back navigation, and markdown table rendering verification through the shared HTML generation path.</span></li>
+<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Received Codex handoff claude-portal-breadcrumbs-handoff.md. Fixed two portal issues: added VULTURE/PORTAL/INDEX/&lt;Note&gt; breadcrumbs to template.html, and added pipe-table parsing to generate-wiki.ps1. All 209 notes force-recompiled. Verified table rendering in dotnet-agent-integration.html. 100/100 health.</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-text'>No current seam summary found.</span></li>
+              <li><span class='feed-meta'>Apr 26 04:27 | Current Seam</span><span class='feed-text'>Portal upgraded: breadcrumbs and table rendering are live across all 209 compiled pages. Vault 100/100.</span></li>
+<li><span class='feed-meta'>Apr 26 04:27 | Next Step</span><span class='feed-text'>Keep the dashboard&#39;s standalone HTML in sync with the shared portal navigation pattern when requested.</span></li>
             </ul>
           </section>
           <section>
