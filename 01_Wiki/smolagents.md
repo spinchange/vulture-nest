@@ -25,3 +25,4 @@ aliases: [hugging-face-smolagents, code-agents]
 * Source: `00_Raw/hf-agents-course-unit1.md`
 * [[agentic-frameworks-moc]]
 * [[hf-agents-course-moc]]
+- [[code-agents]]

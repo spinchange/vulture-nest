@@ -48,5 +48,6 @@ The missing piece is a **Knowledge Compiler Specification** — a formal documen
 
 
 ---
+- [[community-polyglot-agent-platform]]
 ## References
 - [[knowledge-compiler-spec]]

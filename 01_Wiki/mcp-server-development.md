@@ -6,50 +6,51 @@ status: active
 type: permanent
 aliases: [mcp-sdk, mcp-server-build, mcp-best-practices]
 ---
-# MCP Development
+# MCP Server Development
 
-Developing for the **[[mcp-architecture|Model Context Protocol]]** involves building either Servers (to expose data/tools) or Clients (to consume them).
+Developing an **[[mcp-architecture|MCP Server]]** involves exposing tools, resources, and prompts via a standardized transport (Stdio or HTTP).
 
-## Supported SDKs
-Anthropic provides official and community-supported SDKs for:
-*   **Python:** High-level support via `FastMCP`.
-*   **TypeScript/Node.js:** The standard for web and desktop integration.
-*   **Other:** Java, Kotlin, C#, and Ruby.
+## Supported SDKs & Implementation
+MCP provides official SDKs to simplify development. The **[[mcp-sdks|SDKs]]** handle JSON-RPC serialization and lifecycle management.
 
-## Critical Development Rules
-### 1. Logging (Stdio Transport)
-When using the **[[mcp-transport|Stdio transport]]**, the server communicates via `stdout`.
-*   **❌ NEVER** log to `stdout` (e.g., `print()` or `console.log()`). This corrupts the JSON-RPC stream and breaks the connection.
-*   **✅ ALWAYS** log to `stderr` (e.g., `sys.stderr`, `logging.info()`, or `console.error()`).
+### 1. Python (FastMCP)
+The `FastMCP` class is the recommended high-level API for Python.
+*   **Initialization**: `mcp = FastMCP("server-name")`
+*   **Tools**: Uses `@mcp.tool()` decorators. Docstrings and type hints are automatically converted to JSON Schema.
+*   **Running**: `mcp.run(transport="stdio")`
 
-### 2. FastMCP (Python)
-The `FastMCP` class in the Python SDK simplifies development by using Python type hints and docstrings to automatically generate the tool schemas required by the LLM.
+### 2. TypeScript / Node.js
+The TypeScript SDK provides the most fine-grained control for web and desktop hosts.
+*   **Initialization**: `const server = new McpServer({ name: "server", version: "1.0.0" });`
+*   **Tools**: Registered via `server.registerTool(name, schema, handler)`. Uses **Zod** for schema definition.
+*   **Running**: `const transport = new StdioServerTransport(); await server.connect(transport);`
 
-## Server Configuration
-MCP servers are typically registered in a host's configuration file. For **Claude Desktop**, this is `claude_desktop_config.json`.
+### 3. Java (Spring AI)
+Ideal for enterprise integration and performance-critical systems.
+*   **Mechanism**: Uses `@Tool` and `@ToolParam` annotations on Spring `@Service` classes.
+*   **Auto-Registration**: The `spring-ai-starter-mcp-server` automatically discovers and registers beans as tools.
 
-```json
-{
-  "mcpServers": {
-    "my-server": {
-      "command": "uv",
-      "args": ["run", "server.py"]
-    }
-  }
-}
-```
+## Critical Lifecycle Rules
+### The Stdio Logging Hazard
+When using **[[mcp-transport|Stdio transport]]**, the server communicates via `stdout`. 
+*   **❌ NEVER** log to `stdout` (e.g., `print()`, `console.log()`, `System.out.println()`). This corrupts the JSON-RPC stream.
+*   **✅ ALWAYS** log to `stderr` (e.g., `sys.stderr`, `console.error()`).
 
-## Best Practices
-*   **Atomic Tools:** Each tool should perform a single, clear operation.
-*   **Schema Clarity:** Provide detailed descriptions in docstrings; the LLM uses these to decide when to call the tool.
-*   **User Approval:** Design tools with the assumption that sensitive actions (writing to DB, sending emails) will require host-level user approval.
+## Server Building Workflow
+1.  **Define Capabilities**: Decide which [[mcp-server-features|Tools, Resources, and Prompts]] to expose.
+2.  **Schema Design**: Define input parameters using JSON Schema or language-native primitives (Zod, Type Hints).
+3.  **Implement Logic**: Write the underlying service logic (e.g., API calls, DB queries).
+4.  **Connect Transport**: Choose between `StdioServerTransport` (local) or `SSEServerTransport` (remote).
+5.  **Test**: Use the **[[mcp-inspector|MCP Inspector]]** to verify schemas and results.
+
+## Security & Trust
+*   **User Consent**: Servers should assume that sensitive tool calls (Write/Delete) will trigger a "Human-in-the-loop" approval dialog in the host.
+*   **Validation**: Always validate inputs on the server side; do not trust the LLM's adherence to the schema.
 
 ---
-## See Also
-* [[mcp-architecture]]
-* [[mcp-primitives]]
-* [[agentic-protocols]]
-- [[mcp-client-development]]
-- [[mcp-best-practices]]
-- [[mcp-debugging]]
+## Related
+* [[mcp-best-practices]]
+* [[mcp-debugging]]
+* [[rust-mcp-patterns]]
+* [[mcp-example-servers]]
 - [[csharp-mcp-sdk]]

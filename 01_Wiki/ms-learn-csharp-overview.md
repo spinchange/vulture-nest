@@ -25,3 +25,6 @@ C# is a modern, object-oriented, and type-safe programming language that runs on
 ## Fundamental Paradigms
 - **Multi-paradigm:** Supports imperative, declarative, functional, and object-oriented programming.
 - **Strong Typing:** Compile-time type checking to ensure code safety.
+
+## Related
+- [[ms-learn-dotnet-fundamentals]]

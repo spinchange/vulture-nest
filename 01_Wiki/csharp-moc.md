@@ -17,8 +17,8 @@ A structured traversal of the C# programming language, optimized for high-perfor
 ## Modern Features (.NET 8+)
 * [[csharp-linq]]: Language Integrated Query for data manipulation.
 * [[csharp-async-await]]: The core pattern for non-blocking I/O.
-* **Records**: Immutable data structures for high-signal tool inputs.
-* **Pattern Matching**: Advanced control flow for complex logic.
+* [[csharp-records]]: Immutable data structures for high-signal tool inputs.
+* [[csharp-pattern-matching]]: Advanced control flow for complex logic.
 
 ## Integration
 * [[csharp-mcp-sdk]]: Building Tier 1 servers in the .NET ecosystem.

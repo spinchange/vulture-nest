@@ -21,7 +21,11 @@ Language choice in this vault is a **tier declaration** — each language carrie
 | 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly |
 | 3 — Orchestration | Python | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |
 
-The tier model is enforced by [[hardware-aware-inference]] constraints and the CLR's security model. The emergence of [[lm-kit-dotnet]] and [[foundry-local]] is significant: Microsoft is bridging Tier-0 inference directly into Tier-1 C#, making the full [[agent-thought-cycle]] implementable without a Python subprocess boundary. See [[community-polyglot-agent-platform]] for the complete theory.
+In the Vulture substrate, .NET serves as the **Tier-1 Host** for performance-critical agent components, particularly when interacting with local memory, system automation, and local inference via [[lm-kit-dotnet]].
+
+## Current Gap Analysis
+* **Imbalance:** While [[dotnet-moc]] links out to agentic concepts, the core [[agentic-frameworks-moc]] previously lacked sufficient back-references to the .NET ecosystem (the "Peninsula Gap").
+* **Action:** Ensure all .NET-based agent tools are registered in the [[agent-skills-index]] to complete the bidirectional link graph.
 
 ## The .NET Agent Loop
 
@@ -150,3 +154,4 @@ The formal ADR is now active at [[polyglot-platform-adr]]. The superseded draft 
 - [[polyglot-platform-adr]]
 - [[polyglot-adr-rfc]]
 - [[codex-polyglot-adr-handoff]]
+- [[community-protocol-trust-substrate]]

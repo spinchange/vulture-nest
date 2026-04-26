@@ -59,7 +59,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
 
 ## Platform & Runtime SDKs
-* [[dotnet-agent-integration]]: **Bridge note** — decision protocol for .NET components across the agent loop.
+* [[dotnet-agent-integration]]: **Bridge note** — architectural patterns for .NET in the agent loop.
 * [[dotnet-moc]]: The .NET ecosystem for high-performance agentic backends.
 * [[csharp-moc]]: Building Tier-1 agents with the C# language.
 * [[foundry-local]]: Microsoft's hardware-optimized local inference SDK.
@@ -84,3 +84,5 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 ## See Also
 * [[core-patterns-moc]]
 * [[programming-languages-moc]]
+- [[python-moc]]
+- [[agent-skills-index]]

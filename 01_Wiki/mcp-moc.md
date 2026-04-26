@@ -44,3 +44,4 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 ## See Also
 * [[agentic-frameworks-moc]]
 * [[hybrid-retrieval-spec]]
+- [[community-protocol-trust-substrate]]

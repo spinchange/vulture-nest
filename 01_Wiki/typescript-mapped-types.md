@@ -40,3 +40,4 @@ type Getters<Type> = {
 * [[typescript-moc]]
 * [[typescript-type-operators]]
 * [[typescript-template-literals]]
+- [[typescript-objects]]

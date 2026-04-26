@@ -27,3 +27,4 @@ MCP is an open standard designed to unify how tools are provided to LLMs, allowi
 * [[agent-actions]]
 * [[smolagents]]
 * [[powershell-moc]] (Local tool implementation)
+- [[mcp-primitives]]

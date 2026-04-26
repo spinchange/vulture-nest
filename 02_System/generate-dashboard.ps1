@@ -216,6 +216,55 @@ try {
             }
         }
 
+        # --- Semantic Orphans ---
+        $semanticOrphanCount = 0
+        try {
+            $embRows = Invoke-SqliteQuery -Query "SELECT NoteName, Embedding FROM NoteEmbeddings"
+            if ($embRows.Count -gt 0) {
+                # Normalize embeddings
+                $normalized = @{}
+                $noteNames = @()
+                foreach ($row in $embRows) {
+                    $vec = [double[]]($row.Embedding | ConvertFrom-Json)
+                    $mag = 0.0
+                    foreach ($v in $vec) { $mag += $v * $v }
+                    $mag = [Math]::Sqrt($mag)
+                    if ($mag -gt 0) {
+                        $norm = [double[]]::new($vec.Length)
+                        for ($k = 0; $k -lt $vec.Length; $k++) { $norm[$k] = $vec[$k] / $mag }
+                        $normalized[$row.NoteName] = $norm
+                        $noteNames += $row.NoteName
+                    }
+                }
+
+                # Load existing links
+                $linkRows = Invoke-SqliteQuery -Query "SELECT Source, Target FROM Links"
+                $existingLinks = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+                foreach ($link in $linkRows) {
+                    $existingLinks.Add("$($link.Source)|$($link.Target)") | Out-Null
+                    $existingLinks.Add("$($link.Target)|$($link.Source)") | Out-Null
+                }
+
+                # Count pairs above 0.80 threshold with no link
+                for ($i = 0; $i -lt $noteNames.Count; $i++) {
+                    $a = $noteNames[$i]
+                    $va = $normalized[$a]
+                    for ($j = $i + 1; $j -lt $noteNames.Count; $j++) {
+                        $b = $noteNames[$j]
+                        if ($existingLinks.Contains("$a|$b")) { continue }
+                        $vb = $normalized[$b]
+                        $dot = 0.0
+                        for ($k = 0; $k -lt $va.Length; $k++) { $dot += $va[$k] * $vb[$k] }
+                        if ($dot -ge 0.80) {
+                            $semanticOrphanCount++
+                        }
+                    }
+                }
+            }
+        } catch {
+            Write-Verbose "Could not compute semantic orphans: $_"
+        }
+
         $brokenLinkCount = 0
         $validNoteNames = (Get-ChildItem -Path $VaultRoot, $WikiPath, $SystemPath -Filter '*.md').BaseName | Select-Object -Unique
         foreach ($file in $allMdFiles) {
@@ -229,13 +278,15 @@ try {
         }
 
         $linkDensity = if ($noteCount -gt 0) { [math]::Round($totalLinks / $noteCount, 2) } else { 0 }
-        $healthScore = [math]::Max(0, 100 - ($orphanCount * 2) - ($brokenLinkCount * 5))
+        # Penalty: 2 for orphan, 5 for broken, 1 for semantic orphan
+        $healthScore = [math]::Max(0, 100 - ($orphanCount * 2) - ($brokenLinkCount * 5) - ($semanticOrphanCount * 1))
 
         return [PSCustomObject]@{
             TotalNotes   = $noteCount
             TotalLinks   = $totalLinks
             LinkDensity  = $linkDensity
             OrphanCount  = $orphanCount
+            SemanticOrphans = $semanticOrphanCount
             BrokenLinks  = $brokenLinkCount
             HealthScore  = $healthScore
         }
@@ -254,17 +305,33 @@ LIMIT 5;
     }
 
     function Get-LatestSessionPage {
+        param(
+            [Parameter(Mandatory = $false)]
+            [string]$RequiredSection
+        )
+
         $query = @'
 SELECT Title, Content, Modified
 FROM Pages
 WHERE Title LIKE 'Session %'
 ORDER BY Modified DESC, Title DESC
-LIMIT 1;
+LIMIT 25;
 '@
 
         $result = Invoke-SqliteQuery -Query $query
-        if ($result.Count -gt 0) {
-            return $result[0]
+        if ([string]::IsNullOrWhiteSpace($RequiredSection)) {
+            if ($result.Count -gt 0) {
+                return $result[0]
+            }
+
+            return $null
+        }
+
+        foreach ($page in $result) {
+            $sectionBody = Get-MarkdownSectionBody -Content $page.Content -Section $RequiredSection
+            if (-not [string]::IsNullOrWhiteSpace($sectionBody)) {
+                return $page
+            }
         }
 
         return $null
@@ -385,12 +452,17 @@ LIMIT 1;
             if ([string]::IsNullOrWhiteSpace($trimmed)) { continue }
 
             if ($trimmed -match '^##\s+\[[0-9]{4}-[0-9]{2}-[0-9]{2}\].+$') {
-                $trimmed
+                ($trimmed -replace '^##\s+', '')
                 continue
             }
 
             if ($trimmed -match '^\[[0-9]{4}-[0-9]{2}-[0-9]{2}\]\s+.+$') {
                 $trimmed
+                continue
+            }
+
+            if ($trimmed -match '^- \[[0-9]{4}-[0-9]{2}-[0-9]{2}(?:\s+[0-9]{2}:[0-9]{2}(?::[0-9]{2})?)?\]\s+.+$') {
+                ($trimmed -replace '^- ', '')
                 continue
             }
 
@@ -429,7 +501,12 @@ LIMIT 1;
     $tier2Stats = Get-Tier2ComplianceStats
     $hubs = Get-TopHubs
     $latestSession = Get-LatestSessionPage
-    $sessionActivity = Get-SessionActivity -SessionPage $latestSession
+    $latestActionSession = Get-LatestSessionPage -RequiredSection 'Actions'
+    if (-not $latestActionSession) {
+        $latestActionSession = $latestSession
+    }
+
+    $sessionActivity = Get-SessionActivity -SessionPage $latestActionSession
     $gitStats = Get-GitStats
     $logActions = Get-RecentLogActions
     $generatedAt = Get-Date -Format 'yyyy-MM-dd HH:mm'
@@ -472,6 +549,17 @@ LIMIT 1;
     }
 
     $sessionTitle = if ($latestSession) { $latestSession.Title } else { 'No session page' }
+    $sessionActionTitle = if ($latestActionSession) { $latestActionSession.Title } else { 'No session page' }
+    $sessionActionFoot = if ($sessionActionTitle -ne $sessionTitle) {
+        "Action lines recorded on <span class='terminal'>$(ConvertTo-HtmlSafe $sessionActionTitle)</span>. Latest session page is <span class='terminal'>$(ConvertTo-HtmlSafe $sessionTitle)</span>."
+    } else {
+        "Action lines recorded on <span class='terminal'>$(ConvertTo-HtmlSafe $sessionTitle)</span>."
+    }
+    $sessionActionCallout = if ($sessionActionTitle -ne $sessionTitle) {
+        "Latest page with an <span class='terminal'>Actions</span> section: <span class='terminal'>$(ConvertTo-HtmlSafe $sessionActionTitle)</span>. Latest session page: <span class='terminal'>$(ConvertTo-HtmlSafe $sessionTitle)</span>."
+    } else {
+        "Latest session page: <span class='terminal'>$(ConvertTo-HtmlSafe $sessionTitle)</span>"
+    }
 
     $html = @"
 <!DOCTYPE html>
@@ -621,7 +709,7 @@ LIMIT 1;
     .metrics {
       grid-column: span 12;
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 16px;
     }
 
@@ -789,7 +877,7 @@ LIMIT 1;
       <div class="panel hero-score">
         <div class="kicker terminal">Vault Health</div>
         <div class="score">$($stats.HealthScore)%</div>
-        <div class="$(if ($stats.HealthScore -ge 100) { 'health-ok' } else { 'health-warn' }) terminal">orphan=$($stats.OrphanCount) / broken=$($stats.BrokenLinks)</div>
+        <div class="$(if ($stats.HealthScore -ge 100) { 'health-ok' } else { 'health-warn' }) terminal">orphan=$($stats.OrphanCount) / broken=$($stats.BrokenLinks) / neural_gap=$($stats.SemanticOrphans)</div>
       </div>
     </section>
 
@@ -805,9 +893,9 @@ LIMIT 1;
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
-        <div class="metric-label terminal">Total Wikilinks</div>
-        <div class="metric-value">$($stats.TotalLinks)</div>
-        <div class="metric-foot">All wikilinks counted across <span class="terminal">01_Wiki</span> and <span class="terminal">02_System</span>.</div>
+        <div class="metric-label terminal">Neural Gap</div>
+        <div class="metric-value">$($stats.SemanticOrphans)</div>
+        <div class="metric-foot">"Semantic orphans" — highly similar notes lacking a formal wikilink.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">PoShWiKi Pages</div>
@@ -817,7 +905,7 @@ LIMIT 1;
       <article class="panel metric">
         <div class="metric-label terminal">Session Actions</div>
         <div class="metric-value">$($sessionActivity.ActionCount)</div>
-        <div class="metric-foot">Action lines recorded on <span class="terminal">$(ConvertTo-HtmlSafe $sessionTitle)</span>.</div>
+        <div class="metric-foot">$sessionActionFoot</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
@@ -847,7 +935,7 @@ LIMIT 1;
         <div class="split">
           <section>
             <h3>PoShWiKi Session</h3>
-            <div class="callout">Latest session page: <span class="terminal">$(ConvertTo-HtmlSafe $sessionTitle)</span></div>
+            <div class="callout">$sessionActionCallout</div>
             <ul class="feed">
               $sessionItems
             </ul>
@@ -905,8 +993,9 @@ LIMIT 1;
         Tier2Total     = $tier2Stats.TotalScripts
         RecentCommits7d = $gitStats.RecentCommits7d
         RecentCommitLines = $gitStats.RecentCommitLines.Count
-        SessionTitle   = $sessionTitle
-        LogActionCount = $logActions.Count
+        SessionTitle      = $sessionTitle
+        SessionActionPage = $sessionActionTitle
+        LogActionCount    = $logActions.Count
     }
 }
 catch {

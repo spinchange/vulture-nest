@@ -51,3 +51,4 @@ Define multiple **overload signatures** followed by a single **implementation si
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-generics]]
+- [[typescript-objects]]

@@ -49,3 +49,5 @@ Errors like `-32602` (Invalid params) often occur when a server tries to use a f
 * [[mcp-inspector]]
 * [[mcp-transport]]
 - [[mcp-server-development]]
+- [[mcp-best-practices]]
+- [[mcp-client-development]]

@@ -25,6 +25,7 @@ This map covers the automation suite and coding standards for the **vulture-nest
 ## Productivity & Observability
 * [[ps-note-creator]]: Scaffolding new YANP-compliant notes.
 * [[ps-vault-stats]]: High-level health and density metrics.
+* [[audio-overview-workflow]]: Local media conversion and transcript artifact pipeline.
 
 ## Advanced Retrieval
 * [[ps-vulture-search]]: The hybrid engine linking knowledge to system capabilities.
@@ -43,3 +44,4 @@ This map covers the automation suite and coding standards for the **vulture-nest
 * [[core-patterns-moc]]
 * [[wiki-as-codebase]]
 * [[programming-languages-moc]]
+- [[python-moc]]

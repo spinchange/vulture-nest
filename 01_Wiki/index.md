@@ -11,6 +11,7 @@ type: community
 * [[core-patterns-moc]] - Philosophy & YANP
 * [[pkm-history-moc]] - Lineage & Vision
 * [[pkm-methods-moc]] - Systems & Workflow
+* [[experiments-moc]] - Lab notes, build logs, and workflow trials
 * [[agentic-frameworks-moc]] - Agency & Mechanics
 * [[cognitive-architectures]] - Chain of Thought Blueprint
 * [[agentic-tdd-patterns]] - Executable Intent & EDD
@@ -18,6 +19,7 @@ type: community
 * [[hf-agents-course-moc]] - Hugging Face Agents Course Reference
 * [[mcp-moc]] - Model Context Protocol Reference
 * [[rust-mcp-patterns]] - High-Performance Server Design
+* [[rust-macros]] - Metaprogramming Patterns
 * [[programming-languages-moc]] - Dev Environments
 * [[dotnet-moc]] - .NET Ecosystem Reference
 * [[csharp-moc]] - C# Language Reference
@@ -32,6 +34,8 @@ type: community
 * [[agentic-protocols]] - MCP↔Agent Spec
 * [[csharp-mcp-sdk]] - High-Performance .NET Tooling
 * [[dotnet-agent-integration]] - Bridging Ecosystems
+* [[csharp-records]] - Immutable Data Models
+* [[csharp-pattern-matching]] - Advanced Control Flow
 * [[inter-agent-handoff-protocol]] - Shared Resume, Seam, and Reply-Slot Process
 
 ## Emergent Communities
@@ -39,6 +43,7 @@ type: community
 * [[community-protocol-trust-substrate]] - Type-Safe Agent Governance
 * [[community-polyglot-agent-platform]] - Tiered Language Architectures
 * [[the-vulture-portal]] - High-Density Web Interface
+* [[the-compounding-artifact]] - The Core Thesis (from LLM Wiki)
 
 ## Sources (Raw Data)
 * [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)

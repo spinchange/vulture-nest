@@ -66,3 +66,4 @@ Operationalizing this as a decision tree (or a [[vault-audit-tool-spec]]-style s
 - [[lm-kit-dotnet]]
 - [[dotnet-agent-integration]]
 - [[community-protocol-trust-substrate]]
+- [[community-living-knowledge-system]]

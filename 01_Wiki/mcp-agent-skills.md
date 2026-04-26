@@ -30,3 +30,4 @@ Ask your agent to "Help me build an MCP server." If the agent has the `mcp-serve
 * Source: `00_Raw/mcp/Build with Agent Skills.md`
 * [[mcp-server-development]]
 * [[mcp-sdks]]
+- [[mcp-best-practices]]

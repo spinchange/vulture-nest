@@ -4,7 +4,7 @@ author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
 aliases: [embedding pipeline, auto-link pipeline, neural retrieval]
-type: reference
+type: permanent
 ---
 
 # Semantic Embedding Pipeline

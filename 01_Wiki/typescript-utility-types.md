@@ -42,3 +42,4 @@ TypeScript provides several global utility types to facilitate common type trans
 * [[typescript-conditional-types]]
 
 * [[agent-note-conventions]] (Modeling metadata constraints)
+- [[typescript-objects]]

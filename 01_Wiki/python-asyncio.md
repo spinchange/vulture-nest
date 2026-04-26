@@ -43,3 +43,4 @@ aliases: [asyncio, python-concurrency]
 - [[python-moc]]
 - [Coroutines and Tasks](https://docs.python.org/3.12/library/asyncio-task.html)
 - [asyncio](https://docs.python.org/3.12/library/asyncio.html)
+- [[csharp-async-await]]

@@ -14,6 +14,13 @@ A directory of specialized skills and procedural knowledge modules used by agent
 * **Session Distillation**: Triggers on "distill" or "capture session". Responsible for converting temporary conversation context into durable [[agent-note-conventions|Permanent Notes]].
 * **Vault Maintenance**: Procedural knowledge for adhering to [[yanp-for-agentic-workflows|YANP]] and managing note lifecycles.
 
+## .NET Agentic Stack (Tier-1)
+* [[dotnet-agent-integration]]: Main architectural bridge for .NET/C# in agentic loops.
+* [[csharp-mcp-sdk]]: Building type-safe, performance-critical MCP servers.
+* [[lm-kit-dotnet]]: On-device inference and GGUF integration for .NET agents.
+* [[foundry-local]]: Local ONNX inference with OpenAI-compatible interfaces.
+* [[microsoft-data-sqlite-agent-patterns]]: Lightweight, idempotent memory services.
+
 ## Implementation Pattern
 Skills are typically implemented as configuration files or specialized scripts that are "activated" based on user intent. These skills allow for cross-agent consistency in how the vault is manipulated.
 
@@ -36,3 +43,5 @@ To maintain a consistent vault across different models (Gemini, Claude), we use 
 * Source: `00_Raw/agent-skills-index.md`
 * [[agent-knowledge-vault]]
 * [[agent-configuration-sync-strategy]]
+- [[mcp-agent-skills]]
+- [[agentic-frameworks-moc]]

@@ -25,6 +25,9 @@ handoff-*.md
 00_Raw/openai-js-repl/
 00_Raw/workbench/
 **/target/
+.media-py/
+.venv-media/
+00_Raw/audio-overviews/
 
 # Generated files
 03_Web/public/

@@ -43,3 +43,4 @@ Regardless of the language, all official MCP SDKs support:
 * [[mcp-client-development]]
 - [[mcp-example-servers]]
 - [[mcp-example-clients]]
+- [[csharp-mcp-sdk]]

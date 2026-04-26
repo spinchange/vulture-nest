@@ -71,3 +71,4 @@ Prefer a heavier stack such as [[ef-core-basics]] when:
 - [[csharp-moc]]
 - [[dotnet-agent-integration]]
 - [[dotnet-mcp-server-patterns]]
+- [[poshwiki-tools]]

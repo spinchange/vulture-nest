@@ -26,3 +26,4 @@ For an agent to function reliably, it must follow a strict lifecycle:
 * [[code-agents]]
 * [[wiki-pattern-operations]]
 * [[yanp-for-agentic-workflows]]
+- [[agent-thought-cycle]]

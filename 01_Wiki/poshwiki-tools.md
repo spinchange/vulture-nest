@@ -59,3 +59,4 @@ The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` li
 - [[the-compounding-artifact]]
 - [[ms-repo-poshwiki]]
 - [[microsoft-data-sqlite-agent-patterns]]
+- [[csharp-for-agentic-workflows]]

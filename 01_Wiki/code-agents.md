@@ -25,3 +25,4 @@ In a [[wiki-as-codebase]] model, Code Agents are particularly effective because 
 * [[agent-actions]]
 * [[programming-languages-moc]]
 * [[python]]
+- [[smolagents]]

@@ -32,3 +32,4 @@ aliases: [rust-lang, rust-programming-language]
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[programming-languages-moc]]
 * [[rust-ownership]]
+- [[rust-concurrency]]

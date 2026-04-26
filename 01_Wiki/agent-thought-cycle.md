@@ -25,3 +25,4 @@ This cycle is often implemented using the [[react-pattern]], where the reasoning
 * [[react-pattern]]
 
 * [[ps-vulture-search]] (Context Packet generation for 'Thought' phase)
+- [[agent-actions]]

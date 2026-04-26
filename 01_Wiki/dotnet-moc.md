@@ -41,3 +41,5 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[programming-languages-moc]]
 * [[mcp-moc]]
 * [[agentic-frameworks-moc]]
+- [[python-moc]]
+- [[ms-learn-dotnet-fundamentals]]

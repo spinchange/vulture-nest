@@ -103,3 +103,4 @@ Record your recommendation in `## Codex Findings` before writing the final ADR n
 - [[inter-agent-handoff-protocol]]
 - [[ps-automation-spec]]
 - [[vault-audit-tool-spec]]
+- [[workbench-codex-runner-handoff]]

@@ -55,3 +55,4 @@ Malicious servers can induce clients to fetch URLs pointing to internal resource
 - [[mcp-client-development]]
 - [[rust-mcp-patterns]]
 - [[mcp-server-development]]
+- [[mcp-agent-skills]]

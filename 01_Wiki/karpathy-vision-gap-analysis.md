@@ -4,7 +4,7 @@ author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
 aliases: [karpathy gap, llm os gap analysis, neural retrieval gap]
-type: analysis
+type: permanent
 ---
 
 # Karpathy Vision Gap Analysis

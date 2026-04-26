@@ -24,6 +24,7 @@ This map provides a structured traversal of the Rust Programming Language, optim
 ## Code Organization
 * [[rust-modules-and-packages]]: Crates, paths, and visibility.
 * [[rust-error-handling]]: `panic!` vs. `Result`.
+* [[rust-macros]]: Declarative and procedural metaprogramming.
 
 ## Advanced Abstractions
 * [[rust-generics-and-traits]]: Defining shared behavior.

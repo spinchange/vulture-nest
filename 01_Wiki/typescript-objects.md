@@ -51,3 +51,5 @@ interface Box<Type> {
 * [[typescript-everyday-types]]
 * [[typescript-generics]]
 - [[typescript-type-operators]]
+- [[typescript-utility-types]]
+- [[typescript-functions]]
