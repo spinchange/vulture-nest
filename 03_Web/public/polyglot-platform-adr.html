@@ -427,11 +427,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Polyglot Platform ADR</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">platform-adr, tier-selection-adr, language-tier-decision-record</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Polyglot Platform ADR</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">platform-adr, tier-selection-adr, language-tier-decision-record</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
       </div>
     </header>
@@ -442,12 +442,111 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Polyglot Platform ADR</h1>
-<p><strong>Status:</strong> Stub — awaiting Codex verification per <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>.</p>
-<p>This note will be the formal, <code>status: active</code> Architecture Decision Record for the vault&#39;s four-tier polyglot platform. It supersedes <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> once all open questions are verified against vault source files.</p>
-<h2>Scope</h2>
-<p>Defines the binding rules for language-tier selection, inter-tier communication contracts, and failure-mode responsibilities across the vault&#39;s agent tooling.</p>
-<h2>See RFC</h2>
-<p>All proposed content is in <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a>. Codex must verify the open questions there before this note becomes active.</p>
+<p>This note is the active Architecture Decision Record for language-tier selection in the vault. It supersedes <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> and records the verified difference between the intended platform model and the source files currently checked into the workspace.</p>
+<h2>Decision</h2>
+<p>The vault keeps the four-tier language model as its architectural decision rule:</p>
+<ul>
+<li>Tier-0: Rust for long-lived, safety-critical services
+</li>
+<li>Tier-1: C# / .NET for typed integration surfaces and hosted agent services
+</li>
+<li>Tier-2: PowerShell for automation, maintenance, and shell-adjacent workflows
+</li>
+<li>Tier-3: Python for ML experiments and framework-specific orchestration
+</li>
+</ul>
+<p>This ADR also records a fifth classification that is not part of the production tier model:</p>
+<ul>
+<li>TypeScript/Node development scaffolding sits outside the tier table unless it becomes a persistent product/runtime boundary in its own right
+</li>
+</ul>
+<h2>Verified Tier Inventory</h2>
+<p>| Tier | Language | Current Vault Status | |------|----------|----------------------| | 0 | Rust | No Rust source is checked into the current vault. The referenced <code>vulture-mcp</code> artifact is not present under <code>00_Raw/</code> or elsewhere in the repo as source code. | | 1 | C# / .NET | No C# source tree is checked into the current vault. The only live .NET artifact is the bundled <code>Microsoft.Data.Sqlite.dll</code> dependency loaded by PoShWiKi. | | 2 | PowerShell | Live tooling tier. <code>02_System/</code> contains 15 <code>.ps1</code> scripts, and <code>00_Raw/PoShWiKi/</code> contains a PowerShell CLI and module with substantive wiki logic. | | 3 | Python | Knowledge-only tier. No live Python tooling or <code>.py</code> source files are checked into the current vault. |</p>
+<h2>Workbench Classification</h2>
+<p><code>00_Raw/workbench/</code> is a TypeScript/Node project with <code>src/</code> and <code>tests/</code>, and <code>package.json</code> describes it as a persistent repo workbench for coding sessions. It should not be forced into Tier-3 or a new &quot;Tier-1.5&quot; slot.</p>
+<p>Decision: classify Workbench as development scaffolding outside the production tier model. It is a tool-runner/runtime used to inspect and operate on repos, not a persistent vault service or language-choice precedent for the production stack.</p>
+<h2>Selection Criteria</h2>
+<h3>Tier 0 — Rust</h3>
+<p>Select when:</p>
+<ul>
+<li>The component is a long-lived daemon, MCP server, or infrastructure process
+</li>
+<li>Memory safety and ownership guarantees matter more than iteration speed
+</li>
+<li>Concurrent state handling must be compile-time constrained
+</li>
+<li>Latency and operational predictability are primary concerns
+</li>
+</ul>
+<h3>Tier 1 — C# / .NET</h3>
+<p>Select when:</p>
+<ul>
+<li>The component needs DI-managed lifetimes or a hosted service model
+</li>
+<li>The tool exposes a typed API, MCP surface, or ASP.NET Core boundary
+</li>
+<li>The domain model benefits from strong typing, records, and LINQ
+</li>
+<li>Enterprise identity or CLR-hosted integration is part of the problem
+</li>
+</ul>
+<h3>Tier 2 — PowerShell</h3>
+<p>Select when:</p>
+<ul>
+<li>The task is one-shot automation, CI/CD orchestration, or vault maintenance
+</li>
+<li>Human auditability and shell-native behavior matter more than throughput
+</li>
+<li>Filesystem operations, process execution, or markdown/SQLite scripting dominate the work
+</li>
+<li>The implementation can satisfy <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
+</li>
+</ul>
+<h3>Tier 3 — Python</h3>
+<p>Select when:</p>
+<ul>
+<li>The task depends directly on Python-native ML or agent frameworks
+</li>
+<li>Rapid experimental iteration matters more than static guarantees
+</li>
+<li>The artifact is an evaluation harness, ML pipeline, or framework-specific prototype
+</li>
+</ul>
+<h2>Inter-Tier Communication Contracts</h2>
+<p>| Pair | Contract | Current Vault Evidence | |------|----------|------------------------| | Tier 0 ↔ Tier 1 | MCP (stdio or SSE), JSON-RPC 2.0 | Architectural contract only. No live Rust or C# service pair is checked into this vault. | | Tier 1 ↔ Tier 2 | HTTP/REST, subprocess JSON, or hosted .NET boundary | No live Tier-1 service boundary is present. PoShWiKi&#39;s <code>Add-Type</code> call is in-process CLR interop inside a Tier-2 artifact, not a Tier-1 service boundary. | | Tier 2 → Tier 2 | <code>pwsh -File</code> subprocess with structured stdout/stderr | <code>02_System/run-maintenance.ps1</code> invokes child scripts via <code>pwsh -File</code>. | | Tier 1 ↔ Tier 3 | HTTP/REST or <code>subprocess</code> | Aspirational only. No live vault example. | | Tier 0 ↔ Tier 3 | OpenAI-compatible local REST | Architectural/knowledge reference only via <a href="foundry-local.html" class="wikilink">foundry-local</a>. No live vault example. |</p>
+<p>Invariant: tiers only cross boundaries through documented contracts. In-process library loading does not by itself create a new tier boundary.</p>
+<h2>Failure Mode Responsibilities</h2>
+<p>| Tier | Failure Contract | |------|------------------| | Tier 0 (Rust) | Prefer <code>Result&lt;T, E&gt;</code>; reserve <code>panic!</code> for invariant violations and test-only paths; log structured operational errors | | Tier 1 (C#) | Catch exceptions at tool/API boundaries; return structured errors; log through the host&#39;s logging abstraction | | Tier 2 (PowerShell) | Set <code>$ErrorActionPreference = &#39;Stop&#39;</code>; wrap critical paths in <code>try/catch</code>; write failures clearly; exit with code <code>1</code> on failure | | Tier 3 (Python) | Catch exceptions at the API/agent boundary; return structured JSON errors; do not expose raw tracebacks to an LLM |</p>
+<h2>Enforcement Mechanism</h2>
+<p>The current YANP auditor does not have reusable hooks for custom frontmatter validation. It regex-checks <code>type</code> and filename casing only.</p>
+<p>Decision: start with Option A, a dedicated tier-compliance Pester/PowerShell script. If the vault later wants a <code>tier</code> frontmatter field, keep it optional and add it only after frontmatter validation is upgraded beyond the current regex-only approach.</p>
+<h2>Codex Verification</h2>
+<p>Confirmed:</p>
+<ul>
+<li><code>02_System/</code> contains 15 PowerShell scripts.
+</li>
+<li><code>run-maintenance.ps1</code> invokes child scripts via <code>pwsh -File</code>.
+</li>
+<li>PoShWiKi loads <code>Microsoft.Data.Sqlite.dll</code> via <code>Add-Type</code>.
+</li>
+<li><code>00_Raw/workbench/</code> is a TypeScript/Node project, not Python.
+</li>
+</ul>
+<p>Revised:</p>
+<ul>
+<li>The current vault does not contain the Rust <code>vulture-mcp</code> source tree described in the RFC.
+</li>
+<li>The current vault does not contain a live C# source tree; Tier-1 is architectural intent, not a checked-in implementation.
+</li>
+<li>PoShWiKi remains Tier-2 because its domain logic is implemented in PowerShell.
+</li>
+<li><code>Add-Type</code> in PoShWiKi is not evidence of a live Tier-1↔Tier-2 service contract.
+</li>
+<li><code>audit-yanp.ps1</code> is too simple to justify Option B as the first enforcement step.
+</li>
+<li>The claim that all 15 <code>02_System/</code> scripts follow <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> is not fully verified by spot-check; <code>orphan-check.ps1</code> lacks both <code>$ErrorActionPreference = &#39;Stop&#39;</code> and a <code>try/catch</code> boundary.
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
@@ -458,6 +557,18 @@
 <li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>
 </li>
 <li><a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a>
+</li>
+<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
+</li>
+<li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>
+</li>
+<li><a href="agentic-tdd-patterns.html" class="wikilink">agentic-tdd-patterns</a>
+</li>
+<li><a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a>
+</li>
+<li><a href="foundry-local.html" class="wikilink">foundry-local</a>
+</li>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
 </li>
 </ul>
       </main>

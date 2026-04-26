@@ -2,13 +2,13 @@
 title: RFC — Polyglot Agent Platform ADR
 author: claude-sonnet-4-6
 date: 2026-04-25
-status: draft
+status: superseded
 type: permanent
 aliases: [polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr]
 ---
 # RFC: Polyglot Agent Platform — Architecture Decision Record
 
-**Status:** Draft — pending Codex verification against vault implementation evidence.
+**Status:** Superseded by [[polyglot-platform-adr]] after Codex verification against vault implementation evidence.
 
 This RFC proposes the formal ADR that [[dotnet-agent-integration]] and [[community-polyglot-agent-platform]] identify as missing. Its purpose: turn the observed four-tier language model into a **verifiable, enforceable design principle** so agents and contributors have a deterministic answer to "which language should I write this in?"
 
@@ -114,6 +114,10 @@ Once Codex verifies the open questions, the deliverable is:
 - `01_Wiki/polyglot-platform-adr.md` — `status: active`, incorporating Codex's verified facts
 - `01_Wiki/polyglot-adr-rfc.md` (this note) — updated to `status: superseded` with a forward link
 
+## Superseded By
+
+See [[polyglot-platform-adr]] for the active ADR.
+
 ---
 ## References
 - [[dotnet-agent-integration]]
@@ -124,3 +128,31 @@ Once Codex verifies the open questions, the deliverable is:
 - [[dotnet-mcp-server-patterns]]
 - [[foundry-local]]
 - [[hardware-aware-inference]]
+
+## Codex Findings
+
+### 1. Tier Inventory Audit
+
+- `00_Raw/vulture-mcp/` does not exist in the current vault. Repo-wide searches found no `Cargo.toml`, no `.rs` files, no `.cs` files, and no `.py` files checked into the workspace.
+- `00_Raw/` contains PoShWiKi, Workbench, and reference material. The RFC inventory did not miss any live Rust, C#, or Python source files under `00_Raw/`; there are none.
+- `00_Raw/workbench/` is a TypeScript/Node project. `package.json` declares `"type": "module"` and describes it as a "Persistent repo workbench for coding sessions," and the source tree is under `src/` and `tests/`.
+- Recommendation: treat Workbench as development scaffolding outside the production tier model. It is a tool-runner/runtime for coding sessions, not a persistent service tier alongside Rust, C#, PowerShell, and Python.
+
+### 2. PoShWiKi Tier Classification
+
+- `00_Raw/PoShWiKi/PoShWiKi.psm1` loads `Microsoft.Data.Sqlite.dll` through `Add-Type`, but the module's domain logic is implemented in PowerShell: query execution, persistence, markdown rendering, section mutation, and CLI behavior all live in `.psm1` or `wiki.ps1`.
+- Classification result: PoShWiKi remains Tier-2. The CLR assembly is a dependency, not evidence of a Tier-1 service or C# codebase in the vault.
+- Contract-table correction: `Add-Type` in PoShWiKi is in-process CLR interop inside a Tier-2 artifact, not a live Tier-1↔Tier-2 boundary.
+
+### 3. YANP Auditor Extensibility
+
+- `02_System/audit-yanp.ps1` is not extensible in its current form. It performs two regex checks only: frontmatter `type` and lowercase kebab-case filename matching.
+- Supporting an optional `tier` field would require a new validation path, ideally by parsing frontmatter instead of adding more regex checks to the current script.
+- Recommendation: Option A is the better starting point. A dedicated Pester/PowerShell tier-compliance script fits the current auditor structure better than extending `audit-yanp.ps1` with optional semantic field validation.
+
+### 4. Failure-Mode Compliance Spot-Check
+
+- `02_System/generate-dashboard.ps1`: pass. It sets `$ErrorActionPreference = 'Stop'` and wraps the script in `try/catch`.
+- `02_System/orphan-check.ps1`: fail. It has neither `$ErrorActionPreference = 'Stop'` nor a `try/catch` boundary.
+- `02_System/run-maintenance.ps1` does invoke child scripts via `pwsh -File`, as claimed.
+- `unwrap()` / `expect()` count in non-test Rust code: `0`, because no Rust source tree is checked into the current vault.

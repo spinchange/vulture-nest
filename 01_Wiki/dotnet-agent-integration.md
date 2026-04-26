@@ -129,9 +129,7 @@ builder.Services.AddHostedService<AgentLoop>();
 
 ## The ADR
 
-The formal ADR process is in progress:
-- **RFC (draft):** [[polyglot-adr-rfc]] — proposed thresholds, contracts, and failure-mode responsibilities
-- **Handoff:** [[codex-polyglot-adr-handoff]] — Codex verification tasks before the ADR reaches `active`
+The formal ADR is now active at [[polyglot-platform-adr]]. The superseded draft and handoff remain available as [[polyglot-adr-rfc]] and [[codex-polyglot-adr-handoff]].
 
 ---
 ## References
@@ -149,5 +147,6 @@ The formal ADR process is in progress:
 - [[csharp-for-agentic-workflows]]
 - [[dotnet-dependency-injection]]
 - [[hardware-aware-inference]]
+- [[polyglot-platform-adr]]
 - [[polyglot-adr-rfc]]
 - [[codex-polyglot-adr-handoff]]

@@ -427,12 +427,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">RFC — Polyglot Agent Platform ADR</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">RFC — Polyglot Agent Platform ADR</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-superseded">superseded</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -442,7 +442,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>RFC: Polyglot Agent Platform — Architecture Decision Record</h1>
-<p><strong>Status:</strong> Draft — pending Codex verification against vault implementation evidence.</p>
+<p><strong>Status:</strong> Superseded by <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> after Codex verification against vault implementation evidence.</p>
 <p>This RFC proposes the formal ADR that <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> and <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> identify as missing. Its purpose: turn the observed four-tier language model into a <strong>verifiable, enforceable design principle</strong> so agents and contributors have a deterministic answer to &quot;which language should I write this in?&quot;</p>
 <h2>Problem Statement</h2>
 <p>The vault contains tooling across four languages. Without explicit selection criteria, two failure modes emerge:</p>
@@ -540,6 +540,8 @@
 <li><code>01_Wiki/polyglot-adr-rfc.md</code> (this note) — updated to <code>status: superseded</code> with a forward link
 </li>
 </ul>
+<h2>Superseded By</h2>
+<p>See <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> for the active ADR.</p>
 <hr>
 <h2>References</h2>
 <ul>
@@ -558,6 +560,47 @@
 <li><a href="foundry-local.html" class="wikilink">foundry-local</a>
 </li>
 <li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
+</li>
+</ul>
+<h2>Codex Findings</h2>
+<h3>1. Tier Inventory Audit</h3>
+<ul>
+<li><code>00_Raw/vulture-mcp/</code> does not exist in the current vault. Repo-wide searches found no <code>Cargo.toml</code>, no <code>.rs</code> files, no <code>.cs</code> files, and no <code>.py</code> files checked into the workspace.
+</li>
+<li><code>00_Raw/</code> contains PoShWiKi, Workbench, and reference material. The RFC inventory did not miss any live Rust, C#, or Python source files under <code>00_Raw/</code>; there are none.
+</li>
+<li><code>00_Raw/workbench/</code> is a TypeScript/Node project. <code>package.json</code> declares <code>&quot;type&quot;: &quot;module&quot;</code> and describes it as a &quot;Persistent repo workbench for coding sessions,&quot; and the source tree is under <code>src/</code> and <code>tests/</code>.
+</li>
+<li>Recommendation: treat Workbench as development scaffolding outside the production tier model. It is a tool-runner/runtime for coding sessions, not a persistent service tier alongside Rust, C#, PowerShell, and Python.
+</li>
+</ul>
+<h3>2. PoShWiKi Tier Classification</h3>
+<ul>
+<li><code>00_Raw/PoShWiKi/PoShWiKi.psm1</code> loads <code>Microsoft.Data.Sqlite.dll</code> through <code>Add-Type</code>, but the module&#39;s domain logic is implemented in PowerShell: query execution, persistence, markdown rendering, section mutation, and CLI behavior all live in <code>.psm1</code> or <code>wiki.ps1</code>.
+</li>
+<li>Classification result: PoShWiKi remains Tier-2. The CLR assembly is a dependency, not evidence of a Tier-1 service or C# codebase in the vault.
+</li>
+<li>Contract-table correction: <code>Add-Type</code> in PoShWiKi is in-process CLR interop inside a Tier-2 artifact, not a live Tier-1↔Tier-2 boundary.
+</li>
+</ul>
+<h3>3. YANP Auditor Extensibility</h3>
+<ul>
+<li><code>02_System/audit-yanp.ps1</code> is not extensible in its current form. It performs two regex checks only: frontmatter <code>type</code> and lowercase kebab-case filename matching.
+</li>
+<li>Supporting an optional <code>tier</code> field would require a new validation path, ideally by parsing frontmatter instead of adding more regex checks to the current script.
+</li>
+<li>Recommendation: Option A is the better starting point. A dedicated Pester/PowerShell tier-compliance script fits the current auditor structure better than extending <code>audit-yanp.ps1</code> with optional semantic field validation.
+</li>
+</ul>
+<h3>4. Failure-Mode Compliance Spot-Check</h3>
+<ul>
+<li><code>02_System/generate-dashboard.ps1</code>: pass. It sets <code>$ErrorActionPreference = &#39;Stop&#39;</code> and wraps the script in <code>try/catch</code>.
+</li>
+<li><code>02_System/orphan-check.ps1</code>: fail. It has neither <code>$ErrorActionPreference = &#39;Stop&#39;</code> nor a <code>try/catch</code> boundary.
+</li>
+<li><code>02_System/run-maintenance.ps1</code> does invoke child scripts via <code>pwsh -File</code>, as claimed.
+</li>
+<li><code>unwrap()</code> / <code>expect()</code> count in non-test Rust code: <code>0</code>, because no Rust source tree is checked into the current vault.
 </li>
 </ul>
       </main>

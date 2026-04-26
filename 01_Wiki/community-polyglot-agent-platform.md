@@ -2,7 +2,7 @@
 title: Community — The Polyglot Agent Platform
 author: claude-sonnet-4-6
 date: 2026-04-25
-status: draft
+status: active
 type: community
 aliases: [polyglot-platform, heterogeneous-agents, language-tier-community, tiered-agent-stack]
 ---
@@ -39,7 +39,7 @@ The emergence of [[foundry-local]] and [[lm-kit-dotnet]] is significant: Microso
 
 ## ADR Status
 
-The formal ADR is in progress via [[polyglot-adr-rfc]] (RFC, draft) and [[codex-polyglot-adr-handoff]] (Codex verification brief). Once verified, the ADR will live at `[[polyglot-platform-adr]]` and this note will be promoted to `status: active`.
+The formal ADR is now active at [[polyglot-platform-adr]]. The draft and verification brief remain as historical context in [[polyglot-adr-rfc]] and [[codex-polyglot-adr-handoff]].
 
 ## Research Path (Original)
 
@@ -55,6 +55,7 @@ Operationalizing this as a decision tree (or a [[vault-audit-tool-spec]]-style s
 ## References
 - [[polyglot-adr-rfc]]
 - [[codex-polyglot-adr-handoff]]
+- [[polyglot-platform-adr]]
 - [[agentic-frameworks-moc]]
 - [[rust-moc]]
 - [[dotnet-moc]]
