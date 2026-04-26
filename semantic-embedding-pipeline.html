@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Getting Things Done (GTD) — Vulture Portal</title>
+  <title>Semantic Embedding Pipeline — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Getting Things Done (GTD)</span>
+      <span>Semantic Embedding Pipeline</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Getting Things Done (GTD)</h1>
+      <h1 class="note-title">Semantic Embedding Pipeline</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">gtd, david-allen, next-actions</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Getting Things Done (GTD)</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">embedding pipeline, auto-link pipeline, neural retrieval</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">reference</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Semantic Embedding Pipeline</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
       </div>
     </header>
 
@@ -443,30 +443,125 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Getting Things Done (GTD)</h1>
-<p><strong>Getting Things Done (GTD)</strong> is a productivity framework created by David Allen. Its primary goal is to move &quot;open loops&quot; out of the human mind and into a trusted external system, freeing up cognitive resources for creative and focused work.</p>
-<h2>The Five Steps</h2>
-<ol>
-<li><strong>Capture:</strong> Collect every idea, task, or piece of information into a trusted &quot;inbox.&quot;
-</li>
-<li><strong>Clarify:</strong> Process what you&#39;ve captured. Is it actionable? If not, trash it, incubate it, or file it as reference.
-</li>
-<li><strong>Organize:</strong> Put reminders of your actions into appropriate categories (Next Actions, Projects, Waiting For, Calendar).
-</li>
-<li><strong>Reflect:</strong> Regularly review your lists (Daily and Weekly Reviews) to ensure the system remains current and reliable.
-</li>
-<li><strong>Engage:</strong> Execute tasks based on your current context, time, and energy.
-</li>
-</ol>
-<h2>Relationship to PKM</h2>
-<p>While GTD is an execution framework, it relies on a robust reference system for <strong>Project Support Material</strong>. The <a href="actionable-vs-reference.html" class="wikilink">actionable-vs-reference</a> divide is the most critical intersection between GTD and Personal Knowledge Management.</p>
-<h2>See Also</h2>
+        <h1>Semantic Embedding Pipeline</h1>
+<p>The semantic embedding pipeline adds a neural retrieval layer to the vault&#39;s symbolic link graph. It addresses the core limitation identified in the <a href="karpathy-vision-gap-analysis.html" class="wikilink">karpathy-vision-gap-analysis</a>: the compounding mechanism previously required an agent or human to *write* a link for a connection to exist. This pipeline makes the vault discover and propose its own missing connections.</p>
+<h2>Architecture</h2>
+<p>Three scripts form the pipeline, each building on the last:</p>
+<pre><code>sync-embeddings.ps1  →  suggest-links.ps1  →  auto-link.ps1
+     (embed)               (discover)            (judge + write)</code></pre>
+<p>The embedding vectors are stored in the <code>NoteEmbeddings</code> table in <a href="poshwiki.html" class="wikilink">poshwiki</a> (<code>wiki.db</code>), alongside the existing <code>Pages</code> and <code>Links</code> tables. No external vector store is required.</p>
+<h2>Scripts</h2>
+<h3>sync-embeddings.ps1</h3>
+<p>Embeds all notes in <code>01_Wiki/</code> using the Gemini <code>gemini-embedding-001</code> model (768 dimensions). Incremental: SHA256-hashes each note&#39;s content and skips notes that haven&#39;t changed since last embedding.</p>
 <ul>
-<li><a href="actionable-vs-reference.html" class="wikilink">actionable-vs-reference</a>
+<li><strong>API</strong>: Gemini <code>embedContent</code> endpoint (<code>v1beta</code>)
 </li>
-<li><a href="wiki-pattern-operations.html" class="wikilink">wiki-pattern-operations</a>
+<li><strong>Model</strong>: <code>gemini-embedding-001</code> (available on free tier)
 </li>
-<li><a href="org-mode.html" class="wikilink">org-mode</a> (often used as a GTD implementation tool)
+<li><strong>Rate limit</strong>: 1200ms between calls (~50 RPM, safe under 100 RPM limit)
+</li>
+<li><strong>Retry</strong>: 5 attempts, 60s backoff on 429
+</li>
+<li><strong>Env var</strong>: <code>GEMINI_API_KEY</code>
+</li>
+</ul>
+<pre><code># Full sync
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-embeddings.ps1
+
+# Force re-embed all notes
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-embeddings.ps1 -Force</code></pre>
+<h3>suggest-links.ps1</h3>
+<p>Loads all embeddings, pre-normalizes vectors, computes pairwise cosine similarity (~25k pairs for 224 notes), and surfaces pairs above a threshold that have no existing wikilink in either direction.</p>
+<pre><code># Default: threshold 0.80, top 20
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/suggest-links.ps1
+
+# Tunable
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/suggest-links.ps1 -Threshold 0.85 -TopN 50</code></pre>
+<h3>auto-link.ps1</h3>
+<p>Takes top-N suggestion pairs, reads both notes, asks Claude to decide link directionality, and writes wikilinks directly into the markdown files. Logs every action to <code>02_System/log.md</code>.</p>
+<ul>
+<li><strong>API</strong>: Anthropic Messages API (<code>claude-haiku-4-5-20251001</code> by default)
+</li>
+<li><strong>Rate limit</strong>: 4s between judge calls
+</li>
+<li><strong>Env var</strong>: <code>ANTHROPIC_API_KEY</code>
+</li>
+<li><strong>Link placement</strong>: appends to existing <code>## Related</code> section, or creates one
+</li>
+</ul>
+<pre><code># Dry run first — see decisions without writing
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -DryRun
+
+# Run for real (default: top 20 pairs above 0.85)
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1
+
+# Lower threshold to catch more candidates
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -Threshold 0.82 -TopN 30</code></pre>
+<h2>Full Maintenance Cycle</h2>
+<pre><code># 1. Embed new/changed notes
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-embeddings.ps1
+
+# 2. Check semantic orphan count
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/suggest-links.ps1
+
+# 3. Auto-link (repeat with lower threshold until candidates &lt; 40)
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -Threshold 0.85
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -Threshold 0.82
+
+# 4. Sync graph after each auto-link pass
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
+<p><code>sync-embeddings.ps1</code> also runs as step 8/8 in <code>run-maintenance.ps1</code> (optional — skips gracefully if <code>GEMINI_API_KEY</code> is absent).</p>
+<h2>Semantic Search</h2>
+<p><code>vulture-search.ps1</code> gained a <code>-Semantic</code> flag that embeds the query and returns nearest-neighbor notes:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query &quot;session types&quot; -Semantic</code></pre>
+<p>This adds a <code>[SEMANTIC NEIGHBORS]</code> tier to results alongside the existing symbolic graph expansion.</p>
+<h2>Design Decisions</h2>
+<p><strong>Why Gemini for embeddings, Claude for judging?</strong> The Gemini free tier provides <code>gemini-embedding-001</code> with 1500 RPD at no cost — sufficient for incremental vault maintenance. The generative quota (<code>generateContent</code>) on the same key had <code>limit: 0</code>, making it unavailable for the judge role. Claude Haiku is better at nuanced directional reasoning anyway and costs fractions of a cent per decision.</p>
+<p><strong>Why store embeddings as JSON text in SQLite rather than a vector extension?</strong> <code>sqlite-vec</code> would require loading a native extension into PoShWiKi&#39;s .NET SQLite setup. JSON text is simple, portable, and sufficient — cosine similarity over 224 notes in PowerShell completes in under 10 seconds.</p>
+<p><strong>Why 0.80 as the floor threshold?</strong> Empirically, pairs below 0.80 tend to share vocabulary rather than concepts. The initial run showed 164 candidates above 0.80; after four passes the count stabilised around 51, suggesting that floor is approximately correct for this vault&#39;s content density.</p>
+<h2>Baseline Results (2026-04-26)</h2>
+<p>First run against the full vault:</p>
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+</tr></thead><tbody>
+<tr>
+<td>Total links</td>
+<td>1,478</td>
+<td>1,621</td>
+</tr>
+<tr>
+<td>Semantic orphans (&gt;0.80)</td>
+<td>164</td>
+<td>~51</td>
+</tr>
+<tr>
+<td>New links written</td>
+<td>—</td>
+<td>143</td>
+</tr>
+<tr>
+<td>Notes embedded</td>
+<td>—</td>
+<td>224</td>
+</tr>
+</tbody>
+</table>
+<h2>Related</h2>
+<ul>
+<li><a href="poshwiki.html" class="wikilink">poshwiki</a>
+</li>
+<li><a href="sync-vault-graph.html" class="wikilink">sync-vault-graph</a>
+</li>
+<li><a href="vulture-search.html" class="wikilink">vulture-search</a>
+</li>
+<li><a href="karpathy-vision-gap-analysis.html" class="wikilink">karpathy-vision-gap-analysis</a>
+</li>
+<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>
+</li>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
 </li>
 </ul>
       </main>
@@ -481,15 +576,16 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="actionable-vs-reference.html" class="">actionable-vs-reference</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
+<li><a href="karpathy-vision-gap-analysis.html" class="">karpathy-vision-gap-analysis</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="actionable-vs-reference.html" class="">actionable-vs-reference</a></li>
-<li><a href="org-mode.html" class="">org-mode</a></li>
-<li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
+<li><a href="karpathy-vision-gap-analysis.html" class="">karpathy-vision-gap-analysis</a></li>
+<li><a href="poshwiki.html" class="">poshwiki</a></li>
+<li><a href="sync-vault-graph.html" class="">sync-vault-graph</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="vulture-search.html" class="">vulture-search</a></li>
+<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
 </ul>
           </div>
         </div>
