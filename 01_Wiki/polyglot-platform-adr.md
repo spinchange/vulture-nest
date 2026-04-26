@@ -118,6 +118,7 @@ Revised:
 ## References
 - [[polyglot-adr-rfc]]
 - [[codex-polyglot-adr-handoff]]
+- [[codex-ps-compliance-handoff]]
 - [[dotnet-agent-integration]]
 - [[community-polyglot-agent-platform]]
 - [[ps-automation-spec]]

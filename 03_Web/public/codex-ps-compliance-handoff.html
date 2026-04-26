@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>tool-registry — Vulture Portal</title>
+  <title>Codex Handoff — ps-automation-spec Compliance Pass — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,15 +419,21 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>tool-registry</span>
+      <span>Codex Handoff — ps-automation-spec Compliance Pass</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">tool-registry</h1>
+      <h1 class="note-title">Codex Handoff — ps-automation-spec Compliance Pass</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-compliance-handoff, tier2-compliance-handoff</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Handoff — ps-automation-spec Compliance Pass</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -436,205 +442,149 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Vault Tool Registry (Agent Optimized)</h1>
-<p>This document provides a machine-readable index of the system utilities available in this vault.</p>
-<h2>YANP Compliance Auditor</h2>
+        <h1>Codex Handoff: ps-automation-spec Compliance Pass</h1>
+<h2>Objective</h2>
+<p>Harden all non-compliant <code>02_System/*.ps1</code> scripts to satisfy <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>, then create <code>02_System/test-tier-compliance.ps1</code> as the Option A enforcement artifact specified in <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>.</p>
+<p>Two deliverables, in this order:</p>
+<ol>
+<li><strong>Compliance pass</strong> — patch the 12 non-compliant scripts listed below.
+</li>
+<li><strong>Enforcement script</strong> — create <code>test-tier-compliance.ps1</code> and wire it into <code>run-maintenance.ps1</code>.
+</li>
+</ol>
+<h2>Verified Facts</h2>
+<p>Spot-check completed by Claude on 2026-04-25. Results are exact — do not re-derive.</p>
+<h3>Compliant (no changes needed)</h3>
 <ul>
-<li><strong>File:</strong> <code>02_System\audit-yanp.ps1</code>
+<li><code>orphan-check.ps1</code> — fixed this session
 </li>
-<li><strong>Description:</strong> Scans the 01_Wiki folder to ensure all notes follow the YANP protocol (lowercase kebab-case filenames and valid YAML frontmatter &#39;type&#39;).
+<li><code>generate-wiki.ps1</code>
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File audit-yanp.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
+<li><code>generate-dashboard.ps1</code>
 </li>
 </ul>
-<h2>Broken Link Auditor</h2>
+<h3>Missing <code>try/catch</code> only</h3>
 <ul>
-<li><strong>File:</strong> <code>02_System\check-broken-links.ps1</code>
-</li>
-<li><strong>Description:</strong> Scans all markdown files in the vault to find Wikilinks that point to non-existent notes.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File check-broken-links.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
+<li><code>run-maintenance.ps1</code> — has <code>$ErrorActionPreference = &#39;Stop&#39;</code>, missing outer <code>try/catch</code>
 </li>
 </ul>
-<h2>YANP Note Creator</h2>
+<h3>Missing <code>$ErrorActionPreference = &#39;Stop&#39;</code> only</h3>
 <ul>
-<li><strong>File:</strong> <code>02_System\create-yanp-note.ps1</code>
+<li><code>watch-wiki.ps1</code>
 </li>
-<li><strong>Description:</strong> Scaffolds a new YANP-compliant markdown note with valid frontmatter and a kebab-case filename.
+<li><code>sync-vault-graph.ps1</code>
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File create-yanp-note.ps1</code>
+<li><code>vulture-search.ps1</code>
 </li>
-<li><strong>Inputs:</strong> None
+<li><code>poshwiki-tools.ps1</code>
 </li>
-<li><strong>Outputs:</strong> None
+<li><code>install-vulture-daemon.ps1</code>
 </li>
 </ul>
-<h2>find-thin-nodes.ps1</h2>
+<h3>Missing both</h3>
 <ul>
-<li><strong>File:</strong> <code>02_System\find-thin-nodes.ps1</code>
+<li><code>audit-yanp.ps1</code>
 </li>
-<li><strong>Description:</strong> No description provided.
+<li><code>check-broken-links.ps1</code>
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File find-thin-nodes.ps1</code>
+<li><code>create-yanp-note.ps1</code>
 </li>
-<li><strong>Inputs:</strong> None
+<li><code>find-thin-nodes.ps1</code>
 </li>
-<li><strong>Outputs:</strong> None
+<li><code>generate-wiki-stats.ps1</code>
+</li>
+<li><code>generate-tool-registry.ps1</code>
 </li>
 </ul>
-<h2>Generates the Vault Pulse dashboard as a standalone HTML file.</h2>
+<h2>Constraints</h2>
 <ul>
-<li><strong>File:</strong> <code>02_System\generate-dashboard.ps1</code>
+<li>Do not change any script&#39;s logic, output format, or public interface — only add the error-handling scaffolding.
 </li>
-<li><strong>Description:</strong> Builds a single-file dashboard that combines vault health metrics, graph topology, and recent activity from both log.md and the PoShWiKi SQLite database.
+<li><code>run-maintenance.ps1</code> is the CI backbone. Its internal structure (the numbered <code>[1/6]</code> step sequence and child <code>pwsh -File</code> invocations) must be preserved exactly. The try/catch should wrap the entire body, not individual steps, so the exit code reflects overall failure.
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-dashboard.ps1</code>
+<li>Scripts that write files or update the SQLite database need the <code>try/catch</code> most urgently — prioritize those if you need to batch the work.
 </li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
+<li>Vault health must be 100/100 after the compliance pass. Run <code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code> to verify before committing.
 </li>
 </ul>
-<h2>Tool Registry Generator</h2>
+<h2>Pattern to Apply</h2>
+<p>For scripts missing <code>$ErrorActionPreference = &#39;Stop&#39;</code>: add as the first non-comment line after the param block (or after the help block if there is no param block).</p>
+<p>For scripts missing <code>try/catch</code>: wrap the entire body in:</p>
+<pre><code>try {
+    # existing body here
+} catch {
+    Write-Error &quot;&lt;script-stem&gt;.ps1 failed: $_&quot;
+    exit 1
+}</code></pre>
+<p>Do not nest try/catch inside an existing try/catch — if the script already has inner try/catch blocks, add only the outer wrapper.</p>
+<h2>Deliverable 1: Compliance Pass</h2>
+<p>Apply the pattern above to all 12 scripts in the non-compliant lists. Commit as a single atomic commit with message:</p>
+<pre><code>Fix: Apply ps-automation-spec error-handling to all 02_System scripts
+
+Add $ErrorActionPreference = &#39;Stop&#39; and outer try/catch to 12 scripts
+that were missing one or both per compliance spot-check. No logic changes.
+
+Vault health 100/100.</code></pre>
+<h2>Deliverable 2: test-tier-compliance.ps1</h2>
+<p>Create <code>02_System/test-tier-compliance.ps1</code>. This is the Option A enforcement artifact from <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>.</p>
+<p><strong>What it checks (scope is Tier-2 only — the only live tier in the vault):</strong></p>
+<p>For every <code>.ps1</code> file in <code>02_System/</code>:</p>
+<ol>
+<li>Is <code>$ErrorActionPreference = &#39;Stop&#39;</code> present?
+</li>
+<li>Is a <code>try { ... } catch { ... }</code> block present?
+</li>
+</ol>
+<p>Output a compliance table (one row per script) with columns: <code>Script</code>, <code>HasEAP</code>, <code>HasTryCatch</code>, <code>Compliant</code>. Report a summary count. Exit with code <code>1</code> if any script is non-compliant; <code>0</code> if all pass.</p>
+<p><strong>Script must satisfy <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> itself:</strong></p>
 <ul>
-<li><strong>File:</strong> <code>02_System\generate-tool-registry.ps1</code>
+<li><code>.SYNOPSIS</code> / <code>.DESCRIPTION</code> / <code>.EXAMPLE</code> help block
 </li>
-<li><strong>Description:</strong> Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable tool-registry.md for agents.
+<li><code>$ErrorActionPreference = &#39;Stop&#39;</code>
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-tool-registry.ps1</code>
+<li><code>try/catch</code> with <code>exit 1</code>
 </li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
+<li>Output as <code>[PSCustomObject]</code> rows for machine readability
 </li>
 </ul>
-<h2>Vault Stats Generator</h2>
+<p><strong>Wire into <code>run-maintenance.ps1</code>:</strong> add a new numbered step (e.g., <code>[7/7] Checking Tier-2 Compliance...</code>) that invokes:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File &quot;$PSScriptRoot/test-tier-compliance.ps1&quot;</code></pre>
+<p>After wiring, <code>run-maintenance.ps1</code> should itself become fully compliant (it gains the outer try/catch from Deliverable 1, plus this step proves compliance is enforced from within maintenance).</p>
+<p>Commit as a second atomic commit:</p>
+<pre><code>Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)
+
+Implements Option A from polyglot-platform-adr: a PowerShell script that
+checks all 02_System/*.ps1 files for $ErrorActionPreference and try/catch
+compliance. Wired into run-maintenance.ps1 as step [7/7].
+
+Vault health 100/100.</code></pre>
+<h2>Evidence</h2>
 <ul>
-<li><strong>File:</strong> <code>02_System\generate-wiki-stats.ps1</code>
+<li><code>02_System/*.ps1</code> — the target files
 </li>
-<li><strong>Description:</strong> Calculates high-level metrics for the vault, including note counts, link density, and health indicators.
+<li><code>01_Wiki/polyglot-platform-adr.md</code> — ADR specifying Option A enforcement
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki-stats.ps1</code>
+<li><code>01_Wiki/ps-automation-spec.md</code> — the standard being enforced
 </li>
-<li><strong>Inputs:</strong> None
+<li><code>02_System/orphan-check.ps1</code> — reference implementation (compliant, just patched)
 </li>
-<li><strong>Outputs:</strong> None
+<li><code>02_System/generate-dashboard.ps1</code> — reference implementation (compliant)
 </li>
 </ul>
-<h2>Compiles wiki markdown notes into static HTML pages (Incremental).</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\generate-wiki.ps1</code>
-</li>
-<li><strong>Description:</strong> Reads all markdown files in 01_Wiki, extracts YAML frontmatter, converts a supported markdown subset to HTML, resolves wikilinks, injects graph neighbors from the PoShWiKi SQLite database, and writes HTML files into 03_Web/public using 03_Web/template.html.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Installs the Vulture Watcher as a Windows Daemon.</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\install-vulture-daemon.ps1</code>
-</li>
-<li><strong>Description:</strong> Registers the watch-wiki.ps1 script as a Windows Scheduled Task that starts automatically when the user logs in.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File install-vulture-daemon.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Orphan Note Checker</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\orphan-check.ps1</code>
-</li>
-<li><strong>Description:</strong> Scans for markdown files in 01_Wiki that have no incoming wikilinks from other notes in the vault.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File orphan-check.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>poshwiki-tools.ps1</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\poshwiki-tools.ps1</code>
-</li>
-<li><strong>Description:</strong> No description provided.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File poshwiki-tools.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Master Vault Maintenance</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\run-maintenance.ps1</code>
-</li>
-<li><strong>Description:</strong> The &quot;Knowledge CI/CD&quot; master script. Runs compliance audits, orphan checks, link checks, registry updates, generates the visual dashboard, and compiles the static portal.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File run-maintenance.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Syncs wikilinks from the vault to the PoShWiKi database (Optimized).</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\sync-vault-graph.ps1</code>
-</li>
-<li><strong>Description:</strong> Refactored for performance using a single transaction and prepared statements. Parses all Markdown files in 01_Wiki/ for wikilinks and stores the relationship graph in the &#39;Links&#39; table of the SQLite database.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File sync-vault-graph.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>The Vulture Engine: Graph-Aware Discovery (Optimized &amp; Ranked)</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\vulture-search.ps1</code>
-</li>
-<li><strong>Description:</strong> A specialized retrieval engine that uses a weighted ranking model to surface relevant knowledge and tools. Leverages the PoShWiKi graph for second-order discovery.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File vulture-search.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Vulture Watchdog: Debounced Recompiler</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\watch-wiki.ps1</code>
-</li>
-<li><strong>Description:</strong> Monitors 01_Wiki/ for changes and triggers a graph sync and portal compilation. Uses a debounced FileSystemWatcher to prevent redundant builds during save bursts.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File watch-wiki.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
+<h2>Next Decision</h2>
+<p>After both commits, update the PoShWiKi session page (<code>Session 2026-04-25</code>) with an <code>Actions</code> entry and update <code>Current Seam</code> to reflect that Option A is live. Log in <code>02_System/log.md</code>.</p>
 <hr>
-<p>*Generated by generate-tool-registry.ps1 on 2026-04-25 22:38:21*</p>
+<h2>References</h2>
+<ul>
+<li><a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>
+</li>
+<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
+</li>
+<li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>
+</li>
+<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -645,13 +595,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="ps-tool-registry-generator.html" class="">ps-tool-registry-generator</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>
