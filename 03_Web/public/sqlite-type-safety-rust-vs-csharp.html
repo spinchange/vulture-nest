@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Ecosystem MOC — Vulture Portal</title>
+  <title>SQLite Type Safety Rust vs C# — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Ecosystem MOC</span>
+      <span>SQLite Type Safety Rust vs C#</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Ecosystem MOC</h1>
+      <h1 class="note-title">SQLite Type Safety Rust vs C#</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-hub, microsoft-stack</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Ecosystem MOC</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-vs-csharp-sqlite-safety, sqlite-safety-bridge</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">SQLite Type Safety Rust vs C#</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -441,64 +441,80 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Ecosystem MOC</h1>
-<p>This hub organizes the .NET ecosystem, focusing on modern cross-platform development and Windows-native automation.</p>
-<h2>Core Language</h2>
+        <h1>SQLite Type Safety Rust vs C#</h1>
+<p>This bridge note compares the SQLite patterns in <a href="rust-sqlx-migrations.html" class="wikilink">rust-sqlx-migrations</a> with the <code>Microsoft.Data.Sqlite</code> approach documented in <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>.</p>
+<h2>The Core Difference</h2>
+<p>The Rust and C# ecosystems place safety at different layers:</p>
 <ul>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>: The C# language, syntax, and features.
+<li><strong>Rust + sqlx:</strong> pushes more verification toward compile time and startup-time migration checks.
+</li>
+<li><strong>C# + Microsoft.Data.Sqlite:</strong> keeps the database API explicit and lightweight, but most query correctness remains a runtime concern.
 </li>
 </ul>
-<h2>Frameworks &amp; UI</h2>
+<h2>Rust / sqlx Pattern</h2>
+<p>In the <code>sqlx</code> workflow:</p>
 <ul>
-<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows Presentation Foundation for desktop apps.
+<li>migrations live as versioned SQL files
 </li>
-<li><a href="dotnet-clr-internals.html" class="wikilink">dotnet-clr-internals</a>: JIT, Garbage Collection, and managed execution.
+<li><code>sqlx::migrate!</code> embeds them into the binary
 </li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>: Inversion of Control and the Generic Host.
-</li>
-<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>: Object-Relational Mapping (ORM) and data access.
-<ul>
-<li>
-<ul>
-<li><a href="ef-core-migrations.html" class="wikilink">ef-core-migrations</a>: Managing database schema versioning.
+<li>schema application is part of startup behavior
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Thin ADO.NET-style SQLite access for local memory tools.
-</li>
-<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>: Building high-performance APIs and MCP servers.
-</li>
-</ul>
-<h2>Agentic SDKs</h2>
+<p>This gives a stronger deployment guarantee: the compiled server carries its schema evolution logic with it.</p>
+<h2>C# / Microsoft.Data.Sqlite Pattern</h2>
+<p>In the PoShWiKi-style approach:</p>
 <ul>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>: Orchestration, Plugins, and Memory for .NET.
+<li>SQL is authored as strings in code
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: Local LLM inference and hardware acceleration.
+<li>commands are created manually
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building MCP servers in the .NET ecosystem.
+<li>parameters are bound manually
 </li>
-<li><a href="sqlite-type-safety-rust-vs-csharp.html" class="wikilink">sqlite-type-safety-rust-vs-csharp</a>: Comparing Rust <code>sqlx</code> guarantees with direct C# SQLite access.
+<li>result shaping is manual
 </li>
 </ul>
-<h2>Tools &amp; Infrastructure</h2>
+<p>This gives more operational flexibility and less framework overhead, but it does <strong>not</strong> give compile-time query validation. If a column name changes, the failure shows up at runtime.</p>
+<h2>What &quot;Safety&quot; Means in Practice</h2>
+<h3>Rust Strengths</h3>
 <ul>
-<li><strong>NuGet</strong>: The .NET package manager.
+<li>schema evolution is formalized through migrations
 </li>
-<li><strong>MSBuild</strong>: The build system for .NET projects.
+<li>deployment can be self-contained
 </li>
-<li><strong>dotnet CLI</strong>: The primary interface for project management.
+<li>the ecosystem encourages stronger correctness checks before runtime
 </li>
 </ul>
+<h3>C# Strengths</h3>
+<ul>
+<li>low ceremony for small tools
+</li>
+<li>easy embedding inside shells, scripts, and desktop/server hosts
+</li>
+<li>straightforward imperative control over command execution
+</li>
+</ul>
+<h2>Agentic Tradeoff</h2>
+<p>For agent tools, the choice is less about language preference and more about the failure model you want:</p>
+<ul>
+<li>choose the Rust/<code>sqlx</code> style when startup integrity and stronger compile-time guarantees are central
+</li>
+<li>choose the direct <code>Microsoft.Data.Sqlite</code> style when fast iteration, shell interoperability, and a thin operational surface matter more
+</li>
+</ul>
+<p>The PoShWiKi audit suggests that the C#/.NET approach is excellent for <strong>small local memory services</strong>, but it relies more heavily on tests and disciplined query authoring than the Rust migration-first path.</p>
 <hr>
-<h2>See Also</h2>
+<h2>References</h2>
 <ul>
-<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
+<li><a href="rust-sqlx-migrations.html" class="wikilink">rust-sqlx-migrations</a>
 </li>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>
 </li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+<li><a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a>
+</li>
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>
+</li>
+<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>
 </li>
 </ul>
       </main>
@@ -511,43 +527,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

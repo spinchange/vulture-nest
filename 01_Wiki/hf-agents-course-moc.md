@@ -15,6 +15,7 @@ This map provides a theoretical and practical traversal of the Hugging Face Agen
 * [[react-pattern]]: Reasoning + Acting.
 * [[chat-templates]]: Bridging roles and special tokens.
 * [[agent-tools]]: Defining the "Body" of an agent.
+* [[agent-actions-unit]]: Actions, code agents, and environment engagement.
 
 ## Frameworks & Toolkits (Unit 2)
 * [[smolagents]]: Freedom and Code Agents (HF).

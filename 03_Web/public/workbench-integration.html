@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Ecosystem MOC — Vulture Portal</title>
+  <title>Workbench Integration — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,18 +419,18 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Ecosystem MOC</span>
+      <span>Workbench Integration</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Ecosystem MOC</h1>
+      <h1 class="note-title">Workbench Integration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-hub, microsoft-stack</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Ecosystem MOC</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">workbench-usage, investigation-workflow, executable-knowledge</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Workbench Integration</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
@@ -441,66 +441,55 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Ecosystem MOC</h1>
-<p>This hub organizes the .NET ecosystem, focusing on modern cross-platform development and Windows-native automation.</p>
-<h2>Core Language</h2>
+        <h1>Workbench Integration</h1>
+<p>: Leveraging the dynamic execution layer for vault maintenance.</p>
+<p>The <a href="workbench-integration.html" class="wikilink">workbench-integration</a> (located in <code>00_Raw/workbench/</code>) acts as the dynamic counterpart to the wiki&#39;s static knowledge. It provides a persistent, auditable environment for repo-aware investigations and &quot;Executable Knowledge&quot; verification.</p>
+<h2>1. The Proof-Round Workflow</h2>
+<p>The &quot;Proof Round&quot; is the primary mechanism for generating verifiable evidence from a codebase.</p>
 <ul>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>: The C# language, syntax, and features.
+<li><strong>Action:</strong> Run <code>node 00_Raw/workbench/dist/cli/main.js --host 00_Raw/workbench/dist/host/node-child-process-runner.js proof --repo &lt;path&gt;</code>
+</li>
+<li><strong>Output:</strong> A JSON artifact that catalogs workspace state, entrypoints, and test health.
+</li>
+<li><strong>Leverage:</strong> These artifacts provide the ground truth for <a href="zettelkasten-note-types.html" class="wikilink">Literature Notes</a>. When ingesting a new tool, run a proof round first to validate its claims before committing them to the wiki.
 </li>
 </ul>
-<h2>Frameworks &amp; UI</h2>
-<ul>
-<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows Presentation Foundation for desktop apps.
+<h2>2. Thought API + Workbench</h2>
+<p>By combining the <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (the &quot;Thought API&quot;) with Workbench&#39;s JavaScript REPL, agents can log their interactive discovery process in real-time.</p>
+<h3>Example Integration Script</h3>
+<pre><code>// .workbenchrc.js
+import { execSync } from &#39;child_process&#39;;
+
+global.logThought = (content) =&gt; {
+    const cmd = `pwsh -ExecutionPolicy Bypass -File 02_System/poshwiki-tools.ps1 -Content &quot;${content}&quot;`;
+    execSync(cmd);
+};
+
+// Now in the Workbench REPL:
+// &gt; logThought(&quot;Discovered that vulture-mcp uses sqlx for SQLite.&quot;)</code></pre>
+<h2>3. Leverage-Maximizing Strategies</h2>
+<h3>A. Automatic Ingestion</h3>
+<p>Use Workbench to scan a repository and generate YANP-compliant drafts.</p>
+<ol>
+<li>Run <code>workbench eval &quot;await repoAudit()&quot;</code> to get a structured JSON summary.
 </li>
-<li><a href="dotnet-clr-internals.html" class="wikilink">dotnet-clr-internals</a>: JIT, Garbage Collection, and managed execution.
+<li>Use a script to map that JSON to a <a href="zettelkasten-note-types.html" class="wikilink">Fleeting Note</a>.
 </li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>: Inversion of Control and the Generic Host.
+<li>Promote to a <a href="zettelkasten-note-types.html" class="wikilink">Permanent Note</a> after human/librarian review.
 </li>
-<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>: Object-Relational Mapping (ORM) and data access.
-<ul>
-<li>
-<ul>
-<li><a href="ef-core-migrations.html" class="wikilink">ef-core-migrations</a>: Managing database schema versioning.
+</ol>
+<h3>B. Verification Loops</h3>
+<p>Treat wiki notes as &quot;Type-Checked&quot; artifacts.</p>
+<ol>
+<li>A wiki note for a tool (like <a href="vulture-mcp.html" class="wikilink">vulture-mcp</a>) should include a <strong>Workbench Script</strong> to verify its health.
 </li>
-</ul>
+<li>Run this script during vault maintenance (<a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>) to ensure the documentation hasn&#39;t drifted from the implementation.
 </li>
-</ul>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Thin ADO.NET-style SQLite access for local memory tools.
-</li>
-<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>: Building high-performance APIs and MCP servers.
-</li>
-</ul>
-<h2>Agentic SDKs</h2>
-<ul>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>: Orchestration, Plugins, and Memory for .NET.
-</li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: Local LLM inference and hardware acceleration.
-</li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building MCP servers in the .NET ecosystem.
-</li>
-<li><a href="sqlite-type-safety-rust-vs-csharp.html" class="wikilink">sqlite-type-safety-rust-vs-csharp</a>: Comparing Rust <code>sqlx</code> guarantees with direct C# SQLite access.
-</li>
-</ul>
-<h2>Tools &amp; Infrastructure</h2>
-<ul>
-<li><strong>NuGet</strong>: The .NET package manager.
-</li>
-<li><strong>MSBuild</strong>: The build system for .NET projects.
-</li>
-<li><strong>dotnet CLI</strong>: The primary interface for project management.
-</li>
-</ul>
+</ol>
+<h3>C. Auditable Handoffs</h3>
+<p>When ending a session, include the Workbench <code>audit-log.jsonl</code> in your <a href="log.html" class="wikilink">System Log</a>. This provides the next agent with a &quot;replay&quot; of the discovery logic, reducing re-work and context drift.</p>
 <hr>
-<h2>See Also</h2>
-<ul>
-<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
-</li>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
-</li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
-</li>
-</ul>
+<p>*See also: <a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>, <a href="agentic-tdd-patterns.html" class="wikilink">agentic-tdd-patterns</a>, <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -511,43 +500,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

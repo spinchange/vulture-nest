@@ -1,2 +1,5 @@
 * text=auto eol=lf
+
+# Generated system artifacts should stay LF-stable across Windows and CI.
+02_System/tool-registry.md text eol=lf
 03_Web/public/** text eol=lf

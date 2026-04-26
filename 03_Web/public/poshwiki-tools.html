@@ -428,11 +428,11 @@
       <h1 class="note-title">PoShWiKi Tools API</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">poshwiki-api, thought-api, sidecar-database</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PoShWiKi Tools API</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PoShWiKi Tools API</span></span>
       </div>
     </header>
 
@@ -488,6 +488,8 @@
 </li>
 <li><strong>Discovery:</strong> The <code>vulture-search.ps1</code> engine queries this substrate to provide agents with &quot;Actionable Context&quot; from previous sessions.
 </li>
+<li><strong>Inter-Agent Authoring:</strong> The <a href="claude-codex-interop-test.html" class="wikilink">claude-codex-interop-test</a> note demonstrates a shared-note plus PoShWiKi-log workflow for bounded co-authoring between agents.
+</li>
 </ul>
 <h2>4. Technical Implementation</h2>
 <p>The wrapper is built on <strong>PowerShell 7</strong> and uses the <code>Microsoft.Data.Sqlite</code> library. It includes robust error handling to prevent database locking during concurrent agent access and returns <code>PSCustomObject</code> for machine-readability.</p>
@@ -499,6 +501,8 @@
 <li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
 </li>
 <li><a href="visitor-directives.html" class="wikilink">visitor-directives</a>
+</li>
+<li><a href="claude-codex-interop-test.html" class="wikilink">claude-codex-interop-test</a>
 </li>
 <li><a href="daemon-design-pattern.html" class="wikilink">daemon-design-pattern</a>
 </li>

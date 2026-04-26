@@ -21,6 +21,8 @@ Unlike file-based wikis (like YANP), PoShWiKi stores pages in an SQLite database
 - **Database:** SQLite via the `Microsoft.Data.Sqlite` library.
 - **Interface:** `wiki.ps1` CLI with JSON support for agent integration.
 
+The concrete ADO.NET-style patterns behind this are documented in [[microsoft-data-sqlite-agent-patterns]].
+
 ## Interaction Patterns
 PoShWiKi introduces several "agent-optimized" commands:
 - **`upsert-section`**: Updates a `##` heading's content or creates it if missing. This is highly efficient for maintaining "Decisions" or "Next Steps" lists.
@@ -45,4 +47,5 @@ The `PoShWiKi` project includes a formal **Agent Governance** framework (`docs/t
 - [[ms-repo-poshwiki]] (Source)
 - [[powershell-moc]]
 - [[dotnet-moc]]
+- [[microsoft-data-sqlite-agent-patterns]]
 - [[ef-core-basics]] (The underlying technology)

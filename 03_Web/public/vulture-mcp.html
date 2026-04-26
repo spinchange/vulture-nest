@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Ecosystem MOC — Vulture Portal</title>
+  <title>Vulture MCP — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,18 +419,18 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Ecosystem MOC</span>
+      <span>Vulture MCP</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Ecosystem MOC</h1>
+      <h1 class="note-title">Vulture MCP</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-hub, microsoft-stack</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Ecosystem MOC</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">vulture-server, rust-mcp-server, agent-sqlite-bridge</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Vulture MCP</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
@@ -441,66 +441,44 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Ecosystem MOC</h1>
-<p>This hub organizes the .NET ecosystem, focusing on modern cross-platform development and Windows-native automation.</p>
-<h2>Core Language</h2>
+        <h1>Vulture MCP</h1>
+<p>: High-performance Rust server for vault-agent communication.</p>
+<p><a href="vulture-mcp.html" class="wikilink">vulture-mcp</a> is a specialized Model Context Protocol (MCP) server built in Rust. It provides a type-safe, low-latency bridge between the vault&#39;s SQLite databases (like PoShWiKi) and visiting agents.</p>
+<h2>1. Core Capabilities</h2>
 <ul>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>: The C# language, syntax, and features.
+<li><strong>Page Retrieval</strong>: Optimized reading of wiki pages from SQLite.
+</li>
+<li><strong>Section Upsertion</strong>: Surgical updates to specific headings (e.g., &quot;Actions&quot; or &quot;Seams&quot;).
+</li>
+<li><strong>Vault Discovery</strong>: High-speed querying of the knowledge graph.
+</li>
+<li><strong>Protocol Compliance</strong>: Implements the latest MCP spec using the <code>rmcp</code> 0.1.5 library.
 </li>
 </ul>
-<h2>Frameworks &amp; UI</h2>
+<h2>2. Technical Implementation</h2>
 <ul>
-<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows Presentation Foundation for desktop apps.
+<li><strong>Runtime</strong>: Rust (Standardized on <code>x86_64-pc-windows-gnu</code>).
 </li>
-<li><a href="dotnet-clr-internals.html" class="wikilink">dotnet-clr-internals</a>: JIT, Garbage Collection, and managed execution.
+<li><strong>Storage</strong>: SQLite (via <code>sqlx</code> with compile-time verified queries).
 </li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>: Inversion of Control and the Generic Host.
+<li><strong>Orchestration</strong>: <code>Tokio</code> for asynchronous task management.
 </li>
-<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>: Object-Relational Mapping (ORM) and data access.
-<ul>
-<li>
-<ul>
-<li><a href="ef-core-migrations.html" class="wikilink">ef-core-migrations</a>: Managing database schema versioning.
+<li><strong>Safety</strong>: Leverages Rust&#39;s ownership model to prevent memory-related bugs in the communication layer.
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Thin ADO.NET-style SQLite access for local memory tools.
-</li>
-<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>: Building high-performance APIs and MCP servers.
-</li>
-</ul>
-<h2>Agentic SDKs</h2>
+<h2>3. Tool Suite</h2>
 <ul>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>: Orchestration, Plugins, and Memory for .NET.
+<li><code>query_vault</code>: Search for notes by content or metadata.
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: Local LLM inference and hardware acceleration.
+<li><code>read_page</code>: Fetch full markdown content of a page.
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building MCP servers in the .NET ecosystem.
+<li><code>set_page</code>: UPSERT logic for creating or updating notes.
 </li>
-<li><a href="sqlite-type-safety-rust-vs-csharp.html" class="wikilink">sqlite-type-safety-rust-vs-csharp</a>: Comparing Rust <code>sqlx</code> guarantees with direct C# SQLite access.
-</li>
-</ul>
-<h2>Tools &amp; Infrastructure</h2>
-<ul>
-<li><strong>NuGet</strong>: The .NET package manager.
-</li>
-<li><strong>MSBuild</strong>: The build system for .NET projects.
-</li>
-<li><strong>dotnet CLI</strong>: The primary interface for project management.
+<li><code>create_page</code>: Standard creation with collision detection.
 </li>
 </ul>
 <hr>
-<h2>See Also</h2>
-<ul>
-<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
-</li>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
-</li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
-</li>
-</ul>
+<p>*See also: <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>, <a href="mcp-moc.html" class="wikilink">mcp-moc</a>, <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -511,43 +489,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

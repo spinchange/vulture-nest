@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Ecosystem MOC — Vulture Portal</title>
+  <title>Workbench Codex Runner Handoff — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,22 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Ecosystem MOC</span>
+      <span>Workbench Codex Runner Handoff</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Ecosystem MOC</h1>
+      <h1 class="note-title">Workbench Codex Runner Handoff</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-hub, microsoft-stack</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Ecosystem MOC</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">codex-runner-handoff, workbench-host-runner-handoff</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">gemini</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Workbench Codex Runner Handoff</span></span>
+<span class="fm-field"><span class="fm-key">projects</span><span class="fm-val">workbench, vulture-mcp, poshwiki</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
       </div>
     </header>
 
@@ -441,66 +443,88 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Ecosystem MOC</h1>
-<p>This hub organizes the .NET ecosystem, focusing on modern cross-platform development and Windows-native automation.</p>
-<h2>Core Language</h2>
+        <h1>Workbench Codex Runner Handoff</h1>
+<p>: Operational brief for adapting Workbench to the hardened Codex environment.</p>
+<h2>Objective</h2>
+<p>Replace Workbench&#39;s <code>child_process</code> shell host with a Codex-native runner and make proof rounds compatible with the hardened environment.</p>
+<h2>Verified Facts</h2>
 <ul>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>: The C# language, syntax, and features.
+<li><code>node-child-process-runner</code> fails in this environment with <code>spawn EPERM</code>.
+</li>
+<li>A new runner was added at <code>00_Raw/workbench/src/host/codex-tool-runner.ts</code>.
+</li>
+<li>The new runner wraps <code>codex.tool(&quot;shell_command&quot;, ...)</code>.
+</li>
+<li>Workbench rebuilds successfully with <code>npm run build</code>.
+</li>
+<li>Direct runner contract tests pass in-process via <code>node --input-type=module -e &quot;import &#39;./dist-test/tests/codex-tool-runner.test.js&#39;&quot;</code>.
+</li>
+<li>A proof artifact was produced at <code>00_Raw/workbench/proof-vulture-mcp-codex-runner.json</code>.
+</li>
+<li>Standalone CLI invocation still lacks a live <code>codex.tool</code> global and now fails explicitly with <code>codex.tool is not available in this runtime</code>.
+</li>
+<li>The <code>vulture-mcp</code> proof flow succeeds through the new host path when a Codex-compatible host is present; the remaining proof warning is the expected <code>no package.json</code> / no deterministic JS test path for this Rust repo.
 </li>
 </ul>
-<h2>Frameworks &amp; UI</h2>
+<h2>Constraints</h2>
 <ul>
-<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows Presentation Foundation for desktop apps.
+<li>Plain terminal-launched <code>node</code> does not automatically have access to <code>codex.tool</code>.
 </li>
-<li><a href="dotnet-clr-internals.html" class="wikilink">dotnet-clr-internals</a>: JIT, Garbage Collection, and managed execution.
+<li>Node&#39;s built-in test runner appears to hit the same hardened spawn restriction in this environment.
 </li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>: Inversion of Control and the Generic Host.
+<li><code>vulture-mcp</code> is a Rust repo with no <code>package.json</code>, so Workbench proof rounds warn on <code>testOrExplain()</code> by design.
 </li>
-<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>: Object-Relational Mapping (ORM) and data access.
-<ul>
-<li>
-<ul>
-<li><a href="ef-core-migrations.html" class="wikilink">ef-core-migrations</a>: Managing database schema versioning.
+<li>Workbench defaults that write outside the vault are fragile under the hardened environment; vault-local artifact paths are safer.
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Thin ADO.NET-style SQLite access for local memory tools.
-</li>
-<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>: Building high-performance APIs and MCP servers.
-</li>
-</ul>
-<h2>Agentic SDKs</h2>
+<h2>Recommended Improvements</h2>
 <ul>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>: Orchestration, Plugins, and Memory for .NET.
+<li>Add a Codex-native Workbench entrypoint that injects a live <code>codex</code> global before loading the CLI.
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: Local LLM inference and hardware acceleration.
+<li>Make vault-local proof artifact output the default instead of <code>~/.workbench</code>.
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building MCP servers in the .NET ecosystem.
+<li>Add machine-readable runtime metadata for each tool and runner.
 </li>
-<li><a href="sqlite-type-safety-rust-vs-csharp.html" class="wikilink">sqlite-type-safety-rust-vs-csharp</a>: Comparing Rust <code>sqlx</code> guarantees with direct C# SQLite access.
+<li>Create a single session-resume command that returns Seam + recent log + relevant artifacts.
+</li>
+<li>Separate environment facts from design guidance in future handoffs using the same structure as this note.
 </li>
 </ul>
-<h2>Tools &amp; Infrastructure</h2>
+<h2>Evidence</h2>
 <ul>
-<li><strong>NuGet</strong>: The .NET package manager.
+<li><code>00_Raw/workbench/src/host/codex-tool-runner.ts</code>
 </li>
-<li><strong>MSBuild</strong>: The build system for .NET projects.
+<li><code>00_Raw/workbench/tests/codex-tool-runner.test.ts</code>
 </li>
-<li><strong>dotnet CLI</strong>: The primary interface for project management.
+<li><code>00_Raw/workbench/proof-vulture-mcp-codex-runner.json</code>
+</li>
+<li><code>02_System/log.md</code>
+</li>
+<li><code>Session 2026-04-25</code> (PoShWiKi session page)
 </li>
 </ul>
+<h2>Next Decision</h2>
+<p>Should Workbench be adapted around:</p>
+<ol>
+<li>a Codex-native JS entrypoint, or
+</li>
+<li>a host abstraction that supports both Codex and standalone Node cleanly?
+</li>
+</ol>
+<h2>Runtime Constraints</h2>
+<pre><code>runtime_constraints:
+  shell_spawn_in_node: false
+  codex_tool_available_in_terminal_node: false
+  pwsh_available: true
+  vault_local_artifacts_required: true
+
+verification:
+  workbench_build: pass
+  codex_runner_contract_test: pass
+  standalone_cli_with_codex_runner: fail_expected
+  vulture_mcp_proof_via_codex_compatible_host: pass</code></pre>
 <hr>
-<h2>See Also</h2>
-<ul>
-<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
-</li>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
-</li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
-</li>
-</ul>
+<p>*See also: <a href="workbench-integration.html" class="wikilink">workbench-integration</a>, <a href="openai-js-repl-integration.html" class="wikilink">openai-js-repl-integration</a>, <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -511,43 +535,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

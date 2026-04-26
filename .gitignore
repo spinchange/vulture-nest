@@ -11,11 +11,17 @@ Thumbs.db
 *.tmp
 *.log
 02_System/tool-registry.md.tmp
+02_System/js-session-start.mjs
 
 # Session artifacts
 stdout.txt
 stderr.txt
+wiki.db
 00_Raw/PoShWiKi/wiki.db
 ai-personal-computer-specs.md
 handoff-*.md
 
+# Local tool workspaces
+00_Raw/openai-js-repl/
+00_Raw/workbench/
+**/target/

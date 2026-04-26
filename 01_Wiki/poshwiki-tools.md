@@ -41,6 +41,7 @@ The API is designed for **Heterogeneous Multi-Agent** environments:
 - **Unified Context:** Claude and Gemini can both write to the same `Session 2026-04-25` page, creating a shared "short-term memory."
 - **Standardized Reporting:** The [[visitor-directives|Visitor Protocol]] requires all guests to use this API, ensuring that no matter which model is working, the logs remain queryable and structured.
 - **Discovery:** The `vulture-search.ps1` engine queries this substrate to provide agents with "Actionable Context" from previous sessions.
+- **Inter-Agent Authoring:** The [[claude-codex-interop-test]] note demonstrates a shared-note plus PoShWiKi-log workflow for bounded co-authoring between agents.
 
 ## 4. Technical Implementation
 The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` library. It includes robust error handling to prevent database locking during concurrent agent access and returns `PSCustomObject` for machine-readability.
@@ -50,5 +51,6 @@ The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` li
 - [[poshwiki]]
 - [[ps-automation-spec]]
 - [[visitor-directives]]
+- [[claude-codex-interop-test]]
 - [[daemon-design-pattern]]
 - [[the-compounding-artifact]]

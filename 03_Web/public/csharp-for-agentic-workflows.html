@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Ecosystem MOC — Vulture Portal</title>
+  <title>C# for Agentic Workflows — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Ecosystem MOC</span>
+      <span>C# for Agentic Workflows</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Ecosystem MOC</h1>
+      <h1 class="note-title">C# for Agentic Workflows</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-hub, microsoft-stack</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Ecosystem MOC</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-for-agents, csharp-agent-patterns, csharp-agent-memory</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">C# for Agentic Workflows</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -441,64 +441,95 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Ecosystem MOC</h1>
-<p>This hub organizes the .NET ecosystem, focusing on modern cross-platform development and Windows-native automation.</p>
-<h2>Core Language</h2>
+        <h1>C# for Agentic Workflows</h1>
+<p>The PoShWiKi repository demonstrates a pragmatic pattern for <strong>agentic tooling in the .NET ecosystem</strong>: keep the outer interface scriptable, but delegate durable state to a small, explicit <code>Microsoft.Data.Sqlite</code> layer.</p>
+<h2>Core Pattern</h2>
+<p>For agent workflows, C#/.NET is strongest when it is used as the <strong>deterministic substrate</strong> beneath a looser shell or prompt interface:</p>
 <ul>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>: The C# language, syntax, and features.
+<li><strong>Shell/UI Layer:</strong> PowerShell functions and CLI commands provide low-friction invocation.
+</li>
+<li><strong>State Layer:</strong> <code>Microsoft.Data.Sqlite</code> manages durable page storage and metadata.
+</li>
+<li><strong>Agent Layer:</strong> JSON or object output gives the model a stable contract.
 </li>
 </ul>
-<h2>Frameworks &amp; UI</h2>
+<p>PoShWiKi uses PowerShell as the host, but the underlying database pattern is the same one a C# tool, ASP.NET Core service, or MCP server would use.</p>
+<h2>Why This Works for Agents</h2>
+<h3>1. Explicit State Boundaries</h3>
+<p>The database path is resolved once, with an environment variable override (<code>POSHWIKI_DB_PATH</code>) for scratch runs and test isolation. This is a strong agent pattern because it makes &quot;where state lives&quot; externally controllable without changing code.</p>
+<h3>2. Deterministic Command Semantics</h3>
+<p>Each operation does one small thing:</p>
 <ul>
-<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows Presentation Foundation for desktop apps.
+<li>open a connection
 </li>
-<li><a href="dotnet-clr-internals.html" class="wikilink">dotnet-clr-internals</a>: JIT, Garbage Collection, and managed execution.
+<li>create a command
 </li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>: Inversion of Control and the Generic Host.
+<li>bind parameters
 </li>
-<li><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a>: Object-Relational Mapping (ORM) and data access.
-<ul>
-<li>
-<ul>
-<li><a href="ef-core-migrations.html" class="wikilink">ef-core-migrations</a>: Managing database schema versioning.
+<li>execute
+</li>
+<li>return plain objects
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Thin ADO.NET-style SQLite access for local memory tools.
-</li>
-<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>: Building high-performance APIs and MCP servers.
-</li>
-</ul>
-<h2>Agentic SDKs</h2>
+<p>This lowers ambiguity for both humans and models. The command surface is narrow, and the storage semantics are stable.</p>
+<h3>3. Scriptable but Typed Infrastructure</h3>
+<p>Even though PoShWiKi is written in PowerShell, it directly uses typed .NET objects such as <code>Microsoft.Data.Sqlite.SqliteConnection</code>. This is a useful hybrid for agent systems:</p>
 <ul>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>: Orchestration, Plugins, and Memory for .NET.
+<li>PowerShell gives fast operational glue.
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: Local LLM inference and hardware acceleration.
-</li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building MCP servers in the .NET ecosystem.
-</li>
-<li><a href="sqlite-type-safety-rust-vs-csharp.html" class="wikilink">sqlite-type-safety-rust-vs-csharp</a>: Comparing Rust <code>sqlx</code> guarantees with direct C# SQLite access.
+<li>.NET gives a stable runtime, managed libraries, and predictable database access.
 </li>
 </ul>
-<h2>Tools &amp; Infrastructure</h2>
+<h2>Design Guidance</h2>
+<p>When building agentic tools in C#, prefer this shape when:</p>
 <ul>
-<li><strong>NuGet</strong>: The .NET package manager.
+<li>you need a small local memory store
 </li>
-<li><strong>MSBuild</strong>: The build system for .NET projects.
+<li>you want predictable CRUD behavior
 </li>
-<li><strong>dotnet CLI</strong>: The primary interface for project management.
+<li>an ORM would add unnecessary abstraction
+</li>
+<li>the tool must be easy to embed in shells, scripts, or MCP adapters
+</li>
+</ul>
+<p>Prefer a heavier stack such as <a href="ef-core-basics.html" class="wikilink">ef-core-basics</a> when:</p>
+<ul>
+<li>the domain model is large
+</li>
+<li>migrations are frequent
+</li>
+<li>entity relationships are central
+</li>
+<li>stronger higher-level typing is worth the extra framework surface
+</li>
+</ul>
+<h2>PoShWiKi-Derived Lessons</h2>
+<ul>
+<li>Bundle the exact SQLite dependencies your tool needs when cross-machine reproducibility matters.
+</li>
+<li>Keep read/write operations parameterized instead of interpolating SQL.
+</li>
+<li>Return plain objects at the boundary so agents can consume results without adapter logic.
+</li>
+<li>Make test databases injectable so contract tests and concurrent runs do not mutate production state.
+</li>
+<li>Treat the CLI contract as part of the API, not just a human convenience.
 </li>
 </ul>
 <hr>
-<h2>See Also</h2>
+<h2>References</h2>
 <ul>
-<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>
 </li>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
+<li><a href="ms-repo-poshwiki.html" class="wikilink">ms-repo-poshwiki</a>
 </li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+<li><a href="poshwiki.html" class="wikilink">poshwiki</a>
+</li>
+<li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
+</li>
+<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>
+</li>
+<li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>
 </li>
 </ul>
       </main>
@@ -511,43 +542,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
-<li><a href="dotnet-clr-internals.html" class="">dotnet-clr-internals</a></li>
-<li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
-<li><a href="ef-core-basics.html" class="">ef-core-basics</a></li>
-<li><a href="ef-core-migrations.html" class="">ef-core-migrations</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

@@ -23,6 +23,8 @@ A structured traversal of the C# programming language, optimized for high-perfor
 ## Integration
 * [[csharp-mcp-sdk]]: Building Tier 1 servers in the .NET ecosystem.
 * [[dotnet-dependency-injection]]: Managing complex agentic dependencies.
+* [[csharp-for-agentic-workflows]]: Using C# as a practical host language for local tools and agents.
+* [[microsoft-data-sqlite-agent-patterns]]: Low-overhead SQLite access patterns for agent memory services.
 
 ---
 ## See Also
