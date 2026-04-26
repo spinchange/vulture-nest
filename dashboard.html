@@ -145,7 +145,7 @@
     .metrics {
       grid-column: span 12;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 16px;
     }
 
@@ -260,7 +260,7 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-04-26 04:27</span>
+          <span>Generated 2026-04-26 04:31</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
@@ -293,9 +293,19 @@
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
+        <div class="metric-label terminal">Session Actions</div>
+        <div class="metric-value">25</div>
+        <div class="metric-foot">Action lines recorded on <span class="terminal">Session 2026-04-25</span>.</div>
+      </article>
+      <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
         <div class="metric-value">17/17</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Git Commits / 7d</div>
+        <div class="metric-value">55</div>
+        <div class="metric-foot">Recent repository commits. HEAD: <span class="terminal">8ce6dd0</span>.</div>
       </article>
     </section>
 
@@ -326,15 +336,15 @@
             <h3>PoShWiKi Session</h3>
             <div class="callout">Latest session page: <span class="terminal">Session 2026-04-25</span></div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Spot-checked all 15 02_System scripts against ps-automation-spec. Result: 3 compliant, 12 non-compliant. Wrote codex-ps-compliance-handoff with the exact per-script breakdown and two-deliverable spec for Codex.</span></li>
-<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Codex applied ps-automation-spec scaffolding to the 12 non-compliant 02_System scripts, added test-tier-compliance.ps1, wired run-maintenance.ps1 step [7/7], and verified Tier-2 enforcement live at 100/100.</span></li>
-<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Wrote claude-portal-breadcrumbs-handoff for Claude covering portal breadcrumbs, index-back navigation, and markdown table rendering verification through the shared HTML generation path.</span></li>
-<li><span class='feed-meta'>Apr 26 04:27 | action</span><span class='feed-text'>Received Codex handoff claude-portal-breadcrumbs-handoff.md. Fixed two portal issues: added VULTURE/PORTAL/INDEX/&lt;Note&gt; breadcrumbs to template.html, and added pipe-table parsing to generate-wiki.ps1. All 209 notes force-recompiled. Verified table rendering in dotnet-agent-integration.html. 100/100 health.</span></li>
+              <li><span class='feed-meta'>Apr 26 04:31 | action</span><span class='feed-text'>Spot-checked all 15 02_System scripts against ps-automation-spec. Result: 3 compliant, 12 non-compliant. Wrote codex-ps-compliance-handoff with the exact per-script breakdown and two-deliverable spec for Codex.</span></li>
+<li><span class='feed-meta'>Apr 26 04:31 | action</span><span class='feed-text'>Codex applied ps-automation-spec scaffolding to the 12 non-compliant 02_System scripts, added test-tier-compliance.ps1, wired run-maintenance.ps1 step [7/7], and verified Tier-2 enforcement live at 100/100.</span></li>
+<li><span class='feed-meta'>Apr 26 04:31 | action</span><span class='feed-text'>Wrote claude-portal-breadcrumbs-handoff for Claude covering portal breadcrumbs, index-back navigation, and markdown table rendering verification through the shared HTML generation path.</span></li>
+<li><span class='feed-meta'>Apr 26 04:31 | action</span><span class='feed-text'>Received Codex handoff claude-portal-breadcrumbs-handoff.md. Fixed two portal issues: added VULTURE/PORTAL/INDEX/&lt;Note&gt; breadcrumbs to template.html, and added pipe-table parsing to generate-wiki.ps1. All 209 notes force-recompiled. Verified table rendering in dotnet-agent-integration.html. 100/100 health.</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 26 04:27 | Current Seam</span><span class='feed-text'>Portal upgraded: breadcrumbs and table rendering are live across all 209 compiled pages. Vault 100/100.</span></li>
-<li><span class='feed-meta'>Apr 26 04:27 | Next Step</span><span class='feed-text'>Keep the dashboard&#39;s standalone HTML in sync with the shared portal navigation pattern when requested.</span></li>
+              <li><span class='feed-meta'>Apr 26 04:31 | Current Seam</span><span class='feed-text'>Portal upgraded: breadcrumbs and table rendering are live across all 209 compiled pages. Vault 100/100.</span></li>
+<li><span class='feed-meta'>Apr 26 04:31 | Next Step</span><span class='feed-text'>Keep the dashboard&#39;s standalone HTML in sync with the shared portal navigation pattern when requested.</span></li>
             </ul>
           </section>
           <section>
