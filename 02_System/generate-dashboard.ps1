@@ -275,16 +275,19 @@ LIMIT 1;
 
         if (-not $SessionPage) {
             return [PSCustomObject]@{
-                Actions = @()
-                Seam    = @()
+                Actions     = @()
+                Seam        = @()
+                ActionCount = 0
             }
         }
 
         $actions = @()
         $seam = @()
+        $actionCount = 0
         $actionsBody = Get-MarkdownSectionBody -Content $SessionPage.Content -Section 'Actions'
         if (-not [string]::IsNullOrWhiteSpace($actionsBody)) {
             $actionLines = @(Split-ActivityLines -Text $actionsBody)
+            $actionCount = $actionLines.Count
             foreach ($line in ($actionLines | Select-Object -Last 4)) {
                 $actions += [PSCustomObject]@{
                     Timestamp = $SessionPage.Modified
@@ -318,8 +321,9 @@ LIMIT 1;
         }
 
         return [PSCustomObject]@{
-            Actions = $actions
-            Seam    = $seam
+            Actions     = $actions
+            Seam        = $seam
+            ActionCount = $actionCount
         }
     }
 
@@ -340,6 +344,27 @@ LIMIT 1;
             TotalScripts     = $scripts.Count
             CompliantScripts = $compliantCount
             NonCompliant     = ($scripts.Count - $compliantCount)
+        }
+    }
+
+    function Get-GitStats {
+        try {
+            $recentCommits = (& git rev-list --count --since='7 days ago' HEAD 2>$null).Trim()
+            $headShort = (& git rev-parse --short HEAD 2>$null).Trim()
+
+            if ([string]::IsNullOrWhiteSpace($recentCommits)) {
+                $recentCommits = '0'
+            }
+
+            return [PSCustomObject]@{
+                RecentCommits7d = $recentCommits
+                HeadShort       = $headShort
+            }
+        } catch {
+            return [PSCustomObject]@{
+                RecentCommits7d = 'n/a'
+                HeadShort       = 'n/a'
+            }
         }
     }
 
@@ -400,6 +425,7 @@ LIMIT 1;
     $hubs = Get-TopHubs
     $latestSession = Get-LatestSessionPage
     $sessionActivity = Get-SessionActivity -SessionPage $latestSession
+    $gitStats = Get-GitStats
     $logActions = Get-RecentLogActions
     $generatedAt = Get-Date -Format 'yyyy-MM-dd HH:mm'
 
@@ -590,7 +616,7 @@ LIMIT 1;
     .metrics {
       grid-column: span 12;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 16px;
     }
 
@@ -738,9 +764,19 @@ LIMIT 1;
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
+        <div class="metric-label terminal">Session Actions</div>
+        <div class="metric-value">$($sessionActivity.ActionCount)</div>
+        <div class="metric-foot">Action lines recorded on <span class="terminal">$(ConvertTo-HtmlSafe $sessionTitle)</span>.</div>
+      </article>
+      <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
         <div class="metric-value">$($tier2Stats.CompliantScripts)/$($tier2Stats.TotalScripts)</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: $($tier2Stats.NonCompliant).</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Git Commits / 7d</div>
+        <div class="metric-value">$($gitStats.RecentCommits7d)</div>
+        <div class="metric-foot">Recent repository commits. HEAD: <span class="terminal">$(ConvertTo-HtmlSafe $gitStats.HeadShort)</span>.</div>
       </article>
     </section>
 
@@ -799,8 +835,10 @@ LIMIT 1;
         TotalNotes     = $stats.TotalNotes
         LinkDensity    = $stats.LinkDensity
         HubCount       = $hubs.Count
+        SessionActions = $sessionActivity.ActionCount
         Tier2Compliant = $tier2Stats.CompliantScripts
         Tier2Total     = $tier2Stats.TotalScripts
+        RecentCommits7d = $gitStats.RecentCommits7d
         SessionTitle   = $sessionTitle
         LogActionCount = $logActions.Count
     }
