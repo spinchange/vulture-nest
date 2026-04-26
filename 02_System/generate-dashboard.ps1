@@ -220,7 +220,7 @@ try {
         $validNoteNames = (Get-ChildItem -Path $VaultRoot, $WikiPath, $SystemPath -Filter '*.md').BaseName | Select-Object -Unique
         foreach ($file in $allMdFiles) {
             $content = Get-Content -Path $file.FullName -Raw
-            $matches = [regex]::Matches($content, '\[\[([^\]|]+)(?:\|[^\]]+)?\]\]')
+            $matches = [regex]::Matches($content, '(?<!`)\[\[([^\]|]+)(?:\|[^\]]+)?\]\]')
             foreach ($match in $matches) {
                 if ($validNoteNames -notcontains $match.Groups[1].Value.Trim()) {
                     $brokenLinkCount++
