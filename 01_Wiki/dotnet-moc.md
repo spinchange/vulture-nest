@@ -26,6 +26,7 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[ms-semantic-kernel]]: Orchestration, Plugins, and Memory for .NET.
 * [[lm-kit-dotnet]]: Local LLM inference and hardware acceleration.
 * [[csharp-mcp-sdk]]: Building MCP servers in the .NET ecosystem.
+* [[dotnet-mcp-server-patterns]]: Concrete blueprint for an MCP server backed by local SQLite.
 * [[sqlite-type-safety-rust-vs-csharp]]: Comparing Rust `sqlx` guarantees with direct C# SQLite access.
 
 ## Tools & Infrastructure
@@ -38,3 +39,4 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[powershell-moc]]
 * [[programming-languages-moc]]
 * [[mcp-moc]]
+* [[agentic-frameworks-moc]]

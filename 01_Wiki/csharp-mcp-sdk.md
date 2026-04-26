@@ -36,3 +36,5 @@ public async Task<string> GetVaultStats()
 - [[aspnet-core-basics]]
 - [[dotnet-dependency-injection]]
 - [[ms-semantic-kernel]]
+- [[microsoft-data-sqlite-agent-patterns]]
+- [[dotnet-mcp-server-patterns]]

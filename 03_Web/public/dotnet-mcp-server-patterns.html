@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>tool-registry — Vulture Portal</title>
+  <title>.NET MCP Server Patterns — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,15 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>tool-registry</span>
+      <span>.NET MCP Server Patterns</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">tool-registry</h1>
+      <h1 class="note-title">.NET MCP Server Patterns</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET MCP Server Patterns</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">csharp-mcp-server-patterns, dotnet-mcp-implementation, ado-net-mcp-server</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -436,205 +441,153 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Vault Tool Registry (Agent Optimized)</h1>
-<p>This document provides a machine-readable index of the system utilities available in this vault.</p>
-<h2>YANP Compliance Auditor</h2>
+        <h1>.NET MCP Server Patterns</h1>
+<p>A practical blueprint for building a <strong>Model Context Protocol server in C#</strong> that uses a local SQLite database for agent memory. This synthesizes the patterns extracted from the PoShWiKi audit into a reusable implementation model.</p>
+<h2>The Design Premise</h2>
+<p>An MCP server backed by local SQLite gives an agent:</p>
 <ul>
-<li><strong>File:</strong> <code>02_System\audit-yanp.ps1</code>
+<li><strong>Persistent, queryable memory</strong> without external infrastructure
 </li>
-<li><strong>Description:</strong> Scans the 01_Wiki folder to ensure all notes follow the YANP protocol (lowercase kebab-case filenames and valid YAML frontmatter &#39;type&#39;).
+<li><strong>Strongly typed tool contracts</strong> via C# records
 </li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File audit-yanp.ps1</code>
+<li><strong>Injection-resistant SQL</strong> via parameterized commands
 </li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
+<li><strong>Idempotent writes</strong> via <code>INSERT ... ON CONFLICT DO UPDATE</code>
 </li>
 </ul>
-<h2>Broken Link Auditor</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\check-broken-links.ps1</code>
-</li>
-<li><strong>Description:</strong> Scans all markdown files in the vault to find Wikilinks that point to non-existent notes.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File check-broken-links.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>YANP Note Creator</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\create-yanp-note.ps1</code>
-</li>
-<li><strong>Description:</strong> Scaffolds a new YANP-compliant markdown note with valid frontmatter and a kebab-case filename.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File create-yanp-note.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>find-thin-nodes.ps1</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\find-thin-nodes.ps1</code>
-</li>
-<li><strong>Description:</strong> No description provided.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File find-thin-nodes.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Generates the Vault Pulse dashboard as a standalone HTML file.</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\generate-dashboard.ps1</code>
-</li>
-<li><strong>Description:</strong> Builds a single-file dashboard that combines vault health metrics, graph topology, and recent activity from both log.md and the PoShWiKi SQLite database.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-dashboard.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Tool Registry Generator</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\generate-tool-registry.ps1</code>
-</li>
-<li><strong>Description:</strong> Scans 02_System/ for .ps1 files, extracts help metadata, and generates a machine-readable tool-registry.md for agents.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-tool-registry.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Vault Stats Generator</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\generate-wiki-stats.ps1</code>
-</li>
-<li><strong>Description:</strong> Calculates high-level metrics for the vault, including note counts, link density, and health indicators.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki-stats.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Compiles wiki markdown notes into static HTML pages (Incremental).</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\generate-wiki.ps1</code>
-</li>
-<li><strong>Description:</strong> Reads all markdown files in 01_Wiki, extracts YAML frontmatter, converts a supported markdown subset to HTML, resolves wikilinks, injects graph neighbors from the PoShWiKi SQLite database, and writes HTML files into 03_Web/public using 03_Web/template.html.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File generate-wiki.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Installs the Vulture Watcher as a Windows Daemon.</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\install-vulture-daemon.ps1</code>
-</li>
-<li><strong>Description:</strong> Registers the watch-wiki.ps1 script as a Windows Scheduled Task that starts automatically when the user logs in.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File install-vulture-daemon.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Orphan Note Checker</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\orphan-check.ps1</code>
-</li>
-<li><strong>Description:</strong> Scans for markdown files in 01_Wiki that have no incoming wikilinks from other notes in the vault.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File orphan-check.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>poshwiki-tools.ps1</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\poshwiki-tools.ps1</code>
-</li>
-<li><strong>Description:</strong> No description provided.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File poshwiki-tools.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Master Vault Maintenance</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\run-maintenance.ps1</code>
-</li>
-<li><strong>Description:</strong> The &quot;Knowledge CI/CD&quot; master script. Runs compliance audits, orphan checks, link checks, registry updates, generates the visual dashboard, and compiles the static portal.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File run-maintenance.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Syncs wikilinks from the vault to the PoShWiKi database (Optimized).</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\sync-vault-graph.ps1</code>
-</li>
-<li><strong>Description:</strong> Refactored for performance using a single transaction and prepared statements. Parses all Markdown files in 01_Wiki/ for wikilinks and stores the relationship graph in the &#39;Links&#39; table of the SQLite database.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File sync-vault-graph.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>The Vulture Engine: Graph-Aware Discovery (Optimized &amp; Ranked)</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\vulture-search.ps1</code>
-</li>
-<li><strong>Description:</strong> A specialized retrieval engine that uses a weighted ranking model to surface relevant knowledge and tools. Leverages the PoShWiKi graph for second-order discovery.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File vulture-search.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
-<h2>Vulture Watchdog: Debounced Recompiler</h2>
-<ul>
-<li><strong>File:</strong> <code>02_System\watch-wiki.ps1</code>
-</li>
-<li><strong>Description:</strong> Monitors 01_Wiki/ for changes and triggers a graph sync and portal compilation. Uses a debounced FileSystemWatcher to prevent redundant builds during save bursts.
-</li>
-<li><strong>Command:</strong> <code>pwsh -NoProfile -ExecutionPolicy Bypass -File watch-wiki.ps1</code>
-</li>
-<li><strong>Inputs:</strong> None
-</li>
-<li><strong>Outputs:</strong> None
-</li>
-</ul>
+<p>This is the pattern used by PoShWiKi, generalized for any C# MCP server.</p>
+<h2>1. Project Wiring</h2>
+<p>Host the server in an <strong>ASP.NET Core</strong> app so the DI container manages the SQLite connection factory and the MCP server lifecycle together.</p>
+<pre><code>var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton&lt;WikiDb&gt;(new WikiDb(&quot;wiki.db&quot;));
+builder.Services.AddMcpServer()
+    .WithTool&lt;WikiTools&gt;();
+var app = builder.Build();
+app.MapMcp();
+app.Run();</code></pre>
+<p>Key dependency: <code>Microsoft.Extensions.AI.ModelContextProtocol</code> (the C# MCP SDK).</p>
+<h2>2. SQLite Connection Lifecycle</h2>
+<p>Matches the pattern from <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: one connection per operation, disposed deterministically.</p>
+<pre><code>public sealed class WikiDb(string path)
+{
+    private SqliteConnection Open()
+    {
+        var conn = new SqliteConnection($&quot;Data Source={path}&quot;);
+        conn.Open();
+        return conn;
+    }
+
+    public WikiPage? Get(string title)
+    {
+        using var conn = Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = &quot;SELECT Title, Content FROM Pages WHERE Title = @T&quot;;
+        cmd.Parameters.AddWithValue(&quot;@T&quot;, title);
+        using var reader = cmd.ExecuteReader();
+        return reader.Read()
+            ? new WikiPage(reader.GetString(0), reader.GetString(1))
+            : null;
+    }
+
+    public void Upsert(string title, string content)
+    {
+        using var conn = Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText =
+            &quot;INSERT INTO Pages(Title, Content) VALUES(@T, @C) &quot; +
+            &quot;ON CONFLICT(Title) DO UPDATE SET Content = @C, Modified = CURRENT_TIMESTAMP&quot;;
+        cmd.Parameters.AddWithValue(&quot;@T&quot;, title);
+        cmd.Parameters.AddWithValue(&quot;@C&quot;, content);
+        cmd.ExecuteNonQuery();
+    }
+}</code></pre>
+<h2>3. Tool Definitions</h2>
+<p>MCP tools are strongly-typed C# methods annotated with <code>[McpTool]</code>. Inputs are plain records — easy for the LLM to construct and easy for the server to validate.</p>
+<pre><code>public record GetPageArgs(string Title);
+public record SavePageArgs(string Title, string Content);
+public record FindArgs(string Query);
+
+public sealed class WikiTools(WikiDb db)
+{
+    [McpTool(&quot;wiki_get&quot;, &quot;Retrieve a page by exact title.&quot;)]
+    public string Get(GetPageArgs args) =&gt;
+        db.Get(args.Title)?.Content ?? $&quot;No page found: {args.Title}&quot;;
+
+    [McpTool(&quot;wiki_save&quot;, &quot;Create or update a wiki page.&quot;)]
+    public string Save(SavePageArgs args)
+    {
+        db.Upsert(args.Title, args.Content);
+        return $&quot;Saved: {args.Title}&quot;;
+    }
+
+    [McpTool(&quot;wiki_find&quot;, &quot;Full-text search across all pages.&quot;)]
+    public IReadOnlyList&lt;string&gt; Find(FindArgs args) =&gt;
+        db.Search(args.Query).Select(p =&gt; p.Title).ToList();
+}</code></pre>
+<h2>4. Schema Bootstrap</h2>
+<p>Run once at startup. <code>CREATE TABLE IF NOT EXISTS</code> makes it idempotent — safe to call on every boot.</p>
+<pre><code>public void EnsureSchema()
+{
+    using var conn = Open();
+    using var cmd = conn.CreateCommand();
+    cmd.CommandText = &quot;&quot;&quot;
+        CREATE TABLE IF NOT EXISTS Pages (
+            Title    TEXT PRIMARY KEY,
+            Content  TEXT NOT NULL DEFAULT &#39;&#39;,
+            Created  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            Modified TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_pages_title ON Pages(Title);
+    &quot;&quot;&quot;;
+    cmd.ExecuteNonQuery();
+}</code></pre>
+<h2>5. Parameterization Is Non-Negotiable</h2>
+<p>The LLM generates tool arguments. Those arguments feed directly into SQL commands. Every parameter must go through <code>AddWithValue()</code> — never string interpolation.</p>
+<p>The PoShWiKi audit confirmed this pattern is already correctly applied in production code. See <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> &#167;3.</p>
+<h2>6. Section-Level Updates Without Relational Substructure</h2>
+<p>For structured note content (headings, sections), keep SQLite as the durability layer and C# string logic as the document-edit layer — not SQL JOINs.</p>
+<pre><code>public void UpsertSection(string title, string heading, string content)
+{
+    var page = Get(title)?.Content ?? $&quot;# {title}\n&quot;;
+    var pattern = $@&quot;(?m)^## {Regex.Escape(heading)}.*?(?=^##|\Z)&quot;;
+    var replacement = $&quot;## {heading}\n{content}\n&quot;;
+    var updated = Regex.IsMatch(page, pattern)
+        ? Regex.Replace(page, pattern, replacement, RegexOptions.Singleline)
+        : page + $&quot;\n## {heading}\n{content}\n&quot;;
+    Upsert(title, updated);
+}</code></pre>
+<p>This mirrors the <code>upsert-section</code> command in PoShWiKi and is the idiomatic pattern for agent-driven document mutation.</p>
+<h2>7. Transport</h2>
+<p>For local agents: <strong>stdio transport</strong> is the simplest and requires no port management.</p>
+<pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;wiki&quot;: {
+      &quot;command&quot;: &quot;dotnet&quot;,
+      &quot;args&quot;: [&quot;run&quot;, &quot;--project&quot;, &quot;WikiMcpServer&quot;]
+    }
+  }
+}</code></pre>
+<p>For multi-client scenarios: <strong>SSE transport</strong> via ASP.NET Core (<code>app.MapMcp(&quot;/sse&quot;)</code>).</p>
+<h2>Key Tradeoffs</h2>
+<p>| Decision | Rationale | |---|---| | Connection-per-operation | Avoids stale state; cheap with SQLite | | No ORM (EF Core) | Lower overhead; schema is tiny and stable | | Records for tool args | Serializable, null-safe, schema-visible to LLM | | Section logic above DB | Document semantics &gt; relational normalization | | Stdio transport default | No port management for local-first tools |</p>
 <hr>
-<p>*Generated by generate-tool-registry.ps1 on 2026-04-25 22:12:21*</p>
+<h2>References</h2>
+<ul>
+<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
+</li>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>
+</li>
+<li><a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a>
+</li>
+<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>
+</li>
+<li><a href="poshwiki.html" class="wikilink">poshwiki</a>
+</li>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+</li>
+<li><a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a>
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -645,13 +598,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
-<li><a href="ps-tool-registry-generator.html" class="">ps-tool-registry-generator</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>
