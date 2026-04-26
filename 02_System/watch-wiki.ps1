@@ -33,6 +33,7 @@ try {
         try {
             pwsh -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "sync-vault-graph.ps1")
             pwsh -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "generate-wiki.ps1")
+            pwsh -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "generate-dashboard.ps1")
             Write-Host "[$(Get-Date -Format 'HH:mm:ss')] Build complete. Portal updated." -ForegroundColor Green
         } catch {
             Write-Error "Build failed: $_"
