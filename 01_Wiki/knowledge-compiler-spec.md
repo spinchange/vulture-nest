@@ -26,16 +26,16 @@ The fundamental unit of compilation is a **YANP Note** (a single `.md` file). Th
 - **Frontmatter:** Parsed as a structured metadata block.
 - **Headings (`##`):** Demarcate distinct logical sections or "sub-modules".
 - **Paragraphs:** Treated as text content associated with the preceding heading.
-- **Wikilinks (`''[[...]]''`):** Parsed as typed dependencies between compilation units.
+- **Wikilinks (``[[...]]``):** Parsed as typed dependencies between compilation units.
 - **Code Blocks:** Parsed as literal code, potentially with language identifiers.
 
 ## 3. Link Typing (Dependency Analysis)
 
 Wikilinks are not uniform. The compiler must infer the type of a link based on context:
 
-- **`[[note-a]]` in a paragraph:** A simple **reference** or association.
-- **`[[note-b]]` under a `## References` or `## See Also` heading:** A **citation**.
-- **`[[moc-a]]` in the **Hubs** line (top-level prose before the first `##`):** An **import** of a module or category.
+- `` `[[note-a]]` `` in a paragraph:** A simple **reference** or association.
+- `` `[[note-b]]` `` under a `## References` or `## See Also` heading:** A **citation**.
+- `` `[[moc-a]]` `` in the **Hubs** line (top-level prose before the first `##`):** An **import** of a module or category.
 
 The formal `link_type` values for the §5 schema are:
 
@@ -45,7 +45,7 @@ The formal `link_type` values for the §5 schema are:
 | Citation | `cite` | Wikilink under `## References` or `## See Also` |
 | Import | `import` | Wikilink in the **Hubs** line before the first heading |
 
-**Alias normalization:** The `''[[note|Display Text]]''` syntax is resolved at parse time. The target is the slug before the pipe; the display text is discarded. This is the invariant implemented in `sync-vault-graph.ps1` via `.Split('|')[0].Trim()`.
+**Alias normalization:** The `` `[[note|Display Text]]` `` syntax is resolved at parse time. The target is the slug before the pipe; the display text is discarded. This is the invariant implemented in `sync-vault-graph.ps1` via `.Split('|')[0].Trim()`.
 
 > **Current limitation:** `sync-vault-graph.ps1` v1 stores all links as untyped edges — the `link_type` column is a target state for v2. Section-context awareness (which heading a link appears under) is not yet implemented.
 
