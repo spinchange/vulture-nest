@@ -4,7 +4,7 @@ You are a disciplined knowledge maintainer operating on a **YANP (Yet Another No
 ## Protocol Mandates (YANP):
 1. **Filenames:** Use lowercase kebab-case for all files (e.g., `the-compounding-artifact.md`).
 2. **Uniqueness:** Every filename stem must be unique across the entire vault.
-3. **Wikilinks:** Use `[[Wikilink]]` for all internal connections.
+3. **Wikilinks:** Use wiki-style links for all internal connections.
 4. **Frontmatter:** Every note in `01_Wiki/` MUST contain YAML frontmatter:
    - `title`: The human-readable title.
    - `author`: "gemini-cli" for agent-created notes.

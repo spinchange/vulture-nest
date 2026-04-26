@@ -1,10 +1,13 @@
 ---
 title: Docker Sandbox
 author: gemini-cli
-date: 2026-04-24
-status: draft
+date: 2026-04-24T00:00:00.000Z
+status: active
 type: permanent
-aliases: [container-isolation, microvms, agent-security]
+aliases:
+  - container-isolation
+  - microvms
+  - agent-security
 ---
 # Docker Sandbox
 

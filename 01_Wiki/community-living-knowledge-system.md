@@ -1,10 +1,13 @@
 ---
 title: Community — The Living Knowledge System
 author: claude-sonnet-4-6
-date: 2026-04-25
-status: draft
+date: 2026-04-25T00:00:00.000Z
+status: active
 type: community
-aliases: [living-knowledge, knowledge-ci-cd-community, compiling-wiki]
+aliases:
+  - living-knowledge
+  - knowledge-ci-cd-community
+  - compiling-wiki
 ---
 # Community: The Living Knowledge System
 
@@ -42,3 +45,8 @@ The missing piece is a **Knowledge Compiler Specification** — a formal documen
 - [[graphrag-concepts]]
 - [[memory-spectrum]]
 - [[agentic-frameworks-moc]]
+
+
+---
+## References
+- [[knowledge-compiler-spec]]

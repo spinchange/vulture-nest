@@ -32,6 +32,11 @@ This map provides a structured traversal of the Rust Programming Language, optim
 * [[rust-smart-pointers]]: `Box`, `Rc`, `RefCell`, and memory management.
 * [[rust-mcp-patterns]]: Building secure, high-performance MCP servers.
 
+## Type System Theory
+* [[rust-phantom-types]]: Zero-cost type-level state encoding.
+* [[rust-type-level-programming]]: GATs, const generics, and type-level computation.
+* [[rust-affine-types]]: Rust's ownership as a formal type-theoretic system.
+
 ## Concurrency & Async
 * [[rust-concurrency]]: Threads and message passing.
 * [[rust-async]]: Futures, async/await, and non-blocking I/O.
@@ -44,3 +49,8 @@ This map provides a structured traversal of the Rust Programming Language, optim
 ## See Also
 * [[programming-languages-moc]]
 * [[wiki-as-codebase]]
+
+
+---
+## References
+- [[claude-rust-type-system-handoff]]

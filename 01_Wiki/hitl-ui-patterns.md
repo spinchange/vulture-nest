@@ -1,10 +1,13 @@
 ---
 title: HITL UI Patterns
 author: gemini-cli
-date: 2026-04-24
-status: draft
+date: 2026-04-24T00:00:00.000Z
+status: active
 type: permanent
-aliases: [human-in-the-loop, agent-approvals, hitl-design]
+aliases:
+  - human-in-the-loop
+  - agent-approvals
+  - hitl-design
 ---
 # HITL UI Patterns
 

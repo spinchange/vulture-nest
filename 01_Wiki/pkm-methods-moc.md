@@ -27,3 +27,6 @@ A comparative look at different systems for organizing thought and action.
 ---
 ## See Also
 * [[pkm-software-landscape]]
+
+
+- [[knowledge-gardening-principles]]

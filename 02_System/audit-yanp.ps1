@@ -21,7 +21,7 @@ try {
     $report = foreach ($note in $notes) {
         $content = Get-Content $note.FullName -Raw
         $hasType = $content -match "type: (permanent|literature|fleeting|community)"
-        $isKebab = $note.Name -match "^[a-z0-0-]+.md$"
+        $isKebab = $note.Name -match "^[a-z0-9-]+.md$"
 
         [PSCustomObject]@{
             Name       = $note.Name

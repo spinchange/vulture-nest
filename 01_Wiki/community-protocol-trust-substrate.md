@@ -2,7 +2,7 @@
 title: Community — The Protocol Trust Substrate
 author: claude-sonnet-4-6
 date: 2026-04-25
-status: draft
+status: active
 type: community
 aliases: [trust-substrate, type-safe-agents, mcp-rust-community, capability-governance]
 ---
@@ -21,6 +21,8 @@ This matters acutely for multi-agent systems. When an orchestrator delegates to 
 ## Key Nodes
 
 - [[agentic-protocols]]: MCP and A2A — the emerging standards that formalize what agents are *allowed* to communicate.
+- [[a2a-protocol]]: The full A2A technical model — Agent Card, Skill, Task lifecycle, Part types, and authentication. The peer-layer complement to the MCP nodes below.
+- [[a2a-capability-lattice]]: Extends the capability lattice to the A2A agent layer, closing the trust substrate: MCP lattice (tool layer) + A2A lattice (agent layer) = complete static analysis of a multi-agent workflow.
 - [[rust-mcp-patterns]]: The critical intersection node — Rust implementing MCP servers at Tier-0 performance.
 - [[csharp-mcp-sdk]]: The .NET entry point; brings enterprise-grade DI and lifetime management to the trust layer.
 - [[mcp-primitives]], [[mcp-security]], [[mcp-transport]]: The protocol's trust model specification.
@@ -29,13 +31,15 @@ This matters acutely for multi-agent systems. When an orchestrator delegates to 
 - [[rust-concurrency]]: Where ownership prevents data races in multi-agent shared state.
 - [[docker-sandbox]]: The runtime complement — OS-level isolation when static guarantees are insufficient.
 - [[openai-agents-sdk]], [[agent-development-kit]]: Higher-level frameworks that must eventually rest on this substrate.
+- [[session-types]]: The protocol-sequence complement to capability sets — proves tools are used in the correct order, not just that they exist.
 
 ## Next-Gen Research Path
 
-The frontier is a **Capability Lattice** — a formal mapping between MCP tool manifests and Rust/C# type signatures. If an MCP server's manifest is a type (a set of callable operations), and a client's permitted invocations are a type (a subset of that set), then composing two agents is a type-level operation (intersection of capability sets). This would enable *static analysis of multi-agent workflows* before deployment: "Does this orchestration transitively grant agent B access to tools it shouldn't have?" answered by a type checker, not a security audit after the fact. The [[aspnet-core-basics]] hosting model and [[dotnet-dependency-injection]] provide the .NET-side scaffolding; [[rust-mcp-patterns]] provides the performance-critical server implementation. The missing piece is the formal schema linking them.
+The frontier is a **Capability Lattice** — a formal mapping between MCP tool manifests and Rust/C# type signatures. If an MCP server's manifest is a type (a set of callable operations), and a client's permitted invocations are a type (a subset of that set), then composing two agents is a type-level operation (intersection of capability sets). This would enable *static analysis of multi-agent workflows* before deployment: "Does this orchestration transitively grant agent B access to tools it shouldn't have?" answered by a type checker, not a security audit after the fact. The [[aspnet-core-basics]] hosting model and [[dotnet-dependency-injection]] provide the .NET-side scaffolding; [[rust-mcp-patterns]] provides the performance-critical server implementation. The formal schema is now specified in [[capability-lattice-spec]].
 
 ---
 ## References
+- [[capability-lattice-spec]]
 - [[mcp-architecture]]
 - [[rust-moc]]
 - [[agentic-frameworks-moc]]

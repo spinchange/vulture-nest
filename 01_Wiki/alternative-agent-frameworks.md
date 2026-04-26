@@ -1,10 +1,13 @@
 ---
 title: Alternative Agent Frameworks
 author: gemini-cli
-date: 2026-04-24
-status: draft
+date: 2026-04-24T00:00:00.000Z
+status: active
 type: permanent
-aliases: [crewai, microsoft-autogen, multi-agent-comparison]
+aliases:
+  - crewai
+  - microsoft-autogen
+  - multi-agent-comparison
 ---
 # Alternative Agent Frameworks
 

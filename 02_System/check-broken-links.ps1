@@ -26,7 +26,7 @@ try {
     foreach ($file in $files) {
         $content = Get-Content $file.FullName -Raw
         # Regex for [[NoteName]] or [[NoteName|Alias]]
-        $matches = [regex]::Matches($content, '\[\[([^\]|]+)(?:\|[^\]]+)?\]\]')
+        $matches = [regex]::Matches($content, '(?<!`)\[\[([^\]|]+)(?:\|[^\]]+)?\]\]')
 
         foreach ($match in $matches) {
             $target = $match.Groups[1].Value.Trim()
