@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Hardware-Aware Inference</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Hardware-Aware Inference</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hardware-Aware Inference</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">cuda, mlx, directml, onnx</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">cuda, mlx, directml, onnx</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hardware-Aware Inference</span></span>
       </div>
     </header>
 
@@ -455,7 +457,34 @@
 </li>
 </ul>
 <h2>2. Hardware Targets</h2>
-<p>| Stack | Primary Hardware | OS Support | | :--- | :--- | :--- | | <strong>CUDA</strong> | NVIDIA GPUs | Windows, Linux | | <strong>MLX</strong> | Apple Silicon (M1-M4) | macOS | | <strong>DirectML</strong> | Any DX12 GPU | Windows, WSL | | <strong>ONNX</strong> | Universal (CPU/GPU/NPU) | All major platforms |</p>
+<table>
+<thead><tr>
+<th>Stack</th>
+<th>Primary Hardware</th>
+<th>OS Support</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>CUDA</strong></td>
+<td>NVIDIA GPUs</td>
+<td>Windows, Linux</td>
+</tr>
+<tr>
+<td><strong>MLX</strong></td>
+<td>Apple Silicon (M1-M4)</td>
+<td>macOS</td>
+</tr>
+<tr>
+<td><strong>DirectML</strong></td>
+<td>Any DX12 GPU</td>
+<td>Windows, WSL</td>
+</tr>
+<tr>
+<td><strong>ONNX</strong></td>
+<td>Universal (CPU/GPU/NPU)</td>
+<td>All major platforms</td>
+</tr>
+</tbody>
+</table>
 <h2>3. Selection Strategy</h2>
 <ul>
 <li><strong>Local Mac Development</strong>: Prioritize <strong>MLX</strong> for memory efficiency.
@@ -491,8 +520,12 @@
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="polyglot-adr-rfc.html" class="">polyglot-adr-rfc</a></li>
+<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>

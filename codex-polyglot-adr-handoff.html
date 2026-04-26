@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex Handoff — Polyglot ADR Verification — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Codex Handoff — Polyglot ADR Verification</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Codex Handoff — Polyglot ADR Verification</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Handoff — Polyglot ADR Verification</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr-handoff, codex-adr-brief</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Codex Handoff: Polyglot ADR Verification</h1>
+<h2>Objective</h2>
+<p>Verify the RFC&#39;s tier inventory and open questions against the vault&#39;s actual source files, then produce <code>01_Wiki/polyglot-platform-adr.md</code> as the formal, <code>status: active</code> ADR — incorporating confirmed facts and closing the questions Claude left open.</p>
+<p>The RFC is at <code>01_Wiki/polyglot-adr-rfc.md</code>. Read it in full before starting.</p>
+<h2>Verified Facts</h2>
+<p>*(Established by Claude before this handoff — do not re-derive, verify only.)*</p>
+<ul>
+<li>The vault uses four language tiers: Rust (Tier-0), C# (Tier-1), PowerShell (Tier-2), Python (Tier-3).
+</li>
+<li>Tier-0 artifact: <code>00_Raw/vulture-mcp/</code> — a Rust MCP server over stdio.
+</li>
+<li>Tier-1 artifact: <code>00_Raw/PoShWiKi/</code> — PowerShell host loading <code>Microsoft.Data.Sqlite.dll</code>; proposed pattern in <code>01_Wiki/dotnet-mcp-server-patterns.md</code>.
+</li>
+<li>Tier-2 artifacts: <code>02_System/*.ps1</code> (15 scripts), <code>00_Raw/PoShWiKi/wiki.ps1</code>.
+</li>
+<li>Tier-3 artifacts: wiki knowledge only — no live Python tooling in the vault.
+</li>
+<li><code>00_Raw/workbench/</code> is TypeScript/Node and does <strong>not</strong> fit cleanly into any tier — the RFC leaves this open.
+</li>
+<li>All 15 <code>02_System/</code> scripts follow <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>: <code>$ErrorActionPreference</code>, <code>Try/Catch</code>, exit code 1 on failure.
+</li>
+<li><code>run-maintenance.ps1</code> invokes child scripts via <code>pwsh -File</code>; the Tier-2→Tier-1 contract is <code>Add-Type</code> (in-process assembly load in PoShWiKi).
+</li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>Do not modify <code>run-maintenance.ps1</code> structure — it is the CI backbone and health score depends on it.
+</li>
+<li>Do not add <code>tier</code> as a mandatory YANP field yet — it would break the existing YANP auditor&#39;s 100% compliance baseline. Make it optional if you add it at all.
+</li>
+<li>The ADR note must reach <code>status: active</code> only after the open questions are answered with vault evidence, not inference.
+</li>
+<li>Vault health must remain 100/100 after any changes. Run <code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code> to verify.
+</li>
+</ul>
+<h2>Verification Tasks</h2>
+<p>Work through these in order; record your findings under <code>## Codex Findings</code> at the bottom of <code>01_Wiki/polyglot-adr-rfc.md</code>.</p>
+<h3>1. Tier Inventory Audit</h3>
+<ul>
+<li>Confirm <code>00_Raw/vulture-mcp/</code> exists and contains Rust source. Check <code>Cargo.toml</code> for the crate name and confirm it is built as a binary (not a lib). Record the actual binary name.
+</li>
+<li>Check all <code>00_Raw/</code> subdirectories for any Python <code>.py</code> files, C# <code>.cs</code> files, or Rust <code>.rs</code> files the RFC inventory misses.
+</li>
+<li>Confirm <code>00_Raw/workbench/</code> is TypeScript (check <code>package.json</code>). Determine whether it should be Tier-3 (dynamic, rapid iteration) or needs a <code>Tier-1.5 — Typed JS</code> slot.
+</li>
+</ul>
+<h3>2. PoShWiKi Tier Classification</h3>
+<ul>
+<li>Open <code>00_Raw/PoShWiKi/PoShWiKi.psm1</code> and locate where <code>Microsoft.Data.Sqlite</code> is loaded.
+</li>
+<li>Determine: is the PowerShell layer merely a thin shell over a .NET library, or does it contain substantive domain logic? This decides whether PoShWiKi is Tier-2 (PowerShell host) or Tier-1 (C#/.NET logic that happens to be invoked from PowerShell).
+</li>
+<li>The contract table in the RFC currently lists it under Tier-2. Correct or confirm with evidence.
+</li>
+</ul>
+<h3>3. YANP Auditor Extensibility</h3>
+<ul>
+<li>Read <code>02_System/audit-yanp.ps1</code> and determine whether it already has hooks for validating custom frontmatter fields beyond <code>type</code> and filename casing.
+</li>
+<li>If not: record what change would be needed to add optional <code>tier</code> field validation.
+</li>
+<li>Recommend: Option A (Pester script) vs Option B (frontmatter field) based on the actual auditor structure.
+</li>
+</ul>
+<h3>4. Failure-Mode Compliance Spot-Check</h3>
+<ul>
+<li>Pick two <code>02_System/</code> scripts at random. Verify they have <code>$ErrorActionPreference = &#39;Stop&#39;</code> and <code>Try/Catch</code> blocks. Report pass/fail.
+</li>
+<li>Check <code>00_Raw/vulture-mcp/src/</code> for <code>unwrap()</code> or <code>expect()</code> calls in non-test code paths — these are implicit <code>panic!</code> and violate the Tier-0 failure contract. Report count.
+</li>
+</ul>
+<h2>Deliverable</h2>
+<p>Create <code>01_Wiki/polyglot-platform-adr.md</code> with:</p>
+<ul>
+<li><code>status: active</code>
+</li>
+<li><code>type: permanent</code>
+</li>
+<li><code>author: codex</code>
+</li>
+<li>The same tier table and contract table as the RFC, updated with your verified facts
+</li>
+<li>A <code>## Codex Verification</code> section listing what was confirmed vs. what was revised
+</li>
+<li>Cross-links to all existing notes in the References block (use the same list as the RFC)
+</li>
+</ul>
+<p>Then:</p>
+<ol>
+<li>Update <code>01_Wiki/polyglot-adr-rfc.md</code>: add <code>status: superseded</code> and a forward link to <code><a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a></code>.
+</li>
+<li>Add <code><a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a></code> to <code>01_Wiki/dotnet-agent-integration.md</code> References (replacing the ADR gap note).
+</li>
+<li>Add <code><a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a></code> to <code>01_Wiki/community-polyglot-agent-platform.md</code> References and change that note&#39;s status to <code>active</code>.
+</li>
+<li>Run <code>run-maintenance.ps1</code> and confirm 100/100 before committing.
+</li>
+</ol>
+<h2>Evidence</h2>
+<ul>
+<li><code>01_Wiki/polyglot-adr-rfc.md</code> — the RFC this handoff is based on
+</li>
+<li><code>01_Wiki/dotnet-agent-integration.md</code> — calls out the ADR gap explicitly
+</li>
+<li><code>01_Wiki/community-polyglot-agent-platform.md</code> — the community synthesis that identified the problem
+</li>
+<li><code>00_Raw/PoShWiKi/PoShWiKi.psm1</code> — PoShWiKi source (Tier-1 vs Tier-2 classification evidence)
+</li>
+<li><code>00_Raw/vulture-mcp/</code> — Rust source (Tier-0 inventory confirmation)
+</li>
+<li><code>02_System/audit-yanp.ps1</code> — YANP auditor (Option B extensibility check)
+</li>
+<li><code>02_System/run-maintenance.ps1</code> — CI backbone (do not break)
+</li>
+</ul>
+<h2>Next Decision</h2>
+<p>After verification, one open question may need an editorial call rather than an evidence check:</p>
+<p>&gt; <strong>Does <code>00_Raw/workbench/</code> (TypeScript) belong in the tier model at all?</strong></p>
+<p>It is currently the Codex tool-runner runtime, not a persistent vault service. It may be better classified as <strong>development scaffolding</strong> — outside the production tier model — rather than forcing it into Tier-3 alongside Python ML pipelines. This decision shapes whether the ADR table has four rows or five.</p>
+<p>Record your recommendation in <code>## Codex Findings</code> before writing the final ADR note.</p>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a>
+</li>
+<li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>
+</li>
+<li><a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a>
+</li>
+<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>
+</li>
+<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
+</li>
+<li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
+<li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
+<li><a href="polyglot-adr-rfc.html" class="">polyglot-adr-rfc</a></li>
+<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
+<li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

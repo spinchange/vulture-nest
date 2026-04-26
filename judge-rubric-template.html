@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>judge-rubric-template</span>
     </nav>
 
@@ -440,7 +442,29 @@
 <p>&gt; <strong>Goal:</strong> Standardized scoring for agentic contributions to the vulture-nest. &gt; <strong>Pass Criteria:</strong> [Structural Integrity = 100%] AND [Weighted Total ≥ 85/100]</p>
 <h2>Dimension 1: Structural Integrity (BINARY)</h2>
 <p>*This dimension is handled by automation (audit-yanp.ps1). Any &#39;Fail&#39; here blocks the entire contribution.*</p>
-<p>| Criteria | Status | Notes | | :--- | :--- | :--- | | <strong>YANP Filename</strong> | [Pass/Fail] | lowercase-kebab-case.md | | <strong>Valid Frontmatter</strong> | [Pass/Fail] | Contains: title, author, date, status, type | | <strong>Unique Stem</strong> | [Pass/Fail] | No naming collisions in the vault |</p>
+<table>
+<thead><tr>
+<th>Criteria</th>
+<th>Status</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>YANP Filename</strong></td>
+<td>[Pass/Fail]</td>
+<td>lowercase-kebab-case.md</td>
+</tr>
+<tr>
+<td><strong>Valid Frontmatter</strong></td>
+<td>[Pass/Fail]</td>
+<td>Contains: title, author, date, status, type</td>
+</tr>
+<tr>
+<td><strong>Unique Stem</strong></td>
+<td>[Pass/Fail]</td>
+<td>No naming collisions in the vault</td>
+</tr>
+</tbody>
+</table>
 <h2>Dimension 2: Semantic Density (Weight: 40%)</h2>
 <p>*Handled by the LLM Judge.*</p>
 <ul>

@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Orchestration Tradeoffs: Swarm vs. ADK</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Orchestration Tradeoffs: Swarm vs. ADK</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Orchestration Tradeoffs: Swarm vs. ADK</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">swarm-vs-adk, agent-orchestration-comparison</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">swarm-vs-adk, agent-orchestration-comparison</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Orchestration Tradeoffs: Swarm vs. ADK</span></span>
       </div>
     </header>
 
@@ -444,7 +446,34 @@
         <h1>Orchestration Tradeoffs: Swarm vs. ADK</h1>
 <p>This comparison explores the philosophical and technical differences between <strong>OpenAI Swarm/Agents SDK</strong> and <strong>Google Agent Development Kit (ADK)</strong>, specifically in the context of <strong>Vault Maintenance</strong>.</p>
 <h2>Philosophy: Freedom vs. Control</h2>
-<p>| Feature | OpenAI Swarm / Agents SDK | Google ADK | | :--- | :--- | :--- | | <strong>Core Pattern</strong> | <strong>Handoffs</strong>: Dynamic routing where agents return the next agent. | <strong>Workflows</strong>: Deterministic control via Sequential, Parallel, and Loop agents. | | <strong>Orchestration</strong> | Decentralized: The active agent decides who is next. | Centralized: A &quot;Runner&quot; or &quot;Workflow Agent&quot; governs the execution flow. | | <strong>State</strong> | Lightweight/Stateless: The client/host manages conversation history. | Managed: Built-in support for Sessions, State, and long-term Memory. | | <strong>Primary Goal</strong> | <strong>Flexibility</strong>: Enabling agents to &quot;swarm&quot; around a problem. | <strong>Reliability</strong>: Ensuring complex tasks follow a predictable path. |</p>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>OpenAI Swarm / Agents SDK</th>
+<th>Google ADK</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Core Pattern</strong></td>
+<td><strong>Handoffs</strong>: Dynamic routing where agents return the next agent.</td>
+<td><strong>Workflows</strong>: Deterministic control via Sequential, Parallel, and Loop agents.</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Decentralized: The active agent decides who is next.</td>
+<td>Centralized: A &quot;Runner&quot; or &quot;Workflow Agent&quot; governs the execution flow.</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>Lightweight/Stateless: The client/host manages conversation history.</td>
+<td>Managed: Built-in support for Sessions, State, and long-term Memory.</td>
+</tr>
+<tr>
+<td><strong>Primary Goal</strong></td>
+<td><strong>Flexibility</strong>: Enabling agents to &quot;swarm&quot; around a problem.</td>
+<td><strong>Reliability</strong>: Ensuring complex tasks follow a predictable path.</td>
+</tr>
+</tbody>
+</table>
 <h2>Applicability to Vault Maintenance</h2>
 <h3>1. Ingestion (Predictable Pipeline)</h3>
 <ul>

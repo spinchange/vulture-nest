@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>LM-Kit.NET</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">LM-Kit.NET</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">lm-kit, dotnet-llm-sdk</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LM-Kit.NET</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">lm-kit, dotnet-llm-sdk, lmkit-dotnet, lm-kit-inference</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
@@ -442,21 +444,134 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>LM-Kit.NET</h1>
-<p><strong>LM-Kit.NET</strong> is a high-performance SDK designed for integrating Large Language Models (LLMs) directly into .NET applications. It focuses on local execution and hardware acceleration.</p>
-<h2>Key Features</h2>
+<p><strong>LM-Kit.NET</strong> is a commercial SDK that wraps <code>llama.cpp</code> and exposes a .NET-native inference API for local GGUF model execution. It is the primary way to run LLMs entirely on-device within a C#/.NET application.</p>
+<h2>Position in the Tier Model</h2>
+<p>In the <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> tier hierarchy, LM-Kit.NET is the <strong>Tier-0→Tier-1 bridge</strong>: it brings Tier-0 inference (systems-level, hardware-accelerated model execution) into a Tier-1 C# API surface, without requiring a Python subprocess or a cloud endpoint.</p>
+<p>This means the full <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (Thought → Action → Observation) can run entirely within .NET:</p>
 <ul>
-<li><strong>Local Inference:</strong> Run models entirely on-device without cloud dependencies.
+<li><strong>Thought</strong> — LM-Kit.NET provides the inference
 </li>
-<li><strong>Hardware Acceleration:</strong> Optimized for CUDA, Metal, and DirectCompute.
+<li><strong>Action</strong> — <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> or <a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a> KernelFunction handles tool dispatch
 </li>
-<li><strong>Multi-Framework:</strong> Compatible with WPF, ASP.NET Core, and Console apps.
+<li><strong>Observation</strong> — <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> provides the memory read/write
 </li>
 </ul>
-<h2>Agentic Integration</h2>
-<p>LM-Kit provides the &quot;brains&quot; for .NET-based agents, allowing them to process natural language and generate responses while maintaining data privacy.</p>
+<h2>Hardware Acceleration</h2>
+<p>LM-Kit.NET delegates to the underlying <code>llama.cpp</code> back-end, so it inherits its hardware support:</p>
+<table>
+<thead><tr>
+<th>Backend</th>
+<th>Hardware</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td>CUDA</td>
+<td>NVIDIA GPU</td>
+<td>Highest throughput; requires CUDA toolkit</td>
+</tr>
+<tr>
+<td>Metal</td>
+<td>Apple Silicon</td>
+<td>Unified memory advantage on M-series</td>
+</tr>
+<tr>
+<td>DirectML</td>
+<td>Any DX12 GPU</td>
+<td>Windows-native; covers AMD, Intel, NVIDIA</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>x64 / ARM64</td>
+<td>Fallback; adequate for small models</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> for the selection strategy.</p>
+<h2>Core API Patterns</h2>
+<h3>Text Completion</h3>
+<pre><code>using LMKit.TextGeneration;
+
+var model = new LLM(&quot;phi-3.5-mini.gguf&quot;);
+var completer = new SingleTurnCompletion(model);
+
+string result = await completer.SubmitAsync(&quot;Summarize this note in one sentence:&quot;);
+Console.WriteLine(result);</code></pre>
+<h3>Chat Completion (Multi-Turn)</h3>
+<p>The multi-turn API maintains conversation state internally, making it idiomatic for the <a href="react-pattern.html" class="wikilink">react-pattern</a> loop where each Observation feeds back as a new user message:</p>
+<pre><code>var chat = new MultiTurnConversation(model, systemPrompt: &quot;You are a vault assistant.&quot;);
+string reply = await chat.SubmitAsync(&quot;What is the current vault health score?&quot;);</code></pre>
+<h3>Embedding Generation</h3>
+<pre><code>var embedder = new TextEmbedding(model);
+float[] vector = await embedder.EmbedAsync(&quot;agent memory substrate&quot;);</code></pre>
+<p>Embeddings feed into vector stores for semantic retrieval — the inference layer of the <a href="memory-spectrum.html" class="wikilink">memory-spectrum</a>.</p>
+<h2>Integration with Semantic Kernel</h2>
+<p>LM-Kit.NET can register as an <code>IChatCompletionService</code> in <a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>, giving SK access to local inference through the same plugin API used with cloud models:</p>
+<pre><code>var kernel = Kernel.CreateBuilder()
+    .AddLMKitChatCompletion(modelPath: &quot;phi-3.5-mini.gguf&quot;)
+    .Build();
+
+kernel.Plugins.AddFromType&lt;VaultPlugin&gt;();
+var result = await kernel.InvokePromptAsync(&quot;List orphaned notes.&quot;);</code></pre>
+<p>This keeps the orchestration layer (SK) decoupled from the inference provider — swapping LM-Kit.NET for a cloud LLM requires only the builder line.</p>
+<h2>Relationship to Foundry Local</h2>
+<p>Both LM-Kit.NET and <a href="foundry-local.html" class="wikilink">foundry-local</a> serve local .NET inference, but at different abstraction levels:</p>
+<table>
+<thead><tr>
+<th></th>
+<th>LM-Kit.NET</th>
+<th>Foundry Local</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Model format</strong></td>
+<td>GGUF (llama.cpp)</td>
+<td>ONNX (optimized for NPU/DirectML)</td>
+</tr>
+<tr>
+<td><strong>API style</strong></td>
+<td>.NET SDK, typed objects</td>
+<td>OpenAI-compatible REST (drop-in)</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Embedding LLM directly in a .NET service</td>
+<td>Local service shared across apps</td>
+</tr>
+<tr>
+<td><strong>Hardware bias</strong></td>
+<td>GPU/CPU via llama.cpp</td>
+<td>NPU/DirectML (Microsoft stack)</td>
+</tr>
+</tbody>
+</table>
+<p>Use LM-Kit.NET when the model is embedded inside a single .NET process. Use Foundry Local when you want an OpenAI-compatible local endpoint shared across multiple tools.</p>
+<h2>Agent Design Guidance</h2>
+<ul>
+<li><strong>Privacy requirement</strong> — LM-Kit.NET runs fully on-device; no tokens leave the machine.
+</li>
+<li><strong>Latency budget</strong> — For tools needing sub-second inference, choose a 3B–7B GGUF model quantized to Q4; larger models trade latency for quality.
+</li>
+<li><strong>Concurrency</strong> — <code>llama.cpp</code> is single-session by default. For multi-turn concurrent agents, run one <code>LLM</code> instance per session or serialize requests.
+</li>
+<li><strong>Context window</strong> — GGUF models have fixed context; use <a href="agentic-rag.html" class="wikilink">agentic-rag</a> or sliding window strategies for long sessions.
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
+<li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>
+</li>
+<li><a href="foundry-local.html" class="wikilink">foundry-local</a>
+</li>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
+</li>
+<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>
+</li>
+<li><a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a>
+</li>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>
+</li>
+<li><a href="memory-spectrum.html" class="wikilink">memory-spectrum</a>
+</li>
 <li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
 </li>
 <li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
@@ -475,12 +590,25 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
 <li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="agentic-rag.html" class="">agentic-rag</a></li>
+<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
 <li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="foundry-local.html" class="">foundry-local</a></li>
+<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
+<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
+<li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
+<li><a href="react-pattern.html" class="">react-pattern</a></li>
 </ul>
           </div>
         </div>

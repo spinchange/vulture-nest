@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Function Calling</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Function Calling</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Function Calling</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">native-tool-use, json-mode-actions</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">native-tool-use, json-mode-actions</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Function Calling</span></span>
       </div>
     </header>
 
@@ -444,7 +446,35 @@
         <h1>Function Calling</h1>
 <p><strong>Function Calling</strong> is a native model capability where an LLM is fine-tuned to recognize tool definitions and generate structured output (usually JSON) that can be directly executed by an external system.</p>
 <h2>Comparison: ReAct vs. Function Calling</h2>
-<p>| Feature | <a href="react-pattern.html" class="wikilink">ReAct</a> | Function Calling | |---|---|---| | <strong>Mechanism</strong> | Guided Prompting | Native Fine-Tuning | | <strong>Output</strong> | Text (Reasoning + JSON) | Structured JSON (directly) | | <strong>Precision</strong> | Lower (requires parsing) | Higher (consistent format) | | <strong>Learning</strong> | Few-Shot Examples | Learned Behavior |</p>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>[[react-pattern</th>
+<th>ReAct]]</th>
+<th>Function Calling</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Mechanism</strong></td>
+<td>Guided Prompting</td>
+<td>Native Fine-Tuning</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Text (Reasoning + JSON)</td>
+<td>Structured JSON (directly)</td>
+</tr>
+<tr>
+<td><strong>Precision</strong></td>
+<td>Lower (requires parsing)</td>
+<td>Higher (consistent format)</td>
+</tr>
+<tr>
+<td><strong>Learning</strong></td>
+<td>Few-Shot Examples</td>
+<td>Learned Behavior</td>
+</tr>
+</tbody>
+</table>
 <h2>Workflow</h2>
 <ol>
 <li><strong>Definitions</strong>: The system provides a list of functions with JSON Schemas.

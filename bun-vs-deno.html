@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Bun vs Deno</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Bun vs Deno</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Bun vs Deno</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">modern-js-runtimes, typescript-scripting</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">modern-js-runtimes, typescript-scripting</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Bun vs Deno</span></span>
       </div>
     </header>
 
@@ -444,7 +446,39 @@
         <h1>Bun vs Deno</h1>
 <p>For modern desktop and system scripting, <strong>Bun</strong> and <strong>Deno</strong> have largely superseded Node.js for new projects due to their native TypeScript support and improved developer experience.</p>
 <h2>Comparison Table</h2>
-<p>| Feature | Deno | Bun | | :--- | :--- | :--- | | <strong>Security</strong> | Sandbox (Permissions required) | Standard (Same as Node) | | <strong>Speed</strong> | Fast (V8) | Ultra-Fast (JavaScriptCore) | | <strong>Shell</strong> | <code>Deno.Command</code> | <code>Bun.$</code> (Native Shell) | | <strong>Compatibility</strong> | High (supports most NPM) | Near-Perfect (Drop-in Node replacement) | | <strong>Philosophy</strong> | Explicit &amp; Secure | Fast &amp; All-in-One |</p>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>Deno</th>
+<th>Bun</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Security</strong></td>
+<td>Sandbox (Permissions required)</td>
+<td>Standard (Same as Node)</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Fast (V8)</td>
+<td>Ultra-Fast (JavaScriptCore)</td>
+</tr>
+<tr>
+<td><strong>Shell</strong></td>
+<td><code>Deno.Command</code></td>
+<td><code>Bun.$</code> (Native Shell)</td>
+</tr>
+<tr>
+<td><strong>Compatibility</strong></td>
+<td>High (supports most NPM)</td>
+<td>Near-Perfect (Drop-in Node replacement)</td>
+</tr>
+<tr>
+<td><strong>Philosophy</strong></td>
+<td>Explicit &amp; Secure</td>
+<td>Fast &amp; All-in-One</td>
+</tr>
+</tbody>
+</table>
 <h2>When to use Deno</h2>
 <p>Use <strong>Deno</strong> if security and zero-config are your priorities. It is excellent for &quot;utility&quot; scripts that you want to share with others, as the permission system ensures the script won&#39;t do anything malicious without consent.</p>
 <h2>When to use Bun</h2>

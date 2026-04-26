@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Alternative Agent Frameworks</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Alternative Agent Frameworks</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Alternative Agent Frameworks</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">crewai, microsoft-autogen, multi-agent-comparison</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">crewai, microsoft-autogen, multi-agent-comparison</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Alternative Agent Frameworks</span></span>
       </div>
     </header>
 
@@ -464,7 +466,29 @@
 </li>
 </ul>
 <h2>3. Comparative Summary</h2>
-<p>| Feature | CrewAI | Microsoft AutoGen | | :--- | :--- | :--- | | <strong>Orchestration</strong> | Role-based / Top-down | Conversation-driven / Peer-to-peer | | <strong>Flexibility</strong> | Lower (Structured) | Higher (Emergent) | | <strong>Execution</strong> | Relies on external tools | Native (Docker/Jupyter) |</p>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>CrewAI</th>
+<th>Microsoft AutoGen</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Role-based / Top-down</td>
+<td>Conversation-driven / Peer-to-peer</td>
+</tr>
+<tr>
+<td><strong>Flexibility</strong></td>
+<td>Lower (Structured)</td>
+<td>Higher (Emergent)</td>
+</tr>
+<tr>
+<td><strong>Execution</strong></td>
+<td>Relies on external tools</td>
+<td>Native (Docker/Jupyter)</td>
+</tr>
+</tbody>
+</table>
 <h2>4. Trend: Hybrid Architectures</h2>
 <p>Modern architectures often use AutoGen as a high-level &quot;Planner&quot; that dispatches structured sub-tasks to specialized CrewAI &quot;Sub-crews&quot; for reliable execution.</p>
 <hr>
