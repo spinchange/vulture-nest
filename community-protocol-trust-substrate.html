@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Community — The Protocol Trust Substrate</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Community — The Protocol Trust Substrate</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">trust-substrate, type-safe-agents, mcp-rust-community, capability-governance</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Community — The Protocol Trust Substrate</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
       </div>
     </header>
@@ -453,6 +453,10 @@
 <ul>
 <li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>: MCP and A2A — the emerging standards that formalize what agents are *allowed* to communicate.
 </li>
+<li><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>: The full A2A technical model — Agent Card, Skill, Task lifecycle, Part types, and authentication. The peer-layer complement to the MCP nodes below.
+</li>
+<li><a href="a2a-capability-lattice.html" class="wikilink">a2a-capability-lattice</a>: Extends the capability lattice to the A2A agent layer, closing the trust substrate: MCP lattice (tool layer) + A2A lattice (agent layer) = complete static analysis of a multi-agent workflow.
+</li>
 <li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>: The critical intersection node — Rust implementing MCP servers at Tier-0 performance.
 </li>
 <li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: The .NET entry point; brings enterprise-grade DI and lifetime management to the trust layer.
@@ -469,12 +473,16 @@
 </li>
 <li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>: Higher-level frameworks that must eventually rest on this substrate.
 </li>
+<li><a href="session-types.html" class="wikilink">session-types</a>: The protocol-sequence complement to capability sets — proves tools are used in the correct order, not just that they exist.
+</li>
 </ul>
 <h2>Next-Gen Research Path</h2>
-<p>The frontier is a <strong>Capability Lattice</strong> — a formal mapping between MCP tool manifests and Rust/C# type signatures. If an MCP server&#39;s manifest is a type (a set of callable operations), and a client&#39;s permitted invocations are a type (a subset of that set), then composing two agents is a type-level operation (intersection of capability sets). This would enable *static analysis of multi-agent workflows* before deployment: &quot;Does this orchestration transitively grant agent B access to tools it shouldn&#39;t have?&quot; answered by a type checker, not a security audit after the fact. The <a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a> hosting model and <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> provide the .NET-side scaffolding; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> provides the performance-critical server implementation. The missing piece is the formal schema linking them.</p>
+<p>The frontier is a <strong>Capability Lattice</strong> — a formal mapping between MCP tool manifests and Rust/C# type signatures. If an MCP server&#39;s manifest is a type (a set of callable operations), and a client&#39;s permitted invocations are a type (a subset of that set), then composing two agents is a type-level operation (intersection of capability sets). This would enable *static analysis of multi-agent workflows* before deployment: &quot;Does this orchestration transitively grant agent B access to tools it shouldn&#39;t have?&quot; answered by a type checker, not a security audit after the fact. The <a href="aspnet-core-basics.html" class="wikilink">aspnet-core-basics</a> hosting model and <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> provide the .NET-side scaffolding; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> provides the performance-critical server implementation. The formal schema is now specified in <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>.</p>
 <hr>
 <h2>References</h2>
 <ul>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+</li>
 <li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
 </li>
 <li><a href="rust-moc.html" class="wikilink">rust-moc</a>
@@ -502,14 +510,28 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="a2a-capability-lattice.html" class="">a2a-capability-lattice</a></li>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
+<li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
+<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="session-types.html" class="">session-types</a></li>
+<li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="a2a-capability-lattice.html" class="">a2a-capability-lattice</a></li>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="aspnet-core-basics.html" class="">aspnet-core-basics</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
@@ -526,6 +548,7 @@
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 <li><a href="rust-moc.html" class="">rust-moc</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="session-types.html" class="">session-types</a></li>
 </ul>
           </div>
         </div>

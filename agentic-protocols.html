@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agentic Protocols</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic Protocols</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp, a2a, agent-interoperability</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic Protocols</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
@@ -459,15 +459,26 @@
 </ul>
 <p>For a deep dive, see <strong><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a></strong>.</p>
 <h2>Agent-to-Agent (A2A)</h2>
-<p>Developed by Google, <strong>A2A</strong> focuses on the collaboration between different autonomous systems.</p>
+<p>Developed by Google and now governed by the <code>a2aproject</code> organization, <strong>A2A</strong> is the peer-to-peer complement to MCP. Where MCP governs agent-to-tool communication, A2A governs agent-to-agent delegation and multi-turn collaboration between opaque, stateful agents.</p>
 <ul>
-<li><strong>Purpose:</strong> Standardizes how one agent requests help or hands off a task to another agent.
+<li><strong>Agent Card / Skill Model:</strong> Each agent publishes an <strong>Agent Card</strong> at <code>/.well-known/agent-card.json</code> declaring its identity, endpoints, authentication requirements, and a list of <strong>Skills</strong> — discrete advertised capabilities. The Agent Card is the A2A structural equivalent of an MCP server manifest; a Skill is the A2A equivalent of an MCP Tool.
 </li>
-<li><strong>Significance:</strong> Enables massive, distributed multi-agent swarms.
+<li><strong>Stateful Task Model:</strong> Interaction is built around a <strong>Task</strong> object with a defined lifecycle (<code>SUBMITTED → WORKING → COMPLETED / FAILED / INPUT_REQUIRED / AUTH_REQUIRED</code>). Tasks support multi-turn dialogue — the agent can pause and request additional input or credentials before resuming.
+</li>
+<li><strong>Transport Flexibility:</strong> Supports request/response (<code>SendMessage</code>), server-streaming SSE (<code>SendStreamingMessage</code>), and push notifications to a client-registered webhook for fully async delivery — all operating over the same JSON-RPC or gRPC bindings.
+</li>
+<li><strong>Authentication:</strong> Delegates entirely to OAuth 2.0 / OIDC. Auth schemes are declared in the Agent Card; credentials are acquired out-of-band and passed via HTTP headers. This makes A2A suitable for cross-organization agent federation.
+</li>
+<li><strong>Parts:</strong> Message content is expressed as typed <strong>Part</strong> objects — <code>TextPart</code>, <code>FilePart</code> (URL or inline bytes), <code>DataPart</code> (structured JSON) — with MIME type negotiation.
 </li>
 </ul>
+<p>For the full technical model, see <strong><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a></strong>. For the complementarity relationship with MCP, see <strong><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a></strong>.</p>
 <h2>See Also</h2>
 <ul>
+<li><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>
+</li>
+<li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a>
+</li>
 <li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
 </li>
 <li><a href="agent-tools.html" class="wikilink">agent-tools</a>
@@ -487,7 +498,11 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
@@ -495,6 +510,8 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>

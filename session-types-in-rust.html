@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session Types in Rust — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Session Types in Rust</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Session Types in Rust</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types-rust, phantom-session, dialectic-crate, session-types-crate</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types in Rust</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Session Types in Rust</h1>
+<p><strong>Prerequisite:</strong> <a href="session-types.html" class="wikilink">session-types</a> for theory, <a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a> for the Rust type machinery.</p>
+<p>Rust has no native linear type system. It has an <strong>affine</strong> type system: ownership enforces &quot;use at most once&quot; but permits silent drop. Session types require a stricter discipline. This note covers how Rust encodes session types despite this limitation, what the encoding can and cannot enforce, and where the remaining gap lies.</p>
+<hr>
+<h2>1. The Phantom Type Simulation</h2>
+<p>The canonical Rust approach encodes the current protocol state as a phantom type parameter on a channel wrapper struct. Crucially, every operation that advances the session <strong>consumes <code>self</code></strong> (takes ownership) and returns a *new channel value* whose phantom type has been updated to reflect the next protocol state.</p>
+<h3>The mechanism</h3>
+<pre><code>use std::marker::PhantomData;
+
+// The channel wrapper. `S` is the current session type — it is never stored,
+// only used as a compile-time proof that the channel is in state S.
+struct Chan&lt;S&gt; {
+    inner: /* underlying transport */,
+    _state: PhantomData&lt;S&gt;,
+}
+
+// Session type tokens — zero-sized types used as state markers
+struct Send&lt;T, S&gt;(PhantomData&lt;(T, S)&gt;);  // !T.S
+struct Recv&lt;T, S&gt;(PhantomData&lt;(T, S)&gt;);  // ?T.S
+struct End;</code></pre>
+<p>Operations consume the current channel and produce the next one:</p>
+<pre><code>impl&lt;T: Serialize, S&gt; Chan&lt;Send&lt;T, S&gt;&gt; {
+    fn send(self, value: T) -&gt; Chan&lt;S&gt; {
+        // serialize value and write to transport
+        Chan { inner: self.inner, _state: PhantomData }
+    }
+}
+
+impl&lt;T: DeserializeOwned, S&gt; Chan&lt;Recv&lt;T, S&gt;&gt; {
+    fn recv(self) -&gt; (T, Chan&lt;S&gt;) {
+        // read from transport and deserialize
+        let value: T = /* ... */;
+        (value, Chan { inner: self.inner, _state: PhantomData })
+    }
+}
+
+impl Chan&lt;End&gt; {
+    fn close(self) { /* send close frame, drop transport */ }
+}</code></pre>
+<p>The key property: <code>Chan&lt;Send&lt;T, S&gt;&gt;</code> only has a <code>send</code> method. Calling <code>recv</code> or <code>close</code> on it is a compile-time type error. After <code>send</code>, the channel becomes <code>Chan&lt;S&gt;</code> — the next state. The type checker enforces the sequence.</p>
+<h3>Why <code>self</code> (not <code>&amp;self</code>)</h3>
+<p>Taking <code>self</code> by value is what makes the session linear-ish. Once you call <code>.send(v)</code>, the <code>Chan&lt;Send&lt;T,S&gt;&gt;</code> is moved out of your hands. You cannot call <code>.send</code> again on the original — Rust&#39;s ownership prevents it. This is the affine type system enforcing the &quot;at most once&quot; constraint automatically.</p>
+<hr>
+<h2>2. The <code>session-types</code> Crate</h2>
+<p>The canonical Rust implementation of Honda&#39;s binary session types. Published as <code>session-types</code> on crates.io; the academic reference is &quot;Session Types for Rust&quot; (Jespersen, Munksgaard, Larsen, 2015).</p>
+<h3>Basic API</h3>
+<pre><code>use session_types::*;
+
+// Define the session type aliases
+type Client = Send&lt;String, Recv&lt;i64, Eps&gt;&gt;;  // !String.?i64.End
+type Server = &lt;Client as HasDual&gt;::Dual;      // ?String.!i64.End
+
+fn client(c: Chan&lt;(), Client&gt;) {
+    let c = c.send(&quot;hello&quot;.to_string());   // Chan&lt;(), Recv&lt;i64, Eps&gt;&gt;
+    let (n, c) = c.recv();                 // Chan&lt;(), Eps&gt;
+    c.close();
+    println!(&quot;Got: {}&quot;, n);
+}
+
+fn server(c: Chan&lt;(), Server&gt;) {
+    let (s, c) = c.recv();                 // Chan&lt;(), Send&lt;i64, Eps&gt;&gt;
+    let c = c.send(s.len() as i64);        // Chan&lt;(), Eps&gt;
+    c.close();
+}
+
+fn main() {
+    let (client_chan, server_chan) = session_channel();
+    std::thread::spawn(move || server(server_chan));
+    client(client_chan);
+}</code></pre>
+<p><code>session_channel()</code> produces a pair <code>(Chan&lt;(), S&gt;, Chan&lt;(), S::Dual&gt;)</code> — the duality constraint is enforced at construction. You cannot create a mismatched channel pair.</p>
+<h3>Branching</h3>
+<pre><code>type WithChoice = Choose&lt;Send&lt;String, Eps&gt;, Send&lt;i64, Eps&gt;&gt;;  // select string path or int path
+type WithOffer  = Offer&lt;Recv&lt;String, Eps&gt;, Recv&lt;i64, Eps&gt;&gt;;   // offer: other party picks
+
+fn chooser(c: Chan&lt;(), WithChoice&gt;) {
+    // pick the left branch
+    let c = c.sel1();   // Chan&lt;(), Send&lt;String, Eps&gt;&gt;
+    c.send(&quot;left&quot;.to_string()).close();
+}
+
+fn offerer(c: Chan&lt;(), WithOffer&gt;) {
+    offer!(c, {
+        String =&gt; { let (s, c) = c.recv(); c.close(); println!(&quot;String: {s}&quot;); }
+        i64    =&gt; { let (n, c) = c.recv(); c.close(); println!(&quot;i64: {n}&quot;); }
+    });
+}</code></pre>
+<hr>
+<h2>3. The <code>dialectic</code> Crate</h2>
+<p>A more ergonomic, modern alternative with async support via Tokio. Written by David Thrane Christiansen. The type-level protocol description is expressed as Rust types rather than explicit state machines.</p>
+<h3>Differences from <code>session-types</code></h3>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th><code>session-types</code></th>
+<th><code>dialectic</code></th>
+</tr></thead><tbody>
+<tr>
+<td>Async</td>
+<td>No (blocking channels)</td>
+<td>Yes (Tokio)</td>
+</tr>
+<tr>
+<td>Ergonomics</td>
+<td>Explicit type aliases, verbose</td>
+<td>Procedural macros, terser</td>
+</tr>
+<tr>
+<td>Recursive types</td>
+<td>Supported</td>
+<td>Supported</td>
+</tr>
+<tr>
+<td>Branching syntax</td>
+<td><code>choose!</code> / <code>offer!</code> macros</td>
+<td><code>choose!</code> / <code>offer!</code> macros, improved</td>
+</tr>
+<tr>
+<td>Production readiness</td>
+<td>Academic/experimental</td>
+<td>More actively maintained</td>
+</tr>
+</tbody>
+</table>
+<h3>Example</h3>
+<pre><code>use dialectic::prelude::*;
+
+// Protocol definition via type alias
+type EchoOnce = Session! {
+    send String;
+    recv String;
+};
+
+async fn echo_client(chan: Chan&lt;EchoOnce, impl Transmit&lt;String&gt; + Receive&lt;String&gt;&gt;) {
+    let chan = chan.send(&quot;hello&quot;.to_string()).await.unwrap();
+    let (msg, chan) = chan.recv().await.unwrap();
+    chan.close();
+    println!(&quot;Echo: {msg}&quot;);
+}</code></pre>
+<p>The <code>Session! { ... }</code> macro translates a readable protocol description into the phantom-type encoding.</p>
+<hr>
+<h2>4. The &quot;Must Complete&quot; Limitation</h2>
+<p>Rust&#39;s affine type system enforces &quot;at most once&quot; — but session types need &quot;exactly once.&quot; The gap: <strong>a <code>Chan&lt;S&gt;</code> can be dropped mid-session without a compile error.</strong></p>
+<pre><code>fn incomplete_client(c: Chan&lt;Send&lt;String, Recv&lt;i64, Eps&gt;&gt;&gt;) {
+    let _c = c.send(&quot;hello&quot;.to_string());
+    // _c goes out of scope here — Recv&lt;i64, Eps&gt; never consumed
+    // Rust: fine. Real session type: type error.
+}</code></pre>
+<p>The underlying transport connection may now be in an undefined state on the server side.</p>
+<h3>The standard workaround: panicking <code>Drop</code></h3>
+<p>Both <code>session-types</code> and <code>dialectic</code> implement <code>Drop</code> on the channel type in a way that panics if the session is dropped in any state other than <code>Eps</code>/<code>End</code>:</p>
+<pre><code>impl&lt;S&gt; Drop for Chan&lt;S&gt; {
+    fn drop(&amp;mut self) {
+        // Check if S == Eps (the only valid terminal state).
+        // If not, panic — someone dropped the channel mid-session.
+        if std::any::TypeId::of::&lt;S&gt;() != std::any::TypeId::of::&lt;Eps&gt;() {
+            panic!(&quot;Session channel dropped in non-terminal state&quot;);
+        }
+    }
+}</code></pre>
+<p>This converts the type-level failure into a runtime panic — better than a silent bug, worse than a compile error. The theoretical gap between affine and linear types cannot be fully closed without language-level linear type support.</p>
+<hr>
+<h2>5. Putting It Together: A Typed MCP Initialization Handshake</h2>
+<p>The following sketches what an MCP client SDK would look like if it used session types. This is illustrative — a complete implementation is specified in <a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>.</p>
+<pre><code>// Session type aliases for MCP initialization
+type McpInit = Send&lt;Initialize, Recv&lt;InitializeResult, Send&lt;Initialized, McpActive&gt;&gt;&gt;;
+
+// McpActive is recursive: loop over tool calls and notifications until End
+type McpActive = rec!(
+    Offer&lt;
+        Recv&lt;ToolCall, Send&lt;ToolResult, Var&lt;Z&gt;&gt;&gt;,  // server sends tool call, client responds
+        End                                         // close the session
+    &gt;
+);
+
+// A function that can only be called AFTER initialization is complete
+// — because it takes `Chan&lt;McpActive&gt;`, not `Chan&lt;McpInit&gt;`
+async fn call_tool(
+    chan: Chan&lt;McpActive&gt;,
+    call: ToolCall,
+) -&gt; (ToolResult, Chan&lt;McpActive&gt;) {
+    // ...
+}
+
+// Calling call_tool with a Chan&lt;McpInit&gt; is a type error — enforced at compile time.</code></pre>
+<hr>
+<h2>6. Summary</h2>
+<table>
+<thead><tr>
+<th>Property</th>
+<th>What Rust enforces</th>
+<th>What remains a gap</th>
+</tr></thead><tbody>
+<tr>
+<td>Correct message type at each step</td>
+<td>Yes — phantom type on channel</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Correct sequence of send/recv</td>
+<td>Yes — consuming <code>self</code> prevents reuse</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Duality between two ends</td>
+<td>Yes — <code>session_channel()</code> enforces it</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Protocol must be completed</td>
+<td>No — <code>Drop</code> panic is runtime, not compile</td>
+<td>Requires linear types</td>
+</tr>
+<tr>
+<td>Async protocol execution</td>
+<td>Yes (via <code>dialectic</code>)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Session types in Rust provide strong, compile-time protocol conformance with one known gap: incomplete sessions fail at runtime via panic rather than at compile time. For most agent infrastructure purposes, the compile-time guarantees are the valuable part — the runtime panic is still a significant improvement over silent protocol violations.</p>
+<hr>
+<h2>References</h2>
+<ul>
+<li>Jespersen, T.B.L., Munksgaard, P., Larsen, K.F. (2015). &quot;Session Types for Rust.&quot; 11th ACM SIGPLAN Workshop on Generic Programming.
+</li>
+<li>Christiansen, D.T. <code>dialectic</code> crate documentation: docs.rs/dialectic.
+</li>
+<li><code>session-types</code> crate: crates.io/crates/session-types.
+</li>
+<li><a href="session-types.html" class="wikilink">session-types</a>
+</li>
+<li><a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>
+</li>
+<li><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a>
+</li>
+<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="session-types.html" class="">session-types</a></li>
+<li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
+<li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="session-types.html" class="">session-types</a></li>
+<li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

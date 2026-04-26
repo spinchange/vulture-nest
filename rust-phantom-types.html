@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rust Phantom Types — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Rust Phantom Types</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Rust Phantom Types</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">phantom-data, rust-type-state, type-level-state-machine</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Rust Phantom Types</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Rust Phantom Types</h1>
+<p>A phantom type is a type parameter that appears in a struct&#39;s generic parameter list but not in any of its fields. The compiler erases it at runtime — it costs nothing — yet it carries type-system information that constrains what operations are legal.</p>
+<p>The standard library mechanism is <code>std::marker::PhantomData&lt;T&gt;</code>.</p>
+<hr>
+<h2><code>PhantomData&lt;T&gt;</code></h2>
+<pre><code>use std::marker::PhantomData;
+
+struct Tagged&lt;T&gt; {
+    value: i64,
+    _tag: PhantomData&lt;T&gt;,  // zero-sized; erased at runtime
+}</code></pre>
+<p><code>PhantomData&lt;T&gt;</code> is a zero-sized type (ZST). It has no runtime representation. Its sole purpose is to make the compiler treat <code>Tagged&lt;T&gt;</code> as if it &quot;contains&quot; a <code>T</code>, which has three concrete effects:</p>
+<ol>
+<li><strong>Silences the dead-code warning.</strong> Without <code>PhantomData</code>, Rust warns that <code>T</code> is unused. With it, <code>T</code> is considered used.
+</li>
+<li><strong>Participates in drop checking.</strong> If <code>T</code> has a destructor, the compiler may require that <code>T</code> outlives the struct. <code>PhantomData&lt;T&gt;</code> opts the struct into that analysis.
+</li>
+<li><strong>Determines variance.</strong> See &#167;Variance below.
+</li>
+</ol>
+<hr>
+<h2>Type-Level State Machines</h2>
+<p>The primary application. A struct carries a phantom type parameter that encodes its current state. Methods consume <code>self</code> (not <code>&amp;self</code>) and return <code>Self</code> in the next state, making invalid transitions a compile-time error.</p>
+<pre><code>use std::marker::PhantomData;
+
+// State tokens — never instantiated, only used as type parameters
+struct Unconfirmed;
+struct Confirmed;
+struct Shipped;
+
+struct Order&lt;State&gt; {
+    id: u64,
+    items: Vec&lt;String&gt;,
+    _state: PhantomData&lt;State&gt;,
+}
+
+impl Order&lt;Unconfirmed&gt; {
+    pub fn new(id: u64, items: Vec&lt;String&gt;) -&gt; Self {
+        Order { id, items, _state: PhantomData }
+    }
+
+    // Consuming self: the Unconfirmed order is gone after this call
+    pub fn confirm(self) -&gt; Order&lt;Confirmed&gt; {
+        Order { id: self.id, items: self.items, _state: PhantomData }
+    }
+}
+
+impl Order&lt;Confirmed&gt; {
+    pub fn ship(self) -&gt; Order&lt;Shipped&gt; {
+        Order { id: self.id, items: self.items, _state: PhantomData }
+    }
+}
+
+impl Order&lt;Shipped&gt; {
+    pub fn tracking_number(&amp;self) -&gt; String {
+        format!(&quot;TRK-{}&quot;, self.id)
+    }
+}</code></pre>
+<p><code>order.confirm().ship()</code> compiles. <code>order.ship()</code> (skipping confirmation) does not — <code>Order&lt;Unconfirmed&gt;</code> has no <code>ship</code> method. The invalid transition is caught <strong>before the program runs</strong>.</p>
+<p>The key insight: consuming <code>self</code> (not <code>&amp;self</code>) ensures the old state is gone. The borrow checker enforces that you cannot use an <code>Order&lt;Unconfirmed&gt;</code> after calling <code>.confirm()</code> on it.</p>
+<h3>Builder Pattern Application</h3>
+<p>The same technique enforces required fields before <code>.build()</code> compiles:</p>
+<pre><code>struct Missing;
+struct Present;
+
+struct QueryBuilder&lt;HasTable, HasLimit&gt; {
+    table: Option&lt;String&gt;,
+    limit: Option&lt;usize&gt;,
+    _markers: PhantomData&lt;(HasTable, HasLimit)&gt;,
+}
+
+impl QueryBuilder&lt;Missing, Missing&gt; {
+    pub fn new() -&gt; Self {
+        QueryBuilder { table: None, limit: None, _markers: PhantomData }
+    }
+}
+
+impl&lt;L&gt; QueryBuilder&lt;Missing, L&gt; {
+    pub fn table(self, name: &amp;str) -&gt; QueryBuilder&lt;Present, L&gt; {
+        QueryBuilder { table: Some(name.to_string()), limit: self.limit, _markers: PhantomData }
+    }
+}
+
+impl&lt;T&gt; QueryBuilder&lt;T, Missing&gt; {
+    pub fn limit(self, n: usize) -&gt; QueryBuilder&lt;T, Present&gt; {
+        QueryBuilder { table: self.table, limit: Some(n), _markers: PhantomData }
+    }
+}
+
+// build() only exists when both are Present
+impl QueryBuilder&lt;Present, Present&gt; {
+    pub fn build(self) -&gt; String {
+        format!(&quot;SELECT * FROM {} LIMIT {}&quot;, self.table.unwrap(), self.limit.unwrap())
+    }
+}</code></pre>
+<p>Calling <code>.build()</code> on a builder that is missing either field is a compile-time error.</p>
+<hr>
+<h2>Capability Encoding</h2>
+<p><code>PhantomData</code> is the mechanism behind the <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4 type-level delegation model. An agent struct carries a phantom capability set:</p>
+<pre><code>use std::marker::PhantomData;
+
+// Capability tokens
+struct CanRead;
+struct CanWrite;
+struct CanReadWrite;  // or use trait intersection — see capability-lattice-spec &#167;4.2
+
+struct Agent&lt;Caps&gt; {
+    id: String,
+    _caps: PhantomData&lt;Caps&gt;,
+}
+
+trait HasCaps&lt;C&gt; {}
+impl HasCaps&lt;CanRead&gt; for Agent&lt;CanRead&gt; {}
+impl HasCaps&lt;CanRead&gt; for Agent&lt;CanReadWrite&gt; {}
+impl HasCaps&lt;CanWrite&gt; for Agent&lt;CanWrite&gt; {}
+impl HasCaps&lt;CanWrite&gt; for Agent&lt;CanReadWrite&gt; {}
+
+fn read_protected_resource&lt;A: HasCaps&lt;CanRead&gt;&gt;(agent: &amp;A) {
+    // Only callable if the agent&#39;s phantom type satisfies HasCaps&lt;CanRead&gt;
+}</code></pre>
+<p>Attempting to call <code>read_protected_resource</code> with an <code>Agent&lt;CanWrite&gt;</code> is a compile error. The permission boundary is encoded in the type — no runtime check is needed. See <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4.3 for the full delegation formalism.</p>
+<hr>
+<h2>Variance</h2>
+<p>Variance describes how generic type relationships propagate through container types. It matters when you have subtyping relationships (primarily lifetime subtyping in Rust).</p>
+<table>
+<thead><tr>
+<th><code>PhantomData</code> form</th>
+<th>Variance in <code>T</code></th>
+<th>Use when</th>
+</tr></thead><tbody>
+<tr>
+<td><code>PhantomData&lt;T&gt;</code></td>
+<td>Covariant</td>
+<td>Struct logically *owns* or *produces* <code>T</code></td>
+</tr>
+<tr>
+<td><code>PhantomData&lt;fn(T)&gt;</code></td>
+<td>Contravariant</td>
+<td>Struct logically *consumes* <code>T</code></td>
+</tr>
+<tr>
+<td><code>PhantomData&lt;fn(T) -&gt; T&gt;</code></td>
+<td>Invariant</td>
+<td>Struct both produces and consumes <code>T</code></td>
+</tr>
+<tr>
+<td><code>PhantomData&lt;*mut T&gt;</code></td>
+<td>Invariant</td>
+<td>Raw pointer semantics</td>
+</tr>
+<tr>
+<td><code>PhantomData&lt;*const T&gt;</code></td>
+<td>Covariant</td>
+<td>Same as owned</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Covariance</strong> (<code>PhantomData&lt;T&gt;</code>): If <code>&#39;a: &#39;b</code> (lifetime <code>&#39;a</code> outlives <code>&#39;b</code>), then <code>Tagged&lt;&amp;&#39;a T&gt;</code> can be used where <code>Tagged&lt;&amp;&#39;b T&gt;</code> is expected. This is what you want when the struct acts as a container.</p>
+<p><strong>Invariance</strong> (<code>PhantomData&lt;*mut T&gt;</code>): No substitution is allowed. Required when the struct can both read and write through <code>T</code> — otherwise unsound code is possible. The Rustonomicon documents the exact soundness rules.</p>
+<p>For state-machine phantoms (type tokens like <code>Unconfirmed</code>/<code>Confirmed</code> with no lifetime), variance is irrelevant — the tokens have no subtypes.</p>
+<p><strong>Source:</strong> The Rustonomicon, &quot;PhantomData&quot; chapter (<code>doc.rust-lang.org/nomicon/phantom-data.html</code>).</p>
+<hr>
+<h2>Relationship to Other Notes</h2>
+<ul>
+<li><strong><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a></strong>: Prerequisites — generics and trait bounds.
+</li>
+<li><strong><a href="rust-type-level-programming.html" class="wikilink">rust-type-level-programming</a></strong>: Builds on phantom types; GATs, const generics, type-level computation.
+</li>
+<li><strong><a href="rust-affine-types.html" class="wikilink">rust-affine-types</a></strong>: Rust&#39;s ownership (move semantics) is the enforcement mechanism that makes the type-state pattern work — consuming <code>self</code> is an affine operation.
+</li>
+<li><strong><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a></strong>: Uses <code>PhantomData</code> and <code>HasCaps&lt;SharedCaps&gt;</code> as its implementation substrate (&#167;4).
+</li>
+<li><strong><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a></strong>: Session types in Rust are implemented via phantom types; see that handoff for the dependency.
+</li>
+</ul>
+<hr>
+<h2>References</h2>
+<ul>
+<li>The Rustonomicon — PhantomData: <code>doc.rust-lang.org/nomicon/phantom-data.html</code>
+</li>
+<li>The Rustonomicon — Variance: <code>doc.rust-lang.org/nomicon/subtyping.html</code>
+</li>
+<li>Jon Gjengset, *Rust for Rustaceans*, Chapter 3 (Designing Interfaces)
+</li>
+<li>Rust Reference — <code>std::marker::PhantomData</code>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
+<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

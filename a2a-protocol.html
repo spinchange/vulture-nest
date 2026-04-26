@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A2A Protocol — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>A2A Protocol</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">A2A Protocol</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26T00:00:00.000Z</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">A2A Protocol</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>A2A Protocol</h1>
+<p><strong>A2A (Agent-to-Agent)</strong> is an open protocol for peer-to-peer communication between autonomous AI agents. Originally developed by Google and now governed by the <code>a2aproject</code> organization, it handles the layer MCP does not: agent-to-agent delegation and multi-turn collaboration between opaque, stateful peers.</p>
+<p>Where MCP standardizes how an agent accesses tools and resources (agent ↔ tool), A2A standardizes how agents communicate with each other as peers (agent ↔ agent). Together they cover the full communication surface of a multi-agent system. See <a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a>.</p>
+<hr>
+<h2>Agent Card</h2>
+<p>The <strong>Agent Card</strong> is the A2A structural equivalent of an MCP server manifest. It is a JSON document discoverable at <code>https://{domain}/.well-known/agent-card.json</code> that advertises an agent&#39;s identity, capabilities, skills, and authentication requirements to prospective client agents.</p>
+<p>Core fields:</p>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Human-readable agent name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>What the agent does</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>string</td>
+<td>Agent version</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>object</td>
+<td>Organization / service provider details</td>
+</tr>
+<tr>
+<td><code>supported_interfaces</code></td>
+<td>array</td>
+<td>Protocol bindings and endpoint URLs</td>
+</tr>
+<tr>
+<td><code>capabilities</code></td>
+<td>object</td>
+<td>Boolean flags: <code>streaming</code>, <code>pushNotifications</code>, <code>extendedAgentCard</code></td>
+</tr>
+<tr>
+<td><code>security_schemes</code></td>
+<td>map</td>
+<td>OAuth2 flows, API Key, mTLS, OIDC declarations</td>
+</tr>
+<tr>
+<td><code>security</code></td>
+<td>array</td>
+<td>Which schemes are required to call this agent</td>
+</tr>
+<tr>
+<td><code>default_input_modes</code></td>
+<td>array</td>
+<td>Accepted MIME types for input Parts</td>
+</tr>
+<tr>
+<td><code>default_output_modes</code></td>
+<td>array</td>
+<td>Produced MIME types for output Parts</td>
+</tr>
+<tr>
+<td><code>skills</code></td>
+<td>array</td>
+<td><code>AgentSkill</code> objects (see below)</td>
+</tr>
+</tbody>
+</table>
+<p>Minimal example:</p>
+<pre><code>{
+  &quot;name&quot;: &quot;ResearchAgent&quot;,
+  &quot;description&quot;: &quot;Retrieves and summarizes documents from the web.&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;capabilities&quot;: { &quot;streaming&quot;: true, &quot;pushNotifications&quot;: false },
+  &quot;security_schemes&quot;: {
+    &quot;oauth2&quot;: {
+      &quot;type&quot;: &quot;oauth2&quot;,
+      &quot;flows&quot;: { &quot;clientCredentials&quot;: { &quot;tokenUrl&quot;: &quot;https://auth.example.com/token&quot; } }
+    }
+  },
+  &quot;security&quot;: [{ &quot;oauth2&quot;: [&quot;research:read&quot;] }],
+  &quot;default_input_modes&quot;: [&quot;text/plain&quot;],
+  &quot;default_output_modes&quot;: [&quot;text/plain&quot;, &quot;application/json&quot;],
+  &quot;skills&quot;: [
+    {
+      &quot;id&quot;: &quot;summarize_url&quot;,
+      &quot;name&quot;: &quot;Summarize URL&quot;,
+      &quot;description&quot;: &quot;Fetches a URL and returns a structured summary.&quot;,
+      &quot;tags&quot;: [&quot;research&quot;, &quot;web&quot;],
+      &quot;input_modes&quot;: [&quot;text/plain&quot;],
+      &quot;output_modes&quot;: [&quot;application/json&quot;]
+    }
+  ]
+}</code></pre>
+<p>Cards may be digitally signed (JWS / RFC 7515 with RFC 8785 canonicalization) for authenticity verification. An <strong>extended Agent Card</strong> — with additional private details not suitable for public exposure — can be retrieved via the <code>GetExtendedAgentCard</code> RPC after authentication.</p>
+<hr>
+<h2>Skill</h2>
+<p>A <strong>Skill</strong> is a discrete advertised capability within an Agent Card. It is the A2A structural equivalent of a Tool in an MCP manifest.</p>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Unique identifier within the agent</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Human-readable name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>What the skill does and when to invoke it</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array</td>
+<td>Keywords for capability discovery</td>
+</tr>
+<tr>
+<td><code>examples</code></td>
+<td>array</td>
+<td>Usage scenario strings</td>
+</tr>
+<tr>
+<td><code>input_modes</code></td>
+<td>array</td>
+<td>Skill-specific input MIME type overrides</td>
+</tr>
+<tr>
+<td><code>output_modes</code></td>
+<td>array</td>
+<td>Skill-specific output MIME type overrides</td>
+</tr>
+</tbody>
+</table>
+<p>Unlike MCP Tools, Skills do not carry explicit JSON Schema for inputs and outputs. Discovery is semantic — the <code>description</code> and <code>tags</code> guide the orchestrator; the actual message content is passed as typed <code>Part</code> objects (see below). The formal lattice treatment is in <a href="a2a-capability-lattice.html" class="wikilink">a2a-capability-lattice</a>.</p>
+<hr>
+<h2>Task Lifecycle</h2>
+<p>A <strong>Task</strong> is the stateful unit of work in A2A. The client creates a task by sending a <code>Message</code>; the server returns a Task object with a server-generated <code>id</code> and a <code>TaskStatus</code>.</p>
+<h3>Task Object Fields</h3>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Server-generated unique identifier</td>
+</tr>
+<tr>
+<td><code>context_id</code></td>
+<td>string</td>
+<td>Groups related tasks into a logical context</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>TaskStatus</td>
+<td>Current state + optional status message + timestamp</td>
+</tr>
+<tr>
+<td><code>artifacts</code></td>
+<td>array</td>
+<td>Concrete outputs produced by the agent</td>
+</tr>
+<tr>
+<td><code>history</code></td>
+<td>array</td>
+<td>Message transcript for multi-turn tasks</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>object</td>
+<td>Custom task metadata</td>
+</tr>
+</tbody>
+</table>
+<h3>Task States</h3>
+<pre><code>SUBMITTED → WORKING → COMPLETED
+                    ↘ FAILED
+                    ↘ CANCELED
+                    ↘ REJECTED
+                    ↘ INPUT_REQUIRED → (client sends follow-up) → WORKING
+                    ↘ AUTH_REQUIRED  → (client provides credential) → WORKING</code></pre>
+<p><code>INPUT_REQUIRED</code> and <code>AUTH_REQUIRED</code> are the multi-turn hooks: the agent pauses, delivers a message describing what it needs, and the client resumes the task with a follow-up <code>SendMessage</code>.</p>
+<h3>RPC Methods</h3>
+<table>
+<thead><tr>
+<th>Method</th>
+<th>Interaction mode</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>SendMessage</code></td>
+<td>Request / Response</td>
+<td>Initiate a task or send a follow-up turn</td>
+</tr>
+<tr>
+<td><code>SendStreamingMessage</code></td>
+<td>Server-streaming SSE</td>
+<td>Initiate a task and receive incremental updates</td>
+</tr>
+<tr>
+<td><code>SubscribeToTask</code></td>
+<td>Server-streaming SSE</td>
+<td>Attach to an existing non-terminal task</td>
+</tr>
+<tr>
+<td><code>GetTask</code></td>
+<td>Request / Response</td>
+<td>Poll current task state</td>
+</tr>
+<tr>
+<td><code>ListTasks</code></td>
+<td>Request / Response</td>
+<td>Filter and enumerate tasks</td>
+</tr>
+<tr>
+<td><code>CancelTask</code></td>
+<td>Request / Response</td>
+<td>Request cancellation of an in-progress task</td>
+</tr>
+<tr>
+<td><code>CreateTaskPushNotificationConfig</code></td>
+<td>Request / Response</td>
+<td>Register webhook for async delivery</td>
+</tr>
+<tr>
+<td><code>GetTaskPushNotificationConfig</code></td>
+<td>Request / Response</td>
+<td>Retrieve current webhook config</td>
+</tr>
+<tr>
+<td><code>ListTaskPushNotificationConfigs</code></td>
+<td>Request / Response</td>
+<td>Enumerate registered webhooks</td>
+</tr>
+<tr>
+<td><code>DeleteTaskPushNotificationConfig</code></td>
+<td>Request / Response</td>
+<td>Deactivate a webhook</td>
+</tr>
+<tr>
+<td><code>GetExtendedAgentCard</code></td>
+<td>Request / Response</td>
+<td>Fetch authenticated extended Agent Card</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Streaming</strong> uses SSE over HTTP. The server emits <code>TaskStatusUpdateEvent</code> and <code>TaskArtifactUpdateEvent</code> frames as processing progresses — each event carries the current task state or a newly completed artifact.</p>
+<p><strong>Push notifications</strong> serve clients that cannot hold open connections. The client registers a webhook URL via <code>CreateTaskPushNotificationConfig</code>; the server POSTs <code>StreamResponse</code> payloads to that URL as updates occur. The client acknowledges with HTTP 2xx; the server retries on failure. The push notification config includes an optional <code>token</code> (session-unique) and <code>authentication</code> block so the server can prove its identity to the webhook endpoint.</p>
+<hr>
+<h2>Parts</h2>
+<p>The <strong>Part</strong> is the fundamental content unit inside Messages and Artifacts. All message content and all agent output is expressed as a list of Parts — a discriminated union supporting multiple modalities in a single turn.</p>
+<table>
+<thead><tr>
+<th>Part type</th>
+<th>Key field</th>
+<th>Content</th>
+</tr></thead><tbody>
+<tr>
+<td>Text</td>
+<td><code>text: string</code></td>
+<td>Plain text or formatted text content</td>
+</tr>
+<tr>
+<td>File (URL)</td>
+<td><code>url: string</code></td>
+<td>Reference to a remote file resource</td>
+</tr>
+<tr>
+<td>File (inline)</td>
+<td><code>raw: bytes</code></td>
+<td>Base64-encoded binary file content</td>
+</tr>
+<tr>
+<td>Structured data</td>
+<td><code>data: object</code></td>
+<td>Structured JSON payload</td>
+</tr>
+</tbody>
+</table>
+<p>Every Part carries:</p>
+<ul>
+<li><code>media_type</code> (MIME type) for content negotiation
+</li>
+<li><code>filename</code> (optional) for file identification
+</li>
+<li><code>metadata</code> (optional map) for extensible attributes
+</li>
+</ul>
+<p>The Part model is the A2A equivalent of MCP&#39;s typed content blocks — both protocols use a discriminated union to support text, binary, and structured data within a single message envelope.</p>
+<hr>
+<h2>Authentication</h2>
+<p>A2A delegates authentication entirely to standard enterprise identity protocols. The A2A protocol messages themselves carry no credentials.</p>
+<p><strong>Flow:</strong></p>
+<ol>
+<li><strong>Declare</strong> — The server lists required auth schemes in <code>AgentCard.security_schemes</code> (OAuth2 flows, OIDC, API Key, HTTP Bearer, mTLS).
+</li>
+<li><strong>Acquire</strong> — The client obtains credentials out-of-band via the appropriate protocol (e.g., OAuth2 client-credentials flow against the token endpoint declared in the Agent Card).
+</li>
+<li><strong>Transmit</strong> — Credentials are passed via HTTP headers (<code>Authorization: Bearer &lt;token&gt;</code>), separate from A2A protocol messages.
+</li>
+<li><strong>Validate</strong> — The server authenticates every inbound request against its declared schemes before processing.
+</li>
+</ol>
+<p>For mid-task authorization needs, the agent transitions to <code>AUTH_REQUIRED</code> and delivers a message describing the required credential. The client supplies it and the task resumes — no task teardown or restart required.</p>
+<p><strong>Contrast with MCP:</strong> MCP trust is session-scoped and negotiated within the protocol at connection time. A2A trust is request-scoped and handled by external identity infrastructure (OAuth 2.0 / OIDC), making it more suitable for cross-organization agent federation where no shared session context exists.</p>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a>
+</li>
+<li><a href="a2a-capability-lattice.html" class="wikilink">a2a-capability-lattice</a>
+</li>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
+</li>
+<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
+</li>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+</li>
+<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
+</li>
+<li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
+</li>
+</ul>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="a2a-capability-lattice.html" class="">a2a-capability-lattice</a></li>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="a2a-capability-lattice.html" class="">a2a-capability-lattice</a></li>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>
