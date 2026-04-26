@@ -37,7 +37,11 @@ The emergence of [[foundry-local]] and [[lm-kit-dotnet]] is significant: Microso
 - [[docker-sandbox]]: The boundary that lets Tier-3 Python coexist safely with Tier-0 and Tier-1 components.
 - [[programming-languages-moc]]: The index node for the entire community.
 
-## Next-Gen Research Path
+## ADR Status
+
+The formal ADR is in progress via [[polyglot-adr-rfc]] (RFC, draft) and [[codex-polyglot-adr-handoff]] (Codex verification brief). Once verified, the ADR will live at `[[polyglot-platform-adr]]` and this note will be promoted to `status: active`.
+
+## Research Path (Original)
 
 The missing artifact is a **Platform Architecture Decision Record (ADR)** that formally documents *when to choose which tier.* Without it, practitioners default to Python for everything — losing the safety and performance guarantees of the lower tiers. The ADR should codify:
 - Manages shared state across concurrent agents → Rust (Tier-0)
@@ -49,6 +53,8 @@ Operationalizing this as a decision tree (or a [[vault-audit-tool-spec]]-style s
 
 ---
 ## References
+- [[polyglot-adr-rfc]]
+- [[codex-polyglot-adr-handoff]]
 - [[agentic-frameworks-moc]]
 - [[rust-moc]]
 - [[dotnet-moc]]

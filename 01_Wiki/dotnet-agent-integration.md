@@ -127,9 +127,11 @@ builder.Services.AddHostedService<AgentLoop>();
 - **Memory substrate** → [[microsoft-data-sqlite-agent-patterns]] → [[csharp-for-agentic-workflows]]
 - **Language reference** → [[csharp-moc]] → [[dotnet-moc]]
 
-## The Missing ADR
+## The ADR
 
-[[community-polyglot-agent-platform]] identifies the remaining gap: no formal **Architecture Decision Record** codifies *when to choose which tier*. The decision tables above are the informal version. A complete ADR would add explicit latency/throughput thresholds, inter-tier communication contracts, and failure-mode responsibilities per tier.
+The formal ADR process is in progress:
+- **RFC (draft):** [[polyglot-adr-rfc]] — proposed thresholds, contracts, and failure-mode responsibilities
+- **Handoff:** [[codex-polyglot-adr-handoff]] — Codex verification tasks before the ADR reaches `active`
 
 ---
 ## References
@@ -147,3 +149,5 @@ builder.Services.AddHostedService<AgentLoop>();
 - [[csharp-for-agentic-workflows]]
 - [[dotnet-dependency-injection]]
 - [[hardware-aware-inference]]
+- [[polyglot-adr-rfc]]
+- [[codex-polyglot-adr-handoff]]

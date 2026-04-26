@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>.NET Agent Integration — Vulture Portal</title>
+  <title>RFC — Polyglot Agent Platform ADR — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>.NET Agent Integration</span>
+      <span>RFC — Polyglot Agent Platform ADR</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">.NET Agent Integration</h1>
+      <h1 class="note-title">RFC — Polyglot Agent Platform ADR</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-agentic-bridge, csharp-agentic-map, dotnet-agent-platform, dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Agent Integration</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">RFC — Polyglot Agent Platform ADR</span></span>
       </div>
     </header>
 
@@ -441,120 +441,123 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>.NET Agent Integration</h1>
-<p>The <strong>navigational bridge</strong> between the .NET ecosystem and <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>. Answers the question: *for a given agentic task, which .NET component handles it?*</p>
-<h2>The Tier Model</h2>
-<p>Language choice in this vault is a <strong>tier declaration</strong> — each language carries a distinct trust and performance envelope:</p>
-<p>| Tier | Language | Operational Role | Governing Constraint | |------|----------|-----------------|----------------------| | 0 — Core | Rust | MCP servers, inference engines | Compile-time ownership; zero-cost abstraction | | 1 — Integration | C# / .NET | Agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem | | 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly | | 3 — Orchestration | Python | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |</p>
-<p>The tier model is enforced by <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> constraints and the CLR&#39;s security model. The emergence of <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> and <a href="foundry-local.html" class="wikilink">foundry-local</a> is significant: Microsoft is bridging Tier-0 inference directly into Tier-1 C#, making the full <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> implementable without a Python subprocess boundary. See <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> for the complete theory.</p>
-<h2>The .NET Agent Loop</h2>
-<p>The <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (Thought → Action → Observation) maps to .NET components:</p>
-<pre><code>Thought (LLM inference)
-  ├── [[lm-kit-dotnet]]        — local GGUF models, on-device, no cloud
-  ├── [[foundry-local]]        — ONNX models via OpenAI-compatible REST
-  └── [[ms-semantic-kernel]]   — Kernel + plugins for cloud or local
-
-Action (tool execution)
-  ├── [[csharp-mcp-sdk]]                 — MCP tool definitions ([McpTool] attribute)
-  ├── ms-semantic-kernel [KernelFunction] — SK plugin, JSON schema auto-generated
-  └── [[dotnet-dependency-injection]]    — resolves services for action handlers
-
-Observation (state read / memory write)
-  ├── [[microsoft-data-sqlite-agent-patterns]] — local SQLite, zero-ORM, idempotent
-  ├── [[ef-core-basics]]                       — relational ORM for richer schemas
-  └── ms-semantic-kernel Kernel Memory         — vector store + RAG pipeline</code></pre>
-<h2>Core Integration Patterns</h2>
-<h3>1. Kernel Plugin (Attribute-Based Discovery)</h3>
-<p><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a> turns static C# classes into dynamic agent tools via reflection:</p>
-<pre><code>public sealed class VaultPlugin
-{
-    [KernelFunction, Description(&quot;Returns total notes and graph density.&quot;)]
-    public async Task&lt;string&gt; GetVaultStats() { ... }
-}
-
-var kernel = Kernel.CreateBuilder()
-    .AddAzureOpenAIChatCompletion(...)
-    .Build();
-kernel.Plugins.AddFromType&lt;VaultPlugin&gt;();</code></pre>
-<p>SK introspects the method signature at runtime to generate the JSON Schema the LLM requires for tool calling — no manual schema registration needed.</p>
-<h3>2. MCP Tool Definition (Strongly Typed)</h3>
-<p><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> exposes tools via the Model Context Protocol, enabling any MCP-compatible client to call them:</p>
-<pre><code>[McpTool(&quot;get_vault_stats&quot;, &quot;Returns total notes and graph density.&quot;)]
-public async Task&lt;string&gt; GetVaultStats(GetStatsArgs args) { ... }</code></pre>
-<p>Use MCP when the consumer is another agent or a multi-client runtime. Use SK Kernel Plugins when the consumer is always a Semantic Kernel orchestrator.</p>
-<h3>3. Schema Registry (Contract First)</h3>
-<p>Use <code>System.Text.Json</code> + <code>JsonSerializerOptions</code> with strict mode to enforce the &quot;Shape of Truth&quot; at API boundaries. This prevents <strong>interface hallucination</strong> — where a model guesses parameter names that don&#39;t match compiled code.</p>
-<pre><code>public record GetPageArgs([property: JsonPropertyName(&quot;title&quot;)] string Title);</code></pre>
-<p>Records are the idiomatic C# tool-argument type: serializable, null-safe, and schema-visible.</p>
-<h3>4. DI for Agency (Agent as First-Class Service)</h3>
-<p>Register the agent loop as an <code>IHostedService</code> within the .NET Generic Host, so standard ASP.NET Core or WPF apps gain reasoning capability without tight coupling:</p>
-<pre><code>builder.Services.AddSingleton&lt;IKernel&gt;(sp =&gt; Kernel.CreateBuilder()
-    .AddAzureOpenAIChatCompletion(...)
-    .Build());
-builder.Services.AddHostedService&lt;AgentLoop&gt;();</code></pre>
-<p><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> handles lifecycle, logging, and configuration injection.</p>
-<h2>Decision Protocol</h2>
-<h3>Inference</h3>
-<p>| Requirement | Component | |---|---| | Local, privacy-first, no cloud | <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> | | ONNX model, OpenAI-compatible API | <a href="foundry-local.html" class="wikilink">foundry-local</a> | | Cloud LLM + plugin orchestration | <a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a> |</p>
-<h3>Memory / State</h3>
-<p>| Requirement | Component | |---|---| | Tiny local memory, CRUD, no ORM | <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> | | Large domain model with migrations | <a href="ef-core-basics.html" class="wikilink">ef-core-basics</a> | | Semantic / vector retrieval (RAG) | ms-semantic-kernel Kernel Memory | | Session state, transient agent logs | <a href="poshwiki.html" class="wikilink">poshwiki</a> |</p>
-<h3>Tool Exposure</h3>
-<p>| Requirement | Component | |---|---| | MCP server in .NET | <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> + <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> | | SK orchestrator plugin | ms-semantic-kernel KernelFunction | | Service lifetime management | <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> |</p>
-<h2>Integration Map (Traversal Paths from Agentic Cluster)</h2>
+        <h1>RFC: Polyglot Agent Platform — Architecture Decision Record</h1>
+<p><strong>Status:</strong> Draft — pending Codex verification against vault implementation evidence.</p>
+<p>This RFC proposes the formal ADR that <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> and <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> identify as missing. Its purpose: turn the observed four-tier language model into a <strong>verifiable, enforceable design principle</strong> so agents and contributors have a deterministic answer to &quot;which language should I write this in?&quot;</p>
+<h2>Problem Statement</h2>
+<p>The vault contains tooling across four languages. Without explicit selection criteria, two failure modes emerge:</p>
+<ol>
+<li><strong>Tier Collapse</strong> — agents default to Python (Tier-3) for everything, losing compile-time safety (Tier-0 Rust) and DI composability (Tier-1 C#).
+</li>
+<li><strong>Tier Creep</strong> — automation scripts grow into services without formalizing the service contract, producing brittle cross-tier dependencies with no documented failure-mode ownership.
+</li>
+</ol>
+<h2>Current Vault Tier Inventory (Observed)</h2>
+<p>| Tier | Language | Vault Artifacts | |------|----------|----------------| | 0 | Rust | <code>vulture-mcp</code> (MCP server, stdio) | | 1 | C# / .NET | PoShWiKi (<code>Microsoft.Data.Sqlite</code> via PowerShell/.NET), proposed <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> | | 2 | PowerShell | <code>02_System/</code> (15 scripts), <code>00_Raw/PoShWiKi/wiki.ps1</code> | | 3 | Python | Wiki knowledge only (LangGraph, smolagents, etc.) — no live vault tooling |</p>
+<p>This inventory is a <strong>Codex verification target</strong>: the actual files must be audited before the ADR reaches <code>status: active</code>.</p>
+<h2>Proposed Selection Criteria</h2>
+<h3>Tier 0 — Rust</h3>
+<p><strong>Select when:</strong></p>
 <ul>
-<li><strong>MCP protocol work</strong> → <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> → <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a>
+<li>The component must handle concurrent connections without shared mutable state bugs
 </li>
-<li><strong>Local inference</strong> → <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> → <a href="foundry-local.html" class="wikilink">foundry-local</a> → <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
+<li>Memory safety must be compile-time verified (agent infrastructure, inference engines)
 </li>
-<li><strong>Enterprise orchestration</strong> → <a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a> → <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>
+<li>Latency target is sub-millisecond per operation
 </li>
-<li><strong>Memory substrate</strong> → <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> → <a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a>
-</li>
-<li><strong>Language reference</strong> → <a href="csharp-moc.html" class="wikilink">csharp-moc</a> → <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
+<li>The artifact is a long-lived daemon or MCP server
 </li>
 </ul>
-<h2>The ADR</h2>
-<p>The formal ADR process is in progress:</p>
+<p><strong>Ruling example:</strong> <code>vulture-mcp</code> correctly lives here — it is a persistent MCP server exposed to clients over stdio, with no safe equivalent in other tiers.</p>
+<h3>Tier 1 — C# / .NET</h3>
+<p><strong>Select when:</strong></p>
 <ul>
-<li><strong>RFC (draft):</strong> <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> — proposed thresholds, contracts, and failure-mode responsibilities
+<li>Dependency Injection is required to manage service lifetimes across the agent loop
 </li>
-<li><strong>Handoff:</strong> <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a> — Codex verification tasks before the ADR reaches <code>active</code>
+<li>The tool exposes an MCP server or ASP.NET Core endpoint
+</li>
+<li>The domain model warrants an ORM (EF Core) or typed LINQ queries
+</li>
+<li>Integration with enterprise identity, auth, or the CLR security model is needed
+</li>
+<li>Latency target is 1 ms – 500 ms per operation
+</li>
+</ul>
+<p><strong>Ruling example:</strong> An MCP server that wraps a SQLite knowledge store correctly lives here, per <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a>.</p>
+<h3>Tier 2 — PowerShell</h3>
+<p><strong>Select when:</strong></p>
+<ul>
+<li>The task is one-shot automation, CI/CD orchestration, or vault maintenance
+</li>
+<li>Human auditability is required (human reads the script to verify correctness)
+</li>
+<li>Filesystem operations or shell interop dominate the work
+</li>
+<li>No latency constraint applies (batch or interactive use)
+</li>
+<li>The tool must satisfy the <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> standard
+</li>
+</ul>
+<p><strong>Ruling example:</strong> All of <code>02_System/*.ps1</code> correctly lives here.</p>
+<h3>Tier 3 — Python</h3>
+<p><strong>Select when:</strong></p>
+<ul>
+<li>The task requires the PyTorch / HuggingFace ecosystem directly
+</li>
+<li>The component is a rapid-iteration ML experiment or framework evaluation
+</li>
+<li>A Python-native framework (LangGraph, smolagents) is the point of the exercise
+</li>
+<li>No throughput constraint applies and prototype correctness takes priority
+</li>
+</ul>
+<p><strong>Ruling example:</strong> Running a smolagents evaluation harness. *Not* a production MCP server.</p>
+<h2>Proposed Inter-Tier Communication Contracts</h2>
+<p>| Pair | Contract | Vault Evidence | |------|----------|----------------| | Tier 0 ↔ Tier 1 | MCP (stdio or SSE), JSON-RPC 2.0 | <code>vulture-mcp</code> ↔ Workbench (Node/JS runtime) | | Tier 1 ↔ Tier 2 | <code>Add-Type</code> (in-process .NET assembly load) | PoShWiKi loads <code>Microsoft.Data.Sqlite.dll</code> | | Tier 2 → Tier 1 | <code>pwsh -File</code> subprocess with JSON stdout | <code>run-maintenance.ps1</code> invoking child scripts | | Tier 1 ↔ Tier 3 | HTTP/REST or <code>subprocess</code> | Aspirational — no live vault example yet | | Tier 0 ↔ Tier 3 | OpenAI-compatible local REST via <a href="foundry-local.html" class="wikilink">foundry-local</a> | <a href="foundry-local.html" class="wikilink">foundry-local</a> shared-service mode |</p>
+<p><strong>Invariant:</strong> tiers only cross boundaries via <strong>documented contracts</strong>. A Tier-2 script must never reach into a Tier-0 binary except via MCP or explicit subprocess with known stdout shape.</p>
+<h2>Proposed Failure Mode Responsibilities</h2>
+<p>| Tier | Failure Contract | |------|-----------------| | Tier 0 (Rust) | <code>Result&lt;T, E&gt;</code> everywhere; <code>panic!</code> only for invariant violations in tests; log structured errors via <code>tracing</code> | | Tier 1 (C#) | Catch all exceptions at the MCP/HTTP tool boundary; return <code>ProblemDetails</code> (RFC 9457) for API errors; log via <code>ILogger&lt;T&gt;</code> | | Tier 2 (PowerShell) | <code>$ErrorActionPreference = &#39;Stop&#39;</code>; <code>Try/Catch</code> around critical paths; write structured errors to stderr; exit code 1 on failure | | Tier 3 (Python) | Catch all exceptions at the API/agent boundary; return structured JSON <code>{&quot;error&quot;: {...}}</code>; never surface raw Python traceback to an LLM |</p>
+<h2>Proposed Enforcement Mechanism</h2>
+<p><strong>Option A — Pester/PowerShell lint script (<code>Test-TierCompliance.ps1</code>):</strong> Reads each <code>01_Wiki/*.md</code> note and checks whether code blocks or tool references that imply a tier choice are consistent with selection criteria. Reports violations as a structured list. Can be added to <code>run-maintenance.ps1</code>.</p>
+<p><strong>Option B — YANP frontmatter field (<code>tier: [0|1|2|3]</code>):</strong> Add <code>tier</code> as an optional YANP field for notes that describe executable tools. The YANP auditor (<code>audit-yanp.ps1</code>) validates the value against the ADR criteria. Lightweight and human-readable.</p>
+<p><strong>Recommendation:</strong> Start with Option B (lower implementation cost, immediately verifiable by the existing YANP auditor). Option A can follow once the ADR is active and the tier field is in place.</p>
+<h2>Open Questions for Codex</h2>
+<ol>
+<li><strong>Inventory accuracy:</strong> Are there any Rust, C#, or Python source files in the vault that the Tier Inventory table misses? Check <code>00_Raw/</code> subdirectories.
+</li>
+<li><strong>PoShWiKi tier classification:</strong> PoShWiKi is PowerShell (Tier-2) but its core is <code>Microsoft.Data.Sqlite</code> (Tier-1 CLR). Should PoShWiKi be classified as Tier-1 or Tier-2, and does that change the contract table?
+</li>
+<li><strong>Workbench tier:</strong> <code>00_Raw/workbench/</code> is TypeScript/Node. The tier model has no Tier for JS. Does it belong as Tier-3 (dynamic, rapid iteration) or does it need its own slot given it hosts the Codex tool runner?
+</li>
+<li><strong>Enforcement precedent:</strong> Does <code>audit-yanp.ps1</code> already have extensible hooks for custom field validation, or would the <code>tier</code> field require a new validation path?
+</li>
+</ol>
+<h2>Proposed Note to Create</h2>
+<p>Once Codex verifies the open questions, the deliverable is:</p>
+<ul>
+<li><code>01_Wiki/polyglot-platform-adr.md</code> — <code>status: active</code>, incorporating Codex&#39;s verified facts
+</li>
+<li><code>01_Wiki/polyglot-adr-rfc.md</code> (this note) — updated to <code>status: superseded</code> with a forward link
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
-</li>
-<li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>
-</li>
-<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a>
+<li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>
 </li>
 <li><a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a>
 </li>
-<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>
+<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
+<li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>
+</li>
+<li><a href="agentic-tdd-patterns.html" class="wikilink">agentic-tdd-patterns</a>
 </li>
 <li><a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a>
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>
-</li>
 <li><a href="foundry-local.html" class="wikilink">foundry-local</a>
 </li>
-<li><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a>
-</li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>
-</li>
-<li><a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a>
-</li>
-<li><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>
-</li>
 <li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
-</li>
-<li><a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a>
-</li>
-<li><a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>
 </li>
 </ul>
       </main>
