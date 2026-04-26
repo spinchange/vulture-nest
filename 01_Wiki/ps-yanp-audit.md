@@ -26,3 +26,5 @@ Returns a table showing each file's status across all checks. It highlights non-
 ## References
 * [[yanp-for-agentic-workflows]]
 * [[ps-automation-spec]]
+- [[ps-broken-link-checker]]
+- [[ps-note-creator]]

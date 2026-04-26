@@ -30,3 +30,4 @@ A comparative look at different systems for organizing thought and action.
 
 
 - [[knowledge-gardening-principles]]
+- [[pkm-history-moc]]

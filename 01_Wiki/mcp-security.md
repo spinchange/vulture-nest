@@ -31,3 +31,4 @@ MCP does not have a native, protocol-level "auth" header in the traditional web 
 * Source: `00_Raw/mcp/Secuirty Best Practices.md`, `00_Raw/mcp/Understanding Authorization in MCP.md`
 * [[mcp-architecture]]
 * [[mcp-primitives]]
+- [[mcp-remote-connections]]

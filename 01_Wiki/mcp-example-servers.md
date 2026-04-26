@@ -34,3 +34,5 @@ Many companies maintain official MCP servers for their platforms:
 * Source: `00_Raw/mcp/Example Servers.md`
 * [[mcp-server-features]]
 * [[mcp-local-connections]]
+- [[mcp-example-clients]]
+- [[mcp-sdks]]

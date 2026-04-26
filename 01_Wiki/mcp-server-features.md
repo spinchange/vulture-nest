@@ -45,3 +45,4 @@ Prompts are reusable instruction templates that guide the LLM's interaction with
 * Source: `00_Raw/mcp/Understanding MCP Servers.md`
 * [[mcp-primitives]]
 * [[mcp-architecture]]
+- [[mcp-client-features]]

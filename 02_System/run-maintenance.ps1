@@ -20,32 +20,40 @@ try {
             [string]$Label,
 
             [Parameter(Mandatory = $true)]
-            [string]$ScriptName
+            [string]$ScriptName,
+
+            [switch]$Optional
         )
 
         $scriptPath = Join-Path $PSScriptRoot $ScriptName
         Write-Host $Label -ForegroundColor Yellow
         & pwsh -NoProfile -ExecutionPolicy Bypass -File $scriptPath
         if ($LASTEXITCODE -ne 0) {
-            throw "Maintenance step failed: $ScriptName (code $LASTEXITCODE)"
+            if ($Optional) {
+                Write-Warning "Optional step skipped or failed: $ScriptName (code $LASTEXITCODE)"
+            } else {
+                throw "Maintenance step failed: $ScriptName (code $LASTEXITCODE)"
+            }
         }
     }
 
     Write-Host "--- Starting Vault Maintenance ---" -ForegroundColor Cyan
 
-    Invoke-MaintenanceStep -Label "`n[1/7] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
+    Invoke-MaintenanceStep -Label "`n[1/8] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[2/7] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
+    Invoke-MaintenanceStep -Label "`n[2/8] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[3/7] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
+    Invoke-MaintenanceStep -Label "`n[3/8] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[4/7] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
+    Invoke-MaintenanceStep -Label "`n[4/8] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[5/7] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
+    Invoke-MaintenanceStep -Label "`n[5/8] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[6/7] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
+    Invoke-MaintenanceStep -Label "`n[6/8] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[7/7] Checking Tier-2 Compliance..." -ScriptName 'test-tier-compliance.ps1'
+    Invoke-MaintenanceStep -Label "`n[7/8] Checking Tier-2 Compliance..." -ScriptName 'test-tier-compliance.ps1'
+
+    Invoke-MaintenanceStep -Label "`n[8/8] Syncing Note Embeddings (Gemini)..." -ScriptName 'sync-embeddings.ps1' -Optional
 
     Write-Host "`n--- Maintenance Complete! ---" -ForegroundColor Green
 } catch {

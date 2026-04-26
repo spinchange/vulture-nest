@@ -45,3 +45,5 @@ This task involves formalizing an architectural concept and does not require wri
 - [[mcp-moc]]
 - [[rust-mcp-patterns]]
 - [[csharp-mcp-sdk]]
+- [[claude-session-types-handoff]]
+- [[claude-a2a-protocol-handoff]]

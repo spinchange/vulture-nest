@@ -63,3 +63,5 @@ sequenceDiagram
 * [[mcp-client-features]]
 * [[mcp-sdks]]
 * [[mcp-architecture]]
+- [[mcp-best-practices]]
+- [[mcp-server-development]]

@@ -45,3 +45,4 @@ Local servers are configured in the `claude_desktop_config.json` file.
 * Source: `00_Raw/mcp/Connect to local MCP servers.md`
 * [[mcp-transport]]
 * [[mcp-security]]
+- [[mcp-remote-connections]]

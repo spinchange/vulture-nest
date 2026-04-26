@@ -41,3 +41,5 @@ Regardless of the language, all official MCP SDKs support:
 * Source: `00_Raw/mcp/SDKs.md`
 * [[mcp-server-development]]
 * [[mcp-client-development]]
+- [[mcp-example-servers]]
+- [[mcp-example-clients]]

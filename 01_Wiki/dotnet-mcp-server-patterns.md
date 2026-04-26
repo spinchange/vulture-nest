@@ -187,3 +187,5 @@ For multi-client scenarios: **SSE transport** via ASP.NET Core (`app.MapMcp("/ss
 - [[poshwiki]]
 - [[mcp-server-development]]
 - [[csharp-for-agentic-workflows]]
+- [[mcp-best-practices]]
+- [[rust-mcp-patterns]]

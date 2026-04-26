@@ -57,3 +57,5 @@ The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` li
 - [[claude-codex-interop-test]]
 - [[daemon-design-pattern]]
 - [[the-compounding-artifact]]
+- [[ms-repo-poshwiki]]
+- [[microsoft-data-sqlite-agent-patterns]]

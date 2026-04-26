@@ -32,3 +32,4 @@ Servers can send log messages to the Client for real-time debugging and monitori
 ## See Also
 * [[mcp-architecture]]
 * [[mcp-primitives]]
+- [[mcp-server-features]]

@@ -47,3 +47,4 @@ The frontier is a **Capability Lattice** — a formal mapping between MCP tool m
 - [[rust-mcp-patterns]]
 - [[csharp-mcp-sdk]]
 - [[dotnet-moc]]
+- [[community-polyglot-agent-platform]]

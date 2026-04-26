@@ -24,3 +24,6 @@ Actions are the concrete steps an AI agent takes to interact with its environmen
 * Modularity/Reusability.
 * Enhanced debuggability.
 * Direct integration with libraries.
+
+## Related
+- [[agent-actions]]

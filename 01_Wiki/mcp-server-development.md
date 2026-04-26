@@ -49,3 +49,7 @@ MCP servers are typically registered in a host's configuration file. For **Claud
 * [[mcp-architecture]]
 * [[mcp-primitives]]
 * [[agentic-protocols]]
+- [[mcp-client-development]]
+- [[mcp-best-practices]]
+- [[mcp-debugging]]
+- [[csharp-mcp-sdk]]

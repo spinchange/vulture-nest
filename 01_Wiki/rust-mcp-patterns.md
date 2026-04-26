@@ -50,3 +50,5 @@ Map protocol-level errors to Rust's `Result` type.
 * [[rust-concurrency]]
 * [[rust-smart-pointers]]
 * [[mcp-server-development]]
+- [[mcp-best-practices]]
+- [[dotnet-mcp-server-patterns]]

@@ -27,3 +27,4 @@ Focusing on building rich, Windows-native desktop applications using XAML and th
 * [[dotnet-moc]]
 * [[javascript-on-desktop]]
 * [[hitl-ui-patterns]]
+- [[ms-learn-wpf-overview]]

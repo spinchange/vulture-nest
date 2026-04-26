@@ -33,3 +33,5 @@ Clients differ in which part of the protocol they implement:
 * Source: `00_Raw/mcp/Example Clients.md`
 * [[mcp-client-development]]
 * [[mcp-client-features]]
+- [[mcp-example-servers]]
+- [[mcp-sdks]]

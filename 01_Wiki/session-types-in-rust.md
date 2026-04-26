@@ -248,3 +248,4 @@ Session types in Rust provide strong, compile-time protocol conformance with one
 - [[session-types-mcp-mapping]]
 - [[rust-generics-and-traits]]
 - [[rust-ownership]]
+- [[rust-affine-types]]

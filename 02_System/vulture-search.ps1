@@ -8,7 +8,8 @@
 
 Param(
     [Parameter(Mandatory=$true)]
-    [string]$Query
+    [string]$Query,
+    [switch]$Semantic
 )
 $ErrorActionPreference = 'Stop'
 
@@ -48,6 +49,47 @@ function Import-SqliteAssemblies {
     Import-SqliteAssemblies
 
 # --- 2. Ranking & Retrieval Functions ---
+function Get-SemanticNeighbors([string]$queryText, [int]$topN = 8) {
+    $apiKey = $env:GEMINI_API_KEY
+    if ([string]::IsNullOrWhiteSpace($apiKey)) { return @() }
+
+    $embedUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=$apiKey"
+    $body     = @{ model = "models/gemini-embedding-001"; content = @{ parts = @(@{ text = $queryText }) } } | ConvertTo-Json -Depth 4 -Compress
+    try {
+        $resp     = Invoke-RestMethod -Uri $embedUrl -Method Post -Body $body -ContentType "application/json"
+        $queryVec = [double[]]$resp.embedding.values
+    } catch { return @() }
+
+    # Normalize query vector
+    $qMag = 0.0; foreach ($v in $queryVec) { $qMag += $v * $v }
+    $qMag = [Math]::Sqrt($qMag)
+    if ($qMag -gt 0) { for ($k = 0; $k -lt $queryVec.Length; $k++) { $queryVec[$k] /= $qMag } }
+
+    # Load stored embeddings
+    $conn = [Microsoft.Data.Sqlite.SqliteConnection]::new("Data Source=$dbPath")
+    $conn.Open()
+    $embRows = @()
+    try {
+        $cmd = $conn.CreateCommand(); $cmd.CommandText = "SELECT NoteName, Embedding FROM NoteEmbeddings"
+        $reader = $cmd.ExecuteReader()
+        while ($reader.Read()) { $embRows += [PSCustomObject]@{ Name = $reader.GetString(0); Emb = $reader.GetString(1) } }
+    } finally { $conn.Close() }
+
+    if ($embRows.Count -eq 0) { return @() }
+
+    $results = [System.Collections.Generic.List[PSCustomObject]]::new()
+    foreach ($row in $embRows) {
+        $vec = [double[]]($row.Emb | ConvertFrom-Json)
+        $mag = 0.0; foreach ($v in $vec) { $mag += $v * $v }
+        $mag = [Math]::Sqrt($mag)
+        if ($mag -eq 0) { continue }
+        $dot = 0.0
+        for ($k = 0; $k -lt $queryVec.Length; $k++) { $dot += $queryVec[$k] * ($vec[$k] / $mag) }
+        $results.Add([PSCustomObject]@{ Name = $row.Name; Similarity = $dot }) | Out-Null
+    }
+
+    return $results | Sort-Object Similarity -Descending | Select-Object -First $topN
+}
 function Get-GraphContext([string[]]$SeedNotes) {
     if ($SeedNotes.Count -eq 0) { return @() }
     $connString = "Data Source=$dbPath"
@@ -127,7 +169,13 @@ function Get-GraphContext([string[]]$SeedNotes) {
         $relatedScores[$rel.Note] = $current + $seedWeight + $rel.HubWeight + $mocBonus
     }
 
-    # --- 4. Tool Search ---
+    # --- 4. Semantic Search (optional) ---
+    $semanticResults = @()
+    if ($Semantic) {
+        $semanticResults = Get-SemanticNeighbors -queryText $Query
+    }
+
+    # --- 5. Tool Search ---
     $tools = if (Test-Path $registryPath) {
         $regContent = Get-Content $registryPath -Raw
         $regContent -split '(?=## )' | Where-Object {
@@ -149,6 +197,15 @@ function Get-GraphContext([string[]]$SeedNotes) {
             Write-Host " - [[$($_.Key)]] (Rank: $($_.Value))"
         }
     } else { Write-Host " - No graph neighbors identified." }
+
+    if ($Semantic) {
+        Write-Host "`n[SEMANTIC NEIGHBORS]" -ForegroundColor Magenta
+        if ($semanticResults.Count -gt 0) {
+            $semanticResults | ForEach-Object {
+                Write-Host (" - [[$($_.Name)]] (Sim: {0:F3})" -f $_.Similarity)
+            }
+        } else { Write-Host " - No embeddings found. Run sync-embeddings.ps1 first." }
+    }
 
     Write-Host "`n[AVAILABLE TOOLS]" -ForegroundColor Yellow
     if ($tools) { $tools | ForEach-Object { Write-Host " - Match: $_" } } else { Write-Host " - No tool matches." }

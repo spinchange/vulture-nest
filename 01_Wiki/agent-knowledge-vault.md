@@ -33,3 +33,4 @@ The vault relies on strict adherence to [[agent-note-conventions]] to prevent dr
 * [[wiki-as-codebase]]
 * [[agent-note-conventions]]
 * [[index]]
+- [[llm-wiki-pattern]]

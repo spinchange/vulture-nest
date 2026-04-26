@@ -27,3 +27,4 @@ powershell.exe -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1
 * [[ps-automation-spec]]
 * [[wiki-as-codebase]]
 * [[automation-test]]
+- [[vault-audit-tool-spec]]

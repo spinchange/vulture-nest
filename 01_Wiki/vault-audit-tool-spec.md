@@ -32,3 +32,4 @@ When an agent enters this vault to perform an **[[wiki-pattern-operations|Ingest
 * [[yanp-for-agentic-workflows]]
 * [[agent-tools]]
 * [[wiki-as-codebase]]
+- [[ps-yanp-audit]]

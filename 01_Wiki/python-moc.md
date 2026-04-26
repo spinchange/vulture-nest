@@ -31,3 +31,4 @@ This map organizes the Python foundation most relevant to agent systems, tool ex
 ## See Also
 - [[programming-languages-moc]]
 - [[agent-tools]]
+- [[csharp-moc]]

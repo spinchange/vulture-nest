@@ -88,3 +88,4 @@ This is a good reminder that agent infrastructure should expose its native test 
 - [[ms-repo-poshwiki]]
 - [[powershell-moc]]
 - [[sqlite-type-safety-rust-vs-csharp]]
+- [[dotnet-mcp-server-patterns]]

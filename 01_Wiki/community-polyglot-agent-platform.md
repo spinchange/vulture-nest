@@ -64,3 +64,5 @@ Operationalizing this as a decision tree (or a [[vault-audit-tool-spec]]-style s
 - [[programming-languages-moc]]
 - [[foundry-local]]
 - [[lm-kit-dotnet]]
+- [[dotnet-agent-integration]]
+- [[community-protocol-trust-substrate]]

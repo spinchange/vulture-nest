@@ -50,3 +50,4 @@ interface Box<Type> {
 * [[typescript-moc]]
 * [[typescript-everyday-types]]
 * [[typescript-generics]]
+- [[typescript-type-operators]]

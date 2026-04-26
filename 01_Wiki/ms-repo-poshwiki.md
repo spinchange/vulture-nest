@@ -28,3 +28,6 @@ PoShWiKi is a minimal PowerShell 7 wiki backed by SQLite, designed for terminal 
 - Suggests using "Session Pages" for short-lived task logs.
 - Recommends "Reference Pages" for durable knowledge.
 - Emphasizes "Write only what changed" to maintain context efficiency.
+
+## Related
+- [[poshwiki-tools]]

@@ -138,3 +138,4 @@ After both commits, update the PoShWiKi session page (`Session 2026-04-25`) with
 - [[ps-automation-spec]]
 - [[vault-audit-tool-spec]]
 - [[inter-agent-handoff-protocol]]
+- [[codex-polyglot-adr-handoff]]

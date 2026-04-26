@@ -94,3 +94,5 @@ Add `[[a2a-protocol]]` and `[[a2a-capability-lattice]]` to the Key Nodes section
 - [[mcp-architecture]]
 - [[mcp-moc]]
 - [[multi-agent-systems]]
+- [[claude-session-types-handoff]]
+- [[claude-capability-lattice-handoff]]

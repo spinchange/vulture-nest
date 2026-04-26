@@ -107,3 +107,4 @@ Write `rust-phantom-types.md` first — it is the prerequisite for both `rust-ty
 - [[capability-lattice-spec]]
 - [[community-protocol-trust-substrate]]
 - [[claude-session-types-handoff]]
+- [[session-types-in-rust]]

@@ -73,3 +73,4 @@ The [[zettelkasten]] method provides the atomicity principle: one idea per note,
 - [[wiki-pattern-operations]]
 - [[memex]]
 - [[augmenting-human-intellect]]
+- [[agent-knowledge-vault]]

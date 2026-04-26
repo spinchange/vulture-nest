@@ -23,3 +23,6 @@ ASP.NET Core is a cross-platform, high-performance, open-source framework for bu
 ## Integration & Hosting
 - **EF Core:** Database contexts are typically registered as Scoped services.
 - **Generic Host:** Manages application lifetime, background services, and graceful shutdown.
+
+## Related
+- [[ms-learn-dotnet-fundamentals]]

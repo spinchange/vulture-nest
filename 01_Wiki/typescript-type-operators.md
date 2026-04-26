@@ -42,3 +42,5 @@ type Age = Person["age"]; // number
 * [[typescript-moc]]
 * [[typescript-everyday-types]]
 * [[typescript-generics]]
+- [[typescript-objects]]
+- [[typescript-template-literals]]

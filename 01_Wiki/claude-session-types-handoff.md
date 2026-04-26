@@ -103,3 +103,6 @@ Add a §7 "Open Questions" or append to §6 noting that the current spec address
 - [[rust-generics-and-traits]]
 - [[rust-ownership]]
 - [[agentic-protocols]]
+- [[claude-a2a-protocol-handoff]]
+- [[claude-capability-lattice-handoff]]
+- [[session-types-in-rust]]
