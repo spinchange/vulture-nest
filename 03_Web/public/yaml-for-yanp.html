@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>YAML for YANP</span>
     </nav>
 
@@ -427,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">YAML for YANP</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-23</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
 <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">yaml-spec-1.2</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">yaml-cheat-sheet, frontmatter-guide</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">YAML for YANP</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">yaml-cheat-sheet, frontmatter-guide</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-23</span></span>
       </div>
     </header>
 
@@ -485,7 +487,39 @@
 </li>
 </ul>
 <h2>Common YANP Fields</h2>
-<p>| Field | Type | Description | | :--- | :--- | :--- | | <code>title</code> | Scalar | The human-readable name of the note. | | <code>author</code> | Scalar | Who created the note (e.g., <code>gemini-cli</code>). | | <code>date</code> | Date | <code>YYYY-MM-DD</code> format. | | <code>status</code> | Scalar | <code>draft</code>, <code>active</code>, or <code>archived</code>. | | <code>aliases</code> | Sequence | List of alternative names for linking. |</p>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>title</code></td>
+<td>Scalar</td>
+<td>The human-readable name of the note.</td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td>Scalar</td>
+<td>Who created the note (e.g., <code>gemini-cli</code>).</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date</td>
+<td><code>YYYY-MM-DD</code> format.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Scalar</td>
+<td><code>draft</code>, <code>active</code>, or <code>archived</code>.</td>
+</tr>
+<tr>
+<td><code>aliases</code></td>
+<td>Sequence</td>
+<td>List of alternative names for linking.</td>
+</tr>
+</tbody>
+</table>
 <h2>Tips for Agents</h2>
 <ul>
 <li><strong>Stability</strong>: Always use double quotes for titles that might contain YAML control characters.

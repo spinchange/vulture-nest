@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>.NET MCP Server Patterns</span>
     </nav>
 
@@ -427,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">.NET MCP Server Patterns</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET MCP Server Patterns</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">csharp-mcp-server-patterns, dotnet-mcp-implementation, ado-net-mcp-server</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET MCP Server Patterns</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
@@ -569,7 +571,33 @@ public sealed class WikiTools(WikiDb db)
 }</code></pre>
 <p>For multi-client scenarios: <strong>SSE transport</strong> via ASP.NET Core (<code>app.MapMcp(&quot;/sse&quot;)</code>).</p>
 <h2>Key Tradeoffs</h2>
-<p>| Decision | Rationale | |---|---| | Connection-per-operation | Avoids stale state; cheap with SQLite | | No ORM (EF Core) | Lower overhead; schema is tiny and stable | | Records for tool args | Serializable, null-safe, schema-visible to LLM | | Section logic above DB | Document semantics &gt; relational normalization | | Stdio transport default | No port management for local-first tools |</p>
+<table>
+<thead><tr>
+<th>Decision</th>
+<th>Rationale</th>
+</tr></thead><tbody>
+<tr>
+<td>Connection-per-operation</td>
+<td>Avoids stale state; cheap with SQLite</td>
+</tr>
+<tr>
+<td>No ORM (EF Core)</td>
+<td>Lower overhead; schema is tiny and stable</td>
+</tr>
+<tr>
+<td>Records for tool args</td>
+<td>Serializable, null-safe, schema-visible to LLM</td>
+</tr>
+<tr>
+<td>Section logic above DB</td>
+<td>Document semantics &gt; relational normalization</td>
+</tr>
+<tr>
+<td>Stdio transport default</td>
+<td>No port management for local-first tools</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h2>References</h2>
 <ul>

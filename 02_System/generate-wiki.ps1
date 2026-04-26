@@ -177,6 +177,7 @@ try {
         $html = New-Object System.Collections.Generic.List[string]
         $listStack = New-Object System.Collections.Generic.List[object]
         $paragraphLines = New-Object System.Collections.Generic.List[string]
+        $tableLines = New-Object System.Collections.Generic.List[string]
         $codeFenceOpen = $false
         $codeLines = New-Object System.Collections.Generic.List[string]
         function Flush-Paragraph {
@@ -184,6 +185,47 @@ try {
             $joined = ($paragraphLines -join ' ').Trim()
             if ($joined) { $html.Add("<p>$(Convert-InlineMarkdown -Text $joined)</p>") }
             $paragraphLines.Clear()
+        }
+        function Flush-Table {
+            if ($tableLines.Count -eq 0) { return }
+            $rows = @($tableLines | ForEach-Object { $_ })
+            $tableLines.Clear()
+            $splitRow = [scriptblock]{
+                param([string]$Row)
+                $parts = @($Row -split '\|')
+                if ($parts.Count -gt 0 -and [string]::IsNullOrWhiteSpace($parts[0])) { $parts = $parts[1..($parts.Count - 1)] }
+                if ($parts.Count -gt 0 -and [string]::IsNullOrWhiteSpace($parts[-1])) { $parts = $parts[0..($parts.Count - 2)] }
+                return @($parts | ForEach-Object { $_.Trim() })
+            }
+            $hasSeparator = $false
+            if ($rows.Count -ge 2) {
+                $sepCells = @($rows[1] -split '\|' | Where-Object { $_.Trim() -ne '' })
+                $hasSeparator = $sepCells.Count -gt 0 -and ($sepCells | Where-Object { $_.Trim() -notmatch '^:?-+:?$' }).Count -eq 0
+            }
+            $html.Add('<table>')
+            if ($hasSeparator) {
+                $headerCells = & $splitRow $rows[0]
+                $html.Add('<thead><tr>')
+                foreach ($cell in $headerCells) { $html.Add("<th>$(Convert-InlineMarkdown -Text $cell)</th>") }
+                $html.Add('</tr></thead><tbody>')
+                for ($r = 2; $r -lt $rows.Count; $r++) {
+                    $cells = & $splitRow $rows[$r]
+                    $html.Add('<tr>')
+                    foreach ($cell in $cells) { $html.Add("<td>$(Convert-InlineMarkdown -Text $cell)</td>") }
+                    $html.Add('</tr>')
+                }
+                $html.Add('</tbody>')
+            } else {
+                $html.Add('<tbody>')
+                foreach ($row in $rows) {
+                    $cells = & $splitRow $row
+                    $html.Add('<tr>')
+                    foreach ($cell in $cells) { $html.Add("<td>$(Convert-InlineMarkdown -Text $cell)</td>") }
+                    $html.Add('</tr>')
+                }
+                $html.Add('</tbody>')
+            }
+            $html.Add('</table>')
         }
         for ($i = 0; $i -lt $lines.Count; $i++) {
             $line = $lines[$i]
@@ -203,6 +245,8 @@ try {
                 continue
             }
             if ($line -match '^```') { Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; $codeFenceOpen = $true; $codeLines.Clear(); continue }
+            if ($line -match '^\s*\|') { Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; $tableLines.Add($line); continue }
+            if ($tableLines.Count -gt 0) { Flush-Table }
             if ([string]::IsNullOrWhiteSpace($line)) { Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; continue }
             if ($line -match '^(#{1,6})\s+(.+)$') { Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; $html.Add("<h$($Matches[1].Length)>$(Convert-InlineMarkdown -Text $Matches[2].Trim())</h$($Matches[1].Length)>"); continue }
             $listItem = Get-ListItemData -Line $line
@@ -218,7 +262,7 @@ try {
             if ($line -match '^\s*---\s*$') { Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; $html.Add('<hr>'); continue }
             $paragraphLines.Add($line.Trim())
         }
-        Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0
+        Flush-Paragraph; Close-OpenLists -Html $html -Stack $listStack -TargetDepth 0; if ($tableLines.Count -gt 0) { Flush-Table }
         if ($codeFenceOpen) { $html.Add("<pre><code>$(ConvertTo-HtmlSafe ($codeLines -join "`n"))</code></pre>") }
         return ($html -join [Environment]::NewLine)
     }

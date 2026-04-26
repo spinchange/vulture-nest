@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>The Memory Spectrum</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">The Memory Spectrum</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">memory-architecture, flat-vs-structured, rag-patterns</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">The Memory Spectrum</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -484,7 +486,39 @@
 </ul>
 <hr>
 <h2>Comparison Table</h2>
-<p>| Feature | Flat Text (Wiki) | Relational (PoShWiKi) | Semantic (Kernel Memory) | | :--- | :--- | :--- | :--- | | <strong>Primary User</strong> | Human | Agent/CLI | LLM | | <strong>Search Method</strong> | Grep / Regex | SQL / Keyword | Vector / Similarity | | <strong>Update Unit</strong> | File | Section / Row | Chunk | | <strong>Persistence</strong> | Git / Filesystem | ACID Database | Vector Index |</p>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>Flat Text (Wiki)</th>
+<th>Relational (PoShWiKi)</th>
+<th>Semantic (Kernel Memory)</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Primary User</strong></td>
+<td>Human</td>
+<td>Agent/CLI</td>
+<td>LLM</td>
+</tr>
+<tr>
+<td><strong>Search Method</strong></td>
+<td>Grep / Regex</td>
+<td>SQL / Keyword</td>
+<td>Vector / Similarity</td>
+</tr>
+<tr>
+<td><strong>Update Unit</strong></td>
+<td>File</td>
+<td>Section / Row</td>
+<td>Chunk</td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>Git / Filesystem</td>
+<td>ACID Database</td>
+<td>Vector Index</td>
+</tr>
+</tbody>
+</table>
 <h2>Synthesis: The &quot;Memory Pipeline&quot;</h2>
 <p>A robust system uses all three layers:</p>
 <ol>

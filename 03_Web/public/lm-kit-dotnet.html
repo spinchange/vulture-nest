@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>LM-Kit.NET</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">LM-Kit.NET</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LM-Kit.NET</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">lm-kit, dotnet-llm-sdk, lmkit-dotnet, lm-kit-inference</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LM-Kit.NET</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -456,7 +458,34 @@
 </ul>
 <h2>Hardware Acceleration</h2>
 <p>LM-Kit.NET delegates to the underlying <code>llama.cpp</code> back-end, so it inherits its hardware support:</p>
-<p>| Backend | Hardware | Notes | |---|---|---| | CUDA | NVIDIA GPU | Highest throughput; requires CUDA toolkit | | Metal | Apple Silicon | Unified memory advantage on M-series | | DirectML | Any DX12 GPU | Windows-native; covers AMD, Intel, NVIDIA | | CPU | x64 / ARM64 | Fallback; adequate for small models |</p>
+<table>
+<thead><tr>
+<th>Backend</th>
+<th>Hardware</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td>CUDA</td>
+<td>NVIDIA GPU</td>
+<td>Highest throughput; requires CUDA toolkit</td>
+</tr>
+<tr>
+<td>Metal</td>
+<td>Apple Silicon</td>
+<td>Unified memory advantage on M-series</td>
+</tr>
+<tr>
+<td>DirectML</td>
+<td>Any DX12 GPU</td>
+<td>Windows-native; covers AMD, Intel, NVIDIA</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>x64 / ARM64</td>
+<td>Fallback; adequate for small models</td>
+</tr>
+</tbody>
+</table>
 <p>See <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> for the selection strategy.</p>
 <h2>Core API Patterns</h2>
 <h3>Text Completion</h3>
@@ -486,7 +515,34 @@ var result = await kernel.InvokePromptAsync(&quot;List orphaned notes.&quot;);</
 <p>This keeps the orchestration layer (SK) decoupled from the inference provider — swapping LM-Kit.NET for a cloud LLM requires only the builder line.</p>
 <h2>Relationship to Foundry Local</h2>
 <p>Both LM-Kit.NET and <a href="foundry-local.html" class="wikilink">foundry-local</a> serve local .NET inference, but at different abstraction levels:</p>
-<p>| | LM-Kit.NET | Foundry Local | |---|---|---| | <strong>Model format</strong> | GGUF (llama.cpp) | ONNX (optimized for NPU/DirectML) | | <strong>API style</strong> | .NET SDK, typed objects | OpenAI-compatible REST (drop-in) | | <strong>Best for</strong> | Embedding LLM directly in a .NET service | Local service shared across apps | | <strong>Hardware bias</strong> | GPU/CPU via llama.cpp | NPU/DirectML (Microsoft stack) |</p>
+<table>
+<thead><tr>
+<th></th>
+<th>LM-Kit.NET</th>
+<th>Foundry Local</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Model format</strong></td>
+<td>GGUF (llama.cpp)</td>
+<td>ONNX (optimized for NPU/DirectML)</td>
+</tr>
+<tr>
+<td><strong>API style</strong></td>
+<td>.NET SDK, typed objects</td>
+<td>OpenAI-compatible REST (drop-in)</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Embedding LLM directly in a .NET service</td>
+<td>Local service shared across apps</td>
+</tr>
+<tr>
+<td><strong>Hardware bias</strong></td>
+<td>GPU/CPU via llama.cpp</td>
+<td>NPU/DirectML (Microsoft stack)</td>
+</tr>
+</tbody>
+</table>
 <p>Use LM-Kit.NET when the model is embedded inside a single .NET process. Use Foundry Local when you want an OpenAI-compatible local endpoint shared across multiple tools.</p>
 <h2>Agent Design Guidance</h2>
 <ul>

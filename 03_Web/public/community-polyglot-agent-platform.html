@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Community — The Polyglot Agent Platform</span>
     </nav>
 
@@ -428,11 +430,11 @@
       <h1 class="note-title">Community — The Polyglot Agent Platform</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-platform, heterogeneous-agents, language-tier-community, tiered-agent-stack</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Community — The Polyglot Agent Platform</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-platform, heterogeneous-agents, language-tier-community, tiered-agent-stack</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -445,7 +447,39 @@
 <p><strong>Hubs:</strong> <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>, <a href="rust-moc.html" class="wikilink">rust-moc</a>, <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a></p>
 <h2>Emergent Theory</h2>
 <p>The vault&#39;s coverage of Rust, C#, PowerShell, and Python is not pluralism for its own sake. Each language maps onto a distinct performance and trust envelope, and the emergent architecture is a <strong>tiered platform</strong> where a component&#39;s language is also a declaration of its operational constraints:</p>
-<p>| Tier | Language | Role | Governing Principle | |------|----------|------|---------------------| | 0 — Core | Rust | MCP servers, inference engines, memory-adjacent components | Compile-time ownership; zero-cost abstraction | | 1 — Integration | C# / .NET | Enterprise agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem | | 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scripted, human-auditable, REPL-friendly | | 3 — Orchestration | Python | ML pipelines, LangGraph, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Language</th>
+<th>Role</th>
+<th>Governing Principle</th>
+</tr></thead><tbody>
+<tr>
+<td>0 — Core</td>
+<td>Rust</td>
+<td>MCP servers, inference engines, memory-adjacent components</td>
+<td>Compile-time ownership; zero-cost abstraction</td>
+</tr>
+<tr>
+<td>1 — Integration</td>
+<td>C# / .NET</td>
+<td>Enterprise agent frameworks, API surfaces, MCP clients</td>
+<td>Type-safe, GC-managed; rich DI ecosystem</td>
+</tr>
+<tr>
+<td>2 — Automation</td>
+<td>PowerShell</td>
+<td>Vault ops, CI/CD, SQLite orchestration</td>
+<td>Scripted, human-auditable, REPL-friendly</td>
+</tr>
+<tr>
+<td>3 — Orchestration</td>
+<td>Python</td>
+<td>ML pipelines, LangGraph, framework experimentation</td>
+<td>Dynamic, ecosystem-rich, rapid iteration</td>
+</tr>
+</tbody>
+</table>
 <p>This hierarchy is not opinion — it is enforced by physical constraints. <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> (CUDA, MLX, NPU) requires systems-level memory control, which only Tier-0 Rust provides. Enterprise identity integration requires the CLR&#39;s mature security model, which Tier-1 C# provides via <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a>. Vault maintenance requires shell-native access to the filesystem and SQLite, which Tier-2 PowerShell provides via <a href="poshwiki.html" class="wikilink">poshwiki</a>.</p>
 <p>The emergence of <a href="foundry-local.html" class="wikilink">foundry-local</a> and <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> is significant: Microsoft is bridging Tier-0 inference (local model execution) directly into Tier-1 C#, collapsing what was previously a Python-only domain. This means the <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> agent loop — Thought → Action → Observation — can now be implemented entirely within the type-safe .NET ecosystem, without a Python subprocess boundary.</p>
 <h2>Key Nodes</h2>

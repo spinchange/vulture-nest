@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>Polyglot Platform ADR</span>
     </nav>
 
@@ -427,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Polyglot Platform ADR</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Polyglot Platform ADR</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">platform-adr, tier-selection-adr, language-tier-decision-record</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Polyglot Platform ADR</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -461,7 +463,34 @@
 </li>
 </ul>
 <h2>Verified Tier Inventory</h2>
-<p>| Tier | Language | Current Vault Status | |------|----------|----------------------| | 0 | Rust | No Rust source is checked into the current vault. The referenced <code>vulture-mcp</code> artifact is not present under <code>00_Raw/</code> or elsewhere in the repo as source code. | | 1 | C# / .NET | No C# source tree is checked into the current vault. The only live .NET artifact is the bundled <code>Microsoft.Data.Sqlite.dll</code> dependency loaded by PoShWiKi. | | 2 | PowerShell | Live tooling tier. <code>02_System/</code> contains 15 <code>.ps1</code> scripts, and <code>00_Raw/PoShWiKi/</code> contains a PowerShell CLI and module with substantive wiki logic. | | 3 | Python | Knowledge-only tier. No live Python tooling or <code>.py</code> source files are checked into the current vault. |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Language</th>
+<th>Current Vault Status</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>Rust</td>
+<td>No Rust source is checked into the current vault. The referenced <code>vulture-mcp</code> artifact is not present under <code>00_Raw/</code> or elsewhere in the repo as source code.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>C# / .NET</td>
+<td>No C# source tree is checked into the current vault. The only live .NET artifact is the bundled <code>Microsoft.Data.Sqlite.dll</code> dependency loaded by PoShWiKi.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PowerShell</td>
+<td>Live tooling tier. <code>02_System/</code> contains 15 <code>.ps1</code> scripts, and <code>00_Raw/PoShWiKi/</code> contains a PowerShell CLI and module with substantive wiki logic.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Python</td>
+<td>Knowledge-only tier. No live Python tooling or <code>.py</code> source files are checked into the current vault.</td>
+</tr>
+</tbody>
+</table>
 <h2>Workbench Classification</h2>
 <p><code>00_Raw/workbench/</code> is a TypeScript/Node project with <code>src/</code> and <code>tests/</code>, and <code>package.json</code> describes it as a persistent repo workbench for coding sessions. It should not be forced into Tier-3 or a new &quot;Tier-1.5&quot; slot.</p>
 <p>Decision: classify Workbench as development scaffolding outside the production tier model. It is a tool-runner/runtime used to inspect and operate on repos, not a persistent vault service or language-choice precedent for the production stack.</p>
@@ -513,10 +542,64 @@
 </li>
 </ul>
 <h2>Inter-Tier Communication Contracts</h2>
-<p>| Pair | Contract | Current Vault Evidence | |------|----------|------------------------| | Tier 0 ↔ Tier 1 | MCP (stdio or SSE), JSON-RPC 2.0 | Architectural contract only. No live Rust or C# service pair is checked into this vault. | | Tier 1 ↔ Tier 2 | HTTP/REST, subprocess JSON, or hosted .NET boundary | No live Tier-1 service boundary is present. PoShWiKi&#39;s <code>Add-Type</code> call is in-process CLR interop inside a Tier-2 artifact, not a Tier-1 service boundary. | | Tier 2 → Tier 2 | <code>pwsh -File</code> subprocess with structured stdout/stderr | <code>02_System/run-maintenance.ps1</code> invokes child scripts via <code>pwsh -File</code>. | | Tier 1 ↔ Tier 3 | HTTP/REST or <code>subprocess</code> | Aspirational only. No live vault example. | | Tier 0 ↔ Tier 3 | OpenAI-compatible local REST | Architectural/knowledge reference only via <a href="foundry-local.html" class="wikilink">foundry-local</a>. No live vault example. |</p>
+<table>
+<thead><tr>
+<th>Pair</th>
+<th>Contract</th>
+<th>Current Vault Evidence</th>
+</tr></thead><tbody>
+<tr>
+<td>Tier 0 ↔ Tier 1</td>
+<td>MCP (stdio or SSE), JSON-RPC 2.0</td>
+<td>Architectural contract only. No live Rust or C# service pair is checked into this vault.</td>
+</tr>
+<tr>
+<td>Tier 1 ↔ Tier 2</td>
+<td>HTTP/REST, subprocess JSON, or hosted .NET boundary</td>
+<td>No live Tier-1 service boundary is present. PoShWiKi&#39;s <code>Add-Type</code> call is in-process CLR interop inside a Tier-2 artifact, not a Tier-1 service boundary.</td>
+</tr>
+<tr>
+<td>Tier 2 → Tier 2</td>
+<td><code>pwsh -File</code> subprocess with structured stdout/stderr</td>
+<td><code>02_System/run-maintenance.ps1</code> invokes child scripts via <code>pwsh -File</code>.</td>
+</tr>
+<tr>
+<td>Tier 1 ↔ Tier 3</td>
+<td>HTTP/REST or <code>subprocess</code></td>
+<td>Aspirational only. No live vault example.</td>
+</tr>
+<tr>
+<td>Tier 0 ↔ Tier 3</td>
+<td>OpenAI-compatible local REST</td>
+<td>Architectural/knowledge reference only via <a href="foundry-local.html" class="wikilink">foundry-local</a>. No live vault example.</td>
+</tr>
+</tbody>
+</table>
 <p>Invariant: tiers only cross boundaries through documented contracts. In-process library loading does not by itself create a new tier boundary.</p>
 <h2>Failure Mode Responsibilities</h2>
-<p>| Tier | Failure Contract | |------|------------------| | Tier 0 (Rust) | Prefer <code>Result&lt;T, E&gt;</code>; reserve <code>panic!</code> for invariant violations and test-only paths; log structured operational errors | | Tier 1 (C#) | Catch exceptions at tool/API boundaries; return structured errors; log through the host&#39;s logging abstraction | | Tier 2 (PowerShell) | Set <code>$ErrorActionPreference = &#39;Stop&#39;</code>; wrap critical paths in <code>try/catch</code>; write failures clearly; exit with code <code>1</code> on failure | | Tier 3 (Python) | Catch exceptions at the API/agent boundary; return structured JSON errors; do not expose raw tracebacks to an LLM |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Failure Contract</th>
+</tr></thead><tbody>
+<tr>
+<td>Tier 0 (Rust)</td>
+<td>Prefer <code>Result&lt;T, E&gt;</code>; reserve <code>panic!</code> for invariant violations and test-only paths; log structured operational errors</td>
+</tr>
+<tr>
+<td>Tier 1 (C#)</td>
+<td>Catch exceptions at tool/API boundaries; return structured errors; log through the host&#39;s logging abstraction</td>
+</tr>
+<tr>
+<td>Tier 2 (PowerShell)</td>
+<td>Set <code>$ErrorActionPreference = &#39;Stop&#39;</code>; wrap critical paths in <code>try/catch</code>; write failures clearly; exit with code <code>1</code> on failure</td>
+</tr>
+<tr>
+<td>Tier 3 (Python)</td>
+<td>Catch exceptions at the API/agent boundary; return structured JSON errors; do not expose raw tracebacks to an LLM</td>
+</tr>
+</tbody>
+</table>
 <h2>Enforcement Mechanism</h2>
 <p>The current YANP auditor does not have reusable hooks for custom frontmatter validation. It regex-checks <code>type</code> and filename casing only.</p>
 <p>Decision: start with Option A, a dedicated tier-compliance Pester/PowerShell script. If the vault later wants a <code>tier</code> frontmatter field, keep it optional and add it only after frontmatter validation is upgraded beyond the current regex-only approach.</p>

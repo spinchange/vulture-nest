@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>RFC — Polyglot Agent Platform ADR</span>
     </nav>
 
@@ -428,11 +430,11 @@
       <h1 class="note-title">RFC — Polyglot Agent Platform ADR</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">RFC — Polyglot Agent Platform ADR</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-superseded">superseded</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -453,7 +455,34 @@
 </li>
 </ol>
 <h2>Current Vault Tier Inventory (Observed)</h2>
-<p>| Tier | Language | Vault Artifacts | |------|----------|----------------| | 0 | Rust | <code>vulture-mcp</code> (MCP server, stdio) | | 1 | C# / .NET | PoShWiKi (<code>Microsoft.Data.Sqlite</code> via PowerShell/.NET), proposed <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> | | 2 | PowerShell | <code>02_System/</code> (15 scripts), <code>00_Raw/PoShWiKi/wiki.ps1</code> | | 3 | Python | Wiki knowledge only (LangGraph, smolagents, etc.) — no live vault tooling |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Language</th>
+<th>Vault Artifacts</th>
+</tr></thead><tbody>
+<tr>
+<td>0</td>
+<td>Rust</td>
+<td><code>vulture-mcp</code> (MCP server, stdio)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>C# / .NET</td>
+<td>PoShWiKi (<code>Microsoft.Data.Sqlite</code> via PowerShell/.NET), proposed <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>PowerShell</td>
+<td><code>02_System/</code> (15 scripts), <code>00_Raw/PoShWiKi/wiki.ps1</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Python</td>
+<td>Wiki knowledge only (LangGraph, smolagents, etc.) — no live vault tooling</td>
+</tr>
+</tbody>
+</table>
 <p>This inventory is a <strong>Codex verification target</strong>: the actual files must be audited before the ADR reaches <code>status: active</code>.</p>
 <h2>Proposed Selection Criteria</h2>
 <h3>Tier 0 — Rust</h3>
@@ -513,10 +542,64 @@
 </ul>
 <p><strong>Ruling example:</strong> Running a smolagents evaluation harness. *Not* a production MCP server.</p>
 <h2>Proposed Inter-Tier Communication Contracts</h2>
-<p>| Pair | Contract | Vault Evidence | |------|----------|----------------| | Tier 0 ↔ Tier 1 | MCP (stdio or SSE), JSON-RPC 2.0 | <code>vulture-mcp</code> ↔ Workbench (Node/JS runtime) | | Tier 1 ↔ Tier 2 | <code>Add-Type</code> (in-process .NET assembly load) | PoShWiKi loads <code>Microsoft.Data.Sqlite.dll</code> | | Tier 2 → Tier 1 | <code>pwsh -File</code> subprocess with JSON stdout | <code>run-maintenance.ps1</code> invoking child scripts | | Tier 1 ↔ Tier 3 | HTTP/REST or <code>subprocess</code> | Aspirational — no live vault example yet | | Tier 0 ↔ Tier 3 | OpenAI-compatible local REST via <a href="foundry-local.html" class="wikilink">foundry-local</a> | <a href="foundry-local.html" class="wikilink">foundry-local</a> shared-service mode |</p>
+<table>
+<thead><tr>
+<th>Pair</th>
+<th>Contract</th>
+<th>Vault Evidence</th>
+</tr></thead><tbody>
+<tr>
+<td>Tier 0 ↔ Tier 1</td>
+<td>MCP (stdio or SSE), JSON-RPC 2.0</td>
+<td><code>vulture-mcp</code> ↔ Workbench (Node/JS runtime)</td>
+</tr>
+<tr>
+<td>Tier 1 ↔ Tier 2</td>
+<td><code>Add-Type</code> (in-process .NET assembly load)</td>
+<td>PoShWiKi loads <code>Microsoft.Data.Sqlite.dll</code></td>
+</tr>
+<tr>
+<td>Tier 2 → Tier 1</td>
+<td><code>pwsh -File</code> subprocess with JSON stdout</td>
+<td><code>run-maintenance.ps1</code> invoking child scripts</td>
+</tr>
+<tr>
+<td>Tier 1 ↔ Tier 3</td>
+<td>HTTP/REST or <code>subprocess</code></td>
+<td>Aspirational — no live vault example yet</td>
+</tr>
+<tr>
+<td>Tier 0 ↔ Tier 3</td>
+<td>OpenAI-compatible local REST via <a href="foundry-local.html" class="wikilink">foundry-local</a></td>
+<td><a href="foundry-local.html" class="wikilink">foundry-local</a> shared-service mode</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Invariant:</strong> tiers only cross boundaries via <strong>documented contracts</strong>. A Tier-2 script must never reach into a Tier-0 binary except via MCP or explicit subprocess with known stdout shape.</p>
 <h2>Proposed Failure Mode Responsibilities</h2>
-<p>| Tier | Failure Contract | |------|-----------------| | Tier 0 (Rust) | <code>Result&lt;T, E&gt;</code> everywhere; <code>panic!</code> only for invariant violations in tests; log structured errors via <code>tracing</code> | | Tier 1 (C#) | Catch all exceptions at the MCP/HTTP tool boundary; return <code>ProblemDetails</code> (RFC 9457) for API errors; log via <code>ILogger&lt;T&gt;</code> | | Tier 2 (PowerShell) | <code>$ErrorActionPreference = &#39;Stop&#39;</code>; <code>Try/Catch</code> around critical paths; write structured errors to stderr; exit code 1 on failure | | Tier 3 (Python) | Catch all exceptions at the API/agent boundary; return structured JSON <code>{&quot;error&quot;: {...}}</code>; never surface raw Python traceback to an LLM |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Failure Contract</th>
+</tr></thead><tbody>
+<tr>
+<td>Tier 0 (Rust)</td>
+<td><code>Result&lt;T, E&gt;</code> everywhere; <code>panic!</code> only for invariant violations in tests; log structured errors via <code>tracing</code></td>
+</tr>
+<tr>
+<td>Tier 1 (C#)</td>
+<td>Catch all exceptions at the MCP/HTTP tool boundary; return <code>ProblemDetails</code> (RFC 9457) for API errors; log via <code>ILogger&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>Tier 2 (PowerShell)</td>
+<td><code>$ErrorActionPreference = &#39;Stop&#39;</code>; <code>Try/Catch</code> around critical paths; write structured errors to stderr; exit code 1 on failure</td>
+</tr>
+<tr>
+<td>Tier 3 (Python)</td>
+<td>Catch all exceptions at the API/agent boundary; return structured JSON <code>{&quot;error&quot;: {...}}</code>; never surface raw Python traceback to an LLM</td>
+</tr>
+</tbody>
+</table>
 <h2>Proposed Enforcement Mechanism</h2>
 <p><strong>Option A — Pester/PowerShell lint script (<code>Test-TierCompliance.ps1</code>):</strong> Reads each <code>01_Wiki/*.md</code> note and checks whether code blocks or tool references that imply a tier choice are consistent with selection criteria. Reports violations as a structured list. Can be added to <code>run-maintenance.ps1</code>.</p>
 <p><strong>Option B — YANP frontmatter field (<code>tier: [0|1|2|3]</code>):</strong> Add <code>tier</code> as an optional YANP field for notes that describe executable tools. The YANP auditor (<code>audit-yanp.ps1</code>) validates the value against the ADR criteria. Lightweight and human-readable.</p>

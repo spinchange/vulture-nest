@@ -418,7 +418,9 @@
       <span class="brand">VULTURE</span>
       <span class="sep">/</span>
       <span>PORTAL</span>
-      <span class="sep">::</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
       <span>.NET Agent Integration</span>
     </nav>
 
@@ -428,11 +430,11 @@
       <h1 class="note-title">.NET Agent Integration</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-agentic-bridge, csharp-agentic-map, dotnet-agent-platform, dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Agent Integration</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-agentic-bridge, csharp-agentic-map, dotnet-agent-platform, dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -445,7 +447,39 @@
 <p>The <strong>navigational bridge</strong> between the .NET ecosystem and <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>. Answers the question: *for a given agentic task, which .NET component handles it?*</p>
 <h2>The Tier Model</h2>
 <p>Language choice in this vault is a <strong>tier declaration</strong> — each language carries a distinct trust and performance envelope:</p>
-<p>| Tier | Language | Operational Role | Governing Constraint | |------|----------|-----------------|----------------------| | 0 — Core | Rust | MCP servers, inference engines | Compile-time ownership; zero-cost abstraction | | 1 — Integration | C# / .NET | Agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem | | 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly | | 3 — Orchestration | Python | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Language</th>
+<th>Operational Role</th>
+<th>Governing Constraint</th>
+</tr></thead><tbody>
+<tr>
+<td>0 — Core</td>
+<td>Rust</td>
+<td>MCP servers, inference engines</td>
+<td>Compile-time ownership; zero-cost abstraction</td>
+</tr>
+<tr>
+<td>1 — Integration</td>
+<td>C# / .NET</td>
+<td>Agent frameworks, API surfaces, MCP clients</td>
+<td>Type-safe, GC-managed; rich DI ecosystem</td>
+</tr>
+<tr>
+<td>2 — Automation</td>
+<td>PowerShell</td>
+<td>Vault ops, CI/CD, SQLite orchestration</td>
+<td>Scriptable, human-auditable, REPL-friendly</td>
+</tr>
+<tr>
+<td>3 — Orchestration</td>
+<td>Python</td>
+<td>ML pipelines, framework experimentation</td>
+<td>Dynamic, ecosystem-rich, rapid iteration</td>
+</tr>
+</tbody>
+</table>
 <p>The tier model is enforced by <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> constraints and the CLR&#39;s security model. The emergence of <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> and <a href="foundry-local.html" class="wikilink">foundry-local</a> is significant: Microsoft is bridging Tier-0 inference directly into Tier-1 C#, making the full <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> implementable without a Python subprocess boundary. See <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> for the complete theory.</p>
 <h2>The .NET Agent Loop</h2>
 <p>The <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (Thought → Action → Observation) maps to .NET components:</p>
@@ -495,11 +529,69 @@ builder.Services.AddHostedService&lt;AgentLoop&gt;();</code></pre>
 <p><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> handles lifecycle, logging, and configuration injection.</p>
 <h2>Decision Protocol</h2>
 <h3>Inference</h3>
-<p>| Requirement | Component | |---|---| | Local, privacy-first, no cloud | <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> | | ONNX model, OpenAI-compatible API | <a href="foundry-local.html" class="wikilink">foundry-local</a> | | Cloud LLM + plugin orchestration | <a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a> |</p>
+<table>
+<thead><tr>
+<th>Requirement</th>
+<th>Component</th>
+</tr></thead><tbody>
+<tr>
+<td>Local, privacy-first, no cloud</td>
+<td><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a></td>
+</tr>
+<tr>
+<td>ONNX model, OpenAI-compatible API</td>
+<td><a href="foundry-local.html" class="wikilink">foundry-local</a></td>
+</tr>
+<tr>
+<td>Cloud LLM + plugin orchestration</td>
+<td><a href="ms-semantic-kernel.html" class="wikilink">ms-semantic-kernel</a></td>
+</tr>
+</tbody>
+</table>
 <h3>Memory / State</h3>
-<p>| Requirement | Component | |---|---| | Tiny local memory, CRUD, no ORM | <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> | | Large domain model with migrations | <a href="ef-core-basics.html" class="wikilink">ef-core-basics</a> | | Semantic / vector retrieval (RAG) | ms-semantic-kernel Kernel Memory | | Session state, transient agent logs | <a href="poshwiki.html" class="wikilink">poshwiki</a> |</p>
+<table>
+<thead><tr>
+<th>Requirement</th>
+<th>Component</th>
+</tr></thead><tbody>
+<tr>
+<td>Tiny local memory, CRUD, no ORM</td>
+<td><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a></td>
+</tr>
+<tr>
+<td>Large domain model with migrations</td>
+<td><a href="ef-core-basics.html" class="wikilink">ef-core-basics</a></td>
+</tr>
+<tr>
+<td>Semantic / vector retrieval (RAG)</td>
+<td>ms-semantic-kernel Kernel Memory</td>
+</tr>
+<tr>
+<td>Session state, transient agent logs</td>
+<td><a href="poshwiki.html" class="wikilink">poshwiki</a></td>
+</tr>
+</tbody>
+</table>
 <h3>Tool Exposure</h3>
-<p>| Requirement | Component | |---|---| | MCP server in .NET | <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> + <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> | | SK orchestrator plugin | ms-semantic-kernel KernelFunction | | Service lifetime management | <a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a> |</p>
+<table>
+<thead><tr>
+<th>Requirement</th>
+<th>Component</th>
+</tr></thead><tbody>
+<tr>
+<td>MCP server in .NET</td>
+<td><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> + <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a></td>
+</tr>
+<tr>
+<td>SK orchestrator plugin</td>
+<td>ms-semantic-kernel KernelFunction</td>
+</tr>
+<tr>
+<td>Service lifetime management</td>
+<td><a href="dotnet-dependency-injection.html" class="wikilink">dotnet-dependency-injection</a></td>
+</tr>
+</tbody>
+</table>
 <h2>Integration Map (Traversal Paths from Agentic Cluster)</h2>
 <ul>
 <li><strong>MCP protocol work</strong> → <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> → <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a>
