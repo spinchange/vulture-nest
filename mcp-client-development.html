@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">MCP Client Development</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-host-build, mcp-client-sdk, build-mcp-client</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-host-build, mcp-client-sdk, build-mcp-client</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP Client Development</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -444,79 +444,83 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Client Development</h1>
-<p>Building an MCP Client (the &quot;Host&quot; in the <a href="mcp-architecture.html" class="wikilink">MCP model</a>) involves managing connections to servers, listing their capabilities, and orchestrating interactions between an LLM and those capabilities.</p>
-<h2>High-Level Workflow</h2>
+<p>Developing an <strong><a href="mcp-architecture.html" class="wikilink">MCP Client</a></strong> (the &quot;Host&quot;) involves connecting to servers, discovering their capabilities, and orchestrating them within an AI application&#39;s thought loop.</p>
+<h2>Core Client Responsibilities</h2>
 <ol>
-<li><strong>Initialize Transport</strong>: Set up communication (Stdio or HTTP/SSE).
+<li><strong>Transport Management</strong>: Establishing connections via Stdio or SSE.
 </li>
-<li><strong>Handshake</strong>: Call <code>initialize</code> to negotiate protocol version and capabilities.
+<li><strong>Session Lifecycle</strong>: Managing the <code>initialize</code> handshake and graceful shutdowns.
 </li>
-<li><strong>Discovery</strong>: Call <code>listTools</code>, <code>listResources</code>, and <code>listPrompts</code>.
+<li><strong>Capability Discovery</strong>: Listing <a href="mcp-server-features.html" class="wikilink">Tools, Resources, and Prompts</a>.
 </li>
-<li><strong>Orchestration</strong>:
+<li><strong>Orchestration</strong>: Mapping LLM tool-use requests to <code>callTool</code> and feeding results back into the model.
+</li>
+</ol>
+<h2>Implementation Patterns</h2>
+<h3>1. Python (ClientSession)</h3>
+<p>The Python SDK uses <code>ClientSession</code> within an <code>AsyncExitStack</code> for robust transport lifecycle management.</p>
+<ul>
+<li><strong>Connection</strong>: <code>server_params = StdioServerParameters(command=&quot;uv&quot;, args=[&quot;run&quot;, &quot;server.py&quot;])</code>
+</li>
+<li><strong>Handshake</strong>: <code>async with stdio_client(server_params) as (read, write): async with ClientSession(read, write) as session: await session.initialize()</code>
+</li>
+<li><strong>Tool Execution</strong>: <code>result = await session.call_tool(tool_name, tool_args)</code>
+</li>
+</ul>
+<h3>2. TypeScript / Node.js</h3>
+<p>The TypeScript SDK uses a <code>Client</code> class with pluggable transports.</p>
+<ul>
+<li><strong>Connection</strong>: <code>const transport = new StdioClientTransport({ command: &quot;node&quot;, args: [&quot;server.js&quot;] });</code>
+</li>
+<li><strong>Handshake</strong>: <code>const client = new Client({ name: &quot;client&quot;, version: &quot;1.0.0&quot; }); await client.connect(transport);</code>
+</li>
+<li><strong>Tool Execution</strong>: <code>const result = await client.callTool({ name: toolName, arguments: toolArgs });</code>
+</li>
+</ul>
+<h2>The &quot;Thought Loop&quot; Orchestration</h2>
+<p>A standard MCP client follows this pattern for user queries:</p>
+<ol>
+<li><strong>Context Gathering</strong>: Retrieve all available tools from the server via <code>listTools</code>.
+</li>
+<li><strong>Model Prompting</strong>: Send the query + tool schemas to the LLM (e.g., Claude).
+</li>
+<li><strong>Decision Handling</strong>: If the LLM returns a <code>tool_use</code> request:
 <ul>
 <li>
 <ul>
-<li>Send the user query + tool definitions to the LLM.
+<li>Client calls <code>callTool</code> on the MCP Server.
 </li>
-<li>If the LLM requests a tool call, the Client executes <code>callTool</code> on the Server.
+<li>Client appends the result to the message history.
 </li>
-<li>Return the tool result to the LLM.
-</li>
-<li>The LLM provides a final natural language response to the user.
+<li>Client re-prompts the LLM with the updated history.
 </li>
 </ul>
 </li>
 </ul>
+</li>
+<li><strong>Finalization</strong>: Generate and display the final natural language response.
 </li>
 </ol>
-<h2>Core Implementation Patterns</h2>
-<h3>1. Connection Management</h3>
-<p>Clients must handle the lifecycle of the server process (if using stdio).</p>
+<h2>Advanced Features</h2>
 <ul>
-<li><strong>Python</strong>: Use <code>AsyncExitStack</code> for robust cleanup.
+<li><strong>Sampling</strong>: Clients can expose their own LLM to the Server, allowing the Server to request its own completions (see <code>sampling/createMessage</code>).
 </li>
-<li><strong>TypeScript</strong>: Use <code>StdioClientTransport</code>.
+<li><strong>Roots</strong>: Clients inform Servers about the filesystem boundaries they are allowed to access via <code>resources/roots/list</code>.
 </li>
 </ul>
-<h3>2. Capability Negotiation</h3>
-<p>During <code>initialize</code>, the Client and Server exchange capability objects. The Client can offer:</p>
-<ul>
-<li><strong>Sampling</strong>: Giving the Server access to its LLM.
-</li>
-<li><strong>Roots</strong>: Informing the Server about accessible filesystem paths.
-</li>
-</ul>
-<h3>3. Tool Execution Loop</h3>
-<p>The Client acts as the &quot;middleman&quot; between the LLM and the Server:</p>
-<pre><code>sequenceDiagram
-    actor User
-    participant Client
-    participant LLM
-    participant Server
-    User-&gt;&gt;Client: &quot;What&#39;s the weather?&quot;
-    Client-&gt;&gt;Server: listTools()
-    Server--&gt;&gt;Client: [get_weather]
-    Client-&gt;&gt;LLM: Query + [get_weather] schema
-    LLM--&gt;&gt;Client: callTool(get_weather, {city: &quot;NYC&quot;})
-    Client-&gt;&gt;Server: callTool(get_weather, {city: &quot;NYC&quot;})
-    Server--&gt;&gt;Client: &quot;72&#176;F and Sunny&quot;
-    Client-&gt;&gt;LLM: Tool Result: &quot;72&#176;F and Sunny&quot;
-    LLM--&gt;&gt;Client: &quot;The weather in NYC is 72&#176;F and Sunny.&quot;
-    Client--&gt;&gt;User: &quot;The weather in NYC is 72&#176;F and Sunny.&quot;</code></pre>
 <h2>Best Practices</h2>
 <ul>
-<li><strong>Approval Gatekeeping</strong>: Always prompt the user before executing tools that have side effects (e.g., deleting files, sending emails).
+<li><strong>Secure API Keys</strong>: Use <code>.env</code> files and avoid hardcoding credentials.
 </li>
-<li><strong>Error Handling</strong>: Wrap tool calls in try-catch blocks. If a server crashes, the client should attempt to restart it or notify the user gracefully.
+<li><strong>Pathing</strong>: Use absolute paths for server executables to ensure cross-platform compatibility.
 </li>
-<li><strong>Timeout Management</strong>: Large resource reads or complex tool executions may require custom timeout settings.
+<li><strong>Error Propagation</strong>: Tool failures should be caught and returned to the LLM as text content, allowing the model to attempt a correction.
 </li>
 </ul>
 <hr>
-<h2>References</h2>
+<h2>Related</h2>
 <ul>
-<li>Source: <code>00_Raw/mcp/Build an MCP Client.md</code>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="mcp-client-features.html" class="wikilink">mcp-client-features</a>
 </li>
@@ -526,7 +530,11 @@
 </li>
 <li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
 </li>
-<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+</ul>
+<ul>
+<li><a href="mcp-debugging.html" class="wikilink">mcp-debugging</a>
+</li>
+<li><a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a>
 </li>
 </ul>
       </main>
@@ -543,19 +551,25 @@
 <ul>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
+<li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
 <li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
-<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="python-context-managers.html" class="">python-context-managers</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
+<li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
+<li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 </ul>
           </div>
         </div>

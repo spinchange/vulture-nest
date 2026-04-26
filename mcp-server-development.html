@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">MCP Development</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-sdk, mcp-server-build, mcp-best-practices</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-sdk, mcp-server-build, mcp-best-practices</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP Development</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -443,62 +443,77 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>MCP Development</h1>
-<p>Developing for the <strong><a href="mcp-architecture.html" class="wikilink">Model Context Protocol</a></strong> involves building either Servers (to expose data/tools) or Clients (to consume them).</p>
-<h2>Supported SDKs</h2>
-<p>Anthropic provides official and community-supported SDKs for:</p>
+        <h1>MCP Server Development</h1>
+<p>Developing an <strong><a href="mcp-architecture.html" class="wikilink">MCP Server</a></strong> involves exposing tools, resources, and prompts via a standardized transport (Stdio or HTTP).</p>
+<h2>Supported SDKs &amp; Implementation</h2>
+<p>MCP provides official SDKs to simplify development. The <strong><a href="mcp-sdks.html" class="wikilink">SDKs</a></strong> handle JSON-RPC serialization and lifecycle management.</p>
+<h3>1. Python (FastMCP)</h3>
+<p>The <code>FastMCP</code> class is the recommended high-level API for Python.</p>
 <ul>
-<li><strong>Python:</strong> High-level support via <code>FastMCP</code>.
+<li><strong>Initialization</strong>: <code>mcp = FastMCP(&quot;server-name&quot;)</code>
 </li>
-<li><strong>TypeScript/Node.js:</strong> The standard for web and desktop integration.
+<li><strong>Tools</strong>: Uses <code>@mcp.tool()</code> decorators. Docstrings and type hints are automatically converted to JSON Schema.
 </li>
-<li><strong>Other:</strong> Java, Kotlin, C#, and Ruby.
+<li><strong>Running</strong>: <code>mcp.run(transport=&quot;stdio&quot;)</code>
 </li>
 </ul>
-<h2>Critical Development Rules</h2>
-<h3>1. Logging (Stdio Transport)</h3>
-<p>When using the <strong><a href="mcp-transport.html" class="wikilink">Stdio transport</a></strong>, the server communicates via <code>stdout</code>.</p>
+<h3>2. TypeScript / Node.js</h3>
+<p>The TypeScript SDK provides the most fine-grained control for web and desktop hosts.</p>
 <ul>
-<li><strong>❌ NEVER</strong> log to <code>stdout</code> (e.g., <code>print()</code> or <code>console.log()</code>). This corrupts the JSON-RPC stream and breaks the connection.
+<li><strong>Initialization</strong>: <code>const server = new McpServer({ name: &quot;server&quot;, version: &quot;1.0.0&quot; });</code>
 </li>
-<li><strong>✅ ALWAYS</strong> log to <code>stderr</code> (e.g., <code>sys.stderr</code>, <code>logging.info()</code>, or <code>console.error()</code>).
+<li><strong>Tools</strong>: Registered via <code>server.registerTool(name, schema, handler)</code>. Uses <strong>Zod</strong> for schema definition.
+</li>
+<li><strong>Running</strong>: <code>const transport = new StdioServerTransport(); await server.connect(transport);</code>
 </li>
 </ul>
-<h3>2. FastMCP (Python)</h3>
-<p>The <code>FastMCP</code> class in the Python SDK simplifies development by using Python type hints and docstrings to automatically generate the tool schemas required by the LLM.</p>
-<h2>Server Configuration</h2>
-<p>MCP servers are typically registered in a host&#39;s configuration file. For <strong>Claude Desktop</strong>, this is <code>claude_desktop_config.json</code>.</p>
-<pre><code>{
-  &quot;mcpServers&quot;: {
-    &quot;my-server&quot;: {
-      &quot;command&quot;: &quot;uv&quot;,
-      &quot;args&quot;: [&quot;run&quot;, &quot;server.py&quot;]
-    }
-  }
-}</code></pre>
-<h2>Best Practices</h2>
+<h3>3. Java (Spring AI)</h3>
+<p>Ideal for enterprise integration and performance-critical systems.</p>
 <ul>
-<li><strong>Atomic Tools:</strong> Each tool should perform a single, clear operation.
+<li><strong>Mechanism</strong>: Uses <code>@Tool</code> and <code>@ToolParam</code> annotations on Spring <code>@Service</code> classes.
 </li>
-<li><strong>Schema Clarity:</strong> Provide detailed descriptions in docstrings; the LLM uses these to decide when to call the tool.
+<li><strong>Auto-Registration</strong>: The <code>spring-ai-starter-mcp-server</code> automatically discovers and registers beans as tools.
 </li>
-<li><strong>User Approval:</strong> Design tools with the assumption that sensitive actions (writing to DB, sending emails) will require host-level user approval.
+</ul>
+<h2>Critical Lifecycle Rules</h2>
+<h3>The Stdio Logging Hazard</h3>
+<p>When using <strong><a href="mcp-transport.html" class="wikilink">Stdio transport</a></strong>, the server communicates via <code>stdout</code>.</p>
+<ul>
+<li><strong>❌ NEVER</strong> log to <code>stdout</code> (e.g., <code>print()</code>, <code>console.log()</code>, <code>System.out.println()</code>). This corrupts the JSON-RPC stream.
+</li>
+<li><strong>✅ ALWAYS</strong> log to <code>stderr</code> (e.g., <code>sys.stderr</code>, <code>console.error()</code>).
+</li>
+</ul>
+<h2>Server Building Workflow</h2>
+<ol>
+<li><strong>Define Capabilities</strong>: Decide which <a href="mcp-server-features.html" class="wikilink">Tools, Resources, and Prompts</a> to expose.
+</li>
+<li><strong>Schema Design</strong>: Define input parameters using JSON Schema or language-native primitives (Zod, Type Hints).
+</li>
+<li><strong>Implement Logic</strong>: Write the underlying service logic (e.g., API calls, DB queries).
+</li>
+<li><strong>Connect Transport</strong>: Choose between <code>StdioServerTransport</code> (local) or <code>SSEServerTransport</code> (remote).
+</li>
+<li><strong>Test</strong>: Use the <strong><a href="mcp-inspector.html" class="wikilink">MCP Inspector</a></strong> to verify schemas and results.
+</li>
+</ol>
+<h2>Security &amp; Trust</h2>
+<ul>
+<li><strong>User Consent</strong>: Servers should assume that sensitive tool calls (Write/Delete) will trigger a &quot;Human-in-the-loop&quot; approval dialog in the host.
+</li>
+<li><strong>Validation</strong>: Always validate inputs on the server side; do not trust the LLM&#39;s adherence to the schema.
 </li>
 </ul>
 <hr>
-<h2>See Also</h2>
+<h2>Related</h2>
 <ul>
-<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
-</li>
-<li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
-</li>
-<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
-</li>
-<li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
-</li>
 <li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
 </li>
 <li><a href="mcp-debugging.html" class="wikilink">mcp-debugging</a>
+</li>
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>
+</li>
+<li><a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a>
 </li>
 <li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
 </li>
@@ -526,19 +541,23 @@
 <li><a href="mcp-inspector.html" class="">mcp-inspector</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="mcp-transport.html" class="">mcp-transport</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="python-decorators.html" class="">python-decorators</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
 <li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
-<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+<li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
+<li><a href="mcp-inspector.html" class="">mcp-inspector</a></li>
+<li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 </ul>
           </div>
         </div>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">.NET Agent Integration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-agentic-bridge, csharp-agentic-map, dotnet-agent-platform, dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">dotnet-agentic-bridge, csharp-agentic-map, dotnet-agent-platform, dotnet-integration, semantic-kernel-integration, agent-dotnet-bridge</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">.NET Agent Integration</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -480,7 +480,14 @@
 </tr>
 </tbody>
 </table>
-<p>The tier model is enforced by <a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> constraints and the CLR&#39;s security model. The emergence of <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> and <a href="foundry-local.html" class="wikilink">foundry-local</a> is significant: Microsoft is bridging Tier-0 inference directly into Tier-1 C#, making the full <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> implementable without a Python subprocess boundary. See <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> for the complete theory.</p>
+<p>In the Vulture substrate, .NET serves as the <strong>Tier-1 Host</strong> for performance-critical agent components, particularly when interacting with local memory, system automation, and local inference via <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>.</p>
+<h2>Current Gap Analysis</h2>
+<ul>
+<li><strong>Imbalance:</strong> While <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a> links out to agentic concepts, the core <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> previously lacked sufficient back-references to the .NET ecosystem (the &quot;Peninsula Gap&quot;).
+</li>
+<li><strong>Action:</strong> Ensure all .NET-based agent tools are registered in the <a href="agent-skills-index.html" class="wikilink">agent-skills-index</a> to complete the bidirectional link graph.
+</li>
+</ul>
 <h2>The .NET Agent Loop</h2>
 <p>The <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (Thought → Action → Observation) maps to .NET components:</p>
 <pre><code>Thought (LLM inference)
@@ -644,6 +651,8 @@ builder.Services.AddHostedService&lt;AgentLoop&gt;();</code></pre>
 </li>
 <li><a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>
 </li>
+<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
+</li>
 </ul>
       </main>
 
@@ -657,10 +666,14 @@ builder.Services.AddHostedService&lt;AgentLoop&gt;();</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="agent-skills-index.html" class="">agent-skills-index</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="csharp-for-agentic-workflows.html" class="">csharp-for-agentic-workflows</a></li>
+<li><a href="csharp-pattern-matching.html" class="">csharp-pattern-matching</a></li>
+<li><a href="csharp-records.html" class="">csharp-records</a></li>
 <li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
@@ -670,10 +683,12 @@ builder.Services.AddHostedService&lt;AgentLoop&gt;();</code></pre>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-skills-index.html" class="">agent-skills-index</a></li>
 <li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="csharp-for-agentic-workflows.html" class="">csharp-for-agentic-workflows</a></li>
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="csharp-moc.html" class="">csharp-moc</a></li>

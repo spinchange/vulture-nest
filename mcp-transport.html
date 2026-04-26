@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">MCP Transport</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-stdio, mcp-sse, mcp-http</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-stdio, mcp-sse, mcp-http</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP Transport</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -449,25 +449,31 @@
 <h3>1. Stdio Transport (Local)</h3>
 <p>Uses Standard Input/Output streams for communication between processes on the same machine.</p>
 <ul>
-<li><strong>Use Case:</strong> Local filesystem access, local database scripts, browser-based hosts talking to local binaries.
+<li><strong>Mechanism</strong>: The Host spawns the Server as a child process.
 </li>
-<li><strong>Pros:</strong> Minimal latency, no network overhead, simple security (process-level).
+<li><strong>Framing</strong>: Messages are typically delimited by newlines. Each line must be a valid JSON-RPC 2.0 object.
+</li>
+<li><strong>Constraint</strong>: Servers must <strong>never</strong> log to <code>stdout</code> (standard output) as it corrupts the protocol stream. All logging must be redirected to <code>stderr</code>.
 </li>
 </ul>
 <h3>2. Streamable HTTP Transport (Remote)</h3>
-<p>Uses HTTP POST for client-to-server messages and <strong>Server-Sent Events (SSE)</strong> for server-to-client streaming.</p>
+<p>Enables communication over a network, allowing the Host and Server to reside on different machines.</p>
 <ul>
-<li><strong>Use Case:</strong> Cloud-based services (e.g., Sentry, GitHub API), cross-machine collaboration.
+<li><strong>Client-to-Server</strong>: Messages are sent via standard <strong>HTTP POST</strong> requests.
 </li>
-<li><strong>Pros:</strong> Enables remote capabilities, supports standard web authentication (OAuth, Bearer tokens).
+<li><strong>Server-to-Client</strong>: Messages are streamed using <strong>Server-Sent Events (SSE)</strong>. This allows the server to push notifications or results without a preceding request.
+</li>
+<li><strong>Security</strong>: Supports standard web authentication (OAuth 2.1, Bearer tokens, API keys).
 </li>
 </ul>
-<h2>Framing</h2>
-<p>The transport layer ensures that JSON-RPC messages are correctly framed (delimited) so the receiving end can parse individual requests from a continuous stream.</p>
+<h2>Message Framing</h2>
+<p>The transport layer ensures that the continuous stream of bytes is correctly parsed into individual JSON-RPC messages. In Stdio, this is line-based; in SSE, it follows the <code>data:</code> prefix and double-newline terminator specified by the SSE standard.</p>
 <hr>
 <h2>See Also</h2>
 <ul>
 <li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
+</li>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
@@ -496,6 +502,7 @@
 <ul>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 </ul>
           </div>
         </div>
