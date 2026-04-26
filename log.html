@@ -585,6 +585,186 @@
 <div class="log-entry"><span class="log-time">2026-04-25 21:37</span><span class="log-content">Normalized generated artifacts with <code>.gitattributes</code> (<code>LF</code>), restored local ignores for <code>00_Raw/openai-js-repl/</code>, <code>00_Raw/workbench/</code>, and <code>**/target/</code>, then repaired graph anchors (<code>agent-actions-unit</code>, <code>claude-codex-interop-test</code>, <code>rust-sqlx-migrations</code>) so <code>run-maintenance.ps1</code> returns a 100/100 health score before committing CI-generated outputs.</span></div>
 <p>[2026-04-25] synthesis | Created <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> from PoShWiKi audit: concrete C# MCP server + local SQLite blueprint. Fixed dotnet-moc → agentic-frameworks-moc reverse edge. Cross-linked csharp-mcp-sdk to sqlite patterns. 100/100 health | 203 notes. [2026-04-25] synthesis | Synthesized <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> as top-level bridge note mapping .NET tier model to agentic-frameworks-moc. Expanded <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> (draft→active) with inference API patterns, SK integration, and hardware comparison. 100/100 health | 205 notes. [2026-04-25] rfc | Drafted <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> and <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>. Four-tier ADR RFC with selection criteria, inter-tier contracts, failure-mode responsibilities, and enforcement options. Codex verification handoff written. Stub <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> created. 100/100 | 208 notes. [2026-04-25] adr | Codex verified ADR. Key finding: Tier-0 (Rust) and Tier-1 (C#) are architectural intent — no source checked in. PoShWiKi is Tier-2. Workbench is dev scaffolding (outside tier model). Option A (Pester script) preferred for enforcement. <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> → active, <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> → superseded, <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> → active. Fixed orphan-check.ps1 ps-automation-spec gap. 100/100 | 208 notes. [2026-04-25] portal | Added VULTURE/PORTAL/INDEX/&lt;Note&gt; breadcrumb to template.html. Added pipe-table parser to generate-wiki.ps1 (Flush-Table with separator detection). All 209 notes recompiled. Tables render in dotnet-agent-integration, polyglot-platform-adr, lm-kit-dotnet, etc. 100/100. [2026-04-25] compliance | Codex applied ps-automation-spec scaffolding to the 12 non-compliant <code>02_System/*.ps1</code> scripts, added <code>02_System/test-tier-compliance.ps1</code> as ADR Option A enforcement, and wired <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> step [7/7] to prove Tier-2 compliance on every maintenance run. Two commits landed. 100/100 | 207 notes. [2026-04-25] seam | Wrote <a href="claude-portal-breadcrumbs-handoff.html" class="wikilink">claude-portal-breadcrumbs-handoff</a> for Claude: add portal breadcrumbs/index-back-nav through the shared HTML generation path where possible, inspect standalone pages, and verify whether markdown pipe tables are rendering as raw text in compiled HTML. Maintain 100/100 health.</p>
 <p>[2026-04-25] maintenance | Fixed broken link in GEMINI.md. Used ask_user to review 7 draft notes with user, then activated 6 of them per user&#39;s request.</p>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> (sim=0.8913) — Both scripts are complementary maintenance tools for knowledge graph integrity—broken link checker identifies invalid references while orphan check identifies unreferenced notes—and each would benefit from cross-referencing the other as part of a holistic graph health workflow.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> &lt;-&gt; <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> (sim=0.8856) — Note A explicitly implements the SQLite patterns from Note B, and Note B would benefit from citing Note A as a concrete C# MCP server instantiation of its principles.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a> &lt;-&gt; <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> (sim=0.879) — Note A establishes the foundational C#/.NET agentic pattern with SQLite that Note B explicitly builds upon and generalizes into an MCP server implementation, making them genuinely complementary and mutually reinforcing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> &lt;-&gt; <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> (sim=0.8753) — Note A establishes the polyglot tier theory as emergent architecture, while Note B applies that same theory to map .NET-specific agentic tasks; each note strengthens the other by providing complementary scope (theory vs. implementation).
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: added <a href="agent-actions.html" class="wikilink">agent-actions</a> to <a href="agent-actions-unit.html" class="wikilink">agent-actions-unit</a> (sim=0.8733) — Note A is a course-specific summary of agent actions that should reference Note B as its foundational permanent note, while Note B serves as the canonical definition and doesn&#39;t need the reverse link to maintain its conceptual completeness.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:25] auto-link: added <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> to <a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a> (sim=0.8671) — Note B is a specification document that describes Note A&#39;s script as one of its tools, so B should link to A for readers seeking implementation details, but A need not reciprocate since it already references the higher-level protocol standard.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:28] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> (sim=0.8634) — Note A&#39;s best practices for context optimization and tool calling directly inform how Note B&#39;s client orchestration should be implemented, while Note B&#39;s implementation patterns are concrete applications of Note A&#39;s security and performance principles.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:28] auto-link: mutual link <a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a> &lt;-&gt; <a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a> (sim=0.8618) — These notes describe complementary sides of the MCP ecosystem—clients that consume MCP services and servers that provide them—and readers understanding either concept would benefit from seeing the corresponding counterpart.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> &lt;-&gt; <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8606) — Both handoffs identify complementary gaps in the same vault direction (A2A and session types as missing theoretical foundations for trust substrate), were written in the same session, and each note would benefit from acknowledging the parallel prioritization and structural relationship of their respective coverage targets.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> (sim=0.8602) — Note A provides general MCP best practices (context optimization, tool calling, security hardening) while Note B provides Rust-specific implementation patterns for those same concerns, making them genuinely complementary references that would help readers understand both the principles and their concrete Rust implementation.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> &lt;-&gt; <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8585) — Note B explicitly references capability-lattice-spec as foundational context (session types prove correct *usage* of capabilities that the lattice proves an agent *has*), while Note A should reciprocally reference session types as the complementary formalism needed to complete the trust substrate theory.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: added <a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a> to <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> (sim=0.8558) — Note A orchestrates the maintenance scripts, while Note B formally specifies those same scripts&#39; schemas and behaviors; A should reference B for detailed tool specifications without B needing to reference the orchestration layer.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: added <a href="ms-learn-csharp-overview.html" class="wikilink">ms-learn-csharp-overview</a> to <a href="csharp-basics.html" class="wikilink">csharp-basics</a> (sim=0.8524) — Note A is a permanent note on C# basics that should reference Note B as a literature source for deeper architectural understanding, while Note B (a literature note) does not need to backlink to the more general basics note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8521) — These notes describe complementary halves of the MCP architecture (Client vs Server development), and each would benefit from cross-referencing the other to give readers the complete picture of how the two sides interact.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="ms-repo-poshwiki.html" class="wikilink">ms-repo-poshwiki</a> &lt;-&gt; <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (sim=0.8514) — Note A documents the PoShWiKi repository and its core features, while Note B describes a high-level API wrapper around that same engine; they are directly complementary and each note benefits from explicitly referencing the other to show the relationship between the underlying system and its agent-facing interface.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> &lt;-&gt; <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> (sim=0.8508) — Note A&#39;s Tier-0 Rust foundation directly instantiates the Trust-by-Construction substrate that Note B theorizes, and Note B&#39;s capability-governance principles explain why Rust is architecturally essential to Note A&#39;s tiered platform—they are mutually reinforcing rather than redundant.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8497) — Note A provides strategic best practices and patterns for MCP implementation, while Note B covers tactical development rules and SDK specifics—they are complementary perspectives on the same domain that would benefit readers of either note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a> to <a href="codex-ps-compliance-handoff.html" class="wikilink">codex-ps-compliance-handoff</a> (sim=0.8494) — Note B (ps-compliance handoff) is a concrete downstream task that depends on Note A (polyglot ADR verification) for its tier architecture context and constraints, so B should reference A as its foundational requirement.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> to <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8486) — Note A is a handoff that identifies session types as a priority gap and should link to Note B as the concrete implementation note that fulfills part of that goal, but Note B should not link back to the handoff document per the handoff-linking convention.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> to <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> (sim=0.8418) — PS: Vault Stats tracks orphan count as a key metric and should reference PS: Orphan Check as the tool that identifies those orphans, establishing a practical dependency relationship.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: mutual link <a href="mcp-debugging.html" class="wikilink">mcp-debugging</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8413) — Note A (Debugging) and Note B (Development) are complementary: developers need debugging techniques while building servers, and debuggers need to understand the development context and logging rules that are critical for troubleshooting.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="rust-affine-types.html" class="wikilink">rust-affine-types</a> to <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> (sim=0.8402) — Note B explicitly depends on understanding affine vs. linear type systems to explain why session types require a workaround in Rust, making a backlink to the foundational affine types note essential for readers.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> (sim=0.8398) — Both notes are complementary PowerShell maintenance scripts that work together to ensure knowledge graph integrity: one checks for broken links while the other audits YANP compliance, making them natural cross-references in a system maintenance context.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> &lt;-&gt; <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> (sim=0.8372) — These are sibling handoffs addressing complementary halves of the trust substrate theory (MCP via capability lattice, A2A as its peer-to-peer complement), and each explicitly identifies the other&#39;s domain as necessary context for vault completeness.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-note-creator.html" class="wikilink">ps-note-creator</a> &lt;-&gt; <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> (sim=0.8371) — These are complementary PowerShell automation tools for the YANP system: Note Creator produces YANP-compliant notes while YANP Audit validates their compliance, making each tool&#39;s purpose clearer when cross-referenced.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> (sim=0.8354) — Note B explicitly tracks &#39;Broken Link Count&#39; as a metric, making Note A (the tool that identifies broken links) a direct dependency and complementary reference for understanding how that metric is generated.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> to <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> (sim=0.8353) — Note A describes a concrete .NET MCP server implementation that would benefit from referencing the security hardening and context optimization best practices in Note B, but Note B is a general guide that doesn&#39;t need to reference this specific implementation pattern.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> to <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (sim=0.834) — Note B (PoShWiKi Tools API) describes the high-level wrapper and relational sidecar pattern, while Note A provides the underlying implementation patterns and low-level SQLite mechanics that make that API possible; Note B should reference Note A to explain the technical substrate it abstracts.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="csharp-moc.html" class="wikilink">csharp-moc</a> &lt;-&gt; <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8337) — Both are language MOCs serving complementary roles in agent systems; C# users benefit from knowing Python alternatives and vice versa, as evidenced by the existing See Also sections and their parallel coverage of concurrency, validation, and persistence patterns.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a> &lt;-&gt; <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> (sim=0.8337) — Note A describes concrete MCP server implementations built with SDKs, while Note B describes the SDKs themselves—they are complementary resources where readers of either would benefit from understanding the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> to <a href="ms-learn-aspnet-core-overview.html" class="wikilink">ms-learn-aspnet-core-overview</a> (sim=0.8336) — ASP.NET Core is a framework built on .NET fundamentals, so Note A should reference Note B to establish the hierarchical relationship and help readers understand the underlying platform concepts (CLR, IL, DI, Generic Host) that enable ASP.NET Core.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a> &lt;-&gt; <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a> (sim=0.8308) — These notes describe complementary aspects of the same conceptual system: Agent Knowledge Vault defines the *what* (a shared, model-agnostic knowledge base), while LLM Wiki Pattern defines the *how* (the architectural and operational methodology for maintaining it), and both explicitly reference the same foundational concepts (<a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>, <a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>, provenance/auditability), making mutual reference essential for readers understanding either concept.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="ms-learn-csharp-overview.html" class="wikilink">ms-learn-csharp-overview</a> to <a href="csharp-moc.html" class="wikilink">csharp-moc</a> (sim=0.8285) — Note A is a MOC (map of content) that should reference foundational literature; Note B is a literature note that documents source material rather than serving as a hub, so it should not link back to the MOC.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: added <a href="ms-learn-wpf-overview.html" class="wikilink">ms-learn-wpf-overview</a> to <a href="wpf-moc.html" class="wikilink">wpf-moc</a> (sim=0.8275) — Note B is a MOC (map of contents) that organizes WPF concepts and should reference Note A as a foundational literature source, while Note A (a literature note) doesn&#39;t need to reciprocally link to the organizational hub.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: added <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> to <a href="claude-rust-type-system-handoff.html" class="wikilink">claude-rust-type-system-handoff</a> (sim=0.8266) — Note A is a handoff document that explicitly identifies session types in Rust as a dependent deliverable (&#39;that handoff depends on this one&#39;), so A should link to B as its realized output, but B should not backlink to A (handoff notes point forward, not receive backward links).
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: mutual link <a href="mcp-client-features.html" class="wikilink">mcp-client-features</a> &lt;-&gt; <a href="mcp-server-features.html" class="wikilink">mcp-server-features</a> (sim=0.8261) — These notes describe complementary halves of the MCP architecture—Client capabilities (sampling, elicitation, roots, logging) and Server features (tools, resources, prompts)—and each would benefit from cross-referencing to show how they work together as a complete system.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:37] auto-link: added <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> to <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8258) — Note B discusses MCP development across multiple SDKs and should reference the C# SDK as a concrete implementation example, while Note A already appropriately references the general MCP architecture note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:37] auto-link: mutual link <a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a> &lt;-&gt; <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> (sim=0.8241) — Note A (MCP Example Clients) and Note B (MCP SDKs) are complementary: clients use SDKs to implement MCP support, and SDKs enable the development of the clients described in Note A, so each would benefit from referencing the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="pkm-history-moc.html" class="wikilink">pkm-history-moc</a> &lt;-&gt; <a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> (sim=0.8234) — These are complementary MOCs that together form a complete PKM knowledge base—history provides the philosophical foundations while methods provides the practical implementations, and cross-referencing helps users understand both the &#39;why&#39; and the &#39;how&#39; of personal knowledge management.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a> &lt;-&gt; <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8224) — These notes describe complementary connection architectures (local stdio vs remote HTTP/SSE) within the MCP protocol ecosystem and would benefit from cross-referencing to help users understand the full landscape of connection options.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: added <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a> to <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8218) — Note B describes a specific implementation pattern (remote connections via HTTP/SSE) that is a concrete instantiation of the general MCP architecture described in Note A, so B should reference A for foundational context, while A need not reference every possible implementation detail.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> &lt;-&gt; <a href="mcp-security.html" class="wikilink">mcp-security</a> (sim=0.8213) — Note A discusses security considerations for remote connections (TLS/SSL, authorization, trust), while Note B provides the foundational security model and best practices that directly apply to those remote scenarios; each note benefits from referencing the other as complementary perspectives on MCP security.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="typescript-objects.html" class="wikilink">typescript-objects</a> &lt;-&gt; <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> (sim=0.8213) — Note A discusses object structure (index signatures, property modifiers, combining types) while Note B explains type operators (keyof, typeof, indexed access) that directly query and manipulate those same object structures, making them genuinely complementary concepts that benefit from cross-referencing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: added <a href="typescript-template-literals.html" class="wikilink">typescript-template-literals</a> to <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> (sim=0.8208) — Template literal types are a specialized application of type operators (particularly <code>keyof</code> and indexed access) for string manipulation, so Note B should reference Note A as a concrete use case, but Note A doesn&#39;t need to reference the broader operator concepts.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> &lt;-&gt; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> (sim=0.8205) — Both notes document complementary MCP server implementation patterns in different languages (.NET vs Rust) with shared architectural concerns (connection lifecycle, state management, tool execution safety) that readers exploring MCP patterns would benefit from cross-referencing.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -604,6 +784,8 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="actionable-vs-reference.html" class="">actionable-vs-reference</a></li>
+<li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agent-configuration-sync-strategy.html" class="">agent-configuration-sync-strategy</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
@@ -618,12 +800,20 @@
 <li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
 <li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
 <li><a href="chromadb.html" class="">chromadb</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
 <li><a href="claude-portal-breadcrumbs-handoff.html" class="">claude-portal-breadcrumbs-handoff</a></li>
+<li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
+<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
+<li><a href="codex-ps-compliance-handoff.html" class="">codex-ps-compliance-handoff</a></li>
 <li><a href="collective-iq.html" class="">collective-iq</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
 <li><a href="csharp-basics.html" class="">csharp-basics</a></li>
+<li><a href="csharp-for-agentic-workflows.html" class="">csharp-for-agentic-workflows</a></li>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="csharp-moc.html" class="">csharp-moc</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
@@ -642,17 +832,33 @@
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
+<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
+<li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
+<li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
+<li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
+<li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
 <li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="mcp-security.html" class="">mcp-security</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
+<li><a href="ms-learn-aspnet-core-overview.html" class="">ms-learn-aspnet-core-overview</a></li>
+<li><a href="ms-learn-csharp-overview.html" class="">ms-learn-csharp-overview</a></li>
+<li><a href="ms-learn-dotnet-fundamentals.html" class="">ms-learn-dotnet-fundamentals</a></li>
+<li><a href="ms-learn-wpf-overview.html" class="">ms-learn-wpf-overview</a></li>
+<li><a href="ms-repo-poshwiki.html" class="">ms-repo-poshwiki</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 <li><a href="org-mode.html" class="">org-mode</a></li>
 <li><a href="outliners.html" class="">outliners</a></li>
+<li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
+<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
 <li><a href="pkm-software-landscape.html" class="">pkm-software-landscape</a></li>
 <li><a href="plain-plus-design.html" class="">plain-plus-design</a></li>
 <li><a href="pokemon-battle-agent.html" class="">pokemon-battle-agent</a></li>
@@ -663,24 +869,36 @@
 <li><a href="powershell-objects.html" class="">powershell-objects</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="ps-broken-link-checker.html" class="">ps-broken-link-checker</a></li>
 <li><a href="ps-calculated-properties.html" class="">ps-calculated-properties</a></li>
 <li><a href="ps-classes.html" class="">ps-classes</a></li>
 <li><a href="ps-custom-objects.html" class="">ps-custom-objects</a></li>
+<li><a href="ps-note-creator.html" class="">ps-note-creator</a></li>
+<li><a href="ps-orphan-check.html" class="">ps-orphan-check</a></li>
 <li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
+<li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="react-pattern.html" class="">react-pattern</a></li>
 <li><a href="roam-research.html" class="">roam-research</a></li>
 <li><a href="rust.html" class="">rust</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-concurrency.html" class="">rust-concurrency</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 <li><a href="tauri.html" class="">tauri</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
 <li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="typescript-objects.html" class="">typescript-objects</a></li>
+<li><a href="typescript-template-literals.html" class="">typescript-template-literals</a></li>
+<li><a href="typescript-type-operators.html" class="">typescript-type-operators</a></li>
 <li><a href="typescript-utility-types.html" class="">typescript-utility-types</a></li>
+<li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
 <li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
 <li><a href="wiki-pattern-architecture.html" class="">wiki-pattern-architecture</a></li>
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
