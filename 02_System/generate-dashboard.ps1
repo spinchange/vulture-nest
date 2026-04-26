@@ -5,7 +5,7 @@
     Builds a single-file dashboard that combines vault health metrics, graph topology,
     and recent activity from both log.md and the PoShWiKi SQLite database.
 .PARAMETER OutputPath
-    Optional output path for the generated HTML. Defaults to 02_System/dashboard.html.
+    Optional output path for the generated HTML. Defaults to 03_Web/public/dashboard.html.
 .EXAMPLE
     pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-dashboard.ps1
 #>
@@ -481,6 +481,39 @@ LIMIT 1;
       padding: 24px;
     }
 
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .topbar .brand {
+      color: var(--accent);
+    }
+
+    .topbar .sep {
+      color: var(--line);
+    }
+
+    .topbar a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      color: var(--accent);
+    }
+
     .masthead {
       display: grid;
       grid-template-columns: 1.3fr .7fr;
@@ -657,6 +690,15 @@ LIMIT 1;
 </head>
 <body>
   <main class="shell">
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>DASHBOARD</span>
+    </nav>
     <section class="masthead">
       <div class="panel">
         <div class="eyebrow terminal">Vault Pulse / Live Substrate Dashboard</div>

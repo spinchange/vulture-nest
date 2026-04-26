@@ -27,8 +27,11 @@ jobs:
           # 1. Ensure the DB is initialized in the cloud workspace
           $dbPath = "$env:GITHUB_WORKSPACE/00_Raw/PoShWiKi/wiki.db"
           pwsh -NoProfile -ExecutionPolicy Bypass -File "00_Raw/PoShWiKi/wiki.ps1" init
+
+          # 2. Seed repo-backed PoShWiKi pages so dashboard/session activity exists in CI
+          pwsh -NoProfile -ExecutionPolicy Bypass -File "02_System/seed-poshwiki-pages.ps1"
           
-          # 2. Sync the graph (this populates the Links table needed for neighbors)
+          # 3. Sync the graph (this populates the Links table needed for neighbors)
           pwsh -NoProfile -ExecutionPolicy Bypass -File "02_System/sync-vault-graph.ps1"
 
       - name: Compile Vulture Portal
