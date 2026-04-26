@@ -32,6 +32,7 @@ type: community
 * [[agentic-protocols]] - MCP↔Agent Spec
 * [[csharp-mcp-sdk]] - High-Performance .NET Tooling
 * [[dotnet-agent-integration]] - Bridging Ecosystems
+* [[inter-agent-handoff-protocol]] - Shared Resume, Seam, and Reply-Slot Process
 
 ## Emergent Communities
 * [[community-living-knowledge-system]] - The Vault as a Compiler

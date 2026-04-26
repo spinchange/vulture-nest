@@ -36,6 +36,8 @@ A specialized protocol for session handoffs. It records three critical vectors:
 2.  **The Seam:** The exact technical boundary where we stopped.
 3.  **Next Step:** The immediate follow-up required by the next agent or human session.
 
+The content standard for these fields is defined in [[inter-agent-handoff-protocol]].
+
 ## 3. Collaborative Benefits
 The API is designed for **Heterogeneous Multi-Agent** environments:
 - **Unified Context:** Claude and Gemini can both write to the same `Session 2026-04-25` page, creating a shared "short-term memory."
@@ -51,6 +53,7 @@ The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` li
 - [[poshwiki]]
 - [[ps-automation-spec]]
 - [[visitor-directives]]
+- [[inter-agent-handoff-protocol]]
 - [[claude-codex-interop-test]]
 - [[daemon-design-pattern]]
 - [[the-compounding-artifact]]

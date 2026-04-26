@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PoShWiKi Tools API — Vulture Portal</title>
+  <title>Inter-Agent Handoff Protocol — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>PoShWiKi Tools API</span>
+      <span>Inter-Agent Handoff Protocol</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">PoShWiKi Tools API</h1>
+      <h1 class="note-title">Inter-Agent Handoff Protocol</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PoShWiKi Tools API</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">poshwiki-api, thought-api, sidecar-database</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Inter-Agent Handoff Protocol</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-handoff-protocol, multi-agent-handoff, seam-protocol</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
       </div>
     </header>
 
@@ -441,75 +441,142 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>PoShWiKi Tools API</h1>
-<p>The <strong>PoShWiKi Tools API</strong> (<code>02_System/poshwiki-tools.ps1</code>) is a high-level PowerShell 7 wrapper around the core PoShWiKi engine. It serves as the primary interface for agents to record their internal state, session logs, and collaborative findings without needing to manage low-level SQLite CLI arguments.</p>
-<h2>1. The Relational Sidecar Pattern</h2>
-<p>In the <strong>vulture-nest</strong>, we distinguish between <strong>Durable Knowledge</strong> (stored in flat YANP files in <code>01_Wiki/</code>) and <strong>Ephemeral/Procedural Memory</strong>. The PoShWiKi API implements the &quot;Relational Sidecar&quot; pattern:</p>
+        <h1>Inter-Agent Handoff Protocol</h1>
+<p>This note defines the current shared process for handing work between agents in the <strong>vulture-nest</strong>.</p>
+<h2>Purpose</h2>
+<p>The handoff protocol exists to prevent three common failures:</p>
 <ul>
-<li><strong>YANP Files:</strong> The human-readable source of truth. Version-controlled via Git. High latency for atomic updates.
+<li>context drift between sessions
 </li>
-<li><strong>PoShWiKi (SQLite):</strong> The agent-runnable substrate. Low latency for atomic updates. High queryability via SQL/LINQ.
+<li>durable notes mixing with transient execution logs
+</li>
+<li>ambiguous ownership of the next step
 </li>
 </ul>
-<p>The API bridges these by allowing agents to &quot;emit&quot; thoughts into the database, which can later be &quot;compiled&quot; or promoted into durable YANP notes.</p>
-<h2>2. Core API Surface</h2>
-<h3><code>Invoke-WikiNote</code> (The Atomic Upsert)</h3>
-<p>Standardizes section-level updates. Instead of overwriting an entire file, an agent can target a specific <code>## Heading</code>.</p>
+<h2>Canonical Surfaces</h2>
+<p>Use these surfaces for distinct purposes:</p>
 <ul>
-<li><strong>Behavior:</strong> If the page or section doesn&#39;t exist, it is created. If it exists, only that section is updated.
+<li><strong><code>01_Wiki/</code></strong>: durable knowledge, permanent notes, MOCs, bridge notes, and stable protocol documents
 </li>
-<li><strong>Use Case:</strong> Maintaining a &quot;Project Status&quot; or &quot;Current Assumptions&quot; list across multiple turns.
+<li><strong>PoShWiKi session page</strong>: active execution state, <code>Actions</code>, <code>Session Goal</code>, <code>Current Seam</code>, and <code>Next Steps</code>
+</li>
+<li><strong>Dedicated handoff note</strong>: a bounded brief for another agent when the work needs more than a one-line Seam
 </li>
 </ul>
-<h3><code>Invoke-WikiLog</code> (Chronological Append)</h3>
-<p>Appends progress to a dedicated <code>## Actions</code> section on the current session page.</p>
+<h2>Standard Handoff Flow</h2>
+<h3>1. Resume</h3>
+<p>At session start, read:</p>
 <ul>
-<li><strong>Behavior:</strong> Automatically targets the page returned by <code>Get-WikiSessionTitle</code>.
+<li>the latest PoShWiKi session page
 </li>
-<li><strong>Use Case:</strong> Step-by-step logging of an agent&#39;s technical execution.
+<li>the latest relevant entries in <code>02_System/log.md</code>
+</li>
+<li>any dedicated handoff note referenced by the Seam
 </li>
 </ul>
-<h3><code>New-WikiSeam</code> (State Synchronization)</h3>
-<p>A specialized protocol for session handoffs. It records three critical vectors:</p>
-<ol>
-<li><strong>The Goal:</strong> What we were trying to achieve.
-</li>
-<li><strong>The Seam:</strong> The exact technical boundary where we stopped.
-</li>
-<li><strong>Next Step:</strong> The immediate follow-up required by the next agent or human session.
-</li>
-</ol>
-<p>The content standard for these fields is defined in <a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>.</p>
-<h2>3. Collaborative Benefits</h2>
-<p>The API is designed for <strong>Heterogeneous Multi-Agent</strong> environments:</p>
+<h3>2. Work</h3>
+<p>While executing:</p>
 <ul>
-<li><strong>Unified Context:</strong> Claude and Gemini can both write to the same <code>Session 2026-04-25</code> page, creating a shared &quot;short-term memory.&quot;
+<li>record major milestones in PoShWiKi <code>Actions</code>
 </li>
-<li><strong>Standardized Reporting:</strong> The <a href="visitor-directives.html" class="wikilink">Visitor Protocol</a> requires all guests to use this API, ensuring that no matter which model is working, the logs remain queryable and structured.
+<li>keep durable conclusions in <code>01_Wiki/</code>
 </li>
-<li><strong>Discovery:</strong> The <code>vulture-search.ps1</code> engine queries this substrate to provide agents with &quot;Actionable Context&quot; from previous sessions.
-</li>
-<li><strong>Inter-Agent Authoring:</strong> The <a href="claude-codex-interop-test.html" class="wikilink">claude-codex-interop-test</a> note demonstrates a shared-note plus PoShWiKi-log workflow for bounded co-authoring between agents.
+<li>keep generated evidence in vault-local artifact paths when possible
 </li>
 </ul>
-<h2>4. Technical Implementation</h2>
-<p>The wrapper is built on <strong>PowerShell 7</strong> and uses the <code>Microsoft.Data.Sqlite</code> library. It includes robust error handling to prevent database locking during concurrent agent access and returns <code>PSCustomObject</code> for machine-readability.</p>
+<h3>3. Write Back</h3>
+<p>Before ending a session:</p>
+<ul>
+<li>update or create any durable notes that were justified by the work
+</li>
+<li>record the current state with <code>New-WikiSeam</code>
+</li>
+<li>add a PoShWiKi <code>Actions</code> entry for major decisions or environment constraints learned during the work
+</li>
+</ul>
+<h2>Message Format For Shared Notes</h2>
+<p>When one agent is asking another to do bounded work in a shared note, use:</p>
+<ul>
+<li><code>## [AgentName] Message</code>
+</li>
+<li><code>## [AgentName] Reply</code>
+</li>
+<li><code>## Joint Findings</code>
+</li>
+</ul>
+<p>This keeps multi-agent edits machine-parseable and reduces free-form drift.</p>
+<h2>Seam Requirements</h2>
+<p>A valid Seam should answer three things with precision:</p>
+<ul>
+<li><strong>Goal</strong>: what outcome was being pursued
+</li>
+<li><strong>Current Seam</strong>: what exact technical boundary was reached
+</li>
+<li><strong>Next Step</strong>: the immediate next action, phrased so another agent can execute it without reconstruction
+</li>
+</ul>
+<p>Good Seams name exact files, artifacts, failure strings, or commands when relevant.</p>
+<h2>When To Create A Dedicated Handoff Note</h2>
+<p>Use a dedicated handoff note when:</p>
+<ul>
+<li>the next agent needs verified facts plus recommendations
+</li>
+<li>the work spans multiple repos or runtimes
+</li>
+<li>there are environment constraints that can be mistaken for product defects
+</li>
+<li>one short Seam would be too lossy
+</li>
+</ul>
+<h2>Recommended Handoff Structure</h2>
+<p>For substantial cross-agent work, use this structure:</p>
+<ul>
+<li><code>## Objective</code>
+</li>
+<li><code>## Verified Facts</code>
+</li>
+<li><code>## Constraints</code>
+</li>
+<li><code>## Recommendations</code>
+</li>
+<li><code>## Evidence</code>
+</li>
+<li><code>## Next Decision</code>
+</li>
+</ul>
+<p>Keep facts and recommendations separate. Do not mix guesses into <code>Verified Facts</code>.</p>
+<h2>Claude Research Prompt Shape</h2>
+<p>Claude tends to be strongest when given a bounded corpus and asked for structured findings. A good prompt should:</p>
+<ul>
+<li>name the exact note cluster or MOC to inspect
+</li>
+<li>ask for <code>Verified Gaps</code>, <code>Suggested Notes</code>, and <code>Graph Repairs</code>
+</li>
+<li>require exact wikilink targets and note titles
+</li>
+<li>distinguish observed problems from proposed improvements
+</li>
+</ul>
+<h2>Codex Research Prompt Shape</h2>
+<p>Codex tends to be strongest when asked to:</p>
+<ul>
+<li>verify implementation claims against local files or proof artifacts
+</li>
+<li>tighten protocol docs or automation paths
+</li>
+<li>turn conceptual findings into executable or testable system changes
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li><a href="poshwiki.html" class="wikilink">poshwiki</a>
-</li>
-<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
-</li>
 <li><a href="visitor-directives.html" class="wikilink">visitor-directives</a>
 </li>
-<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>
+<li><a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>
 </li>
 <li><a href="claude-codex-interop-test.html" class="wikilink">claude-codex-interop-test</a>
 </li>
-<li><a href="daemon-design-pattern.html" class="wikilink">daemon-design-pattern</a>
-</li>
-<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
+<li><a href="workbench-codex-runner-handoff.html" class="wikilink">workbench-codex-runner-handoff</a>
 </li>
 </ul>
       </main>
@@ -522,21 +589,7 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="automation-test.html" class="">automation-test</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="daemon-design-pattern.html" class="">daemon-design-pattern</a></li>
-<li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
-<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
-<li><a href="visitor-directives.html" class="">visitor-directives</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>

@@ -20,6 +20,7 @@ Every contribution to the `01_Wiki/` directory must follow these rules:
 - **Durable Knowledge:** Use `01_Wiki/` for permanent, atomic concepts.
 - **Active Work/Logs:** Do NOT edit `01_Wiki/` notes for session-level tracking. Use the **PoShWiKi Thought API** located in `02_System/poshwiki-tools.ps1`.
 - **Session ID:** Use `Get-WikiSessionTitle` to identify the current working session.
+- **Handoffs:** Follow the shared [[inter-agent-handoff-protocol]] for resume order, reply-slot formatting, and Seam quality.
 
 ## 3. Tool Usage & Discovery
 - **Discovery:** Before creating a new note, run `02_System/vulture-search.ps1` to check for existing coverage and second-order graph connections.
@@ -35,6 +36,7 @@ We value your unique model-specific insights. Please provide feedback on the vau
 ## 5. The Handoff (The Seam)
 Before ending your session, you MUST record a "Seam" to ensure the next agent or human can resume your work without context drift:
 - Use `New-WikiSeam -Goal <string> -Seam <string> -NextStep <string>`.
+- If the next agent needs more than a one-line handoff, create or update a dedicated note using the structure in [[inter-agent-handoff-protocol]].
 
 ---
 *Failure to follow these directives may result in the Primary Librarian archiving your changes during the next maintenance cycle.*
