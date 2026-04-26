@@ -180,6 +180,21 @@ try {
         return $null
     }
 
+    function Split-ActivityLines {
+        param([Parameter(Mandatory = $true)][string]$Text)
+
+        $clean = ConvertTo-PlainText -Text $Text
+        $lines = $clean -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+
+        return @(
+            $lines |
+                ForEach-Object { $_ -replace '^[-*]\s*', '' } |
+                ForEach-Object { $_ -replace '^[•]\s*', '' } |
+                ForEach-Object { $_.Trim() } |
+                Where-Object { $_ }
+        )
+    }
+
     function Get-VaultStats {
         $allMdFiles = Get-ChildItem -Path $WikiPath, $SystemPath -Filter '*.md'
         $wikiNotes = Get-ChildItem -Path $WikiPath -Filter '*.md'
@@ -259,37 +274,73 @@ LIMIT 1;
         param($SessionPage)
 
         if (-not $SessionPage) {
-            return @()
+            return [PSCustomObject]@{
+                Actions = @()
+                Seam    = @()
+            }
         }
 
-        $items = New-Object System.Collections.Generic.List[object]
-        $sectionOrder = @(
-            @{ Name = 'Actions'; Label = 'Session Actions' }
-            @{ Name = 'Session Goal'; Label = 'Session Goal' }
-            @{ Name = 'Current Seam'; Label = 'Current Seam' }
-            @{ Name = 'Next Steps'; Label = 'Next Steps' }
-        )
-
-        foreach ($sectionInfo in $sectionOrder) {
-            $body = Get-MarkdownSectionBody -Content $SessionPage.Content -Section $sectionInfo.Name
-            if ([string]::IsNullOrWhiteSpace($body)) {
-                continue
-            }
-
-            $clean = ConvertTo-PlainText -Text $body
-            $lines = $clean -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ }
-            $normalizedLines = @($lines | ForEach-Object { $_ -replace '^[-*]\s*', '' } | Where-Object { $_ })
-            if ($normalizedLines.Count -gt 0) {
-                $items.Add([PSCustomObject]@{
+        $actions = @()
+        $seam = @()
+        $actionsBody = Get-MarkdownSectionBody -Content $SessionPage.Content -Section 'Actions'
+        if (-not [string]::IsNullOrWhiteSpace($actionsBody)) {
+            $actionLines = @(Split-ActivityLines -Text $actionsBody)
+            foreach ($line in ($actionLines | Select-Object -Last 4)) {
+                $actions += [PSCustomObject]@{
                     Timestamp = $SessionPage.Modified
-                    Source    = 'PoShWiKi'
-                    Title     = $sectionInfo.Label
-                    Detail    = ($normalizedLines -join ' | ')
-                })
+                    Detail    = $line
+                }
             }
         }
 
-        return @($items | Select-Object -First 5)
+        $currentSeamBody = Get-MarkdownSectionBody -Content $SessionPage.Content -Section 'Current Seam'
+        if (-not [string]::IsNullOrWhiteSpace($currentSeamBody)) {
+            $currentSeamLines = @(Split-ActivityLines -Text $currentSeamBody)
+            if ($currentSeamLines.Count -gt 0) {
+                $seam += [PSCustomObject]@{
+                    Timestamp = $SessionPage.Modified
+                    Title     = 'Current Seam'
+                    Detail    = ($currentSeamLines -join ' | ')
+                }
+            }
+        }
+
+        $nextStepsBody = Get-MarkdownSectionBody -Content $SessionPage.Content -Section 'Next Steps'
+        if (-not [string]::IsNullOrWhiteSpace($nextStepsBody)) {
+            $nextStepLines = @(Split-ActivityLines -Text $nextStepsBody)
+            if ($nextStepLines.Count -gt 0) {
+                $seam += [PSCustomObject]@{
+                    Timestamp = $SessionPage.Modified
+                    Title     = 'Next Step'
+                    Detail    = $nextStepLines[0]
+                }
+            }
+        }
+
+        return [PSCustomObject]@{
+            Actions = $actions
+            Seam    = $seam
+        }
+    }
+
+    function Get-Tier2ComplianceStats {
+        $scripts = Get-ChildItem -Path $SystemPath -Filter '*.ps1'
+        $compliantCount = 0
+
+        foreach ($script in $scripts) {
+            $content = Get-Content -Path $script.FullName -Raw
+            $hasEap = $content -match '(?m)^\s*\$ErrorActionPreference\s*=\s*[''"]Stop[''"]'
+            $hasTryCatch = $content -match '(?is)\btry\s*\{.*\}\s*catch\s*\{'
+            if ($hasEap -and $hasTryCatch) {
+                $compliantCount++
+            }
+        }
+
+        return [PSCustomObject]@{
+            TotalScripts     = $scripts.Count
+            CompliantScripts = $compliantCount
+            NonCompliant     = ($scripts.Count - $compliantCount)
+        }
     }
 
     function Get-RecentLogActions {
@@ -327,10 +378,25 @@ LIMIT 1;
         return [System.Net.WebUtility]::HtmlEncode($safeValue)
     }
 
+    function Format-FeedTimestamp {
+        param($Value)
+
+        if ($Value -is [DateTime]) {
+            return $Value.ToString('MMM dd HH:mm')
+        }
+
+        try {
+            return ([DateTime]$Value).ToString('MMM dd HH:mm')
+        } catch {
+            return [string]$Value
+        }
+    }
+
     Import-SqliteAssemblies
 
     Write-Host "Collecting vault metrics..." -ForegroundColor Cyan
     $stats = Get-VaultStats
+    $tier2Stats = Get-Tier2ComplianceStats
     $hubs = Get-TopHubs
     $latestSession = Get-LatestSessionPage
     $sessionActivity = Get-SessionActivity -SessionPage $latestSession
@@ -345,15 +411,25 @@ LIMIT 1;
         "<tr><td colspan='2'>No hub data available.</td></tr>"
     }
 
-    $sessionItems = if ($sessionActivity.Count -gt 0) {
-        ($sessionActivity | ForEach-Object {
-            $stamp = ConvertTo-HtmlSafe $_.Timestamp
+    $sessionItems = if ($sessionActivity.Actions.Count -gt 0) {
+        ($sessionActivity.Actions | ForEach-Object {
+            $stamp = ConvertTo-HtmlSafe (Format-FeedTimestamp -Value $_.Timestamp)
+            $detail = ConvertTo-HtmlSafe $_.Detail
+            "<li><span class='feed-meta'>$stamp | action</span><span class='feed-text'>$detail</span></li>"
+        }) -join [Environment]::NewLine
+    } else {
+        "<li><span class='feed-text'>No recent PoShWiKi session actions found.</span></li>"
+    }
+
+    $sessionSeamItems = if ($sessionActivity.Seam.Count -gt 0) {
+        ($sessionActivity.Seam | ForEach-Object {
+            $stamp = ConvertTo-HtmlSafe (Format-FeedTimestamp -Value $_.Timestamp)
             $title = ConvertTo-HtmlSafe $_.Title
             $detail = ConvertTo-HtmlSafe $_.Detail
             "<li><span class='feed-meta'>$stamp | $title</span><span class='feed-text'>$detail</span></li>"
         }) -join [Environment]::NewLine
     } else {
-        "<li><span class='feed-text'>No recent PoShWiKi session actions found.</span></li>"
+        "<li><span class='feed-text'>No current seam summary found.</span></li>"
     }
 
     $logItems = if ($logActions.Count -gt 0) {
@@ -481,7 +557,7 @@ LIMIT 1;
     .metrics {
       grid-column: span 12;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 16px;
     }
 
@@ -619,6 +695,11 @@ LIMIT 1;
         <div class="metric-value">$(Invoke-SqliteQuery -Query 'SELECT COUNT(*) AS PageCount FROM Pages;' | Select-Object -ExpandProperty PageCount)</div>
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Tier-2 Compliance</div>
+        <div class="metric-value">$($tier2Stats.CompliantScripts)/$($tier2Stats.TotalScripts)</div>
+        <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: $($tier2Stats.NonCompliant).</div>
+      </article>
     </section>
 
     <section class="grid">
@@ -646,6 +727,10 @@ LIMIT 1;
             <ul class="feed">
               $sessionItems
             </ul>
+            <div class="callout">Current seam and immediate handoff state.</div>
+            <ul class="feed">
+              $sessionSeamItems
+            </ul>
           </section>
           <section>
             <h3>log.md Major Actions</h3>
@@ -672,6 +757,8 @@ LIMIT 1;
         TotalNotes     = $stats.TotalNotes
         LinkDensity    = $stats.LinkDensity
         HubCount       = $hubs.Count
+        Tier2Compliant = $tier2Stats.CompliantScripts
+        Tier2Total     = $tier2Stats.TotalScripts
         SessionTitle   = $sessionTitle
         LogActionCount = $logActions.Count
     }
