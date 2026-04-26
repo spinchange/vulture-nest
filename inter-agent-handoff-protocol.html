@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rust Lifetimes — Vulture Portal</title>
+  <title>Inter-Agent Handoff Protocol — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -419,20 +419,20 @@
       <span class="sep">/</span>
       <span>PORTAL</span>
       <span class="sep">::</span>
-      <span>Rust Lifetimes</span>
+      <span>Inter-Agent Handoff Protocol</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Rust Lifetimes</h1>
+      <h1 class="note-title">Inter-Agent Handoff Protocol</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-lifetimes, borrow-checker, lifetime-elision</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Rust Lifetimes</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-handoff-protocol, multi-agent-handoff, seam-protocol</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Inter-Agent Handoff Protocol</span></span>
       </div>
     </header>
 
@@ -441,40 +441,142 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Rust Lifetimes</h1>
-<p><strong>Lifetimes</strong> are a variety of generics that ensure all references are valid for as long as they are used, preventing dangling pointers.</p>
-<h2>The Borrow Checker</h2>
-<p>The Rust compiler uses a <strong>borrow checker</strong> to compare scopes and ensure that no reference outlives the data it points to.</p>
-<h2>Lifetime Annotations</h2>
-<p>Annotations describe the relationship between the lifetimes of multiple references.</p>
+        <h1>Inter-Agent Handoff Protocol</h1>
+<p>This note defines the current shared process for handing work between agents in the <strong>vulture-nest</strong>.</p>
+<h2>Purpose</h2>
+<p>The handoff protocol exists to prevent three common failures:</p>
 <ul>
-<li><strong>Syntax</strong>: <code>&#39;a</code>, <code>&#39;b</code>, etc. (e.g., <code>&amp;&#39;a i32</code>).
+<li>context drift between sessions
 </li>
-<li><strong>Function Signatures</strong>: <code>fn longest&lt;&#39;a&gt;(x: &amp;&#39;a str, y: &amp;&#39;a str) -&gt; &amp;&#39;a str</code>. This tells Rust that the return value will be valid as long as both <code>x</code> and <code>y</code> are valid.
+<li>durable notes mixing with transient execution logs
 </li>
-<li><strong>Structs</strong>: Structs that hold references must have lifetime annotations to ensure the struct doesn&#39;t outlive its referenced data.
+<li>ambiguous ownership of the next step
 </li>
 </ul>
-<h2>Lifetime Elision Rules</h2>
-<p>To reduce boilerplate, the compiler follows three deterministic rules to infer lifetimes in common patterns:</p>
-<ol>
-<li>Every parameter that is a reference gets its own lifetime.
+<h2>Canonical Surfaces</h2>
+<p>Use these surfaces for distinct purposes:</p>
+<ul>
+<li><strong><code>01_Wiki/</code></strong>: durable knowledge, permanent notes, MOCs, bridge notes, and stable protocol documents
 </li>
-<li>If there is exactly one input lifetime, it is assigned to all output lifetimes.
+<li><strong>PoShWiKi session page</strong>: active execution state, <code>Actions</code>, <code>Session Goal</code>, <code>Current Seam</code>, and <code>Next Steps</code>
 </li>
-<li>If there are multiple input lifetimes but one is <code>&amp;self</code> or <code>&amp;mut self</code>, the lifetime of <code>self</code> is assigned to all output lifetimes.
+<li><strong>Dedicated handoff note</strong>: a bounded brief for another agent when the work needs more than a one-line Seam
 </li>
-</ol>
-<h2>The <code>&#39;static</code> Lifetime</h2>
-<p>The <code>&#39;static</code> lifetime means the reference <strong>can</strong> live for the entire duration of the program (e.g., string literals stored in the binary).</p>
+</ul>
+<h2>Standard Handoff Flow</h2>
+<h3>1. Resume</h3>
+<p>At session start, read:</p>
+<ul>
+<li>the latest PoShWiKi session page
+</li>
+<li>the latest relevant entries in <code>02_System/log.md</code>
+</li>
+<li>any dedicated handoff note referenced by the Seam
+</li>
+</ul>
+<h3>2. Work</h3>
+<p>While executing:</p>
+<ul>
+<li>record major milestones in PoShWiKi <code>Actions</code>
+</li>
+<li>keep durable conclusions in <code>01_Wiki/</code>
+</li>
+<li>keep generated evidence in vault-local artifact paths when possible
+</li>
+</ul>
+<h3>3. Write Back</h3>
+<p>Before ending a session:</p>
+<ul>
+<li>update or create any durable notes that were justified by the work
+</li>
+<li>record the current state with <code>New-WikiSeam</code>
+</li>
+<li>add a PoShWiKi <code>Actions</code> entry for major decisions or environment constraints learned during the work
+</li>
+</ul>
+<h2>Message Format For Shared Notes</h2>
+<p>When one agent is asking another to do bounded work in a shared note, use:</p>
+<ul>
+<li><code>## [AgentName] Message</code>
+</li>
+<li><code>## [AgentName] Reply</code>
+</li>
+<li><code>## Joint Findings</code>
+</li>
+</ul>
+<p>This keeps multi-agent edits machine-parseable and reduces free-form drift.</p>
+<h2>Seam Requirements</h2>
+<p>A valid Seam should answer three things with precision:</p>
+<ul>
+<li><strong>Goal</strong>: what outcome was being pursued
+</li>
+<li><strong>Current Seam</strong>: what exact technical boundary was reached
+</li>
+<li><strong>Next Step</strong>: the immediate next action, phrased so another agent can execute it without reconstruction
+</li>
+</ul>
+<p>Good Seams name exact files, artifacts, failure strings, or commands when relevant.</p>
+<h2>When To Create A Dedicated Handoff Note</h2>
+<p>Use a dedicated handoff note when:</p>
+<ul>
+<li>the next agent needs verified facts plus recommendations
+</li>
+<li>the work spans multiple repos or runtimes
+</li>
+<li>there are environment constraints that can be mistaken for product defects
+</li>
+<li>one short Seam would be too lossy
+</li>
+</ul>
+<h2>Recommended Handoff Structure</h2>
+<p>For substantial cross-agent work, use this structure:</p>
+<ul>
+<li><code>## Objective</code>
+</li>
+<li><code>## Verified Facts</code>
+</li>
+<li><code>## Constraints</code>
+</li>
+<li><code>## Recommendations</code>
+</li>
+<li><code>## Evidence</code>
+</li>
+<li><code>## Next Decision</code>
+</li>
+</ul>
+<p>Keep facts and recommendations separate. Do not mix guesses into <code>Verified Facts</code>.</p>
+<h2>Claude Research Prompt Shape</h2>
+<p>Claude tends to be strongest when given a bounded corpus and asked for structured findings. A good prompt should:</p>
+<ul>
+<li>name the exact note cluster or MOC to inspect
+</li>
+<li>ask for <code>Verified Gaps</code>, <code>Suggested Notes</code>, and <code>Graph Repairs</code>
+</li>
+<li>require exact wikilink targets and note titles
+</li>
+<li>distinguish observed problems from proposed improvements
+</li>
+</ul>
+<h2>Codex Research Prompt Shape</h2>
+<p>Codex tends to be strongest when asked to:</p>
+<ul>
+<li>verify implementation claims against local files or proof artifacts
+</li>
+<li>tighten protocol docs or automation paths
+</li>
+<li>turn conceptual findings into executable or testable system changes
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/the-rust-programming-language.md</code>
+<li><a href="visitor-directives.html" class="wikilink">visitor-directives</a>
 </li>
-<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>
+<li><a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>
 </li>
-<li><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a>
+<li><a href="claude-codex-interop-test.html" class="wikilink">claude-codex-interop-test</a>
+</li>
+<li><a href="workbench-codex-runner-handoff.html" class="wikilink">workbench-codex-runner-handoff</a>
 </li>
 </ul>
       </main>
@@ -489,14 +591,16 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="visitor-directives.html" class="">visitor-directives</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
-<li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="claude-codex-interop-test.html" class="">claude-codex-interop-test</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="visitor-directives.html" class="">visitor-directives</a></li>
+<li><a href="workbench-codex-runner-handoff.html" class="">workbench-codex-runner-handoff</a></li>
 </ul>
           </div>
         </div>
