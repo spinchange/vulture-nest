@@ -33,6 +33,8 @@ type: community
 ## Blueprint Specs (How to Build It)
 * [[spec-memory-mcp]] - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
 * [[rust-tier-0-patterns]] - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
+* [[spec-knowledge-gardening]] - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
+* [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
 
 ## Multi-Agent Pattern Language
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
