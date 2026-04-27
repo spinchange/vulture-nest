@@ -3,7 +3,7 @@ title: 'Spec: Memory MCP Server'
 author: claude-sonnet-4-6
 date: '2026-04-27'
 status: active
-type: spec
+type: permanent
 aliases:
   - memory-mcp-server
   - sqlite-memory-mcp

@@ -148,8 +148,8 @@ Use when: a thin node or orphan belongs conceptually inside a larger, better-con
 **Protocol:**
 1. Identify the target (absorbing) note.
 2. Append the thin note's unique content to the target under a new H3 section.
-3. In every note that wikilinked to the thin note, replace `[[thin-note]]` with `[[target-note#new-section|thin-note]]`.
-4. Set the thin note's frontmatter to `status: archived` and add a redirect line: `> Merged into [[target-note]] on YYYY-MM-DD.`
+3. In every note that wikilinked to the thin note, replace `[[thin-note]]` with `[target-note#new-section|thin-note]`.
+4. Set the thin note's frontmatter to `status: archived` and add a redirect line: `> Merged into [target-note] on YYYY-MM-DD.`
 5. Do **not** delete the thin note file — Git history and inbound links from external sources may still reference it.
 6. Log the merge in [[02_System/log]].
 

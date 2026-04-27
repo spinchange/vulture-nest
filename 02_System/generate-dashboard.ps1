@@ -195,6 +195,17 @@ try {
         )
     }
 
+    function Normalize-LinkTarget {
+        param([Parameter(Mandatory = $true)][string]$Target)
+
+        $normalized = $Target.Trim()
+        if ($normalized -match '[{}]') { return $null }
+        if ($normalized.Contains('#')) { $normalized = $normalized.Split('#', 2)[0] }
+        $normalized = [System.IO.Path]::GetFileNameWithoutExtension($normalized)
+        if ([string]::IsNullOrWhiteSpace($normalized)) { return $null }
+        return $normalized
+    }
+
     function Get-VaultStats {
         $allMdFiles = Get-ChildItem -Path $WikiPath, $SystemPath -Filter '*.md'
         $wikiNotes = Get-ChildItem -Path $WikiPath -Filter '*.md'
@@ -210,7 +221,7 @@ try {
         $allContent = (($allMdFiles | Get-Content -Raw | Out-String) -replace "`0", '')
         $orphanCount = 0
         foreach ($note in $allNoteNames) {
-            $pattern = "\[\[" + [regex]::Escape($note) + "(\]|\|)"
+            $pattern = "\[\[(?:[^|\]]*/)?{0}(?:\.md)?(?:\]|\||#)" -f [regex]::Escape($note)
             if ($allContent -notmatch $pattern) {
                 $orphanCount++
             }
@@ -220,7 +231,9 @@ try {
         $semanticOrphanCount = 0
         try {
             $embRows = Invoke-SqliteQuery -Query "SELECT NoteName, Embedding FROM NoteEmbeddings"
-            if ($embRows.Count -gt 0) {
+            if ($embRows.Count -lt $noteCount) {
+                Write-Verbose "Skipping semantic orphan count because embeddings are incomplete ($($embRows.Count)/$noteCount)."
+            } elseif ($embRows.Count -gt 0) {
                 # Normalize embeddings
                 $normalized = @{}
                 $noteNames = @()
@@ -266,12 +279,19 @@ try {
         }
 
         $brokenLinkCount = 0
-        $validNoteNames = (Get-ChildItem -Path $VaultRoot, $WikiPath, $SystemPath -Filter '*.md').BaseName | Select-Object -Unique
+        $validNoteNames = @(
+            (Get-ChildItem -Path $VaultRoot -Filter '*.md' -ErrorAction SilentlyContinue).BaseName
+            (Get-ChildItem -Path $WikiPath -Filter '*.md' -Recurse -ErrorAction SilentlyContinue).BaseName
+            (Get-ChildItem -Path $SystemPath -Filter '*.md' -Recurse -ErrorAction SilentlyContinue).BaseName
+        ) | Select-Object -Unique
         foreach ($file in $allMdFiles) {
             $content = Get-Content -Path $file.FullName -Raw
+            $content = [regex]::Replace($content, '(?s)```.*?```', '')
             $matches = [regex]::Matches($content, '(?<!`)\[\[([^\]|]+)(?:\|[^\]]+)?\]\]')
             foreach ($match in $matches) {
-                if ($validNoteNames -notcontains $match.Groups[1].Value.Trim()) {
+                $target = Normalize-LinkTarget $match.Groups[1].Value
+                if ($null -eq $target) { continue }
+                if ($validNoteNames -notcontains $target) {
                     $brokenLinkCount++
                 }
             }

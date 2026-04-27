@@ -3,7 +3,7 @@ title: 'Spec: Visual Vault Language'
 author: claude-sonnet-4-6
 date: '2026-04-27'
 status: active
-type: spec
+type: permanent
 aliases:
   - visual-vault-language
   - mermaid-standards

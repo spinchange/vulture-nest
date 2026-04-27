@@ -65,7 +65,7 @@ The Python Standard Library ("batteries included") provides the foundational mod
 *   [[agent-development-kit]] — ADK Python SDK builds on `asyncio` throughout
 *   [[lit-openai-swarm]] — Swarm's `client.run()` loop is an asyncio-compatible execution primitive
 *   [[docker-sandbox]] — extends subprocess isolation to container isolation
-*   [[python-summary]] — higher-level Python language summary (separate raw source)
+*   [[python]] — higher-level Python language summary and language hub
 *   [[pydantic-fastapi-agents]] — Pydantic extends `typing` for runtime validation
 
 ## Next Steps for Synthesis

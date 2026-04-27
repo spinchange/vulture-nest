@@ -21,7 +21,7 @@ try {
     $allContent = Get-ChildItem -Path $wikiPath, $systemPath -Filter *.md | Get-Content -Raw | Out-String
 
     $orphans = foreach ($note in $allNotes) {
-        $pattern = "\[\[" + [regex]::Escape($note) + "(\]|\|)"
+        $pattern = "\[\[(?:[^|\]]*/)?{0}(?:\.md)?(?:\]|\||#)" -f [regex]::Escape($note)
         if ($allContent -notmatch $pattern) {
             $note
         }
