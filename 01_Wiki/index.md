@@ -65,6 +65,12 @@ type: community
 * [[csharp-pattern-matching]] - Advanced Control Flow
 * [[inter-agent-handoff-protocol]] - Shared Resume, Seam, and Reply-Slot Process
 
+## Multi-Agent Handoffs (Session Seams)
+* [[codex-gemini-cleanup-handoff-2026-04-27]] - Gemini cleanup boundary (Current)
+* [[claude-community-summary-handoff]] - Phase 2: Community Summarization (Pending)
+* [[gemini-build-sprint-handoff]] - Ingestion & Clustering Path (Complete)
+* [[claude-blueprint-handoff-2026-04-27]] - Technical Specifications Path (Complete)
+
 ## Emergent Communities
 * [[community-living-knowledge-system]] - The Vault as a Compiler
 * [[community-protocol-trust-substrate]] - Type-Safe Agent Governance
