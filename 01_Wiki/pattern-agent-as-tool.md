@@ -121,3 +121,4 @@ The parent never sees the sub-agent's intermediate steps, tool calls, or interna
 - [[pattern-dynamic-delegation]] — contrast: explicit delegation vs. LLM-chosen tool invocation
 - [[pattern-capability-gating]] — scope enforcement at tool invocation boundary
 - [[agent-tools]] — general tool taxonomy in the vault
+- [[pattern-progressive-handoff]]

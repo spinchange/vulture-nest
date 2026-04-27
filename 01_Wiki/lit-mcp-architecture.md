@@ -89,3 +89,4 @@ One client per server. The host manages all clients. Each client maintains its o
 
 ## Related
 - [[mcp-server-features]]
+- [[mcp-transport]]

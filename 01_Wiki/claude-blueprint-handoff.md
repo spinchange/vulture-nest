@@ -46,3 +46,8 @@ We need to document the code-level logic for the "Safe Core" of the vault.
 - [[capability-lattice-spec]]
 - [[agent-knowledge-vault]]
 - [[02_System/index]]
+- [[claude-synthesis-handoff]]
+- [[claude-gardening-visuals-handoff]]
+- [[claude-capability-lattice-handoff]]
+- [[codex-build-sprint-handoff]]
+- [[claude-synthesis-handoff-2026-04-27]]

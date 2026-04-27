@@ -69,7 +69,7 @@ try {
     Write-Host "Syncing graph from $TotalNotes notes..." -ForegroundColor Cyan
 
     $connString = "Data Source=$DbPath"
-    $conn = [Microsoft.Data.Sqlite.SqliteConnection]::new($connString)
+    $conn = New-Object Microsoft.Data.Sqlite.SqliteConnection($connString)
     try {
         $conn.Open()
 
@@ -88,8 +88,8 @@ try {
         $insertCmd = $conn.CreateCommand()
         $insertCmd.Transaction = $transaction
         $insertCmd.CommandText = "INSERT INTO Links (Source, Target) VALUES (@Source, @Target)"
-        $paramSource = $insertCmd.Parameters.Add("@Source", [Microsoft.Data.Sqlite.SqliteType]::Text)
-        $paramTarget = $insertCmd.Parameters.Add("@Target", [Microsoft.Data.Sqlite.SqliteType]::Text)
+        $paramSource = $insertCmd.Parameters.Add("@Source", 'Text')
+        $paramTarget = $insertCmd.Parameters.Add("@Target", 'Text')
 
         foreach ($file in $MdFiles) {
             $source = $file.BaseName
@@ -119,7 +119,7 @@ try {
 
     # 4. Helper for Metrics (Invoke-Query equivalent)
     function Invoke-LocalQuery([string]$Query) {
-        $c = [Microsoft.Data.Sqlite.SqliteConnection]::new($connString)
+        $c = New-Object Microsoft.Data.Sqlite.SqliteConnection($connString)
         $c.Open()
         try {
             $cmd = $c.CreateCommand(); $cmd.CommandText = $Query

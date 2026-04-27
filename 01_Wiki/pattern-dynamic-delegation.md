@@ -100,3 +100,4 @@ A cannot grant B capabilities A does not itself hold. See [[pattern-capability-g
 - [[pattern-agent-as-tool]] — related: treating agent as opaque callable
 - [[pattern-capability-gating]] — authorization enforcement at delegation boundaries
 - [[pattern-parallel-fan-out]] — related: concurrent delegation to multiple agents
+- [[adk-multi-agent-orchestration]]

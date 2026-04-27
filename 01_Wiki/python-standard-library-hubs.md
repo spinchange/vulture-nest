@@ -30,3 +30,4 @@ For agent work, three standard-library modules show up constantly: `pathlib` for
 - [[python]]
 - [[python-moc]]
 
+- [[lit-python-standard-library]]

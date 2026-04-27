@@ -33,3 +33,4 @@ The transport layer ensures that the continuous stream of bytes is correctly par
 * [[mcp-server-development]]
 - [[agentic-protocols]]
 
+- [[lit-mcp-architecture]]

@@ -241,3 +241,4 @@ Log the session summary: notes audited, actions taken, net orphan count change, 
 - [[semantic-embedding-pipeline]]
 - [[community-report-generator]]
 - [[02_System/index]]
+- [[knowledge-gardening-principles]]

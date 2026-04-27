@@ -39,3 +39,4 @@ This map provides a structured traversal of the TypeScript Handbook, optimized f
 * [[javascript-moc]]
 * [[programming-languages-moc]]
 
+- [[lit-typescript-handbook]]

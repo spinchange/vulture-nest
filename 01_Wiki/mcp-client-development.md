@@ -60,3 +60,4 @@ A standard MCP client follows this pattern for user queries:
 - [[mcp-debugging]]
 - [[mcp-remote-connections]]
 
+- [[lit-mcp-architecture]]

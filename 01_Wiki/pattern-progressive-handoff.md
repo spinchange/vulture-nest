@@ -122,3 +122,4 @@ Failure → `FAILED` state (never silent forward). See [[pattern-capability-gati
 - [[pattern-dynamic-delegation]] — contrast: A retains ownership
 - [[pattern-capability-gating]] — mandatory pre-handoff authorization check
 - [[inter-agent-handoff-protocol]] — vault-level handoff protocol
+- [[pattern-agent-as-tool]]

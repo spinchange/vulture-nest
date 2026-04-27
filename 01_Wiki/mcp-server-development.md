@@ -55,3 +55,4 @@ When using **[[mcp-transport|Stdio transport]]**, the server communicates via `s
 * [[mcp-example-servers]]
 - [[csharp-mcp-sdk]]
 
+- [[lit-mcp-architecture]]

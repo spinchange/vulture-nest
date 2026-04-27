@@ -40,16 +40,27 @@ try {
 
     # --- SQLite ---
     function Import-SqliteAssemblies {
+        Write-Host "Debug: LibPath = $LibPath"
         $dlls = @("SQLitePCLRaw.core.dll","SQLitePCLRaw.provider.e_sqlite3.dll","SQLitePCLRaw.batteries_v2.dll","Microsoft.Data.Sqlite.dll")
         foreach ($dll in $dlls) {
             $path = Join-Path $LibPath $dll
+            Write-Host "Debug: Loading $path"
             if (Test-Path $path) {
-                try { [System.Reflection.Assembly]::LoadFrom($path) | Out-Null }
-                catch { Add-Type -Path $path -ErrorAction SilentlyContinue }
+                try { 
+                    [System.Reflection.Assembly]::LoadFrom($path) | Out-Null 
+                    Write-Host "Debug: Loaded $dll"
+                }
+                catch { 
+                    Write-Host "Debug: Failed to load $dll : $_"
+                    Add-Type -Path $path 
+                }
+            } else {
+                Write-Host "Debug: $path not found"
             }
         }
         $os   = if ($IsWindows) { "win" } elseif ($IsLinux) { "linux" } else { "osx" }
         $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
+        if ($arch -eq "x64") { $arch = "x64" } # Ensure consistency with runtime paths
         $nativeLib  = if ($IsWindows) { "e_sqlite3.dll" } elseif ($IsMacOS) { "libe_sqlite3.dylib" } else { "libe_sqlite3.so" }
         $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLib"
         if (Test-Path $nativePath) { try { [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null } catch {} }
@@ -59,7 +70,7 @@ try {
 
     $connString = "Data Source=$DbPath"
     function Invoke-Sql([string]$query) {
-        $c = [Microsoft.Data.Sqlite.SqliteConnection]::new($connString)
+        $c = New-Object Microsoft.Data.Sqlite.SqliteConnection($connString)
         $c.Open()
         try {
             $cmd = $c.CreateCommand(); $cmd.CommandText = $query
@@ -117,7 +128,7 @@ try {
     }
     $candidates = $suggestions | Sort-Object Similarity -Descending | Select-Object -First $TopN
     Write-Host "Processing top $($candidates.Count) pair(s) above threshold $Threshold..." -ForegroundColor Cyan
-    if ($DryRun) { Write-Host "(DRY RUN — no files will be modified)`n" -ForegroundColor Yellow }
+    if ($DryRun) { Write-Host "(DRY RUN - no files will be modified)`n" -ForegroundColor Yellow }
 
     # --- Link insertion ---
     function Add-WikiLink([string]$filePath, [string]$linkTarget) {
@@ -208,11 +219,15 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
                 $json = $text.Trim() | ConvertFrom-Json
                 return $json
             } catch {
-                $code = $_.Exception.Response.StatusCode.value__
-                if ($code -eq 429 -and $attempt -lt $maxRetries) {
-                    Write-Host "  Rate limit — waiting 60s..." -ForegroundColor Yellow
-                    Start-Sleep -Seconds 60
-                } else { throw }
+                if ($null -ne $_.Exception.Response) {
+                    $code = $_.Exception.Response.StatusCode.value__
+                    if ($code -eq 429 -and $attempt -lt $maxRetries) {
+                        Write-Host "  Rate limit - waiting 60s..." -ForegroundColor Yellow
+                        Start-Sleep -Seconds 60
+                        continue
+                    }
+                }
+                throw
             }
         }
     }
@@ -226,7 +241,7 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
 
         # Skip if either file is missing (e.g. note is in system layer)
         if (-not (Test-Path $pathA) -or -not (Test-Path $pathB)) {
-            Write-Host ("  [{0}/{1}] SKIP (file not in 01_Wiki): [[{2}]] <-> [[{3}]]" -f $i, $candidates.Count, $pair.NoteA, $pair.NoteB) -ForegroundColor Gray
+            Write-Host ("  [{0}/{1}] SKIP (file not in 01_Wiki): [[{2}]] and [[{3}]]" -f $i, $candidates.Count, $pair.NoteA, $pair.NoteB) -ForegroundColor Gray
             $skipped++
             continue
         }
@@ -234,7 +249,7 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
         $contentA = [System.IO.File]::ReadAllText($pathA)
         $contentB = [System.IO.File]::ReadAllText($pathB)
 
-        Write-Host ("`n  [{0}/{1}] Sim {2:F3}  [[{3}]] <-> [[{4}]]" -f $i, $candidates.Count, $pair.Similarity, $pair.NoteA, $pair.NoteB) -ForegroundColor White
+        Write-Host ("`n  [{0}/{1}] Sim {2:F3}  [[{3}]] and [[{4}]]" -f $i, $candidates.Count, $pair.Similarity, $pair.NoteA, $pair.NoteB) -ForegroundColor White
 
         $decision = Invoke-GeminiJudge $pair.NoteA $contentA $pair.NoteB $contentB $pair.Similarity
 
@@ -247,13 +262,13 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
             switch ($action) {
                 "A_to_B" {
                     if (Add-WikiLink $pathA $pair.NoteB) {
-                        Add-Content $LogPath "`n- [$timestamp] auto-link: added [[$($pair.NoteB)]] to [[$($pair.NoteA)]] (sim=$($pair.Similarity)) — $reason"
+                        Add-Content $LogPath "`n- [$timestamp] auto-link: added [[$($pair.NoteB)]] to [[$($pair.NoteA)]] (sim=$($pair.Similarity)) - $reason"
                         $linked++
                     }
                 }
                 "B_to_A" {
                     if (Add-WikiLink $pathB $pair.NoteA) {
-                        Add-Content $LogPath "`n- [$timestamp] auto-link: added [[$($pair.NoteA)]] to [[$($pair.NoteB)]] (sim=$($pair.Similarity)) — $reason"
+                        Add-Content $LogPath "`n- [$timestamp] auto-link: added [[$($pair.NoteA)]] to [[$($pair.NoteB)]] (sim=$($pair.Similarity)) - $reason"
                         $linked++
                     }
                 }
@@ -261,7 +276,7 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
                     $didA = Add-WikiLink $pathA $pair.NoteB
                     $didB = Add-WikiLink $pathB $pair.NoteA
                     if ($didA -or $didB) {
-                        Add-Content $LogPath "`n- [$timestamp] auto-link: mutual link [[$($pair.NoteA)]] <-> [[$($pair.NoteB)]] (sim=$($pair.Similarity)) — $reason"
+                        Add-Content $LogPath "`n- [$timestamp] auto-link: mutual link [[$($pair.NoteA)]] and [[$($pair.NoteB)]] (sim=$($pair.Similarity)) - $reason"
                         $linked++
                     }
                 }
@@ -269,13 +284,13 @@ Respond with JSON: {"action": "...", "reason": "one sentence"}
             }
         }
 
-        # 4s between judge calls — safe under 15 RPM free tier
+        # 4s between judge calls - safe under 15 RPM free tier
         if ($i -lt $candidates.Count) { Start-Sleep -Milliseconds 4000 }
     }
 
     Write-Host "`n--- Auto-Link Complete ---" -ForegroundColor Cyan
     if ($DryRun) {
-        Write-Host "Dry run — no files modified." -ForegroundColor Yellow
+        Write-Host "Dry run - no files modified." -ForegroundColor Yellow
     } else {
         Write-Host "$linked pair(s) linked, $skipped skipped." -ForegroundColor Green
         if ($linked -gt 0) {

@@ -59,3 +59,6 @@ The TypeScript Handbook is the canonical reference for TypeScript's progressive 
 *   Create a permanent note on **Discriminated Unions as Agent Protocol Primitives**.
 *   Map TypeScript utility types to C# record pattern equivalents (see [[csharp-records]]).
 *   Explore how Template Literal Types can encode MCP method names at the type level.
+
+## Related
+- [[typescript-everyday-types]]

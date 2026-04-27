@@ -56,3 +56,7 @@ A `ParallelAgent` runs multiple "Fetcher" agents concurrently. A final "Synthesi
 ---
 *Source: [[lit-adk-documentation]]*
 
+
+## Related
+- [[multi-agent-patterns-moc]]
+- [[pattern-dynamic-delegation]]

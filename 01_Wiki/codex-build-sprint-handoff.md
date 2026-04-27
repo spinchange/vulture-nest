@@ -248,3 +248,5 @@ Task 4: 00_Raw/tier-0/ Rust project (cargo test: 2/2 passing)
 - [[capability-lattice-spec]] — Rust type background
 - [[pattern-capability-gating]] — the pattern Task 4 implements
 - [[inter-agent-handoff-protocol]] — handoff format reference
+- [[gemini-build-sprint-handoff]]
+- [[claude-blueprint-handoff]]

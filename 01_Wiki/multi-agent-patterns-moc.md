@@ -32,3 +32,4 @@ Map of Content for recurring architectural patterns in multi-agent orchestration
 - [[agentic-frameworks-moc]]
 - [[core-patterns-moc]]
 - [[mcp-moc]]
+- [[adk-multi-agent-orchestration]]

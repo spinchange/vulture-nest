@@ -63,3 +63,6 @@ Agents (or tools) can search memory during an active turn.
 ---
 *Source: [[lit-adk-documentation]]*
 
+
+## Related
+- [[adk-artifact-service]]

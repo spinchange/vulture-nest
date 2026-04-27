@@ -33,3 +33,4 @@ MCP does not have a native, protocol-level "auth" header in the traditional web 
 * [[mcp-primitives]]
 - [[mcp-remote-connections]]
 
+- [[lit-mcp-architecture]]

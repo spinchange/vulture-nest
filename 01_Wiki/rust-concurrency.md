@@ -40,3 +40,4 @@ Almost all primitive types are `Send` and `Sync`.
 * [[mcp-best-practices]] (Host-as-Broker pattern)
 - [[rust]]
 
+- [[lit-rust-programming-language]]

@@ -41,3 +41,4 @@ Remote MCP connections use the **HTTP/SSE transport**, allowing AI applications 
 - [[mcp-security]]
 - [[mcp-client-development]]
 
+- [[lit-mcp-architecture]]

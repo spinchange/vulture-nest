@@ -47,3 +47,6 @@ We need a standard for representing the Vulture Nest's architecture visually usi
 - [[agent-note-conventions]]
 - [[wiki-pattern-operations]]
 - [[hierarchical-graph-synthesis]]
+- [[claude-synthesis-handoff]]
+- [[claude-blueprint-handoff]]
+- [[spec-visual-vault-language]]

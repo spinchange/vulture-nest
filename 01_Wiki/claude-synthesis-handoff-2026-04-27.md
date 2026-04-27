@@ -91,3 +91,5 @@ All patterns are cross-referenced to each other and to the three source framewor
 - [[hierarchical-graph-synthesis]]
 - [[agentic-frameworks-moc]]
 - [[index]]
+- [[claude-blueprint-handoff-2026-04-27]]
+- [[gemini-build-sprint-handoff]]

@@ -416,3 +416,6 @@ cluster-notes.py: Phase 1 clustering script, K clusters → 01_Wiki/community-re
 - [[pattern-parallel-fan-out]] — source for stub 4a
 - [[pattern-state-transfer]] — source for stub 4b
 - [[inter-agent-handoff-protocol]] — handoff format reference
+- [[codex-build-sprint-handoff]]
+- [[claude-synthesis-handoff]]
+- [[claude-blueprint-handoff-2026-04-27]]

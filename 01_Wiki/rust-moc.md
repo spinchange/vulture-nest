@@ -53,5 +53,6 @@ This map provides a structured traversal of the Rust Programming Language, optim
 
 
 ---
+- [[lit-rust-programming-language]]
 ## References
 - [[claude-rust-type-system-handoff]]
