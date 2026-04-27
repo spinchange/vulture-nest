@@ -22,7 +22,7 @@ Chroma is frequently used as a "Long-term Memory" layer for agents, enabling:
 2. **Session Continuity**: Allowing agents to remember past interactions across multiple sessions.
 3. **Knowledge Base Management**: Giving agents the ability to dynamically update and query their own documentation.
 
-## MCP Integration
+## [[mcp-moc|MCP]] Integration
 Chroma provides a standardized **MCP Server**, allowing any [[mcp-architecture|MCP-compatible]] agent to interact with the database using common tools:
 * `chroma_query_documents`: Perform semantic search.
 * `chroma_add_documents`: Ingest new information.
@@ -34,3 +34,4 @@ Chroma provides a standardized **MCP Server**, allowing any [[mcp-architecture|M
 * [[agent-knowledge-vault]]
 * [[mcp-architecture]]
 * [[agentic-rag]]
+

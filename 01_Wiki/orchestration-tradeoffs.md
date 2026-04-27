@@ -1,5 +1,5 @@
 ---
-title: Orchestration Tradeoffs: Swarm vs. ADK
+title: Orchestration Tradeoffs: Swarm vs. [[agent-development-kit|ADK]]
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -31,7 +31,7 @@ This comparison explores the philosophical and technical differences between **O
 
 ### 3. Full Vault Audit (Resource Intensive)
 *   **Winner: Google ADK**
-*   **Reasoning**: Auditing 100+ notes requires efficient resource management. ADK's `ParallelAgent` can trigger multiple audit checks (YANP, Orphans, Broken Links) concurrently, while its `Artifact` management handles the resulting data reports more robustly.
+*   **Reasoning**: Auditing 100+ notes requires efficient resource management. ADK's [[workflow-agents|ParallelAgent]] can trigger multiple audit checks (YANP, Orphans, Broken Links) concurrently, while its `Artifact` management handles the resulting data reports more robustly.
 
 ## Synthesis: The "Hybrid" Maintenance Strategy
 For a YANP-compliant vault, the ideal architecture leverages both philosophies:
@@ -45,3 +45,5 @@ For a YANP-compliant vault, the ideal architecture leverages both philosophies:
 * [[agent-development-kit]]
 * [[agentic-frameworks-moc]]
 * [[wiki-as-codebase]]
+- [[lit-openai-swarm]]
+

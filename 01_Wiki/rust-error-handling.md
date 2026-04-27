@@ -1,5 +1,5 @@
 ---
-title: Rust Error Handling
+title: [[rust]] Error Handling
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ The `?` operator is a concise way to handle `Result` (and `Option`).
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-enums]]
+

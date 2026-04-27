@@ -1,5 +1,5 @@
 ---
-title: Rust Concurrency
+title: [[rust]] Concurrency
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -39,3 +39,4 @@ Almost all primitive types are `Send` and `Sync`.
 
 * [[mcp-best-practices]] (Host-as-Broker pattern)
 - [[rust]]
+

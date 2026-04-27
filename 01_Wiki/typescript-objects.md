@@ -1,5 +1,5 @@
 ---
-title: TypeScript Object Types
+title: [[typescript.md|TypeScript]] Object Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -53,3 +53,4 @@ interface Box<Type> {
 - [[typescript-type-operators]]
 - [[typescript-utility-types]]
 - [[typescript-functions]]
+

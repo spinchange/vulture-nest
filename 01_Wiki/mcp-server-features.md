@@ -1,5 +1,5 @@
 ---
-title: MCP Server Features
+title: [[mcp-moc|MCP]] Server Features
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -46,3 +46,4 @@ Prompts are reusable instruction templates that guide the LLM's interaction with
 * [[mcp-primitives]]
 * [[mcp-architecture]]
 - [[mcp-client-features]]
+

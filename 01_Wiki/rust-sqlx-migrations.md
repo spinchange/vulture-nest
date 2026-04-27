@@ -1,5 +1,5 @@
 ---
-title: Rust SQLx Migrations
+title: [[rust]] SQLx Migrations
 author: codex
 date: 2026-04-25
 status: active
@@ -40,3 +40,4 @@ The contrast with direct C# SQLite usage is documented in [[sqlite-type-safety-r
 - [[rust-mcp-patterns]]
 - [[sqlite-type-safety-rust-vs-csharp]]
 - [[microsoft-data-sqlite-agent-patterns]]
+

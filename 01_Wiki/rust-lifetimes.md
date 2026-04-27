@@ -1,5 +1,5 @@
 ---
-title: Rust Lifetimes
+title: [[rust]] Lifetimes
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -33,3 +33,4 @@ The `'static` lifetime means the reference **can** live for the entire duration 
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-ownership]]
 * [[rust-generics-and-traits]]
+

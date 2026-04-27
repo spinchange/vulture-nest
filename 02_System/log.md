@@ -448,3 +448,6 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - [2026-04-27 01:27] auto-link: added [[mcp-server-features]] to [[lit-mcp-architecture]] (sim=0.8566) — Note B is a literature/source note that provides foundational architecture context, and should reference Note A which offers a more detailed, practical breakdown of the server-exposed primitives that Note B only summarizes in tabular form.
 
 - [2026-04-27 01:27] auto-link: mutual link [[rust]] <-> [[lit-rust-programming-language]] (sim=0.8505) — Note A is the conceptual entry point for Rust that should cite its primary source material, while Note B is the literature note that should link back to its subject concept, creating a bidirectional reference between concept and source.
+
+
+- [2026-04-27] Gemini Cleanup: Reconciled 01_Wiki, indexed ADK notes and Community Reports, synced embeddings. Ref: [[codex-gemini-cleanup-handoff-2026-04-27]]

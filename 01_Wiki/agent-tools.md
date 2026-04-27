@@ -15,12 +15,12 @@ To be usable by an agent, a tool must be described precisely in the **System Mes
 *   **Name:** A clear, unique identifier (e.g., `get_weather`).
 *   **Description:** A textual explanation of what the tool does.
 *   **Arguments:** Names and types (e.g., `location: str`).
-*   **Callable:** The actual code (Python, JS, API) that executes the task.
+*   **Callable:** The actual code ([[python]], JS, API) that executes the task.
 
 ## Auto-Documentation
 Modern frameworks use Python introspection (decorators like `@tool`) to automatically generate tool descriptions from docstrings and type hints. This reduces the risk of the LLM receiving a mismatched specification.
 
-## Model Context Protocol (MCP)
+## Model Context Protocol ([[mcp-moc|MCP]])
 MCP is an open standard designed to unify how tools are provided to LLMs, allowing tools to be shared across different agentic frameworks without re-implementation.
 
 ## See Also
@@ -28,3 +28,4 @@ MCP is an open standard designed to unify how tools are provided to LLMs, allowi
 * [[smolagents]]
 * [[powershell-moc]] (Local tool implementation)
 - [[mcp-primitives]]
+

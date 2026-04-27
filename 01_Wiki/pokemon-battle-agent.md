@@ -17,7 +17,7 @@ Pokémon battles provide an ideal environment for agent testing:
 *   **Reasoning**: Requires strategic thinking (e.g., "Should I switch Pokémon or use a healing item?").
 
 ## Implementation Pattern
-1.  **State Mapping**: A Python class (e.g., `PokémonEnv`) extracts battle data and formats it into a prompt-friendly string.
+1.  **State Mapping**: A [[python]] class (e.g., `PokémonEnv`) extracts battle data and formats it into a prompt-friendly string.
 2.  **Tool Selection**: The LLM picks a move (e.g., `use_move("Thunderbolt")`) or an action (e.g., `switch_to("Bulbasaur")`).
 3.  **Feedback**: The environment executes the turn and returns the new state (Observations) to the agent.
 
@@ -26,3 +26,4 @@ Pokémon battles provide an ideal environment for agent testing:
 * Source: `00_Raw/hf-agents-bonus3.md`
 * [[agents-in-games]]
 * [[hf-agents-course-moc]]
+

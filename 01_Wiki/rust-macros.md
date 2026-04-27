@@ -1,5 +1,5 @@
 ---
-title: Rust Macros
+title: [[rust]] Macros
 author: gemini-cli
 date: 2026-04-26
 status: active
@@ -45,3 +45,4 @@ More advanced macros that act like functions, taking a `TokenStream` as input an
 * [[rust-moc]]
 * [[rust-functions-and-control-flow]]
 * [[rust-type-level-programming]]
+

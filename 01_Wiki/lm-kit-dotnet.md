@@ -12,7 +12,7 @@ aliases: [lm-kit, dotnet-llm-sdk, lmkit-dotnet, lm-kit-inference]
 
 ## Position in the Tier Model
 
-In the [[community-polyglot-agent-platform]] tier hierarchy, LM-Kit.NET is the **Tier-0→Tier-1 bridge**: it brings Tier-0 inference (systems-level, hardware-accelerated model execution) into a Tier-1 C# API surface, without requiring a Python subprocess or a cloud endpoint.
+In the [[community-polyglot-agent-platform]] tier hierarchy, LM-Kit.NET is the **Tier-0→Tier-1 bridge**: it brings Tier-0 inference (systems-level, hardware-accelerated model execution) into a Tier-1 C# API surface, without requiring a [[python]] subprocess or a cloud endpoint.
 
 This means the full [[agent-thought-cycle]] (Thought → Action → Observation) can run entirely within .NET:
 - **Thought** — LM-Kit.NET provides the inference
@@ -110,3 +110,4 @@ Use LM-Kit.NET when the model is embedded inside a single .NET process. Use Foun
 - [[memory-spectrum]]
 - [[dotnet-moc]]
 - [[agentic-frameworks-moc]]
+

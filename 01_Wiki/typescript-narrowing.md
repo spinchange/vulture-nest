@@ -1,5 +1,5 @@
 ---
-title: TypeScript Narrowing
+title: [[typescript.md|TypeScript]] Narrowing
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -58,3 +58,4 @@ default:
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-everyday-types]]
+

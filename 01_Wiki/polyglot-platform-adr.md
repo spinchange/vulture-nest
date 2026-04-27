@@ -14,14 +14,14 @@ This note is the active Architecture Decision Record for language-tier selection
 
 The vault keeps the four-tier language model as its architectural decision rule:
 
-- Tier-0: Rust for long-lived, safety-critical services
+- Tier-0: [[rust]] for long-lived, safety-critical services
 - Tier-1: C# / .NET for typed integration surfaces and hosted agent services
-- Tier-2: PowerShell for automation, maintenance, and shell-adjacent workflows
-- Tier-3: Python for ML experiments and framework-specific orchestration
+- Tier-2: [[powershell.md|PowerShell]] for automation, maintenance, and shell-adjacent workflows
+- Tier-3: [[python]] for ML experiments and framework-specific orchestration
 
 This ADR also records a fifth classification that is not part of the production tier model:
 
-- TypeScript/Node development scaffolding sits outside the tier table unless it becomes a persistent product/runtime boundary in its own right
+- [[typescript.md|TypeScript]]/Node development scaffolding sits outside the tier table unless it becomes a persistent product/runtime boundary in its own right
 
 ## Verified Tier Inventory
 
@@ -43,7 +43,7 @@ Decision: classify Workbench as development scaffolding outside the production t
 ### Tier 0 — Rust
 
 Select when:
-- The component is a long-lived daemon, MCP server, or infrastructure process
+- The component is a long-lived daemon, [[mcp-moc|MCP]] server, or infrastructure process
 - Memory safety and ownership guarantees matter more than iteration speed
 - Concurrent state handling must be compile-time constrained
 - Latency and operational predictability are primary concerns
@@ -127,3 +127,4 @@ Revised:
 - [[dotnet-mcp-server-patterns]]
 - [[foundry-local]]
 - [[hardware-aware-inference]]
+

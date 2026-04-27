@@ -13,7 +13,7 @@ A technical strategy for maintaining consistent agent state (skills, history, an
 ## Architecture
 * **Source of Truth**: A cloud-synced directory (e.g., Google Drive) containing canonical configurations.
 * **Local Integration**: Local agent configuration directories (e.g., `~/.gemini/`, `~/.claude/`) are symlinked to the cloud-synced source.
-* **Orchestration**: PowerShell scripts (e.g., `setup-symlinks.ps1`) automate the creation and maintenance of these links.
+* **Orchestration**: [[powershell.md|PowerShell]] scripts (e.g., `setup-symlinks.ps1`) automate the creation and maintenance of these links.
 
 ## Key Benefits
 * **Cross-Machine Continuity**: Resume work on different hardware with identical context and toolsets.
@@ -28,3 +28,4 @@ The strategy involves mapping local `skills/`, `memory/`, and `history/` folders
 * Source: `00_Raw/agent-configuration-sync-strategy.md`
 * [[agent-knowledge-vault]]
 * [[agent-skills-index]]
+

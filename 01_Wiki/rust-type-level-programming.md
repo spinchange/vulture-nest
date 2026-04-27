@@ -1,5 +1,5 @@
 ---
-title: Rust Type-Level Programming
+title: [[rust]] Type-Level Programming
 author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
@@ -249,3 +249,4 @@ The formal characterization: Rust's type system is equivalent to System F_ω (hi
 - `typenum` crate documentation: `docs.rs/typenum`
 - Jon Gjengset, *Rust for Rustaceans*, Chapter 3 and 12
 - The Rustonomicon — Higher-Ranked Trait Bounds
+

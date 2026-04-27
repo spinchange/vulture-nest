@@ -1,7 +1,7 @@
 ---
 title: Capability Lattice — Formal Specification
 author: claude-sonnet-4-6
-date: 2026-04-25T00:00:00.000Z
+date: '2026-04-26'
 status: draft
 type: permanent
 aliases:
@@ -11,7 +11,7 @@ aliases:
 ---
 # Capability Lattice: Formal Specification
 
-**Context:** [[community-protocol-trust-substrate]] proposes that MCP tool manifests and Rust/C# type systems encode the same permission-boundary principle at different abstraction layers. This spec formalizes the bridge: how an MCP tool definition maps to a concrete language type signature, and how composing agents produces a new, derivable capability set.
+**Context:** [[community-protocol-trust-substrate]] proposes that [[mcp-moc|MCP]] tool manifests and [[rust]]/C# type systems encode the same permission-boundary principle at different abstraction layers. This spec formalizes the bridge: how an MCP tool definition maps to a concrete language type signature, and how composing agents produces a new, derivable capability set.
 
 ---
 
@@ -454,6 +454,143 @@ The full formal treatment — including MCP's lifecycle expressed as a session t
 
 ---
 
+---
+
+## 8. Callback Guardrails: Execution-Phase Type Safety
+
+**Context:** This section is the lattice response to the RFC in [[rfc-agent-orchestration-handoff]] §Recommendations/3. It addresses [[adk-callbacks-and-lifecycle]]'s `before_tool_callback` pattern: a callback that runs before every tool invocation and can block it. The lattice currently proves *what* a tool can do; this section adds a proof that the callback phase *ran* before the tool did.
+
+### 8.1 The Gap
+
+`Caps(A)` proves Agent A is allowed to call tool `T`. It does not prove that A's guardrail callbacks were executed before calling `T`. An agent could structurally possess a capability and invoke it without running the required safety checks.
+
+The [[agent-development-kit|ADK]] pattern makes callbacks explicit at the [[python]] level; they are not enforced structurally. An agent can be constructed without a `before_tool_callback` and the framework will proceed silently — the callback is optional by design.
+
+The goal is to make callback execution a **compile-time requirement** for sensitive tool invocations, not an optional runtime hook.
+
+### 8.2 `GuardrailToken<T>` — Phantom Proof of Callback Execution
+
+The mechanism mirrors [[rust-phantom-types]]: a zero-sized token type that can only be produced by the callback runner. Tool invocation functions require this token, making it a type error to skip the callback phase.
+
+```rust
+use std::marker::PhantomData;
+
+// Zero-sized token: proves the guardrail callback ran for tool T
+pub struct GuardrailToken<T: ToolCap>(PhantomData<T>);
+
+// The callback runner is the only entity that produces tokens
+pub struct CallbackRunner;
+
+impl CallbackRunner {
+    pub fn run_before_tool<T: ToolCap>(
+        &self,
+        context: &CallbackContext,
+        args: &T::Args,
+    ) -> Result<GuardrailToken<T>, GuardrailBlocked> {
+        // Invoke the registered before_tool_callback.
+        // If it returns a blocking value, return Err(GuardrailBlocked).
+        // If it returns None, return Ok(GuardrailToken(PhantomData)).
+        todo!()
+    }
+}
+
+// Tool invocation requires both the capability AND the token
+pub fn invoke_tool<T: ToolCap, A: HasCaps<T>>(
+    agent: &A,
+    args: T::Args,
+    _token: GuardrailToken<T>,  // proves before_tool_callback ran
+) -> Result<T::Output, McpError> {
+    agent.call_tool(args)
+}
+```
+
+Attempting to call `invoke_tool` without a `GuardrailToken<T>` is a **compile-time type error**. The token is linear (not `Copy`) — it cannot be cloned or reused across invocations; each callback execution produces exactly one token.
+
+`GuardrailBlocked` is a domain error (not `McpError`) because it represents a policy decision by the callback, not a protocol failure. The calling agent should surface this as a task-level outcome rather than a protocol error.
+
+### 8.3 C# Equivalent — `GuardrailEvidence<T>`
+
+```csharp
+// Sealed: only CallbackRunner can produce it
+public sealed class GuardrailEvidence<T> where T : IToolCap
+{
+    internal GuardrailEvidence() { }
+}
+
+public class CallbackRunner
+{
+    public Result<GuardrailEvidence<T>, GuardrailBlocked> RunBeforeTool<T>(
+        CallbackContext context, T.Args args) where T : IToolCap
+    {
+        // invoke registered before_tool_callback
+        // return Ok(new GuardrailEvidence<T>()) or Err(GuardrailBlocked)
+        throw new NotImplementedException();
+    }
+}
+
+// Tool method requires the evidence parameter
+public async Task<T.Output> InvokeTool<T>(
+    T.Args args,
+    GuardrailEvidence<T> evidence,  // proves callback ran
+    CancellationToken ct = default) where T : IToolCap
+{
+    // proceed with tool execution
+    throw new NotImplementedException();
+}
+```
+
+The `internal` constructor on `GuardrailEvidence<T>` prevents external code from forging the token. Only `CallbackRunner` (in the same assembly) can mint it.
+
+### 8.4 Non-Propagation to Sub-Agents
+
+ADK's documented behavior: "Callbacks defined on a Parent agent do **not** automatically propagate to Sub-agents." The token model encodes this correctly without additional rules. `GuardrailToken<T>` is produced per-agent by that agent's own `CallbackRunner`. A parent's token cannot satisfy a sub-agent's `invoke_tool` signature — the types are distinct because the `CallbackRunner` instance is bound to the agent that owns it.
+
+If a sub-agent requires the same guardrail, it must register and run its own callback. There is no silent inheritance.
+
+### 8.5 Agents Without Callbacks — `UncheckedInvocation`
+
+Not every tool call requires a guardrail. For tools where no `before_tool_callback` is registered, an `UncheckedInvocation` marker satisfies the token requirement explicitly. The declaration is intentional — it makes the absence of a guardrail visible in the code rather than implicit.
+
+```rust
+// Explicit opt-out from callback enforcement
+pub struct UncheckedInvocation<T: ToolCap>(PhantomData<T>);
+
+impl<T: ToolCap> UncheckedInvocation<T> {
+    // Only constructible if T: NoGuardrailRequired (sealed trait impl by tool author)
+    pub fn new() -> Self where T: NoGuardrailRequired {
+        UncheckedInvocation(PhantomData)
+    }
+}
+
+impl<T: ToolCap + NoGuardrailRequired> From<UncheckedInvocation<T>> for GuardrailToken<T> {
+    fn from(u: UncheckedInvocation<T>) -> GuardrailToken<T> {
+        GuardrailToken(PhantomData)
+    }
+}
+```
+
+Tools that implement `NoGuardrailRequired` are read-only or idempotent operations where a callback adds no safety value. The choice must be made by the tool author at definition time, not by the calling agent at invocation time.
+
+### 8.6 Relationship to Existing Lattice Layers
+
+| Enforcement layer | Proves | When checked |
+|---|---|---|
+| Capability lattice (§4) | Agent is allowed to call tool T | Compile time (type checker) |
+| **Guardrail token (§8)** | **Callback phase ran before T executed** | **Compile time (type checker)** |
+| Session types (§7) | Tool T is valid at current connection phase | Compile time (session type checker) |
+| Runtime isolation | Tool T cannot escape sandbox | Runtime (OS boundary) |
+
+The three compile-time layers are orthogonal and compose:
+
+```
+Safe(agent, tool, connection_state) iff
+    tool ∈ Caps(agent)                  ← §4 lattice
+    AND GuardrailToken<tool> exists     ← §8 callback guardrail
+    AND state → tool is valid           ← §7 session type
+```
+
+---
+
 ## References
 - [[community-protocol-trust-substrate]]
 - [[session-types-mcp-mapping]]
@@ -464,8 +601,33 @@ The full formal treatment — including MCP's lifecycle expressed as a session t
 - [[dotnet-dependency-injection]]
 - [[mcp-security]]
 - [[docker-sandbox]]
+- [[adk-callbacks-and-lifecycle]]
+- [[rfc-agent-orchestration-handoff]]
 
 
 ---
 ## References
 - [[claude-capability-lattice-handoff]]
+
+---
+
+## 8. Callback Guardrails: Execution-Phase Type Safety
+
+**Context:** Addresses the [[adk-callbacks-and-lifecycle]] `before_tool_callback` pattern.
+
+### 8.1 Guardrail Tokens
+- **`GuardrailToken<T>` (Rust)** / **`GuardrailEvidence<T>` (C#)**: Zero-sized, phantom-typed tokens minted only by the `CallbackRunner`.
+- **Enforcement**: `invoke_tool` requires this token as an argument. Skipping the callback phase is a compile-time type error.
+- **Non-propagation**: Tokens are per-agent and do not inherit to sub-agents, matching ADK semantics.
+
+### 8.2 `UncheckedInvocation`
+Explicit opt-out via `NoGuardrailRequired` trait/attribute for idempotent tools. The absence of a guardrail must be declared, not implicit.
+
+### 8.3 Three-Layer Safety Predicate
+```
+Safe(agent, tool, state) iff 
+    tool ∈ Caps(agent) (Lattice) ∧ 
+    GuardrailToken<tool> exists (Guardrail) ∧ 
+    state → tool is valid (Session Type)
+```
+

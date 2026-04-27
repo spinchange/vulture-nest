@@ -24,7 +24,7 @@ To build high-quality custom software, agents should follow this standard cognit
 
 ### 2. Strategy (Design Phase)
 - **Architectural Alignment:** Ensuring the solution fits existing patterns (e.g., YANP).
-- **Tool Selection:** Choosing the most efficient MCP tools or libraries.
+- **Tool Selection:** Choosing the most efficient [[mcp-moc|MCP]] tools or libraries.
 - **Plan Formulation:** Drafting a step-by-step implementation guide.
 - **Safety & Boundaries Checkpoint:** A mandatory pre-flight check before Execution:
     1. Are all planned write targets within authorized scope?
@@ -64,3 +64,4 @@ Frameworks like [[langgraph]] enable these architectures by representing the lif
 - [[agent-thought-cycle]]
 - [[agentic-tdd-patterns]]
 - [[langgraph]]
+

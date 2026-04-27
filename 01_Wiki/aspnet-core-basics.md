@@ -38,7 +38,7 @@ Traditional class-based approach. Better for large projects with hundreds of end
 
 ## Significance for Agents
 ASP.NET Core is the primary engine for building **Agent Dashboards** and **Remote Tools**.
-- **MCP Servers:** Can be hosted as ASP.NET Core APIs to provide remote capabilities.
+- **[[mcp-moc|MCP]] Servers:** Can be hosted as ASP.NET Core APIs to provide remote capabilities.
 - **Real-time Monitoring:** Use SignalR (part of ASP.NET Core) to stream agent "thoughts" or logs to a web interface in real-time.
 
 ---
@@ -47,3 +47,4 @@ ASP.NET Core is the primary engine for building **Agent Dashboards** and **Remot
 - [[dotnet-moc]]
 - [[dotnet-dependency-injection]]
 - [[mcp-architecture]]
+

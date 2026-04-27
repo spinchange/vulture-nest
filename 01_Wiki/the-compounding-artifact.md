@@ -32,7 +32,7 @@ Every note is an investment with two cost components.
 
 The compounding mechanism is the **link graph**:
 - **Linear growth**: Adding a note on [[mcp-architecture]].
-- **Exponential compounding**: That note becomes a hub — receiving links from [[agent-tools]], [[mcp-security]], [[multi-agent-systems]], and the session logs of every agent that subsequently encounters MCP. Each inbound link is a new amortization event.
+- **Exponential compounding**: That note becomes a hub — receiving links from [[agent-tools]], [[mcp-security]], [[multi-agent-systems]], and the session logs of every agent that subsequently encounters [[mcp-moc|MCP]]. Each inbound link is a new amortization event.
 
 Most PKM systems never amortize because they are write-only. Notes are captured and never queried systematically. The Vulture Nest prevents this through automated retrieval (the vulture-search engine, graph-aware queries) and the CI/CD pipeline that surfaces orphan nodes before they decay into irrelevance.
 
@@ -103,3 +103,4 @@ The vault is not a productivity tool. It is the substrate for a new kind of mind
 - [[collective-iq]]
 - [[augmenting-human-intellect]]
 - [[daemon-design-pattern]]
+

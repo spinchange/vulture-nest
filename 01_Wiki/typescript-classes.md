@@ -1,5 +1,5 @@
 ---
-title: TypeScript Classes
+title: [[typescript.md|TypeScript]] Classes
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -46,3 +46,4 @@ Defined with the `abstract` keyword. Cannot be directly instantiated and may con
 * [[typescript-moc]]
 * [[typescript-objects]]
 * [[typescript-generics]]
+

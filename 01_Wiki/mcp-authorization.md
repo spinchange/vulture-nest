@@ -1,5 +1,5 @@
 ---
-title: MCP Authorization
+title: [[mcp-moc|MCP]] Authorization
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -37,3 +37,4 @@ For servers running locally, OAuth is often overkill. Instead:
 * Source: `00_Raw/mcp/Understanding Authorization in MCP.md`
 * [[mcp-security]]
 * [[mcp-remote-connections]]
+

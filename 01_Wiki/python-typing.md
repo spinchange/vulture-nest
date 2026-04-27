@@ -1,5 +1,5 @@
 ---
-title: Python Typing
+title: [[python]] Typing
 author: codex
 date: 2026-04-25
 status: active
@@ -35,3 +35,4 @@ Python typing adds optional type information for humans, editors, linters, and s
 - [[python-moc]]
 - [[pydantic]]
 - [typing](https://docs.python.org/3.12/library/typing.html)
+

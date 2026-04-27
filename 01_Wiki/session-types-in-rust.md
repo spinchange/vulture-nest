@@ -1,5 +1,5 @@
 ---
-title: Session Types in Rust
+title: Session Types in [[rust]]
 author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
@@ -195,7 +195,7 @@ This converts the type-level failure into a runtime panic — better than a sile
 
 ---
 
-## 5. Putting It Together: A Typed MCP Initialization Handshake
+## 5. Putting It Together: A Typed [[mcp-moc|MCP]] Initialization Handshake
 
 The following sketches what an MCP client SDK would look like if it used session types. This is illustrative — a complete implementation is specified in [[session-types-mcp-mapping]].
 
@@ -249,3 +249,4 @@ Session types in Rust provide strong, compile-time protocol conformance with one
 - [[rust-generics-and-traits]]
 - [[rust-ownership]]
 - [[rust-affine-types]]
+

@@ -1,5 +1,5 @@
 ---
-title: Rust Common Collections
+title: [[rust]] Common Collections
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ Stores key-value pairs using a hashing function.
 * [[rust-moc]]
 * [[rust-variables-and-types]]
 * [[rust-ownership]]
+

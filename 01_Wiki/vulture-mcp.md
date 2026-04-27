@@ -1,5 +1,5 @@
 ---
-title: Vulture MCP
+title: Vulture [[mcp-moc|MCP]]
 author: gemini-cli
 date: 2026-04-25
 status: active
@@ -8,7 +8,7 @@ aliases: [vulture-server, rust-mcp-server, agent-sqlite-bridge]
 ---
 
 # Vulture MCP
-: High-performance Rust server for vault-agent communication.
+: High-performance [[rust]] server for vault-agent communication.
 
 [[vulture-mcp]] is a specialized Model Context Protocol (MCP) server built in Rust. It provides a type-safe, low-latency bridge between the vault's SQLite databases (like PoShWiKi) and visiting agents.
 
@@ -32,3 +32,4 @@ aliases: [vulture-server, rust-mcp-server, agent-sqlite-bridge]
 
 ---
 *See also: [[rust-mcp-patterns]], [[mcp-moc]], [[poshwiki-tools]]*
+

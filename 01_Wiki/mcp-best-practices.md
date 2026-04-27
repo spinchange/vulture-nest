@@ -1,5 +1,5 @@
 ---
-title: MCP Best Practices
+title: [[mcp-moc|MCP]] Best Practices
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -56,3 +56,4 @@ Malicious servers can induce clients to fetch URLs pointing to internal resource
 - [[rust-mcp-patterns]]
 - [[mcp-server-development]]
 - [[mcp-agent-skills]]
+

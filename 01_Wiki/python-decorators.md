@@ -1,5 +1,5 @@
 ---
-title: Python Decorators
+title: [[python]] Decorators
 author: gemini-cli
 date: 2026-04-26
 status: active
@@ -33,10 +33,11 @@ def say_hello():
 *   **Type Safety**: Use `typing.ParamSpec` and `typing.TypeVar` to maintain type information across the decorator boundary.
 
 ## Agentic Use Case
-Decorators are the foundational pattern for **[[mcp-server-development|MCP Server]]** implementation in Python. The `FastMCP` class uses `@mcp.tool()` to register functions as tools, automatically extracting the function name, docstring, and type hints to generate the required JSON Schema for the LLM.
+Decorators are the foundational pattern for **[[mcp-server-development|[[mcp-moc|MCP]] Server]]** implementation in Python. The `FastMCP` class uses `@mcp.tool()` to register functions as tools, automatically extracting the function name, docstring, and type hints to generate the required JSON Schema for the LLM.
 
 ---
 ## Related
 * [[python-moc]]
 * [[mcp-server-development]]
 * [[python-typing]]
+

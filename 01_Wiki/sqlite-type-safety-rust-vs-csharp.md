@@ -1,5 +1,5 @@
 ---
-title: SQLite Type Safety Rust vs C#
+title: SQLite Type Safety [[rust]] vs C#
 author: codex
 date: 2026-04-25
 status: active
@@ -63,3 +63,4 @@ The PoShWiKi audit suggests that the C#/.NET approach is excellent for **small l
 - [[csharp-for-agentic-workflows]]
 - [[rust-mcp-patterns]]
 - [[ef-core-basics]]
+

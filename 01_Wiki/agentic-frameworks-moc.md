@@ -31,7 +31,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
 * [[openai-swarm]]: Experimental multi-agent orchestration pattern (Handoffs).
 * [[openai-agents-sdk]]: Production-ready evolution of Swarm for scalable agent systems.
-* [[agent-development-kit]]: Google's code-first toolkit for complex agent systems (ADK).
+* [[agent-development-kit]]: Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
 * [[llamaindex]]: The data-augmented agent toolkit (Retrieval).
 * [[langgraph]]: Stateful orchestration for production-ready agents (Control).
 * [[pydantic-fastapi-agents]]: Using Pydantic for robust tool schema definition.
@@ -55,7 +55,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[gaia-benchmark]]: The industry standard for evaluating general AI assistants.
 
 ## Protocols & Infrastructure
-* [[agentic-protocols]]: The emerging standards (MCP, A2A) for interoperability.
+* [[agentic-protocols]]: The emerging standards ([[mcp-moc|MCP]], A2A) for interoperability.
 * [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
 
 ## Platform & Runtime SDKs
@@ -86,3 +86,4 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[programming-languages-moc]]
 - [[python-moc]]
 - [[agent-skills-index]]
+

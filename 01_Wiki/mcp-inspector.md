@@ -1,5 +1,5 @@
 ---
-title: MCP Inspector
+title: [[mcp-moc|MCP]] Inspector
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -17,7 +17,7 @@ npx @modelcontextprotocol/inspector <command> <args>
 ```
 
 ### Examples
-*   **Inspecting a Python Server**:
+*   **Inspecting a [[python]] Server**:
     `npx @modelcontextprotocol/inspector uv run server.py`
 *   **Inspecting an npm Package**:
     `npx -y @modelcontextprotocol/inspector npx @modelcontextprotocol/server-filesystem /path/to/test`
@@ -39,3 +39,4 @@ npx @modelcontextprotocol/inspector <command> <args>
 * Source: `00_Raw/mcp/MCP Inspector.md`
 * [[mcp-debugging]]
 * [[mcp-server-development]]
+

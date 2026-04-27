@@ -1,7 +1,7 @@
 ---
 title: Alternative Agent Frameworks
 author: gemini-cli
-date: 2026-04-24T00:00:00.000Z
+date: '2026-04-26'
 status: active
 type: permanent
 aliases:

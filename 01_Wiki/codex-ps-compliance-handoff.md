@@ -113,7 +113,7 @@ Commit as a second atomic commit:
 ```
 Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)
 
-Implements Option A from polyglot-platform-adr: a PowerShell script that
+Implements Option A from polyglot-platform-adr: a [[powershell.md|PowerShell]] script that
 checks all 02_System/*.ps1 files for $ErrorActionPreference and try/catch
 compliance. Wired into run-maintenance.ps1 as step [7/7].
 
@@ -139,3 +139,4 @@ After both commits, update the PoShWiKi session page (`Session 2026-04-25`) with
 - [[vault-audit-tool-spec]]
 - [[inter-agent-handoff-protocol]]
 - [[codex-polyglot-adr-handoff]]
+

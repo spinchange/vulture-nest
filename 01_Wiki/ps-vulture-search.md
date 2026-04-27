@@ -22,10 +22,11 @@ The script outputs a "Context Packet" which provides an agent with:
 
 ## Usage
 ```powershell
-powershell.exe -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query "Rust"
+powershell.exe -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query "[[rust]]"
 ```
 
 ---
 ## References
 * [[hybrid-retrieval-spec]]
 * [[ps-automation-spec]]
+

@@ -1,5 +1,5 @@
 ---
-title: TypeScript Modules
+title: [[typescript.md|TypeScript]] Modules
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ A TypeScript-specific way to organize code that pre-dates ESM. Primarily used to
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-compiler-options]]
+

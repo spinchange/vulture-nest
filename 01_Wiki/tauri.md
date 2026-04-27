@@ -8,7 +8,7 @@ aliases: [tauri-framework, rust-desktop, modern-desktop-apps]
 ---
 # Tauri
 
-**Tauri** is a modern toolkit for building tiny, fast, and secure desktop applications using a web frontend and a **Rust** backend. It is the leading alternative to Electron.
+**Tauri** is a modern toolkit for building tiny, fast, and secure desktop applications using a web frontend and a **[[rust]]** backend. It is the leading alternative to Electron.
 
 ## Core Architecture
 *   **Frontend:** Any web framework (React, Vue, Svelte, or even plain JS/HTML). It is rendered using the **System Native WebView** (e.g., WebView2 on Windows).
@@ -33,3 +33,4 @@ aliases: [tauri-framework, rust-desktop, modern-desktop-apps]
 *   [[javascript-on-desktop]]
 *   [[bun-vs-deno]]
 *   [[wiki-as-codebase]]
+

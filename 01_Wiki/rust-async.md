@@ -1,5 +1,5 @@
 ---
-title: Rust Async
+title: [[rust]] Async
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -28,3 +28,4 @@ Because async functions are transformed into state machines that can hold self-r
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-concurrency]]
+

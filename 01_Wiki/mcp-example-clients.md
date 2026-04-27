@@ -1,5 +1,5 @@
 ---
-title: MCP Example Clients
+title: [[mcp-moc|MCP]] Example Clients
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -35,3 +35,4 @@ Clients differ in which part of the protocol they implement:
 * [[mcp-client-features]]
 - [[mcp-example-servers]]
 - [[mcp-sdks]]
+

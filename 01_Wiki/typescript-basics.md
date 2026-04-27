@@ -1,5 +1,5 @@
 ---
-title: TypeScript Basics
+title: [[typescript.md|TypeScript]] Basics
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -36,3 +36,4 @@ TypeScript's strictness can be adjusted to suit the project's needs. Key flags i
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-everyday-types]]
+

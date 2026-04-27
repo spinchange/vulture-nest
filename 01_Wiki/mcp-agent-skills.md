@@ -1,5 +1,5 @@
 ---
-title: MCP Agent Skills
+title: [[mcp-moc|MCP]] Agent Skills
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -13,7 +13,7 @@ aliases: [mcp-server-dev-skills, build-mcp-server-skill]
 ## Core Development Skills
 *   **`build-mcp-server`**: The primary entry point. It interrogates the use case (API vs. local, user base size, auth needs) to recommend a deployment model.
 *   **`build-mcp-app`**: Used when interactive UI widgets (forms, charts, dashboards) are needed within the chat interface.
-*   **`build-mcpb`**: Packages local servers with their runtimes as **MCP Bundles**, allowing users to install them without pre-existing environments (e.g., without needing Node or Python).
+*   **`build-mcpb`**: Packages local servers with their runtimes as **MCP Bundles**, allowing users to install them without pre-existing environments (e.g., without needing Node or [[python]]).
 
 ## Recommended Deployment Paths
 Based on the discovery phase, skills guide agents toward one of four architectures:
@@ -31,3 +31,4 @@ Ask your agent to "Help me build an MCP server." If the agent has the `mcp-serve
 * [[mcp-server-development]]
 * [[mcp-sdks]]
 - [[mcp-best-practices]]
+

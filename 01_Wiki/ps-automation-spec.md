@@ -1,5 +1,5 @@
 ---
-title: PowerShell Automation Specification
+title: [[powershell.md|PowerShell]] Automation Specification
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -53,3 +53,4 @@ The `02_System/generate-tool-registry.ps1` script is the "Compiler" for this spe
 * [[powershell-moc]]
 * [[wiki-as-codebase]]
 * [[GEMINI]]
+

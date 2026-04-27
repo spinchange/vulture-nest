@@ -1,5 +1,5 @@
 ---
-title: MCP Debugging
+title: [[mcp-moc|MCP]] Debugging
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -21,8 +21,8 @@ Effective debugging of MCP integrations requires monitoring the communication be
 *   **❌ NEVER** log to `stdout` in stdio servers (it breaks the JSON-RPC stream).
 *   **✅ ALWAYS** log to `stderr`.
 *   **Protocol Logging**: Use `notifications/message` to send structured logs to the client.
-    *   Python: `ctx.session.send_log_message(level="info", data="...")`
-    *   TypeScript: `server.sendLoggingMessage({ level: "info", data: "..." })`
+    *   [[python]]: `ctx.session.send_log_message(level="info", data="...")`
+    *   [[typescript.md|TypeScript]]: `server.sendLoggingMessage({ level: "info", data: "..." })`
 
 ## Common Issues
 ### 1. Working Directory & Paths
@@ -51,3 +51,4 @@ Errors like `-32602` (Invalid params) often occur when a server tries to use a f
 - [[mcp-server-development]]
 - [[mcp-best-practices]]
 - [[mcp-client-development]]
+

@@ -1,5 +1,5 @@
 ---
-title: TypeScript Type Operators
+title: [[typescript.md|TypeScript]] Type Operators
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -45,3 +45,4 @@ type Age = Person["age"]; // number
 - [[typescript-objects]]
 - [[typescript-template-literals]]
 - [[typescript-narrowing]]
+

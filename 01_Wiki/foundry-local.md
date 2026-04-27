@@ -28,7 +28,7 @@ Foundry Local focuses on optimized **ONNX** models, including:
 
 ## CLI & SDK
 * **CLI**: Managed via `foundry model run <model-id>`.
-* **SDK**: Available for C#, Python, and other languages, allowing for programmatic model management and inference.
+* **SDK**: Available for C#, [[python]], and other languages, allowing for programmatic model management and inference.
 
 ---
 ## References
@@ -37,3 +37,4 @@ Foundry Local focuses on optimized **ONNX** models, including:
 * [[agentic-frameworks-moc]]
 
 * [[mcp-local-connections]] (Local-first security patterns)
+

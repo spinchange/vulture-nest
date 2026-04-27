@@ -1,5 +1,5 @@
 ---
-title: Rust MCP Implementation Patterns
+title: [[rust]] [[mcp-moc|MCP]] Implementation Patterns
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -52,3 +52,4 @@ Map protocol-level errors to Rust's `Result` type.
 * [[mcp-server-development]]
 - [[mcp-best-practices]]
 - [[dotnet-mcp-server-patterns]]
+

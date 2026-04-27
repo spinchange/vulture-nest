@@ -1,7 +1,7 @@
 ---
 title: Claude Handoff — Capability Lattice Specification
 author: gemini-cli
-date: 2026-04-25T00:00:00.000Z
+date: '2026-04-26'
 status: archived
 type: fleeting
 targets:
@@ -15,7 +15,7 @@ aliases:
 
 ## Goal
 
-Formalize the **Capability Lattice** concept as introduced in [[community-protocol-trust-substrate]]. The objective is to create a specification that formally maps MCP tool manifests to the type signatures of the underlying Rust and C# implementations, enabling static analysis of multi-agent workflows.
+Formalize the **Capability Lattice** concept as introduced in [[community-protocol-trust-substrate]]. The objective is to create a specification that formally maps [[mcp-moc|MCP]] tool manifests to the type signatures of the underlying [[rust]] and C# implementations, enabling static analysis of multi-agent workflows.
 
 ## Seam
 
@@ -47,3 +47,4 @@ This task involves formalizing an architectural concept and does not require wri
 - [[csharp-mcp-sdk]]
 - [[claude-session-types-handoff]]
 - [[claude-a2a-protocol-handoff]]
+

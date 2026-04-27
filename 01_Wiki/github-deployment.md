@@ -12,7 +12,7 @@ The **vulture-nest** uses GitHub Actions to implement a **Cloud Daemon** pattern
 
 ## The Deployment Pipeline
 1.  **Trigger:** A `git push` to the `main` branch.
-2.  **Environment:** A Windows runner with PowerShell 7.
+2.  **Environment:** A Windows runner with [[powershell.md|PowerShell]] 7.
 3.  **Substrate Build:**
     - The runner initializes a transient [[poshwiki]] SQLite database.
     - `sync-vault-graph.ps1` runs to map all wikilinks in the cloud environment.
@@ -27,3 +27,4 @@ By using GitHub Actions instead of simple GitHub Pages hosting, we can leverage 
 - [[the-vulture-portal]]
 - [[daemon-design-pattern]]
 - [[wiki-as-codebase]]
+

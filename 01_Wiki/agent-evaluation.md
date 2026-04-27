@@ -31,3 +31,9 @@ Performed on live user interactions.
 * [[agent-observability]]
 * [[llm-as-a-judge]]
 * [[agentic-frameworks-moc]]
+
+
+
+## Advanced Evaluation Patterns
+* [[adk-advanced-capabilities]] - Thinking and reasoning evaluation.
+* [[adk-evaluation-framework]] - Trajectory-based evaluation.

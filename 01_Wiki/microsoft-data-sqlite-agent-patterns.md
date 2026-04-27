@@ -67,7 +67,7 @@ An important design choice is that section mutation does **not** happen through 
 
 That means:
 - SQLite is the durability layer
-- PowerShell/.NET string logic is the document-edit layer
+- [[powershell.md|PowerShell]]/.NET string logic is the document-edit layer
 - the page remains a single durable unit of truth
 
 This is often the right tradeoff for agent tools where document semantics matter more than relational normalization.
@@ -89,3 +89,4 @@ This is a good reminder that agent infrastructure should expose its native test 
 - [[powershell-moc]]
 - [[sqlite-type-safety-rust-vs-csharp]]
 - [[dotnet-mcp-server-patterns]]
+

@@ -1,42 +1,60 @@
 ---
 title: OpenAI Swarm
 author: gemini-cli
-date: 2026-04-24
+date: '2026-04-26'
 status: active
+aliases:
+  - swarm
+  - handoff-pattern
+  - routine-pattern
 type: permanent
-aliases: [swarm, openai-swarm-experimental]
 ---
+
 # OpenAI Swarm
 
-OpenAI Swarm is an experimental, educational framework designed to explore lightweight **multi-agent orchestration**. It focuses on making agent coordination and execution highly controllable and easily testable.
-
-> [!IMPORTANT]
-> Swarm is considered experimental and has been largely superseded by the [OpenAI Agents SDK](https://github.com/openai/openai-agents-python), which is the production-ready evolution of these patterns.
+**OpenAI Swarm** is an experimental, educational framework for orchestrating multiple agents. It prioritizes a lightweight, stateless approach to multi-agent systems, focusing on **Handoffs** and **Routines**.
 
 ## Core Primitives
-Swarm operates on two primary abstractions:
-1. **Agents**: An `Agent` encompasses `instructions` and `tools`.
-2. **Handoffs**: An `Agent` can choose to hand off a conversation to another `Agent` at any point by returning the next agent from a function call.
 
-## Philosophy
-* **Lightweight**: Minimal overhead for agent coordination.
-* **Stateless**: Swarm runs almost entirely on the client and does not store state between calls (unlike the Assistants API).
-* **Controllable**: Developers have full control over the handoff logic and agent interactions.
+### 1. The `Agent`
+An `Agent` encapsulates:
+*   **Instructions:** The system prompt (can be a string or a callable returning a string).
+*   **Functions:** A list of [[python]] functions the agent can call.
+*   **Model:** The underlying LLM (defaults to `gpt-4o`).
 
-## Swarm vs. Assistants API
-* **Swarm**: Best for large numbers of independent capabilities that are difficult to encode in a single prompt. It is stateless and client-side.
-* **Assistants API**: Best for fully-hosted threads, built-in memory management, and retrieval.
+### 2. Handoffs
+A handoff occurs when an agent's function returns another `Agent` object.
+*   **Mechanism:** When the framework sees a returned `Agent`, it switches the active agent to the new one and continues the conversation with the new agent's instructions.
+*   **Use Case:** Triage agents routing users to specialized departments (e.g., "Billing", "Refunds").
 
-## Implementation Pattern
-The "Handoff" pattern in Swarm is implemented by functions that return another `Agent` object. This allows for dynamic routing based on user input or agent reasoning.
+### 3. Context Variables
+Shared state passed into `client.run()`.
+*   **Access:** Functions can declare `context_variables` as an argument to receive the current state.
+*   **Updates:** Functions can return a `Result` object to update these variables.
 
+## Key Features
+
+### Stateless Execution
+The `client.run()` loop is stateless. It processes the current turn, handles any function calls, manages handoffs, and returns the final response along with the updated `context_variables` and active `agent`. The caller is responsible for persisting this state.
+
+### `Result` Object
+A powerful return type for functions that allows for atomic updates:
 ```python
-def transfer_to_agent_b():
-    return agent_b
+return Result(
+    value="Final answer for the user",
+    agent=next_agent,           # The Handoff
+    context_variables={"key": "val"} # State update
+)
 ```
 
+## Comparison: Swarm vs. [[agent-development-kit|ADK]]
+| Feature | OpenAI Swarm | [[agent-development-kit|ADK]] |
+| :--- | :--- | :--- |
+| **State Management** | External (Stateless) | Internal ([[adk-session-service|Session Service]]) |
+| **Handoff Type** | Return-based (returns `Agent`) | Tool-based (`transfer_to_agent`) |
+| **Orchestration** | Dynamic (Loop-based) | Mixed (Deterministic & Dynamic) |
+| **Complexity** | Minimal | High (Full SDK) |
+
 ---
-## References
-* Source: `00_Raw/openai-agents-and-swarm.md`
-* [[multi-agent-systems]]
-* [[agentic-frameworks-moc]]
+*Source: [[lit-openai-swarm]]*
+

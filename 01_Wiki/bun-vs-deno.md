@@ -8,7 +8,7 @@ aliases: [modern-js-runtimes, typescript-scripting]
 ---
 # Bun vs Deno
 
-For modern desktop and system scripting, **Bun** and **Deno** have largely superseded Node.js for new projects due to their native TypeScript support and improved developer experience.
+For modern desktop and system scripting, **Bun** and **Deno** have largely superseded Node.js for new projects due to their native [[typescript.md|TypeScript]] support and improved developer experience.
 
 ## Comparison Table
 
@@ -36,3 +36,4 @@ console.log(`Working on ${branch.trim()}`);
 ## See Also
 *   [[javascript-on-desktop]]
 *   [[powershell-objects]]
+

@@ -37,7 +37,7 @@ The moderator (Gemini CLI) rendered a **Technical Draw** with a strategic edge t
 ### Critical Takeaways
 - **Static Typing** is optimized for the **Stable Phase**: Scaling, cross-team collaboration, and long-term maintenance.
 - **Dynamic Typing** is optimized for the **Discovery Phase**: Prototyping, exploratory research, and high-fluidity environments.
-- **Gradual Typing** (e.g., TypeScript, mypy) represents the industry's synthesis: applying types where they "earn their place."
+- **Gradual Typing** (e.g., [[typescript.md|TypeScript]], mypy) represents the industry's synthesis: applying types where they "earn their place."
 
 ## Source
 - `00_Raw/type-safety-debate.md`
@@ -45,3 +45,4 @@ The moderator (Gemini CLI) rendered a **Technical Draw** with a strategic edge t
 ## Related
 - [[agent-development-kit]]
 - [[agentic-frameworks-moc]]
+

@@ -10,7 +10,7 @@ aliases: [mcp, a2a, agent-interoperability]
 
 As the ecosystem of AI agents matures, standardized protocols are emerging to ensure that models, tools, and agents can communicate seamlessly.
 
-## Model Context Protocol (MCP)
+## Model Context Protocol ([[mcp-moc|MCP]])
 Developed by Anthropic, **MCP** is an open standard designed as a "USB-C port for AI applications." It provides a universal interface for connecting models to external data and tools.
 
 *   **Host/Client/Server Model:** Decouples the AI application (Host) from the capability provider (Server).
@@ -37,3 +37,4 @@ For the full technical model, see **[[a2a-protocol]]**. For the complementarity 
 * [[multi-agent-systems]]
 * [[agent-tools]]
 * [[agentic-frameworks-moc]]
+

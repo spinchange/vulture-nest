@@ -12,11 +12,11 @@ aliases: [polyglot-platform, heterogeneous-agents, language-tier-community, tier
 
 ## Emergent Theory
 
-The vault's coverage of Rust, C#, PowerShell, and Python is not pluralism for its own sake. Each language maps onto a distinct performance and trust envelope, and the emergent architecture is a **tiered platform** where a component's language is also a declaration of its operational constraints:
+The vault's coverage of [[rust]], C#, [[powershell.md|PowerShell]], and [[python]] is not pluralism for its own sake. Each language maps onto a distinct performance and trust envelope, and the emergent architecture is a **tiered platform** where a component's language is also a declaration of its operational constraints:
 
 | Tier | Language | Role | Governing Principle |
 |------|----------|------|---------------------|
-| 0 — Core | Rust | MCP servers, inference engines, memory-adjacent components | Compile-time ownership; zero-cost abstraction |
+| 0 — Core | Rust | [[mcp-moc|MCP]] servers, inference engines, memory-adjacent components | Compile-time ownership; zero-cost abstraction |
 | 1 — Integration | C# / .NET | Enterprise agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem |
 | 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scripted, human-auditable, REPL-friendly |
 | 3 — Orchestration | Python | ML pipelines, LangGraph, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |
@@ -67,3 +67,4 @@ Operationalizing this as a decision tree (or a [[vault-audit-tool-spec]]-style s
 - [[dotnet-agent-integration]]
 - [[community-protocol-trust-substrate]]
 - [[community-living-knowledge-system]]
+

@@ -23,7 +23,7 @@ Replace Workbench's `child_process` shell host with a Codex-native runner and ma
 - Direct runner contract tests pass in-process via `node --input-type=module -e "import './dist-test/tests/codex-tool-runner.test.js'"`.
 - A proof artifact was produced at `00_Raw/workbench/proof-vulture-mcp-codex-runner.json`.
 - Standalone CLI invocation still lacks a live `codex.tool` global and now fails explicitly with `codex.tool is not available in this runtime`.
-- The `vulture-mcp` proof flow succeeds through the new host path when a Codex-compatible host is present; the remaining proof warning is the expected `no package.json` / no deterministic JS test path for this Rust repo.
+- The `vulture-mcp` proof flow succeeds through the new host path when a Codex-compatible host is present; the remaining proof warning is the expected `no package.json` / no deterministic JS test path for this [[rust]] repo.
 
 ## Constraints
 - Plain terminal-launched `node` does not automatically have access to `codex.tool`.
@@ -67,3 +67,4 @@ verification:
 
 ---
 *See also: [[workbench-integration]], [[openai-js-repl-integration]], [[ps-automation-spec]]*
+

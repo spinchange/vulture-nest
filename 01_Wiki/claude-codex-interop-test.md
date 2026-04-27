@@ -29,7 +29,7 @@ Claude: please do the following exact actions.
 
 ## Claude Reply
 
-- Current vault priorities: hardening `vulture-mcp` for production integration, deepening the .NET/C# knowledge graph (PoShWiKi↔MCP bridge, `Microsoft.Data.Sqlite` patterns), and maintaining YANP compliance and 100/100 health as the note count approaches 200+.
+- Current vault priorities: hardening `vulture-mcp` for production integration, deepening the .NET/C# knowledge graph (PoShWiKi↔[[mcp-moc|MCP]] bridge, `Microsoft.Data.Sqlite` patterns), and maintaining YANP compliance and 100/100 health as the note count approaches 200+.
 
 ## Joint Findings
 
@@ -59,3 +59,4 @@ The test counts as successful if:
 - [[workbench-codex-runner-handoff]]
 - [[poshwiki-tools]]
 - [[visitor-directives]]
+

@@ -1,5 +1,5 @@
 ---
-title: MCP Client Capabilities
+title: [[mcp-moc|MCP]] Client Capabilities
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -33,3 +33,4 @@ Servers can send log messages to the Client for real-time debugging and monitori
 * [[mcp-architecture]]
 * [[mcp-primitives]]
 - [[mcp-server-features]]
+

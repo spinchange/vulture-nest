@@ -64,7 +64,7 @@ Session types are built on **linear types**, which are the foundation of the "us
 
 A **session channel is a linear type on a channel**: the channel must be driven through every step of its declared protocol to `End`. Abandoning it mid-session — closing the connection before completing the handshake — is a type error in a fully linear type system.
 
-**Rust is affine, not linear.** Rust's ownership system enforces "at most once" (you cannot move a value twice) but allows silent drop (you may simply not use a value). This means Rust can encode session types but cannot natively enforce the "must complete" constraint. See [[session-types-in-rust]] for the workaround.
+**[[rust]] is affine, not linear.** Rust's ownership system enforces "at most once" (you cannot move a value twice) but allows silent drop (you may simply not use a value). This means Rust can encode session types but cannot natively enforce the "must complete" constraint. See [[session-types-in-rust]] for the workaround.
 
 ---
 
@@ -83,7 +83,7 @@ dual(rec α. S)  = rec α. dual(S)
 
 Duality is the type-level enforcement of protocol agreement. If the client has type `!Request.?Response.End`, the server *must* have type `?Request.!Response.End` — its dual. A type system that checks duality at the point where the two ends of a channel are connected catches mismatched protocol implementations at compile time.
 
-### Duality and MCP
+### Duality and [[mcp-moc|MCP]]
 
 In MCP's initialization handshake:
 
@@ -192,3 +192,4 @@ Concretely for MCP: the capability lattice proves that `tools/call` is a registe
 - [[session-types-mcp-mapping]]
 - [[community-protocol-trust-substrate]]
 - [[mcp-architecture]]
+

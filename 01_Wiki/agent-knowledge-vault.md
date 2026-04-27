@@ -34,3 +34,8 @@ The vault relies on strict adherence to [[agent-note-conventions]] to prevent dr
 * [[agent-note-conventions]]
 * [[index]]
 - [[llm-wiki-pattern]]
+
+
+
+## Persistent Memory Patterns
+* [[adk-long-term-memory]] - Cross-session recall and knowledge persistence.

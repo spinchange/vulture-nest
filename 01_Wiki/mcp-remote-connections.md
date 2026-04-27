@@ -1,5 +1,5 @@
 ---
-title: MCP Remote Connections
+title: [[mcp-moc|MCP]] Remote Connections
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -40,3 +40,4 @@ Remote MCP connections use the **HTTP/SSE transport**, allowing AI applications 
 - [[mcp-architecture]]
 - [[mcp-security]]
 - [[mcp-client-development]]
+

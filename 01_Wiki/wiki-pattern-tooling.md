@@ -11,7 +11,7 @@ aliases: [wiki-tools, qmd, dataview, marp]
 The [[llm-wiki-pattern]] can be enhanced by a specific ecosystem of tools that improve search, presentation, and data management.
 
 ## Search and Retrieval
-*   **qmd:** A local search engine for markdown files that uses hybrid BM25/vector search. It can be used by the LLM via CLI or MCP server to navigate larger wikis.
+*   **qmd:** A local search engine for markdown files that uses hybrid BM25/vector search. It can be used by the LLM via CLI or [[mcp-moc|MCP]] server to navigate larger wikis.
 *   **Dataview:** An Obsidian plugin that allows for dynamic, database-like queries over page frontmatter (e.g., listing all `active` notes by `date`).
 
 ## Content Capture
@@ -25,3 +25,4 @@ The [[llm-wiki-pattern]] can be enhanced by a specific ecosystem of tools that i
 ## See Also
 *   [[llm-wiki-pattern]]
 *   [[wiki-pattern-operations]]
+

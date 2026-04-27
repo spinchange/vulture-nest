@@ -1,5 +1,5 @@
 ---
-title: Rust Variables and Types
+title: [[rust]] Variables and Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -48,3 +48,4 @@ Group multiple values into one:
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-ownership]]
+

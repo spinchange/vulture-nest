@@ -1,5 +1,5 @@
 ---
-title: PowerShell MOC
+title: [[powershell.md|PowerShell]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -45,3 +45,4 @@ This map covers the automation suite and coding standards for the **vulture-nest
 * [[wiki-as-codebase]]
 * [[programming-languages-moc]]
 - [[python-moc]]
+

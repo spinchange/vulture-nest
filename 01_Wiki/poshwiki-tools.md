@@ -8,7 +8,7 @@ aliases: [poshwiki-api, thought-api, sidecar-database]
 ---
 # PoShWiKi Tools API
 
-The **PoShWiKi Tools API** (`02_System/poshwiki-tools.ps1`) is a high-level PowerShell 7 wrapper around the core PoShWiKi engine. It serves as the primary interface for agents to record their internal state, session logs, and collaborative findings without needing to manage low-level SQLite CLI arguments.
+The **PoShWiKi Tools API** (`02_System/poshwiki-tools.ps1`) is a high-level [[powershell.md|PowerShell]] 7 wrapper around the core PoShWiKi engine. It serves as the primary interface for agents to record their internal state, session logs, and collaborative findings without needing to manage low-level SQLite CLI arguments.
 
 ## 1. The Relational Sidecar Pattern
 In the **vulture-nest**, we distinguish between **Durable Knowledge** (stored in flat YANP files in `01_Wiki/`) and **Ephemeral/Procedural Memory**. The PoShWiKi API implements the "Relational Sidecar" pattern:
@@ -60,3 +60,4 @@ The wrapper is built on **PowerShell 7** and uses the `Microsoft.Data.Sqlite` li
 - [[ms-repo-poshwiki]]
 - [[microsoft-data-sqlite-agent-patterns]]
 - [[csharp-for-agentic-workflows]]
+

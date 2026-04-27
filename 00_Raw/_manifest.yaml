@@ -24,5 +24,90 @@ sources:
 
   - file: the-rust-programming-language.md
     domain: programming
-    status: raw
+    status: processed
     source: official-docs
+
+  - file: adk-documentation.md
+    domain: agentic-frameworks
+    status: processed
+    source: google-docs
+
+  - file: foundry-local.md
+    domain: agentic-frameworks
+    status: processed
+    source: internal-docs
+
+  - file: hf-agents-course-unit1.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-course-unit2.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-unit3.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-bonus1.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-bonus2.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-bonus3.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: hf-agents-final-units.md
+    domain: agentic-frameworks
+    status: processed
+    source: huggingface-course
+
+  - file: openai-agents-and-swarm.md
+    domain: agentic-frameworks
+    status: processed
+    source: openai-docs
+
+  - file: memex-summary.md
+    domain: pkm
+    status: processed
+    source: literature-review
+
+  - file: zettelkasten-summary.md
+    domain: pkm
+    status: processed
+    source: literature-review
+
+  - file: python-summary.md
+    domain: programming
+    status: processed
+    source: official-docs
+
+  - file: racket-summary.md
+    domain: programming
+    status: processed
+    source: official-docs
+
+  - file: typescript-handbook.md
+    domain: programming
+    status: processed
+    source: official-docs
+
+  - file: type-safety-debate.md
+    domain: ai-research
+    status: processed
+    source: internal-synthesis
+
+  - file: skills-and-agent-behavior.md
+    domain: agentic-frameworks
+    status: processed
+    source: research-paper

@@ -31,11 +31,11 @@ The implementation path was more involved than the final workflow suggests:
 
 - `winget` existed but was missing from PATH
 - `ffmpeg` was not installed
-- Python 3.12 existed, but `venv` bootstrap failed due to Windows temp permission issues
+- [[python]] 3.12 existed, but `venv` bootstrap failed due to Windows temp permission issues
 - repo-local target installs produced an unreadable `.media-py` package state
 - `faster-whisper` required the VC++ runtime because `ctranslate2.dll` could not load
 - the first title-card render path failed on FFmpeg filter escaping and missing fontconfig support
-- a PowerShell path resolver bug returned only the first character of a string path when a single candidate existed
+- a [[powershell.md|PowerShell]] path resolver bug returned only the first character of a string path when a single candidate existed
 
 Each issue led to a simplification:
 
@@ -82,3 +82,4 @@ This is a good seam for Gemini or another synthesis-oriented pass.
 - [[verbalized-sampling]]
 - [[experiments-moc]]
 - [[poshwiki]]
+

@@ -8,7 +8,7 @@ aliases: [pydantic-v2, python-validation-models]
 ---
 # Pydantic
 
-Pydantic turns Python type annotations into runtime parsing, validation, and JSON Schema generation. In agent systems, that makes it a practical contract layer between untrusted model output and executable code.
+Pydantic turns [[python]] type annotations into runtime parsing, validation, and JSON Schema generation. In agent systems, that makes it a practical contract layer between untrusted model output and executable code.
 
 ## Core Concepts
 - `BaseModel` classes define fields with Python annotations.
@@ -20,7 +20,7 @@ Pydantic turns Python type annotations into runtime parsing, validation, and JSO
 - LLMs produce probabilistic output. Pydantic gives the runtime a deterministic gate before a tool is executed.
 - Rich field metadata improves tool selection and parameter filling because agent hosts can expose clearer schemas to the model.
 - Validation errors are structured, which helps agents recover, retry, or ask for missing inputs.
-- Pydantic is a bridge between Python typing and API frameworks such as FastAPI and MCP-style tool surfaces.
+- Pydantic is a bridge between Python typing and API frameworks such as FastAPI and [[mcp-moc|MCP]]-style tool surfaces.
 
 ## Practical Heuristics
 - Keep models flat when possible; deep nesting increases prompt and recovery complexity.
@@ -36,3 +36,4 @@ Pydantic turns Python type annotations into runtime parsing, validation, and JSO
 - [Pydantic Models](https://docs.pydantic.dev/latest/concepts/models/)
 - [Pydantic JSON Schema](https://docs.pydantic.dev/latest/concepts/json_schema/)
 - [Pydantic Fields](https://docs.pydantic.dev/latest/concepts/fields/)
+

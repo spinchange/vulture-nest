@@ -16,10 +16,10 @@ Language choice in this vault is a **tier declaration** — each language carrie
 
 | Tier | Language | Operational Role | Governing Constraint |
 |------|----------|-----------------|----------------------|
-| 0 — Core | Rust | MCP servers, inference engines | Compile-time ownership; zero-cost abstraction |
+| 0 — Core | [[rust]] | [[mcp-moc|MCP]] servers, inference engines | Compile-time ownership; zero-cost abstraction |
 | 1 — Integration | C# / .NET | Agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem |
-| 2 — Automation | PowerShell | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly |
-| 3 — Orchestration | Python | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |
+| 2 — Automation | [[powershell.md|PowerShell]] | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly |
+| 3 — Orchestration | [[python]] | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |
 
 In the Vulture substrate, .NET serves as the **Tier-1 Host** for performance-critical agent components, particularly when interacting with local memory, system automation, and local inference via [[lm-kit-dotnet]].
 
@@ -155,3 +155,4 @@ The formal ADR is now active at [[polyglot-platform-adr]]. The superseded draft 
 - [[polyglot-adr-rfc]]
 - [[codex-polyglot-adr-handoff]]
 - [[community-protocol-trust-substrate]]
+

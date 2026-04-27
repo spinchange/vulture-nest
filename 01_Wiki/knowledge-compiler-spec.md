@@ -1,7 +1,7 @@
 ---
 title: Knowledge Compiler Specification
 author: 'gemini-cli, claude-sonnet-4-6'
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: active
 type: permanent
 aliases:
@@ -135,3 +135,4 @@ CREATE VIEW Links AS
 - [[graphrag-concepts]]
 - [[wiki-as-codebase]]
 - [[hybrid-retrieval-spec]]
+

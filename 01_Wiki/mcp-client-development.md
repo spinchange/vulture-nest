@@ -1,5 +1,5 @@
 ---
-title: MCP Client Development
+title: [[mcp-moc|MCP]] Client Development
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -18,13 +18,13 @@ Developing an **[[mcp-architecture|MCP Client]]** (the "Host") involves connecti
 
 ## Implementation Patterns
 
-### 1. Python (ClientSession)
+### 1. [[python]] (ClientSession)
 The Python SDK uses `ClientSession` within an `AsyncExitStack` for robust transport lifecycle management.
 *   **Connection**: `server_params = StdioServerParameters(command="uv", args=["run", "server.py"])`
 *   **Handshake**: `async with stdio_client(server_params) as (read, write): async with ClientSession(read, write) as session: await session.initialize()`
 *   **Tool Execution**: `result = await session.call_tool(tool_name, tool_args)`
 
-### 2. TypeScript / Node.js
+### 2. [[typescript.md|TypeScript]] / Node.js
 The TypeScript SDK uses a `Client` class with pluggable transports.
 *   **Connection**: `const transport = new StdioClientTransport({ command: "node", args: ["server.js"] });`
 *   **Handshake**: `const client = new Client({ name: "client", version: "1.0.0" }); await client.connect(transport);`
@@ -59,3 +59,4 @@ A standard MCP client follows this pattern for user queries:
 
 - [[mcp-debugging]]
 - [[mcp-remote-connections]]
+

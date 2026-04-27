@@ -8,7 +8,7 @@ aliases: [powershell-wiki, posh-wiki, agent-memory-db]
 ---
 # PoShWiKi
 
-**PoShWiKi** is a minimalist, cross-platform wiki system built on **PowerShell 7** and **SQLite**. It is specifically designed as a "scriptable memory" for agents and terminal-centric workflows.
+**PoShWiKi** is a minimalist, cross-platform wiki system built on **[[powershell.md|PowerShell]] 7** and **SQLite**. It is specifically designed as a "scriptable memory" for agents and terminal-centric workflows.
 
 ## Core Philosophy
 Unlike file-based wikis (like YANP), PoShWiKi stores pages in an SQLite database, providing:
@@ -49,3 +49,4 @@ The `PoShWiKi` project includes a formal **Agent Governance** framework (`docs/t
 - [[dotnet-moc]]
 - [[microsoft-data-sqlite-agent-patterns]]
 - [[ef-core-basics]] (The underlying technology)
+

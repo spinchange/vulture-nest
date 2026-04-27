@@ -1,5 +1,5 @@
 ---
-title: Rust
+title: [[rust]]
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -33,3 +33,5 @@ aliases: [rust-lang, rust-programming-language]
 * [[programming-languages-moc]]
 * [[rust-ownership]]
 - [[rust-concurrency]]
+
+- [[lit-rust-programming-language]]

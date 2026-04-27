@@ -1,5 +1,5 @@
 ---
-title: MCP Example Servers
+title: [[mcp-moc|MCP]] Example Servers
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -19,8 +19,8 @@ Official and community reference implementations showcase the versatility of MCP
 *   **[Everything](https://github.com/modelcontextprotocol/servers/tree/main/src/everything)**: A comprehensive test server covering tools, resources, and prompts.
 
 ## Quick Start (Direct Execution)
-*   **TypeScript (npx)**: `npx -y @modelcontextprotocol/server-memory`
-*   **Python (uvx)**: `uvx mcp-server-git`
+*   **[[typescript.md|TypeScript]] (npx)**: `npx -y @modelcontextprotocol/server-memory`
+*   **[[python]] (uvx)**: `uvx mcp-server-git`
 
 ## Official Integrations
 Many companies maintain official MCP servers for their platforms:
@@ -36,3 +36,4 @@ Many companies maintain official MCP servers for their platforms:
 * [[mcp-local-connections]]
 - [[mcp-example-clients]]
 - [[mcp-sdks]]
+

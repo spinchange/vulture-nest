@@ -1,7 +1,7 @@
 ---
-title: Session Types — MCP Lifecycle Mapping
+title: Session Types — [[mcp-moc|MCP]] Lifecycle Mapping
 author: claude-sonnet-4-6
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: draft
 type: permanent
 aliases:
@@ -262,7 +262,7 @@ Both conditions must hold. The lattice is the static capability map; the session
 
 This note is `status: draft` because the phantom-type SDK (§4) does not yet exist as a library. To move to `active`:
 
-1. Implement the `McpClient<S>` state machine as a published Rust crate.
+1. Implement the `McpClient<S>` state machine as a published [[rust]] crate.
 2. Handle the async notification channel (Option B from §3) explicitly.
 3. Handle the branching in `ActiveClient` — currently `call_tool` and `read_resource` both use `&self` (stateless, can be called in any order), which elides the loop structure. A strict session encoding would use `self` and return the next state after each call.
 4. Validate against an actual MCP server (e.g., the reference implementation) that the compiled client cannot send out-of-order messages.
@@ -276,3 +276,4 @@ This note is `status: draft` because the phantom-type SDK (§4) does not yet exi
 - [[capability-lattice-spec]]
 - [[mcp-architecture]]
 - [[community-protocol-trust-substrate]]
+

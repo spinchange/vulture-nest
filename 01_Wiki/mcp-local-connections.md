@@ -1,5 +1,5 @@
 ---
-title: MCP Local Connections
+title: [[mcp-moc|MCP]] Local Connections
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -46,3 +46,4 @@ Local servers are configured in the `claude_desktop_config.json` file.
 * [[mcp-transport]]
 * [[mcp-security]]
 - [[mcp-remote-connections]]
+

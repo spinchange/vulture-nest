@@ -1,5 +1,5 @@
 ---
-title: TypeScript Mapped Types
+title: [[typescript.md|TypeScript]] Mapped Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ type Getters<Type> = {
 * [[typescript-type-operators]]
 * [[typescript-template-literals]]
 - [[typescript-objects]]
+

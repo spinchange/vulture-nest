@@ -1,5 +1,5 @@
 ---
-title: MCP Primitives
+title: [[mcp-moc|MCP]] Primitives
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -32,3 +32,4 @@ Reusable instruction templates that guide the model's interaction.
 ## See Also
 * [[mcp-architecture]]
 * [[mcp-client-features]]
+

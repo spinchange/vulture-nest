@@ -1,5 +1,5 @@
 ---
-title: Verbalized Sampling — PowerShell Script Ideas
+title: Verbalized Sampling — [[powershell.md|PowerShell]] Script Ideas
 author: claude-code
 hostname: LYRA
 date: 2026-04-26
@@ -105,3 +105,4 @@ Three parallel planning agents were run against Idea 3 (Self-Calibrated Top-N Ta
 - A → `02_System/invoke-tail-extractor.ps1`
 - B → `02_System/verbalized-sampling.ps1`
 - C → `02_System/invoke-verbalised-sampling.ps1`
+

@@ -15,7 +15,7 @@ Actions are the concrete steps an AI agent takes to interact with its environmen
 
 ## Key Concepts
 * **JSON Agent:** Actions specified in JSON.
-* **Code Agent:** Agent generates executable code blocks (e.g., Python).
+* **Code Agent:** Agent generates executable code blocks (e.g., [[python]]).
 * **Function-calling Agent:** Fine-tuned JSON agent for discrete tool calls.
 * **Stop and Parse:** The LLM must stop generating after the action tokens to allow an external parser to execute the tool and return control.
 
@@ -27,3 +27,4 @@ Actions are the concrete steps an AI agent takes to interact with its environmen
 
 ## Related
 - [[agent-actions]]
+

@@ -12,7 +12,7 @@ aliases: [trust-substrate, type-safe-agents, mcp-rust-community, capability-gove
 
 ## Emergent Theory
 
-Rust's ownership model and MCP's capability-scoped tool registration encode the same design principle at different abstraction layers: *explicit, statically-verifiable permission boundaries.* An MCP server declares a manifest of tools it exposes; the protocol enforces that a client can only invoke what has been explicitly offered. Rust's borrow checker declares which code can access which memory; the compiler enforces it at compile time, not via runtime policy.
+[[rust]]'s ownership model and [[mcp-moc|MCP]]'s capability-scoped tool registration encode the same design principle at different abstraction layers: *explicit, statically-verifiable permission boundaries.* An MCP server declares a manifest of tools it exposes; the protocol enforces that a client can only invoke what has been explicitly offered. Rust's borrow checker declares which code can access which memory; the compiler enforces it at compile time, not via runtime policy.
 
 This convergence — visible through shared nodes [[rust-mcp-patterns]], [[csharp-mcp-sdk]], and [[agentic-protocols]] — suggests an emergent architecture: a **Trust-by-Construction** substrate for autonomous systems. Instead of policy engines that check permissions at runtime (which can be hallucinated around, misconfigured, or bypassed), the platform is built from languages and protocols where violating a permission boundary is a **type error.** An agent literally *cannot* call a tool that hasn't been registered in its MCP server manifest — not because a guard intervened, but because the type system has no route to it.
 
@@ -50,3 +50,4 @@ The frontier is a **Capability Lattice** — a formal mapping between MCP tool m
 - [[community-polyglot-agent-platform]]
 - [[dotnet-agent-integration]]
 - [[mcp-moc]]
+

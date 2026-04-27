@@ -8,7 +8,7 @@ aliases: [hugging-face-smolagents, code-agents]
 ---
 # smolagents
 
-**smolagents** is a lightweight, open-source library by Hugging Face designed for building **Code Agents**. It emphasizes "Freedom" by allowing agents to write and execute Python code directly to solve problems.
+**smolagents** is a lightweight, open-source library by Hugging Face designed for building **Code Agents**. It emphasizes "Freedom" by allowing agents to write and execute [[python]] code directly to solve problems.
 
 ## Core Features
 *   **Code-First**: Unlike JSON-based tool calls, agents in `smolagents` write snippets of Python code to interact with their environment.
@@ -26,3 +26,4 @@ aliases: [hugging-face-smolagents, code-agents]
 * [[agentic-frameworks-moc]]
 * [[hf-agents-course-moc]]
 - [[code-agents]]
+

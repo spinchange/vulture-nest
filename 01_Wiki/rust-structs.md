@@ -1,5 +1,5 @@
 ---
-title: Rust Structs
+title: [[rust]] Structs
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -62,3 +62,4 @@ Methods are functions defined within the context of a struct using an `impl` blo
 * [[rust-moc]]
 * [[rust-ownership]]
 * [[rust-enums]]
+

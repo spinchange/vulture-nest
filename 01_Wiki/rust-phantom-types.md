@@ -1,5 +1,5 @@
 ---
-title: Rust Phantom Types
+title: [[rust]] Phantom Types
 author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
@@ -192,3 +192,4 @@ For state-machine phantoms (type tokens like `Unconfirmed`/`Confirmed` with no l
 - The Rustonomicon — Variance: `doc.rust-lang.org/nomicon/subtyping.html`
 - Jon Gjengset, *Rust for Rustaceans*, Chapter 3 (Designing Interfaces)
 - Rust Reference — `std::marker::PhantomData`
+

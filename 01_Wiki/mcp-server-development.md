@@ -1,5 +1,5 @@
 ---
-title: MCP Development
+title: [[mcp-moc|MCP]] Development
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -13,13 +13,13 @@ Developing an **[[mcp-architecture|MCP Server]]** involves exposing tools, resou
 ## Supported SDKs & Implementation
 MCP provides official SDKs to simplify development. The **[[mcp-sdks|SDKs]]** handle JSON-RPC serialization and lifecycle management.
 
-### 1. Python (FastMCP)
+### 1. [[python]] (FastMCP)
 The `FastMCP` class is the recommended high-level API for Python.
 *   **Initialization**: `mcp = FastMCP("server-name")`
 *   **Tools**: Uses `@mcp.tool()` decorators. Docstrings and type hints are automatically converted to JSON Schema.
 *   **Running**: `mcp.run(transport="stdio")`
 
-### 2. TypeScript / Node.js
+### 2. [[typescript.md|TypeScript]] / Node.js
 The TypeScript SDK provides the most fine-grained control for web and desktop hosts.
 *   **Initialization**: `const server = new McpServer({ name: "server", version: "1.0.0" });`
 *   **Tools**: Registered via `server.registerTool(name, schema, handler)`. Uses **Zod** for schema definition.
@@ -54,3 +54,4 @@ When using **[[mcp-transport|Stdio transport]]**, the server communicates via `s
 * [[rust-mcp-patterns]]
 * [[mcp-example-servers]]
 - [[csharp-mcp-sdk]]
+

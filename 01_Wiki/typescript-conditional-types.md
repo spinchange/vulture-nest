@@ -1,5 +1,5 @@
 ---
-title: TypeScript Conditional Types
+title: [[typescript.md|TypeScript]] Conditional Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -39,3 +39,4 @@ When a conditional type acts on a generic type and is given a union, it "distrib
 * [[typescript-moc]]
 * [[typescript-generics]]
 * [[typescript-type-operators]]
+

@@ -1,5 +1,5 @@
 ---
-title: TypeScript Generics
+title: [[typescript.md|TypeScript]] Generics
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -62,3 +62,4 @@ interface Container<T = string> {
 * [[typescript-moc]]
 * [[typescript-functions]]
 * [[typescript-objects]]
+

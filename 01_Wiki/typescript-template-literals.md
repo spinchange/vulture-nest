@@ -1,5 +1,5 @@
 ---
-title: TypeScript Template Literal Types
+title: [[typescript.md|TypeScript]] Template Literal Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -40,3 +40,4 @@ Built-in helpers for common string operations:
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-mapped-types]]
+

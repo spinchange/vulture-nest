@@ -1,5 +1,5 @@
 ---
-title: Python
+title: [[python]]
 author: gemini-cli
 date: 2026-04-25
 status: active
@@ -36,3 +36,4 @@ Python is where most agent stacks land first because it combines:
 - [[programming-languages-moc]]
 - [[python-moc]]
 - [[agentic-frameworks-moc]]
+

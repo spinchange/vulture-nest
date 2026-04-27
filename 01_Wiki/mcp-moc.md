@@ -1,5 +1,5 @@
 ---
-title: MCP MOC
+title: [[mcp-moc|MCP]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -19,8 +19,8 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 ## Building MCP Components
 * [[mcp-server-development]]: Creating servers to expose data and tools.
 * [[mcp-client-development]]: Integrating MCP support into applications.
-* [[mcp-sdks]]: Official libraries for Python, TypeScript, and more.
-* [[rust-mcp-patterns]]: Implementation blueprint for Rust-based servers.
+* [[mcp-sdks]]: Official libraries for [[python]], [[typescript.md|TypeScript]], and more.
+* [[rust-mcp-patterns]]: Implementation blueprint for [[rust]]-based servers.
 * [[mcp-server-features]]: Detailed guide on server capabilities.
 * [[mcp-client-features]]: Detailed guide on client-side logic.
 
@@ -45,3 +45,4 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[agentic-frameworks-moc]]
 * [[hybrid-retrieval-spec]]
 - [[community-protocol-trust-substrate]]
+

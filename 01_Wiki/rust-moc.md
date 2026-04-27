@@ -1,5 +1,5 @@
 ---
-title: Rust MOC
+title: [[rust]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -31,7 +31,7 @@ This map provides a structured traversal of the Rust Programming Language, optim
 * [[rust-lifetimes]]: Ensuring reference validity.
 * [[rust-iterators-and-closures]]: Functional features in Rust.
 * [[rust-smart-pointers]]: `Box`, `Rc`, `RefCell`, and memory management.
-* [[rust-mcp-patterns]]: Building secure, high-performance MCP servers.
+* [[rust-mcp-patterns]]: Building secure, high-performance [[mcp-moc|MCP]] servers.
 
 ## Type System Theory
 * [[rust-phantom-types]]: Zero-cost type-level state encoding.

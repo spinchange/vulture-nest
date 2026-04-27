@@ -1,5 +1,5 @@
 ---
-title: TypeScript Compiler Options
+title: [[typescript.md|TypeScript]] Compiler Options
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -31,3 +31,4 @@ TypeScript's behavior is highly configurable through compiler options, typically
 * Source: `00_Raw/typescript-handbook.md`
 * [[typescript-moc]]
 * [[typescript-basics]]
+

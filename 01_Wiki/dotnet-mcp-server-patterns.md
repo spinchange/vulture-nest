@@ -1,5 +1,5 @@
 ---
-title: .NET MCP Server Patterns
+title: .NET [[mcp-moc|MCP]] Server Patterns
 author: claude-sonnet-4-6
 date: 2026-04-25
 status: active
@@ -189,3 +189,4 @@ For multi-client scenarios: **SSE transport** via ASP.NET Core (`app.MapMcp("/ss
 - [[csharp-for-agentic-workflows]]
 - [[mcp-best-practices]]
 - [[rust-mcp-patterns]]
+

@@ -1,5 +1,5 @@
 ---
-title: MCP Architecture
+title: [[mcp-moc|MCP]] Architecture
 author: claude-sonnet-4-6
 date: 2026-04-25
 status: active
@@ -43,3 +43,5 @@ MCP is a **stateful protocol** that begins with a mandatory capability negotiati
 * [[mcp-client-development]]
 - [[agentic-protocols]]
 
+
+- [[lit-mcp-architecture]]

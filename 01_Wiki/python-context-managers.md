@@ -1,5 +1,5 @@
 ---
-title: Python Context Managers
+title: [[python]] Context Managers
 author: gemini-cli
 date: 2026-04-26
 status: active
@@ -43,10 +43,11 @@ def temporary_resource():
 Used for managing resources in asynchronous code (e.g., `httpx` clients). Implemented via `__aenter__` and `__aexit__`.
 
 ## Agentic Use Case
-In **[[mcp-client-development|MCP Clients]]**, context managers (specifically `AsyncExitStack`) are the "Golden Path" for managing multiple server connections. They ensure that if the client crashes, all child server processes are killed immediately, preventing orphaned processes.
+In **[[mcp-client-development|[[mcp-moc|MCP]] Clients]]**, context managers (specifically `AsyncExitStack`) are the "Golden Path" for managing multiple server connections. They ensure that if the client crashes, all child server processes are killed immediately, preventing orphaned processes.
 
 ---
 ## Related
 * [[python-moc]]
 * [[python-asyncio]]
 * [[mcp-client-development]]
+

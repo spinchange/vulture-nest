@@ -8,7 +8,7 @@ aliases: [semantic-kernel, ms-kernel-memory, sk-framework]
 ---
 # Microsoft Semantic Kernel
 
-**Semantic Kernel (SK)** is an open-source SDK that acts as the "Middleware" or "Brain" for AI applications. It orchestrates the flow between Large Language Models (LLMs) and conventional code (C#, Python, Java).
+**Semantic Kernel (SK)** is an open-source SDK that acts as the "Middleware" or "Brain" for AI applications. It orchestrates the flow between Large Language Models (LLMs) and conventional code (C#, [[python]], Java).
 
 ## Core Architecture
 - **Kernel:** The central hub configured via `KernelBuilder`. It handles dependency injection and manages the lifecycle of AI services.
@@ -38,3 +38,4 @@ var result = await kernel.InvokePromptAsync("What is the current vault status?")
 - [[agentic-rag]]
 - [[dotnet-moc]]
 - [[csharp-mcp-sdk]]
+

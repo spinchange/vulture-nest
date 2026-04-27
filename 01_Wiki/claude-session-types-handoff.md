@@ -18,10 +18,10 @@ Build out session types as a first-class knowledge cluster in the vault. Session
 
 The vault currently contains:
 
-- **[[community-protocol-trust-substrate]]**: Claims "trust-by-construction" via type systems and MCP manifests but has no coverage of session types, which are the established formalism for exactly this class of guarantee.
+- **[[community-protocol-trust-substrate]]**: Claims "trust-by-construction" via type systems and [[mcp-moc|MCP]] manifests but has no coverage of session types, which are the established formalism for exactly this class of guarantee.
 - **[[mcp-architecture]]**: Documents MCP's three-phase stateful lifecycle (Initialize → Confirmed → Dynamic Updates) — a textbook example of a session type — but makes no connection to the formalism.
 - **[[capability-lattice-spec]]**: Covers *what* tools an agent can call; does not address *in what order* or *under what protocol state* calls are valid.
-- **[[rust-generics-and-traits]]**: Covers trait bounds; stops before phantom types, which are the mechanism Rust uses to simulate session types.
+- **[[rust-generics-and-traits]]**: Covers trait bounds; stops before phantom types, which are the mechanism [[rust]] uses to simulate session types.
 
 Zero notes mention session types, linear types, or affine types by name. The grep is clean.
 
@@ -106,3 +106,4 @@ Add a §7 "Open Questions" or append to §6 noting that the current spec address
 - [[claude-a2a-protocol-handoff]]
 - [[claude-capability-lattice-handoff]]
 - [[session-types-in-rust]]
+

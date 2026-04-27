@@ -1,5 +1,5 @@
 ---
-title: Rust Cargo
+title: [[rust]] Cargo
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -26,3 +26,4 @@ This manifest file defines the package's metadata, dependencies, and build confi
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-modules-and-packages]]
+

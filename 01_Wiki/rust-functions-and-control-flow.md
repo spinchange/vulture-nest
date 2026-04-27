@@ -1,5 +1,5 @@
 ---
-title: Rust Functions and Control Flow
+title: [[rust]] Functions and Control Flow
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -39,3 +39,4 @@ Rust has three types of loops:
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-variables-and-types]]
+

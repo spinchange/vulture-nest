@@ -16,7 +16,7 @@ This map gathers practical build-and-learn threads where the vault is used as a 
 
 ## Research and Evaluation
 - [[karpathy-vision-gap-analysis]]: Measured the symbolic versus neural retrieval gap and turned it into a concrete implementation plan.
-- [[verbalized-sampling-ps-scripts]]: Five candidate PowerShell scripts for recovering tail-distribution knowledge from an aligned LLM using verbalized sampling.
+- [[verbalized-sampling-ps-scripts]]: Five candidate [[powershell.md|PowerShell]] scripts for recovering tail-distribution knowledge from an aligned LLM using verbalized sampling.
 
 ---
 ## See Also
@@ -24,3 +24,4 @@ This map gathers practical build-and-learn threads where the vault is used as a 
 - [[powershell-moc]]
 - [[python-moc]]
 - [[pkm-methods-moc]]
+

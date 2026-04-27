@@ -1,5 +1,5 @@
 ---
-title: MCP Security and Authorization
+title: [[mcp-moc|MCP]] Security and Authorization
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -32,3 +32,4 @@ MCP does not have a native, protocol-level "auth" header in the traditional web 
 * [[mcp-architecture]]
 * [[mcp-primitives]]
 - [[mcp-remote-connections]]
+

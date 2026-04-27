@@ -9,7 +9,7 @@ aliases: [m4a-to-youtube-workflow, audio-transcript-pipeline, youtube-audio-over
 ---
 # Audio Overview Workflow
 
-The **Audio Overview Workflow** converts a downloaded `.m4a` narration into a YouTube-ready `.mp4` and emits transcript artifacts that can be mined into notes. It is designed for a fresh Windows machine with minimal assumptions beyond Python.
+The **Audio Overview Workflow** converts a downloaded `.m4a` narration into a YouTube-ready `.mp4` and emits transcript artifacts that can be mined into notes. It is designed for a fresh Windows machine with minimal assumptions beyond [[python]].
 
 ## Purpose
 
@@ -69,3 +69,4 @@ Output folders are written under `00_Raw/audio-overviews/<stem>/`.
 - [[foundry-local]]
 - [[powershell-moc]]
 - [[python-moc]]
+

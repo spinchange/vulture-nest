@@ -23,7 +23,7 @@ aliases: [csharp-fundamentals, clr-basics]
 
 ## Assembly Structure
 *   **Namespaces**: Organizes code and prevents naming collisions (e.g., `using System.IO;`).
-*   **Crates vs. Assemblies**: Similar to Rust Crates, .NET uses **Assemblies** (`.dll` or `.exe`) as the unit of deployment and versioning.
+*   **Crates vs. Assemblies**: Similar to [[rust]] Crates, .NET uses **Assemblies** (`.dll` or `.exe`) as the unit of deployment and versioning.
 
 ---
 ## References
@@ -32,3 +32,4 @@ aliases: [csharp-fundamentals, clr-basics]
 * [[programming-languages-moc]]
 - [[ms-learn-csharp-overview]]
 - [[ms-learn-dotnet-fundamentals]]
+

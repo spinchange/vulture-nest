@@ -1,5 +1,5 @@
 ---
-title: Rust Testing
+title: [[rust]] Testing
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -28,3 +28,4 @@ Run all tests using `cargo test`.
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-cargo]]
+

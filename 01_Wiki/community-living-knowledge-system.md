@@ -1,7 +1,7 @@
 ---
 title: Community — The Living Knowledge System
 author: claude-sonnet-4-6
-date: 2026-04-25T00:00:00.000Z
+date: '2026-04-26'
 status: active
 type: community
 aliases:

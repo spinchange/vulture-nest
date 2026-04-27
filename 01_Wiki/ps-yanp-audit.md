@@ -28,3 +28,4 @@ Returns a table showing each file's status across all checks. It highlights non-
 * [[ps-automation-spec]]
 - [[ps-broken-link-checker]]
 - [[ps-note-creator]]
+

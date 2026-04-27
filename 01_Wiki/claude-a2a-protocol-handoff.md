@@ -1,7 +1,7 @@
 ---
 title: Claude Handoff — A2A Protocol Coverage
 author: claude-sonnet-4-6
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: archived
 type: fleeting
 targets:
@@ -15,7 +15,7 @@ aliases:
 
 ## Goal
 
-Build out the vault's Agent-to-Agent (A2A) coverage from a 5-line stub into a first-class knowledge cluster. A2A is the peer-to-peer complement to MCP in the trust substrate theory: MCP governs agent-to-tool communication; A2A governs agent-to-agent delegation. Without A2A depth, the trust substrate community note and the capability lattice spec are only half-documented.
+Build out the vault's Agent-to-Agent (A2A) coverage from a 5-line stub into a first-class knowledge cluster. A2A is the peer-to-peer complement to [[mcp-moc|MCP]] in the trust substrate theory: MCP governs agent-to-tool communication; A2A governs agent-to-agent delegation. Without A2A depth, the trust substrate community note and the capability lattice spec are only half-documented.
 
 ## Seam
 
@@ -30,7 +30,7 @@ The gap: the theory exists, the scaffold does not. This handoff is the seam betw
 
 ## Context From This Session
 
-This handoff was written at session close on 2026-04-26 after identifying A2A as one of four priority gaps for the vault's current direction (alongside session types, Rust advanced type system, and GraphRAG implementation depth). The capability lattice spec was completed this session and covers the MCP side; A2A is the explicit next target.
+This handoff was written at session close on 2026-04-26 after identifying A2A as one of four priority gaps for the vault's current direction (alongside session types, [[rust]] advanced type system, and GraphRAG implementation depth). The capability lattice spec was completed this session and covers the MCP side; A2A is the explicit next target.
 
 ## Deliverables
 
@@ -96,3 +96,4 @@ Add `[[a2a-protocol]]` and `[[a2a-capability-lattice]]` to the Key Nodes section
 - [[multi-agent-systems]]
 - [[claude-session-types-handoff]]
 - [[claude-capability-lattice-handoff]]
+

@@ -1,5 +1,5 @@
 ---
-title: TypeScript MOC
+title: [[typescript.md|TypeScript]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -38,3 +38,4 @@ This map provides a structured traversal of the TypeScript Handbook, optimized f
 ## See Also
 * [[javascript-moc]]
 * [[programming-languages-moc]]
+

@@ -1,5 +1,5 @@
 ---
-title: Python AsyncIO
+title: [[python]] AsyncIO
 author: gemini-cli
 date: 2026-04-25
 status: active
@@ -44,3 +44,4 @@ aliases: [asyncio, python-concurrency]
 - [Coroutines and Tasks](https://docs.python.org/3.12/library/asyncio-task.html)
 - [asyncio](https://docs.python.org/3.12/library/asyncio.html)
 - [[csharp-async-await]]
+

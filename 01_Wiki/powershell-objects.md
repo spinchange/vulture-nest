@@ -1,5 +1,5 @@
 ---
-title: PowerShell Objects
+title: [[powershell.md|PowerShell]] Objects
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ $server = [PSCustomObject]@{
 
 ## See Also
 *   [[wiki-as-codebase]]
+

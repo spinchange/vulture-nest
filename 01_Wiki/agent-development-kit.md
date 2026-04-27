@@ -1,5 +1,5 @@
 ---
-title: Agent Development Kit (ADK)
+title: Agent Development Kit ([[agent-development-kit|ADK]])
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -11,11 +11,11 @@ aliases: [adk, google-adk]
 The **Agent Development Kit (ADK)** is an open-source, code-first toolkit for building, evaluating, and deploying sophisticated AI agents with high flexibility and control. It is particularly optimized for Google's Gemini models but designed for broad LLM support.
 
 ## Core Concepts
-* **Agent**: The fundamental worker unit. Can be an `LlmAgent` (reasoning) or a **Workflow Agent** (deterministic control like `SequentialAgent`, `ParallelAgent`, `LoopAgent`).
-* **Tool**: Capabilities beyond conversation (APIs, code execution, search).
-* **Session & State**: Manages conversational context (`Session`) and short-term working memory (`State`).
+* **Agent**: The fundamental worker unit. Can be an `LlmAgent` (reasoning) or a [[workflow-agents|Workflow Agent]] (deterministic control like `SequentialAgent`, `ParallelAgent`, `LoopAgent`).
+* **Tool**: Capabilities beyond conversation (APIs, code execution, search). See [[agent-tools]].
+* **[[adk-session-service|Session & State]]**: Manages conversational context (`Session`) and short-term working memory (`State`).
 * **Memory**: Long-term recall across multiple sessions.
-* **Artifacts**: Management of files and binary data (images, PDFs) associated with a session.
+* **[[adk-artifact-service|Artifacts]]**: Management of files and binary data (images, PDFs) associated with a session.
 * **Runner**: The engine that orchestrates the execution flow and agent interactions.
 
 ## Key Capabilities
@@ -37,3 +37,5 @@ Unlike reasoning agents, workflow agents provide deterministic control:
 * [[agentic-frameworks-moc]]
 * [[multi-agent-systems]]
 * [[agent-tools]]
+- [[lit-adk-documentation]]
+

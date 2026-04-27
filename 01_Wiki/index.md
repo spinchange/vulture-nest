@@ -37,6 +37,17 @@ type: community
 * [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
 * [[spec-firecrawl-pgvector-pipeline]] - External Source Ingestion: Firecrawl → Postgres/Supabase + pgvector RAG
 
+## Agent Development Kit (ADK)
+* [[agent-development-kit]] - Core Overview
+* [[adk-session-service]] - Session Management & State Persistence
+* [[adk-artifact-service]] - Binary & File Data Lifecycle
+* [[adk-callbacks-and-lifecycle]] - Hooking into Agent Execution
+* [[adk-long-term-memory]] - Vector Search & Cross-Session Recall
+* [[adk-multi-agent-orchestration]] - Hierarchical & Parallel Patterns
+* [[adk-evaluation-framework]] - Trajectory-Based Assessment
+* [[adk-advanced-capabilities]] - Planning, Thinking, & Code Execution
+* [[adk-go-implementation]] - Native Performance Reference
+
 ## Multi-Agent Pattern Language
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
 * [[pattern-state-transfer]] - Flat key-value working memory across agent boundaries
@@ -61,6 +72,16 @@ type: community
 * [[the-vulture-portal]] - High-Density Web Interface
 * [[the-compounding-artifact]] - The Core Thesis (from LLM Wiki)
 * [[community-report-generator]] - Algorithm: k-means → LLM → Community Report notes
+
+## Community Reports (Synthesis)
+* [[agentic-protocols|Agentic Protocols]] - Communication & Thought Cycles
+* [[dotnet-csharp|Dotnet & C#]] - Ecosystem & SDK Patterns
+* [[frameworks-eval|Frameworks & Evaluation]] - ADK vs. Swarm Comparison
+* [[lattice-interop|Lattice & Interop]] - Capability Lattice Theory
+* [[mcp-ecosystem|MCP Ecosystem]] - Server & Client Architecture
+* [[pkm-history|PKM History]] - Genealogy of Personal Knowledge
+* [[rust-type-systems|Rust Type Systems]] - Memory Safety & Session Types
+* [[vault-systems|Vault Systems]] - Gardening & Maintenance Standards
 
 ## Literature Notes (Grounded Sources)
 * [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)

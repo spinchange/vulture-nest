@@ -12,7 +12,7 @@ aliases: [stateful-orchestration, event-driven-agents, workflow-design]
 
 ## Structural Components
 *   **State:** The "living document" that moves between steps.
-*   **Nodes:** The computational steps (Python logic).
+*   **Nodes:** The computational steps ([[python]] logic).
 *   **Edges:** The routing paths (Conditional or Direct).
 
 ## When to Use Graphs
@@ -28,3 +28,4 @@ aliases: [stateful-orchestration, event-driven-agents, workflow-design]
 * [[langgraph]]
 * [[llamaindex]]
 * [[agentic-frameworks-moc]]
+

@@ -1,5 +1,5 @@
 ---
-title: Rust Generics and Traits
+title: [[rust]] Generics and Traits
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -33,3 +33,4 @@ Trait bounds constrain generic types to only those that implement specific behav
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-lifetimes]]
+

@@ -1,7 +1,7 @@
 ---
 title: A2A Capability Lattice
 author: claude-sonnet-4-6
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: draft
 type: permanent
 aliases:
@@ -10,7 +10,7 @@ aliases:
 ---
 # A2A Capability Lattice
 
-**Context:** [[capability-lattice-spec]] formalizes how MCP tool manifests map to typed capability sets and how agent delegation is bounded by their intersection (§4). This note extends that lattice to the A2A layer, completing the formal closure of the [[community-protocol-trust-substrate]] theory.
+**Context:** [[capability-lattice-spec]] formalizes how [[mcp-moc|MCP]] tool manifests map to typed capability sets and how agent delegation is bounded by their intersection (§4). This note extends that lattice to the A2A layer, completing the formal closure of the [[community-protocol-trust-substrate]] theory.
 
 `status: draft` — the A2A specification reached v1.0 but remains under active development. The lattice formalism here is grounded in the current spec; the static analysis layer (§4) is aspirational pending schema stabilization.
 
@@ -53,7 +53,7 @@ Where:
 - `Caps(S)` = skills advertised in S's Agent Card
 - `Scope(O)` = skills O is currently authorized to invoke, as a subset of O's OAuth-granted scopes
 
-The **monotonicity invariant** holds at both layers: delegation can only reduce or preserve capability, never increase it. An orchestrator cannot grant a skill it does not itself possess — the A2A equivalent of Rust's "you cannot move a value you've already moved."
+The **monotonicity invariant** holds at both layers: delegation can only reduce or preserve capability, never increase it. An orchestrator cannot grant a skill it does not itself possess — the A2A equivalent of [[rust]]'s "you cannot move a value you've already moved."
 
 ### Lattice Structure
 
@@ -142,3 +142,4 @@ The static analysis query from [[capability-lattice-spec]] §4.4 — "does any a
 - [[mcp-architecture]]
 - [[mcp-security]]
 - [[docker-sandbox]]
+

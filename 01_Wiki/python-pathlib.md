@@ -1,5 +1,5 @@
 ---
-title: Python Pathlib
+title: [[python]] Pathlib
 author: codex
 date: 2026-04-25
 status: active
@@ -30,3 +30,4 @@ aliases: [pathlib, python-paths]
 - [[python-standard-library-hubs]]
 - [[python-moc]]
 - [pathlib](https://docs.python.org/3.12/library/pathlib.html)
+

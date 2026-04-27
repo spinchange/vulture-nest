@@ -1,5 +1,5 @@
 ---
-title: PowerShell Classes
+title: [[powershell.md|PowerShell]] Classes
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -48,3 +48,4 @@ Classes are ideal for complex modules or when you need to ensure a strict data c
 ## See Also
 *   [[powershell-objects]]
 *   [[wiki-as-codebase]]
+

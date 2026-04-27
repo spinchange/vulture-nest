@@ -86,3 +86,6 @@ One client per server. The host manages all clients. Each client maintains its o
 *   Map the `Tasks` (experimental) primitive to A2A's task lifecycle — are they converging?
 *   Detail the Streamable HTTP authentication flow (OAuth bearer) and map to A2A's out-of-band credential model.
 *   Write a note on the `Sampling` primitive as an architectural pattern for model-independent server reasoning.
+
+## Related
+- [[mcp-server-features]]

@@ -1,5 +1,5 @@
 ---
-title: TypeScript Functions
+title: [[typescript.md|TypeScript]] Functions
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -52,3 +52,4 @@ Define multiple **overload signatures** followed by a single **implementation si
 * [[typescript-moc]]
 * [[typescript-generics]]
 - [[typescript-objects]]
+

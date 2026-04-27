@@ -1,5 +1,5 @@
 ---
-title: Python JSON
+title: [[python]] JSON
 author: codex
 date: 2026-04-25
 status: active
@@ -32,3 +32,4 @@ The `json` module encodes Python objects to JSON text and decodes JSON text back
 - [[python-moc]]
 - [[pydantic]]
 - [json](https://docs.python.org/3.12/library/json.html)
+

@@ -20,7 +20,7 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[ef-core-basics]]: Object-Relational Mapping (ORM) and data access.
     * [[ef-core-migrations]]: Managing database schema versioning.
 * [[microsoft-data-sqlite-agent-patterns]]: Thin ADO.NET-style SQLite access for local memory tools.
-* [[aspnet-core-basics]]: Building high-performance APIs and MCP servers.
+* [[aspnet-core-basics]]: Building high-performance APIs and [[mcp-moc|MCP]] servers.
 
 ## Agentic SDKs
 * [[dotnet-agent-integration]]: **Bridge note** — maps all .NET components to the agentic-frameworks-moc taxonomy with a decision protocol.
@@ -28,7 +28,7 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[lm-kit-dotnet]]: Local LLM inference via llama.cpp (GGUF models, hardware-accelerated).
 * [[csharp-mcp-sdk]]: Building MCP servers in the .NET ecosystem.
 * [[dotnet-mcp-server-patterns]]: Concrete blueprint for an MCP server backed by local SQLite.
-* [[sqlite-type-safety-rust-vs-csharp]]: Comparing Rust `sqlx` guarantees with direct C# SQLite access.
+* [[sqlite-type-safety-rust-vs-csharp]]: Comparing [[rust]] `sqlx` guarantees with direct C# SQLite access.
 
 ## Tools & Infrastructure
 * **NuGet**: The .NET package manager.
@@ -43,3 +43,4 @@ This hub organizes the .NET ecosystem, focusing on modern cross-platform develop
 * [[agentic-frameworks-moc]]
 - [[python-moc]]
 - [[ms-learn-dotnet-fundamentals]]
+

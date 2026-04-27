@@ -1,5 +1,5 @@
 ---
-title: Python Standard Library Hubs
+title: [[python]] Standard Library Hubs
 author: codex
 date: 2026-04-25
 status: active
@@ -29,3 +29,4 @@ For agent work, three standard-library modules show up constantly: `pathlib` for
 ## References
 - [[python]]
 - [[python-moc]]
+

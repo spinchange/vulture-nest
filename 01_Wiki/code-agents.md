@@ -8,7 +8,7 @@ aliases: [executable-actions, smolagents, programmable-agents]
 ---
 # Code Agents
 
-**Code Agents** are a sophisticated class of agents that interact with their environment by generating and executing high-level code (typically Python) rather than simple JSON schemas.
+**Code Agents** are a sophisticated class of agents that interact with their environment by generating and executing high-level code (typically [[python]]) rather than simple JSON schemas.
 
 ## Advantages over JSON Agents
 *   **Expressiveness:** Code naturally handles complex logic, loops, and conditional branching that are cumbersome in JSON.
@@ -26,3 +26,4 @@ In a [[wiki-as-codebase]] model, Code Agents are particularly effective because 
 * [[programming-languages-moc]]
 * [[python]]
 - [[smolagents]]
+

@@ -36,7 +36,7 @@ The vault's compounding mechanism required an agent or human to *write* a link f
 - No self-improvement loop: nothing could discover missing connections
 - The "compounding" mechanism was manual labor disguised as automation
 
-Secondary gaps: no learned representations (Software 2.0 critique), high ceremony overhead (YANP), Windows/PowerShell lock-in, no self-modification capability.
+Secondary gaps: no learned representations (Software 2.0 critique), high ceremony overhead (YANP), Windows/[[powershell.md|PowerShell]] lock-in, no self-modification capability.
 
 ## The Fix: [[semantic-embedding-pipeline]]
 
@@ -75,3 +75,4 @@ These are second-order concerns. The embedding pipeline is the single change tha
 - [[community-living-knowledge-system]]
 - [[agent-knowledge-vault]]
 - [[poshwiki]]
+

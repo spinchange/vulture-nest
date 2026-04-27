@@ -1,5 +1,5 @@
 ---
-title: MCP Transport
+title: [[mcp-moc|MCP]] Transport
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -32,3 +32,4 @@ The transport layer ensures that the continuous stream of bytes is correctly par
 * [[mcp-architecture]]
 * [[mcp-server-development]]
 - [[agentic-protocols]]
+

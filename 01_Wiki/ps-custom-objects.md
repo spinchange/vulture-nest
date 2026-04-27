@@ -8,7 +8,7 @@ aliases: [pscustomobject, custom-objects, data-shaping]
 ---
 # PS Custom Objects
 
-The `[PSCustomObject]` is the standard way to create custom, structured data in PowerShell. It is optimized for performance and ensures that properties are displayed and exported in the order they were defined.
+The `[PSCustomObject]` is the standard way to create custom, structured data in [[powershell.md|PowerShell]]. It is optimized for performance and ensures that properties are displayed and exported in the order they were defined.
 
 ## Creation Syntax
 The most common and efficient way to create a custom object is by "casting" a hashtable:
@@ -29,3 +29,4 @@ $note = [PSCustomObject]@{
 ## See Also
 *   [[powershell-objects]]
 *   [[ps-calculated-properties]]
+

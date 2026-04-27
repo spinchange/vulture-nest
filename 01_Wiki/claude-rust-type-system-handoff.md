@@ -1,7 +1,7 @@
 ---
-title: Claude Handoff — Rust Advanced Type System
+title: Claude Handoff — [[rust]] Advanced Type System
 author: claude-sonnet-4-6
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: archived
 type: handoff
 targets:
@@ -108,3 +108,4 @@ Write `rust-phantom-types.md` first — it is the prerequisite for both `rust-ty
 - [[community-protocol-trust-substrate]]
 - [[claude-session-types-handoff]]
 - [[session-types-in-rust]]
+

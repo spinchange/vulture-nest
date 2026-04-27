@@ -1,5 +1,5 @@
 ---
-title: TypeScript Utility Types
+title: [[typescript.md|TypeScript]] Utility Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -43,3 +43,4 @@ TypeScript provides several global utility types to facilitate common type trans
 
 * [[agent-note-conventions]] (Modeling metadata constraints)
 - [[typescript-objects]]
+

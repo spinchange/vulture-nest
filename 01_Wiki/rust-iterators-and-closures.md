@@ -1,5 +1,5 @@
 ---
-title: Rust Iterators and Closures
+title: [[rust]] Iterators and Closures
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -34,3 +34,4 @@ The iterator pattern allows performing tasks on a sequence of items. Iterators i
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-variables-and-types]]
+

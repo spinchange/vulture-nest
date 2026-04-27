@@ -1,5 +1,5 @@
 ---
-title: TypeScript Everyday Types
+title: [[typescript.md|TypeScript]] Everyday Types
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -56,3 +56,4 @@ type Alignment = "left" | "right" | "center";
 * [[typescript-moc]]
 * [[typescript-basics]]
 * [[typescript-narrowing]]
+

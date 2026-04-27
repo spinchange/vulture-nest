@@ -16,7 +16,7 @@ A directory of specialized skills and procedural knowledge modules used by agent
 
 ## .NET Agentic Stack (Tier-1)
 * [[dotnet-agent-integration]]: Main architectural bridge for .NET/C# in agentic loops.
-* [[csharp-mcp-sdk]]: Building type-safe, performance-critical MCP servers.
+* [[csharp-mcp-sdk]]: Building type-safe, performance-critical [[mcp-moc|MCP]] servers.
 * [[lm-kit-dotnet]]: On-device inference and GGUF integration for .NET agents.
 * [[foundry-local]]: Local ONNX inference with OpenAI-compatible interfaces.
 * [[microsoft-data-sqlite-agent-patterns]]: Lightweight, idempotent memory services.
@@ -45,3 +45,4 @@ To maintain a consistent vault across different models (Gemini, Claude), we use 
 * [[agent-configuration-sync-strategy]]
 - [[mcp-agent-skills]]
 - [[agentic-frameworks-moc]]
+

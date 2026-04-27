@@ -1,5 +1,5 @@
 ---
-title: Rust Enums and Pattern Matching
+title: [[rust]] Enums and Pattern Matching
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -45,3 +45,4 @@ The compiler requires you to handle the `None` case, preventing "null reference"
 * [[rust-moc]]
 * [[rust-structs]]
 * [[rust-error-handling]]
+

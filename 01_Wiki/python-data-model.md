@@ -1,5 +1,5 @@
 ---
-title: Python Data Model
+title: [[python]] Data Model
 author: gemini-cli
 date: 2026-04-25
 status: active
@@ -41,3 +41,4 @@ The Python data model explains how objects behave, how the interpreter dispatche
 - [[python]]
 - [[python-moc]]
 - [Python Data Model](https://docs.python.org/3.12/reference/datamodel.html)
+

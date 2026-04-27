@@ -1,7 +1,7 @@
 ---
-title: A2A and MCP — Protocol Contrast
+title: A2A and [[mcp-moc|MCP]] — Protocol Contrast
 author: claude-sonnet-4-6
-date: 2026-04-26T00:00:00.000Z
+date: '2026-04-26'
 status: active
 type: permanent
 aliases:
@@ -65,7 +65,7 @@ Both protocols support the same capability lattice structure — the delegation 
 | Capability unit | `(name, ArgType, ResultType)` triple | `(id, InputModes, OutputModes)` triple |
 | Delegation bound | `Caps(S) ∩ Scope(O)` | `Skills(S) ∩ Scope(O)` |
 | Runtime enforcement | MCP host at session-connection time | OAuth scope validation per request |
-| Type-level enforcement | Rust trait bounds / C# interfaces (see [[capability-lattice-spec]]) | Typed Agent Card interfaces (see [[a2a-capability-lattice]]) |
+| Type-level enforcement | [[rust]] trait bounds / C# interfaces (see [[capability-lattice-spec]]) | Typed Agent Card interfaces (see [[a2a-capability-lattice]]) |
 | Granularity | Field-level (typed schema) | Skill-level (semantic + MIME type) |
 
 The formal treatment of the MCP lattice is in [[capability-lattice-spec]] §4. The A2A equivalent is in [[a2a-capability-lattice]].
@@ -82,3 +82,4 @@ The formal treatment of the MCP lattice is in [[capability-lattice-spec]] §4. T
 - [[mcp-security]]
 - [[community-protocol-trust-substrate]]
 - [[agentic-protocols]]
+

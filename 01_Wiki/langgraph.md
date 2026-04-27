@@ -12,7 +12,7 @@ aliases: [langgraph-framework, graph-orchestration, production-agents]
 
 ## The Graph Philosophy
 LangGraph represents an application as a directed graph:
-*   **Nodes:** Python functions representing processing steps (LLM calls, tool execution).
+*   **Nodes:** [[python]] functions representing processing steps (LLM calls, tool execution).
 *   **Edges:** Transitions between nodes.
 *   **State:** A user-defined object that flows through the graph, serving as the "shared memory" for all nodes.
 
@@ -29,3 +29,4 @@ LangGraph is ideal for production systems where predictable behavior is mandator
 * [[graph-orchestration]]
 * [[agent-thought-cycle]] (Implementation via ReAct graphs)
 * [[agentic-frameworks-moc]]
+

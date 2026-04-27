@@ -13,13 +13,14 @@ Focusing on modern JavaScript runtimes and the bridge between the web and the de
 ## Runtimes and Tooling
 * [[javascript-on-desktop]]: The evolution from Electron to more lightweight alternatives.
 * [[bun-vs-deno]]: Comparing the modern "No-Config" runtimes.
-* [[typescript-moc]]: Type-safe development and the TypeScript Handbook.
+* [[typescript-moc]]: Type-safe development and the [[typescript.md|TypeScript]] Handbook.
 
 ## Frameworks
-* [[tauri]]: Building tiny, secure desktop apps with web frontends and Rust backends.
+* [[tauri]]: Building tiny, secure desktop apps with web frontends and [[rust]] backends.
 
 ---
 ## See Also
 * [[programming-languages-moc]]
 * [[powershell-moc]]
 * [[wiki-as-codebase]]
+

@@ -1,5 +1,5 @@
 ---
-title: MCP Versioning
+title: [[mcp-moc|MCP]] Versioning
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -30,3 +30,4 @@ The negotiation process occurs during the initial `initialize` request:
 ## References
 * Source: `00_Raw/mcp/Versioning.md`
 * [[mcp-architecture]]
+

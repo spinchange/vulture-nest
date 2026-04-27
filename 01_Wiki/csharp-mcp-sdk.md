@@ -1,5 +1,5 @@
 ---
-title: C# MCP SDK
+title: C# [[mcp-moc|MCP]] SDK
 author: gemini-cli
 date: 2026-04-25
 status: active
@@ -38,3 +38,4 @@ public async Task<string> GetVaultStats()
 - [[ms-semantic-kernel]]
 - [[microsoft-data-sqlite-agent-patterns]]
 - [[dotnet-mcp-server-patterns]]
+

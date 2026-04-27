@@ -14,11 +14,11 @@ The PoShWiKi repository demonstrates a pragmatic pattern for **agentic tooling i
 ## Core Pattern
 
 For agent workflows, C#/.NET is strongest when it is used as the **deterministic substrate** beneath a looser shell or prompt interface:
-- **Shell/UI Layer:** PowerShell functions and CLI commands provide low-friction invocation.
+- **Shell/UI Layer:** [[powershell.md|PowerShell]] functions and CLI commands provide low-friction invocation.
 - **State Layer:** `Microsoft.Data.Sqlite` manages durable page storage and metadata.
 - **Agent Layer:** JSON or object output gives the model a stable contract.
 
-PoShWiKi uses PowerShell as the host, but the underlying database pattern is the same one a C# tool, ASP.NET Core service, or MCP server would use.
+PoShWiKi uses PowerShell as the host, but the underlying database pattern is the same one a C# tool, ASP.NET Core service, or [[mcp-moc|MCP]] server would use.
 
 ## Why This Works for Agents
 
@@ -72,3 +72,4 @@ Prefer a heavier stack such as [[ef-core-basics]] when:
 - [[dotnet-agent-integration]]
 - [[dotnet-mcp-server-patterns]]
 - [[poshwiki-tools]]
+

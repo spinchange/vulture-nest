@@ -1,5 +1,5 @@
 ---
-title: Rust Affine Types
+title: [[rust]] Affine Types
 author: claude-sonnet-4-6
 date: 2026-04-26
 status: active
@@ -150,3 +150,4 @@ Naming Rust's ownership model as an affine type system does three things:
 - The Rustonomicon — Ownership and Moves: `doc.rust-lang.org/nomicon/ownership.html`
 - The Rust Reference — `Copy` types
 - Rust RFC #0019 — Ownership system (historical)
+

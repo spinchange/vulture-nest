@@ -1,36 +1,57 @@
 ---
 title: OpenAI Agents SDK
 author: gemini-cli
-date: 2026-04-24
+date: '2026-04-26'
 status: active
+aliases:
+  - agents-sdk
+  - openai-agents
+  - production-agents
 type: permanent
-aliases: [openai-agents, production-agents-sdk]
 ---
+
 # OpenAI Agents SDK
 
-The **OpenAI Agents SDK** is the production-ready evolution of the experimental [[openai-swarm|Swarm]] framework. It provides a robust, code-first approach to building, running, and scaling multi-agent systems.
+The **OpenAI Agents SDK** is the production-grade framework for building, running, and scaling AI agents. Unlike the experimental [[openai-swarm]], the Agents SDK is designed for applications where the developer owns the orchestration, tool execution, and state management.
 
-## Core Philosophy
-Unlike fully-hosted agent solutions, the SDK is designed for applications that want to own:
-* **Orchestration**: Direct control over how agents interact and hand off tasks.
-* **Tool Execution**: Running code and APIs within the application's own security boundary.
-* **State Management**: Handling conversation history and persistent data.
-* **Approvals**: Explicit human-in-the-loop checkpoints.
+## Core Capabilities
 
-## Key Components
-* **Agent Definitions**: Clear separation of instructions, tools, and model configuration.
-* **Sandbox Agents**: Container-based environments that provide secure execution for files, commands, and packages.
-* **Guardrails**: Integrated mechanisms for safety, validation, and user approvals.
-* **Orchestration**: Support for complex patterns like handoffs, parallel execution, and hierarchical teams.
+### 1. Agent Definitions
+Agents are defined as specialists with specific contracts (instructions, models, and tools).
+*   **Specialization:** Focus on defining clear contracts for single "specialist" agents.
+*   **Providers:** Support for various model providers and configurations.
 
-## Advanced Patterns
-* **Realtime API Integration**: Building voice and low-latency interactive agents.
-* **MCP Integration**: Leveraging the [[mcp-architecture|Model Context Protocol]] for standardized tool and resource access.
-* **Observability**: Built-in hooks for tracking agent reasoning, tool calls, and results.
+### 2. Orchestration & Handoffs
+Supports multi-agent collaboration where one agent can "handoff" to another better suited for a sub-task.
+*   **Control:** The application (server) owns the orchestration logic and determines who owns the reply at any given time.
+*   **Patterns:** Parallel execution, hierarchical teams, and dynamic routing.
+
+### 3. State & Results
+Provides structured ways to handle the output of an agent run and manage resumable state.
+*   **Run Objects:** Comprehensive return objects containing final outputs and trace data.
+*   **Resumable State:** Strategies for continuing work across multiple turns or sessions.
+
+### 4. Guardrails & Approvals
+Built-in support for safety validation and human-in-the-loop (HITL) patterns.
+*   **Approvals:** Mechanisms to pause or block work before risky actions are taken.
+*   **Validation:** Ensuring agent outputs or tool arguments meet safety criteria.
+
+## Tooling & Integrations
+
+### [[mcp-moc|MCP]] (Model Context Protocol)
+The Agents SDK natively supports **[[mcp-architecture|MCP]]** for integrating external tools and data sources. This allows agents to interact with a wide ecosystem of pre-built MCP servers.
+
+### Sandbox Agents
+Agents can be run in container-based environments with access to files, commands, and packages—ideal for code execution or file manipulation tasks.
+
+## Comparison: Swarm vs. Agents SDK
+| Feature | [[openai-swarm|Swarm]] | Agents SDK |
+| :--- | :--- | :--- |
+| **Status** | Experimental / Educational | Production-Ready |
+| **State** | Stateless (Caller manages) | Resumable / Managed |
+| **Orchestration** | Lightweight (Function-based) | Comprehensive / Tool-based |
+| **Security** | Minimal | Guardrails / Sandbox / Approvals |
 
 ---
-## References
-* Source: `00_Raw/openai-agents-and-swarm.md`
-* [[openai-swarm]]
-* [[agentic-frameworks-moc]]
-* [[mcp-architecture]]
+*Source: [[lit-openai-swarm]]*
+

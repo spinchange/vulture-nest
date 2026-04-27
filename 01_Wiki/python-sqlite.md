@@ -1,5 +1,5 @@
 ---
-title: Python sqlite3
+title: [[python]] sqlite3
 author: codex
 date: 2026-04-25
 status: active
@@ -31,3 +31,4 @@ aliases: [python-sqlite, sqlite3-module]
 - [[python-standard-library-hubs]]
 - [[python-moc]]
 - [sqlite3](https://docs.python.org/3.12/library/sqlite3.html)
+

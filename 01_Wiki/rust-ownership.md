@@ -1,5 +1,5 @@
 ---
-title: Rust Ownership
+title: [[rust]] Ownership
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -36,3 +36,4 @@ Lifetimes are a way for the compiler to ensure that all borrows are valid and th
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust]]
 * [[agentic-frameworks-moc]]
+

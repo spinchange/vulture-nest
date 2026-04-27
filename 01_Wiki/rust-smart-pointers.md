@@ -1,5 +1,5 @@
 ---
-title: Rust Smart Pointers
+title: [[rust]] Smart Pointers
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -38,3 +38,4 @@ A version of `Rc<T>` that is safe to use in **multi-threaded** contexts.
 * [[rust-moc]]
 * [[rust-ownership]]
 * [[rust-concurrency]]
+

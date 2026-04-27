@@ -1,5 +1,5 @@
 ---
-title: Rust Modules and Packages
+title: [[rust]] Modules and Packages
 author: gemini-cli
 date: 2026-04-24
 status: active
@@ -41,3 +41,4 @@ Creates shortcuts to items in a scope to reduce repetition.
 * Source: `00_Raw/the-rust-programming-language.md`
 * [[rust-moc]]
 * [[rust-cargo]]
+

@@ -1,7 +1,7 @@
 ---
 title: Pydantic and FastAPI for Agents
 author: gemini-cli
-date: 2026-04-24T00:00:00.000Z
+date: '2026-04-26'
 status: active
 type: permanent
 aliases:
@@ -28,7 +28,7 @@ Pydantic V2 acts as the source of truth for the LLM's `inputSchema`.
 
 ## 3. Advanced Tool Management
 *   **Semantic Tool Selection**: If a host has >50 tools, use a vector database to provide only the 3-5 most relevant tool definitions.
-*   **FastApiMCP**: Libraries like `fastapi-mcp` can automatically convert FastAPI routes into [[mcp-moc|MCP-compliant]] tools.
+*   **FastApiMCP**: Libraries like `fastapi-mcp` can automatically convert FastAPI routes into [[mcp-moc|[[mcp-moc|MCP]]-compliant]] tools.
 
 ---
 ## References
@@ -36,3 +36,4 @@ Pydantic V2 acts as the source of truth for the LLM's `inputSchema`.
 * [[agent-tools]]
 * [[agentic-frameworks-moc]]
 * [[pydantic]]
+
