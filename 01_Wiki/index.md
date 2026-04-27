@@ -35,6 +35,7 @@ type: community
 * [[rust-tier-0-patterns]] - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
 * [[spec-knowledge-gardening]] - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
 * [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
+* [[spec-firecrawl-pgvector-pipeline]] - External Source Ingestion: Firecrawl → Postgres/Supabase + pgvector RAG
 
 ## Multi-Agent Pattern Language
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
