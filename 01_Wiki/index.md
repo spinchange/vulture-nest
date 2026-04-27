@@ -15,7 +15,7 @@ type: community
 * [[agentic-frameworks-moc]] - Agency & Mechanics
 * [[cognitive-architectures]] - Chain of Thought Blueprint
 * [[agentic-tdd-patterns]] - Executable Intent & EDD
-* [[orchestration-tradeoffs]] - Swarm vs. ADK Comparison
+* [[orchestration-tradeoffs]] - Swarm vs. [[agent-development-kit|ADK]] Comparison
 * [[hf-agents-course-moc]] - Hugging Face Agents Course Reference
 * [[mcp-moc]] - Model Context Protocol Reference
 * [[rust-mcp-patterns]] - High-Performance Server Design
@@ -30,8 +30,17 @@ type: community
 * [[javascript-moc]] - Runtimes & Desktop Apps
 * [[hybrid-retrieval-spec]] - Deterministic + Semantic Strategy (Design)
 
+## Multi-Agent Pattern Language
+* [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
+* [[pattern-state-transfer]] - Flat key-value working memory across agent boundaries
+* [[pattern-capability-gating]] - Lattice enforcement before every delegation edge
+* [[pattern-parallel-fan-out]] - Concurrent dispatch to N agents + barrier sync
+* [[pattern-agent-as-tool]] - Expose complete agent as opaque callable in tool roster
+* [[pattern-progressive-handoff]] - Three-phase atomic transfer of task ownership
+* [[pattern-human-in-the-loop]] - Mid-task pause/resume for human input or authorization
+
 ## Protocol Bridges
-* [[agentic-protocols]] - MCP↔Agent Spec
+* [[agentic-protocols]] - [[mcp-moc|MCP]]↔Agent Spec
 * [[csharp-mcp-sdk]] - High-Performance .NET Tooling
 * [[dotnet-agent-integration]] - Bridging Ecosystems
 * [[csharp-records]] - Immutable Data Models
@@ -44,6 +53,16 @@ type: community
 * [[community-polyglot-agent-platform]] - Tiered Language Architectures
 * [[the-vulture-portal]] - High-Density Web Interface
 * [[the-compounding-artifact]] - The Core Thesis (from LLM Wiki)
+* [[community-report-generator]] - Algorithm: k-means → LLM → Community Report notes
+
+## Literature Notes (Grounded Sources)
+* [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)
+* [[lit-rust-programming-language]] - The Rust Book (ownership, fearless concurrency)
+* [[lit-mcp-architecture]] - MCP Architecture Overview (primitives, lifecycle, transports)
+* [[lit-python-standard-library]] - Python stdlib (asyncio, typing, concurrency)
+* [[lit-skills-agent-behavior]] - Skills vs. Vault Knowledge (active/passive split)
+* [[lit-adk-documentation]] - ADK Documentation (multi-agent toolkit)
+* [[lit-openai-swarm]] - OpenAI Swarm (handoffs, context_variables)
 
 ## Sources (Raw Data)
 * [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)
@@ -61,7 +80,7 @@ type: community
 * [00_Raw/ms-learn-ef-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-ef-core-overview.md)
 * [00_Raw/ms-learn-aspnet-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-aspnet-core-overview.md)
 * [00_Raw/ms-repo-poshwiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-repo-poshwiki.md)
-* [00_Raw/PoShWiKi/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi) - Minimal PowerShell 7 Wiki for Agents
+* [00_Raw/PoShWiKi/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi) - Minimal [[powershell.md|PowerShell]] 7 Wiki for Agents
 * [00_Raw/agent-actions-unit.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-actions-unit.md)
 * [00_Raw/openai-agents-and-swarm.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/openai-agents-and-swarm.md)
 * [00_Raw/agent-note-conventions.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-note-conventions.md)
@@ -91,3 +110,4 @@ type: community
 * [[github-deployment|GitHub Deployment (Cloud Daemon)]]
 * [[poshwiki-tools|PoShWiKi Tools API]]
 * [[tool-registry|Tool Registry (Machine-Readable)]]
+
