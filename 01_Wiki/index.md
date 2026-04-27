@@ -30,6 +30,10 @@ type: community
 * [[javascript-moc]] - Runtimes & Desktop Apps
 * [[hybrid-retrieval-spec]] - Deterministic + Semantic Strategy (Design)
 
+## Blueprint Specs (How to Build It)
+* [[spec-memory-mcp]] - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
+* [[rust-tier-0-patterns]] - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
+
 ## Multi-Agent Pattern Language
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
 * [[pattern-state-transfer]] - Flat key-value working memory across agent boundaries
