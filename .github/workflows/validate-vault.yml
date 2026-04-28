@@ -22,6 +22,24 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Python Tests
+        shell: pwsh
+        run: |
+          python -m pytest 02_System/test_chunker.py 02_System/test_memory_mcp.py
+
+      - name: Set Up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Tier-0 Tests
+        shell: pwsh
+        run: |
+          cargo test --manifest-path "00_Raw/tier-0/Cargo.toml"
+
       - name: Initialize Relational Substrate
         shell: pwsh
         run: |
