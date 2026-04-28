@@ -1,5 +1,13 @@
 # Wiki Log (YANP Compliant)
 
+## [2026-04-28] Claude — Inaugural Verbalized Sampling Run
+* **Experiment scaffolded**: `04_Experiments/2026-04-28_verbalized-sampling-inaugural/` via `new-experiment.ps1`
+* **Run**: `verbalized-sampling.ps1` — Q: "What is genuinely underrated about how language models fail?" — TailStart=7, 49s, no ParseWarning
+* **Result**: Confirmed. Tail ranks 7–9 surfaced three suppressed framings (training-data sociology, meta-cognitive blindness, alignment-as-surface-polish) integrated by Call 2 into a convergent three-layer failure argument absent from the modal
+* **Key finding**: Convergent thesis — our standard error-detection strategies may operate on a rhetorical surface that alignment training has optimized away
+* **Artifacts**: `entry.md` complete, `results/run-001.json` written
+* **Next**: Consider promoting three-layer convergence to a permanent note; Seam written if session ends here
+
 ## [2026-04-28] Claude — Sprint Close-Out
 * **Status**: April 2026 roadmap sprint complete. All 4 pillars delivered.
 * **Codex delivered**: Seams + Debates SQLite tables, `New-WikiSeam` structured write, `Get-LastSeam`, `New-DebateLog`, `New-Experiment` scaffold script, `Invoke-HumanCommit`, untracked files committed.
@@ -501,3 +509,4 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - [2026-04-27 02:44] auto-link: mutual link [[claude-synthesis-handoff]] and [[gemini-build-sprint-handoff]] (sim=0.8233) - These are complementary handoff notes from the same date describing sequential work phases: Claude's synthesis and architecture planning (Pillar 1-3) directly enables Gemini's build sprint execution (embedding sync, graph integration, clustering), making bidirectional reference essential for continuity.
 - [2026-04-27 02:44] auto-link: added [[claude-blueprint-handoff-2026-04-27]] to [[gemini-build-sprint-handoff]] (sim=0.8229) - Note B (Gemini's build sprint) needs to reference Note A (Claude's completed blueprint handoff) because the 17 new notes that Gemini is ingesting were created by Claude in the blueprint phase, making Note A the source context for Note B's integration work.
 - [2026-04-27 02:44] auto-link: added [[spec-visual-vault-language]] to [[claude-gardening-visuals-handoff]] (sim=0.8201) - Note A is a handoff document that assigns the creation of spec-visual-vault-language as a task, so it should reference the completed Note B as its deliverable; Note B should not link back as it is the standalone specification being handed off to.
+- [2026-04-28 07:35:10] Ingested 2510.01171v3.pdf into [[lit-verbalized-sampling-paper]]. Implemented Mode-Anchored Departure (Approach B) focus.
