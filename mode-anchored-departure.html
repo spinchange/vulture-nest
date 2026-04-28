@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Verbalized Sampling — Vulture Portal</title>
+  <title>Mode-Anchored Departure (Verbalized Sampling Approach B) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Verbalized Sampling</span>
+      <span>Mode-Anchored Departure (Verbalized Sampling Approach B)</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Verbalized Sampling</h1>
+      <h1 class="note-title">Mode-Anchored Departure (Verbalized Sampling Approach B)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">hostname</span><span class="fm-val">LYRA</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Verbalized Sampling</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Mode-Anchored Departure (Verbalized Sampling Approach B)</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">vs-sampling, llm-diversity-recovery, mode-collapse-mitigation</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">approach-b, mad-sampling, mode-anchored-departure, vs-approach-b</span></span>
       </div>
     </header>
 
@@ -444,53 +443,159 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Verbalized Sampling</h1>
-<p><strong>Verbalized Sampling</strong> is a training-free prompting technique for recovering diverse outputs from an aligned language model without changing the model weights. Its core claim is that many aligned models still retain diverse latent knowledge, but standard decoding repeatedly selects the same familiar answer.</p>
-<h2>The Problem It Addresses</h2>
-<p>Aligned models often exhibit <strong>mode collapse</strong>: they converge on a narrow band of familiar, high-likelihood responses even when many valid and more creative alternatives exist.</p>
-<p>The crucial claim from the material processed in this workflow is that the collapse is not only an algorithmic defect. It is amplified by <strong>typicality bias</strong> in human preference data:</p>
+        <h1>Mode-Anchored Departure (Verbalized Sampling Approach B)</h1>
+<p><strong>Mode-Anchored Departure (MAD)</strong> is the two-call verbalized sampling pipeline implemented in <a href="verbalized-sampling-ps-scripts.html" class="wikilink">verbalized-sampling-ps-scripts</a> as <code>verbalized-sampling.ps1</code>. It is &quot;Approach B&quot; in the three-way design comparison documented there, selected over flat enumeration (A) and tournament-rank (C) for its departure-distance framing and 2-call cost.</p>
+<p>The core mechanism: the model first names its modal response explicitly, then enumerates departures ranked by distance from that anchor. This makes tail items genuinely non-modal, not just stylistically varied.</p>
+<hr>
+<h2>How It Works</h2>
+<h3>Call 1 — Modal Anchor + Departure Enumeration</h3>
+<p>The model is asked to:</p>
+<ol>
+<li>State its <strong>modal response</strong> — the completion a typical unguided LLM run would produce — and assign it a <code>P≈X%</code> estimate
+</li>
+<li>Enumerate <strong>9 departures</strong> in ascending departure-distance order (Rank 1 = closest to modal, Rank 9 = furthest), each with a departure tag and its own <code>P≈X%</code>
+</li>
+</ol>
+<p>The modal anchor is what distinguishes Approach B from Approach A. In A, departure distance is inferred from rank order alone. In B, it is measured against an explicit reference point. This matters because the model can name what it is departing *from*, making the Call 2 contrast frame concrete.</p>
+<h3>Call 2 — Tail Synthesis</h3>
+<p>Tail departures (default: ranks 7–9) plus the modal are submitted as context for a synthesis pass. The synthesis prompt instructs the model to integrate the tail insights into a substantive response that the modal would not contain — not a list or rephrase of the departures, but a genuinely novel perspective.</p>
+<p>Reversion detection runs a Jaccard similarity check between the synthesis and the modal. A score above 0.60 sets <code>ParseWarning = Call2Reversion</code>.</p>
+<hr>
+<h2>The P≈ Statistic</h2>
+<p><code>P≈X%</code> means: <strong>the estimated probability that a typical, unguided LLM completion would produce this response</strong> (or one closely matching it).</p>
+<p>This is defined by the system prompt: &gt; *P=80% is very default; P=5% is deep tail, normally suppressed by alignment pressure.*</p>
+<h3>What P≈ Is and Is Not</h3>
+<p>P≈ is a <strong>verbalized probability</strong> — the model is generating contextually appropriate probability-language, not reading an internal meter. The <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> grounds this: lowering the P% constraint (e.g., <code>p &lt; 0.01</code>) significantly increases output diversity, because the constraint steers the model toward lower-probability positions in its distribution even though the model cannot directly observe those positions.</p>
+<p>The practical limitation — noted in the run-001 tail synthesis — is that this makes P≈ figures <strong>rhetorical estimates, not epistemic readings</strong>. The model is good at producing plausible-sounding confidence language. The P≈ values are useful as a relative ordering mechanism (rank 9 should be lower P than rank 1) and as a steering signal (the constraint works) but should not be treated as calibrated probabilities.</p>
+<p>The <strong>modal P≈</strong> tells you how compressed the distribution is for a given question:</p>
 <ul>
-<li>human raters reward fluent, familiar, easy-to-process answers
+<li>P≈90%: near-total modal dominance, limited framing space
 </li>
-<li>RLHF sharpens those preferences into default response modes
+<li>P≈72%: moderate compression — strong default, but substantive departures exist (observed in both inaugural runs)
 </li>
-<li>the model becomes safe and legible, but also generic
+<li>P≈40%: genuine spread, less pressure needed to reach tail
 </li>
 </ul>
-<p>In this framing, alignment does not erase diversity. It suppresses access to it.</p>
-<h2>Semantic Meaning</h2>
-<p>Verbalized sampling matters because it changes the interpretation of &quot;boring AI.&quot; The model is not necessarily empty, weak, or undertrained. It may instead be <strong>over-regularized toward recognizability</strong>.</p>
-<p>That makes the method conceptually important:</p>
+<hr>
+<h2>ParseWarning Conditions</h2>
+<p>The script sets <code>ParseWarning</code> on four failure modes observed in practice:</p>
+<table>
+<thead><tr>
+<th>Warning</th>
+<th>Condition</th>
+<th>Implication</th>
+</tr></thead><tbody>
+<tr>
+<td><code>MissingModal</code></td>
+<td>Modal block not parsed</td>
+<td>Call 1 format non-compliance</td>
+</tr>
+<tr>
+<td><code>MissingRanks</code></td>
+<td>Fewer than 9 departure ranks parsed</td>
+<td>Question may have limited framing space; or model truncated</td>
+</tr>
+<tr>
+<td><code>ModalCollapse</code></td>
+<td>Rank-9 Jaccard vs modal &gt; 0.55</td>
+<td>Rank-9 is a rephrase, not a tail departure</td>
+</tr>
+<tr>
+<td><code>Call2Reversion</code></td>
+<td>Synthesis Jaccard vs modal &gt; 0.60</td>
+<td>Call 2 failed to escape the modal</td>
+</tr>
+</tbody>
+</table>
+<h3>MissingRanks in Practice</h3>
+<p>The inaugural run-002 (&quot;What is the best way to structure a multi-agent handoff?&quot;) produced <code>MissingRanks</code> — 7/9 ranks parsed, with R08–R09 absent. This is informative rather than catastrophic:</p>
 <ul>
-<li>it treats diversity as a retrieval problem, not just a training problem
+<li>The question is a practical engineering question with a well-defined answer space. The model may have genuinely exhausted substantive departures at R7.
 </li>
-<li>it reframes creativity loss as a byproduct of human preference compression
+<li>Epistemically self-referential questions (run-001: &quot;What is genuinely underrated about how language models fail?&quot;) produced clean 9/9 parsing — more framing pressure means more latent space.
 </li>
-<li>it suggests that prompt-layer control can recover parts of the model&#39;s hidden option space
+<li>A single-rank tail (R07 only) still produced a strong synthesis. The Call 2 prompt does not require multiple tail items to reframe effectively.
 </li>
 </ul>
-<p>The broader implication is that agent quality cannot be judged only by correctness and harmlessness. For simulation, ideation, synthetic data, or exploratory agents, <strong>variance is part of capability</strong>.</p>
-<h2>Why It Fits This Vault</h2>
-<p>This concept belongs in the vault because it connects agent behavior, evaluation, and workflow engineering:</p>
-<ul>
-<li>prompt design becomes a control surface for capability recovery
+<p><strong>Rule of thumb:</strong> <code>MissingRanks</code> is a signal about the question&#39;s framing space, not a script failure. Questions with a strong cultural consensus answer and limited reframings will compress the distribution faster.</p>
+<hr>
+<h2>Empirical Results (Inaugural Runs)</h2>
+<table>
+<thead><tr>
+<th>Run</th>
+<th>Question type</th>
+<th>ParseWarning</th>
+<th>Tail items</th>
+<th>Synthesis quality</th>
+</tr></thead><tbody>
+<tr>
+<td>001</td>
+<td>Epistemically self-referential</td>
+<td>None</td>
+<td>3 (R7–R9)</td>
+<td>High — convergent three-layer thesis</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Practical engineering</td>
+<td>MissingRanks (7/9)</td>
+<td>1 (R7 only)</td>
+<td>High — complete economic reframing</td>
+</tr>
+</tbody>
+</table>
+<p>Both runs produced modal <code>P≈72%</code> — consistent across question types. This may reflect a characteristic of the model&#39;s alignment pressure rather than the question.</p>
+<p>The key cross-run finding: <strong>synthesis quality did not degrade with a single-rank tail</strong>. The Call 2 prompt&#39;s contrast frame (modal vs. tail) is sufficient to produce a non-modal claim even when the tail is narrow.</p>
+<hr>
+<h2>Relationship to the Paper</h2>
+<p><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> documents the paper&#39;s P% constraint mechanism: &gt; *Prompting the model to &quot;sample from the tail distribution, where each response/word should be &lt; p%.&quot;*</p>
+<p>MAD (Approach B) implements a structurally related but distinct mechanism. Rather than a single P% floor constraint, it uses:</p>
+<ol>
+<li>An explicit modal anchor as the reference distribution
 </li>
-<li>transcript-driven iteration becomes a way to compare output modes
+<li>Rank-ordered departures as a proxy for P% distance from the mode
 </li>
-<li>note synthesis can preserve not just conclusions, but alternate framings
+<li>A synthesis pass that treats the tail as a contrast context
 </li>
-</ul>
-<p>The audio series processed here repeatedly converged on the same thesis: a model with huge latent breadth can still behave like a one-lane system if post-training incentives overvalue familiarity.</p>
+</ol>
+<p>The paper reports 1.6–2.1&#215; diversity gains for creative writing. MAD&#39;s value is different — not diversity of surface output, but <strong>extraction of latent framing alternatives</strong> that alignment pressure suppresses. The goal is a synthesis that names what the modal actively avoids naming.</p>
+<hr>
+<h2>When to Use Each Approach</h2>
+<table>
+<thead><tr>
+<th>Goal</th>
+<th>Recommended approach</th>
+</tr></thead><tbody>
+<tr>
+<td>Explore alternative framings of a question</td>
+<td>MAD (Approach B)</td>
+</tr>
+<tr>
+<td>Generate diverse creative outputs at scale</td>
+<td>Paper&#39;s P% constraint; Approach A</td>
+</tr>
+<tr>
+<td>Maximum reproducibility and calibration</td>
+<td>Approach C (tournament-rank, not yet built)</td>
+</tr>
+<tr>
+<td>Quick tail check without synthesis</td>
+<td>Approach A (<code>invoke-tail-extractor.ps1</code>)</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h2>See Also</h2>
 <ul>
-<li><a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>
+<li><a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a> — parent concept and typicality bias framing
 </li>
-<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a>
+<li><a href="verbalized-sampling-ps-scripts.html" class="wikilink">verbalized-sampling-ps-scripts</a> — Approach A/B/C comparison and script design
 </li>
-<li><a href="verbalized-sampling-experiment.html" class="wikilink">verbalized-sampling-experiment</a>
+<li><a href="verbalized-sampling-experiment.html" class="wikilink">verbalized-sampling-experiment</a> — audio processing workflow and audio series findings
 </li>
-<li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
+<li><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> — paper summary (2510.01171v3)
+</li>
+<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> — experiment index
 </li>
 </ul>
       </main>
@@ -505,18 +610,15 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
 <li><a href="index.html" class="">index</a></li>
-<li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
-<li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
-<li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
-<li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
-<li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
+<li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
 <li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
+<li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
 </ul>
           </div>
         </div>

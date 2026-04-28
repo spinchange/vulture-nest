@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Verbalized Sampling — Vulture Portal</title>
+  <title>VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,19 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Verbalized Sampling</span>
+      <span>VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Verbalized Sampling</h1>
+      <h1 class="note-title">VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">hostname</span><span class="fm-val">LYRA</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Verbalized Sampling</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">vs-sampling, llm-diversity-recovery, mode-collapse-mitigation</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">verbalized-sampling-paper, mode-collapse-mitigation</span></span>
       </div>
     </header>
 
@@ -444,55 +442,65 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Verbalized Sampling</h1>
-<p><strong>Verbalized Sampling</strong> is a training-free prompting technique for recovering diverse outputs from an aligned language model without changing the model weights. Its core claim is that many aligned models still retain diverse latent knowledge, but standard decoding repeatedly selects the same familiar answer.</p>
-<h2>The Problem It Addresses</h2>
-<p>Aligned models often exhibit <strong>mode collapse</strong>: they converge on a narrow band of familiar, high-likelihood responses even when many valid and more creative alternatives exist.</p>
-<p>The crucial claim from the material processed in this workflow is that the collapse is not only an algorithmic defect. It is amplified by <strong>typicality bias</strong> in human preference data:</p>
+        <h1>VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</h1>
+<p><strong>Source:</strong> <a href="00_Raw/2510.01171v3.pdf.html" class="wikilink">00_Raw/2510.01171v3.pdf</a></p>
+<h2>Overview</h2>
+<p>The paper identifies <strong>typicality bias</strong> in human preference data as a primary cause of <strong>mode collapse</strong> in aligned LLMs. To mitigate this, it introduces <strong>Verbalized Sampling (VS)</strong>, a prompting strategy where the model explicitly verbalizes a probability distribution over a set of possible responses before sampling.</p>
+<h2>Key Concepts</h2>
+<h3>Typicality Bias &amp; Mode Collapse</h3>
 <ul>
-<li>human raters reward fluent, familiar, easy-to-process answers
+<li><strong>Typicality Bias:</strong> Human annotators tend to favor responses that are familiar, fluent, and predictable (typical), even if they are not the most useful or creative.
 </li>
-<li>RLHF sharpens those preferences into default response modes
-</li>
-<li>the model becomes safe and legible, but also generic
+<li><strong>Mode Collapse:</strong> Post-training alignment (RLHF, DPO) sharpens the probability distribution around these typical responses (the &quot;mode&quot;), suppressing the model&#39;s inherent diversity and &quot;long-tail&quot; knowledge.
 </li>
 </ul>
-<p>In this framing, alignment does not erase diversity. It suppresses access to it.</p>
-<h2>Semantic Meaning</h2>
-<p>Verbalized sampling matters because it changes the interpretation of &quot;boring AI.&quot; The model is not necessarily empty, weak, or undertrained. It may instead be <strong>over-regularized toward recognizability</strong>.</p>
-<p>That makes the method conceptually important:</p>
+<h3>Verbalized Sampling (VS)</h3>
+<p>Instead of a direct prompt (e.g., &quot;Tell me a joke&quot;), VS reformulates the prompt to ask for multiple responses with their corresponding probabilities:</p>
 <ul>
-<li>it treats diversity as a retrieval problem, not just a training problem
+<li><strong>Prompt Pattern:</strong> &quot;Generate 5 responses with their corresponding probabilities... sample at random from the full distribution / tails.&quot;
 </li>
-<li>it reframes creativity loss as a byproduct of human preference compression
-</li>
-<li>it suggests that prompt-layer control can recover parts of the model&#39;s hidden option space
+<li><strong>Mechanism:</strong> Verbalizing probabilities helps the model bypass the collapsed mode of the policy and access the broader distribution learned during pre-training.
 </li>
 </ul>
-<p>The broader implication is that agent quality cannot be judged only by correctness and harmlessness. For simulation, ideation, synthetic data, or exploratory agents, <strong>variance is part of capability</strong>.</p>
-<h2>Why It Fits This Vault</h2>
-<p>This concept belongs in the vault because it connects agent behavior, evaluation, and workflow engineering:</p>
+<h2>Specific Treatments</h2>
+<h3>P% Verbalization (Diversity Tuning)</h3>
+<p>The paper details a method for <strong>Diversity Tuning</strong> using probability thresholds:</p>
 <ul>
-<li>prompt design becomes a control surface for capability recovery
+<li><strong>P% Constraint:</strong> Prompting the model to &quot;sample from the tail distribution, where each response/word should be &lt; p%&quot;.
 </li>
-<li>transcript-driven iteration becomes a way to compare output modes
+<li><strong>Findings:</strong> Lowering $p$ (e.g., from 1.0 down to 0.001) significantly increases output diversity. Lower thresholds (e.g., $p &lt; 0.01$) can lead to empty outputs in constrained answer spaces (like Open-Ended QA) but are highly effective for creative writing.
 </li>
-<li>note synthesis can preserve not just conclusions, but alternate framings
+<li><strong>Significance:</strong> This provides a practical, inference-time mechanism for fine-grained diversity control without altering decoding parameters like temperature or top-p.
 </li>
 </ul>
-<p>The audio series processed here repeatedly converged on the same thesis: a model with huge latent breadth can still behave like a one-lane system if post-training incentives overvalue familiarity.</p>
+<h3>Mode-Anchored Departure (Approach B)</h3>
+<p>*Note: This specific terminology appears to be an implementation-level abstraction (e.g., in <a href="02_System/verbalized-sampling.ps1.html" class="wikilink">02_System/verbalized-sampling.ps1</a>) derived from the paper&#39;s &quot;Distribution-level prompt&quot; and its treatment of reference distributions.*</p>
+<ul>
+<li><strong>Definition:</strong> A two-call pipeline where the first call establishes a <strong>Modal Anchor</strong> (the most probable default response) and then enumerates departures from that anchor.
+</li>
+<li><strong>Approach B vs. A:</strong> In this context, Approach B uses the modal anchor as an explicit reference point for calculating &quot;departure distance,&quot; ensuring that tail responses are substantively different from the collapsed default.
+</li>
+<li><strong>Canonical Setting:</strong> <code>TailStart=7</code> (focusing on the most distant ranks 7-9) is the preferred configuration for maximizing the extraction of latent, non-obvious knowledge.
+</li>
+</ul>
+<h2>Empirical Gains</h2>
+<ul>
+<li><strong>Creative Writing:</strong> Increases diversity by 1.6–2.1&#215; over direct prompting.
+</li>
+<li><strong>Open-Ended QA:</strong> Improves pre-training distribution alignment (lower KL divergence) and increases answer coverage.
+</li>
+<li><strong>Safety &amp; Factuality:</strong> VS maintains safety and factual accuracy comparable to baseline methods while unlocking diversity.
+</li>
+</ul>
+<h2>Connections</h2>
+<ul>
+<li><a href="agentic-rag.html" class="wikilink">agentic-rag</a>: VS can be used to generate diverse search queries or synthetic data for RAG.
+</li>
+<li><a href="knowledge-gardening-principles.html" class="wikilink">knowledge-gardening-principles</a>: Unlocking tail knowledge is essential for deep synthesis and avoiding &quot;echo chamber&quot; effects in automated wikis.
+</li>
+</ul>
 <hr>
-<h2>See Also</h2>
-<ul>
-<li><a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>
-</li>
-<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a>
-</li>
-<li><a href="verbalized-sampling-experiment.html" class="wikilink">verbalized-sampling-experiment</a>
-</li>
-<li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
-</li>
-</ul>
+<p>*Created during ingestion of 2510.01171v3.pdf.*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -505,18 +513,16 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
-<li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
-<li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
-<li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
-<li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
-<li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
+<li><a href="00_Raw/2510.01171v3.pdf.html" class="">00_Raw/2510.01171v3.pdf</a></li>
+<li><a href="02_System/verbalized-sampling.ps1.html" class="">02_System/verbalized-sampling.ps1</a></li>
+<li><a href="agentic-rag.html" class="">agentic-rag</a></li>
+<li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
 </ul>
           </div>
         </div>
