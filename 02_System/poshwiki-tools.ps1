@@ -19,6 +19,180 @@
 $ErrorActionPreference = 'Stop'
 
 try {
+    function Get-PoShWiKiDatabasePath {
+        $overridePath = $env:POSHWIKI_DB_PATH
+        if (-not [string]::IsNullOrWhiteSpace($overridePath)) {
+            return $overridePath
+        }
+
+        return Join-Path (Split-Path $PSScriptRoot -Parent) "00_Raw\PoShWiKi\wiki.db"
+    }
+
+    function Import-PoShWiKiSqliteAssemblies {
+        if ('Microsoft.Data.Sqlite.SqliteConnection' -as [type]) {
+            return
+        }
+
+        $libPath = Join-Path (Split-Path $PSScriptRoot -Parent) "00_Raw\PoShWiKi\lib"
+        $dlls = @(
+            "SQLitePCLRaw.core.dll",
+            "SQLitePCLRaw.provider.e_sqlite3.dll",
+            "SQLitePCLRaw.batteries_v2.dll",
+            "Microsoft.Data.Sqlite.dll"
+        )
+
+        foreach ($dll in $dlls) {
+            $path = Join-Path $libPath $dll
+            if (-not (Test-Path $path)) {
+                throw "Required SQLite assembly not found: $path"
+            }
+
+            Add-Type -Path $path -ErrorAction SilentlyContinue
+        }
+
+        $os = if ($IsWindows) { "win" } elseif ($IsMacOS) { "osx" } else { "linux" }
+        $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant()
+        $runtimeArch = switch ($arch) {
+            "x64" { "x64" }
+            "arm64" { "arm64" }
+            "x86" { "x86" }
+            "arm" { "arm" }
+            default { $arch }
+        }
+
+        $nativeLibName = if ($IsWindows) { "e_sqlite3.dll" } elseif ($IsMacOS) { "libe_sqlite3.dylib" } else { "libe_sqlite3.so" }
+        $nativePath = Join-Path $libPath "runtimes/$os-$runtimeArch/native/$nativeLibName"
+
+        if (Test-Path $nativePath) {
+            try {
+                [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
+            } catch {
+                Write-Verbose "Native SQLite library already loaded or deferred: $_"
+            }
+        }
+
+        try {
+            [SQLitePCL.Batteries]::Init()
+        } catch {
+            throw "Failed to initialize SQLite batteries: $_"
+        }
+    }
+
+    function Get-PoShWiKiConnection {
+        Import-PoShWiKiSqliteAssemblies
+
+        $dbPath = Get-PoShWiKiDatabasePath
+        $connection = [Microsoft.Data.Sqlite.SqliteConnection]::new("Data Source=$dbPath")
+        $connection.Open()
+        return $connection
+    }
+
+    function Invoke-PoShWiKiDbNonQuery {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Query,
+
+            [hashtable]$Parameters = @{}
+        )
+
+        $connection = Get-PoShWiKiConnection
+        try {
+            $command = $connection.CreateCommand()
+            $command.CommandText = $Query
+
+            foreach ($key in $Parameters.Keys) {
+                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+            }
+
+            return $command.ExecuteNonQuery()
+        } finally {
+            $connection.Dispose()
+        }
+    }
+
+    function Invoke-PoShWiKiDbScalar {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Query,
+
+            [hashtable]$Parameters = @{}
+        )
+
+        $connection = Get-PoShWiKiConnection
+        try {
+            $command = $connection.CreateCommand()
+            $command.CommandText = $Query
+
+            foreach ($key in $Parameters.Keys) {
+                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+            }
+
+            return $command.ExecuteScalar()
+        } finally {
+            $connection.Dispose()
+        }
+    }
+
+    function Invoke-PoShWiKiDbQuery {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Query,
+
+            [hashtable]$Parameters = @{}
+        )
+
+        $connection = Get-PoShWiKiConnection
+        try {
+            $command = $connection.CreateCommand()
+            $command.CommandText = $Query
+
+            foreach ($key in $Parameters.Keys) {
+                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+            }
+
+            $reader = $command.ExecuteReader()
+            $rows = @()
+            while ($reader.Read()) {
+                $row = [ordered]@{}
+                for ($i = 0; $i -lt $reader.FieldCount; $i++) {
+                    $value = if ($reader.IsDBNull($i)) { $null } else { $reader.GetValue($i) }
+                    $row[$reader.GetName($i)] = $value
+                }
+                $rows += [PSCustomObject]$row
+            }
+
+            return @($rows)
+        } finally {
+            $connection.Dispose()
+        }
+    }
+
+    function Initialize-PoShWiKiStructuredTables {
+        $schema = @"
+CREATE TABLE IF NOT EXISTS Seams (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+    agent       TEXT NOT NULL,
+    target      TEXT,
+    goal        TEXT NOT NULL,
+    seam        TEXT NOT NULL,
+    next_step   TEXT NOT NULL,
+    note_path   TEXT
+);
+CREATE TABLE IF NOT EXISTS Debates (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    topic        TEXT NOT NULL,
+    participants TEXT NOT NULL,
+    hypothesis   TEXT,
+    verdict      TEXT,
+    entry_path   TEXT
+);
+"@
+
+        Invoke-PoShWiKiDbNonQuery -Query $schema | Out-Null
+    }
+
     function Get-WikiSessionTitle {
         <#
         .SYNOPSIS
@@ -105,6 +279,10 @@ try {
         #>
         [CmdletBinding()]
         param(
+            [string]$Agent = "claude",
+
+            [string]$Target,
+
             [Parameter(Mandatory=$true)]
             [string]$Goal,
 
@@ -112,7 +290,9 @@ try {
             [string]$Seam,
 
             [Parameter(Mandatory=$true)]
-            [string]$NextStep
+            [string]$NextStep,
+
+            [string]$NotePath
         )
 
         $Title = Get-WikiSessionTitle
@@ -121,12 +301,108 @@ try {
         Invoke-WikiNote -Title $Title -Section "Current Seam" -Content $Seam | Out-Null
         Invoke-WikiNote -Title $Title -Section "Next Steps" -Content "- $NextStep" | Out-Null
 
+        Initialize-PoShWiKiStructuredTables
+        $rowId = Invoke-PoShWiKiDbScalar -Query @"
+INSERT INTO Seams (agent, target, goal, seam, next_step, note_path)
+VALUES (@agent, @target, @goal, @seam, @next_step, @note_path);
+SELECT last_insert_rowid();
+"@ -Parameters @{
+            agent     = $Agent
+            target    = if ([string]::IsNullOrWhiteSpace($Target)) { $null } else { $Target }
+            goal      = $Goal
+            seam      = $Seam
+            next_step = $NextStep
+            note_path = if ([string]::IsNullOrWhiteSpace($NotePath)) { $null } else { $NotePath }
+        }
+
         Write-Host "Seam recorded successfully in [[$Title]]." -ForegroundColor Green
         return [PSCustomObject]@{
+            Id      = [int64]$rowId
+            Agent   = $Agent
+            Target  = $Target
             Session = $Title
             Goal    = $Goal
             Seam    = $Seam
             Next    = $NextStep
+            NotePath = $NotePath
+        }
+    }
+
+    function Get-LastSeam {
+        [CmdletBinding()]
+        param(
+            [string]$Target
+        )
+
+        Initialize-PoShWiKiStructuredTables
+
+        if ([string]::IsNullOrWhiteSpace($Target)) {
+            $rows = Invoke-PoShWiKiDbQuery -Query @"
+SELECT id, created_at, agent, target, goal, seam, next_step, note_path
+FROM Seams
+ORDER BY created_at DESC, id DESC
+LIMIT 1;
+"@
+        } else {
+            $rows = Invoke-PoShWiKiDbQuery -Query @"
+SELECT id, created_at, agent, target, goal, seam, next_step, note_path
+FROM Seams
+WHERE target = @target OR target IS NULL
+ORDER BY created_at DESC, id DESC
+LIMIT 1;
+"@ -Parameters @{ target = $Target }
+        }
+
+        if ($rows.Count -eq 0) {
+            return $null
+        }
+
+        return $rows[0]
+    }
+
+    function New-DebateLog {
+        [CmdletBinding()]
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Topic,
+
+            [Parameter(Mandatory = $true)]
+            [string[]]$Participants,
+
+            [string]$Hypothesis,
+
+            [string]$Verdict,
+
+            [string]$EntryPath
+        )
+
+        Initialize-PoShWiKiStructuredTables
+        $participantsJson = $Participants | ConvertTo-Json -Compress
+        $rowId = Invoke-PoShWiKiDbScalar -Query @"
+INSERT INTO Debates (topic, participants, hypothesis, verdict, entry_path)
+VALUES (@topic, @participants, @hypothesis, @verdict, @entry_path);
+SELECT last_insert_rowid();
+"@ -Parameters @{
+            topic        = $Topic
+            participants = $participantsJson
+            hypothesis   = if ([string]::IsNullOrWhiteSpace($Hypothesis)) { $null } else { $Hypothesis }
+            verdict      = if ([string]::IsNullOrWhiteSpace($Verdict)) { $null } else { $Verdict }
+            entry_path   = if ([string]::IsNullOrWhiteSpace($EntryPath)) { $null } else { $EntryPath }
+        }
+
+        return [int64]$rowId
+    }
+
+    function Invoke-HumanCommit {
+        [CmdletBinding()]
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Message
+        )
+
+        & git -c user.name="spinchange" -c user.email="cduffy@ranchcryogenics.com" commit -m "[human] $Message"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Human-attributed git commit failed with exit code $LASTEXITCODE."
         }
     }
 
