@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Racket — Vulture Portal</title>
+  <title>Codex Validation Hardening Handoff 2026-04-28 — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,19 +421,19 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Racket</span>
+      <span>Codex Validation Hardening Handoff 2026-04-28</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Racket</h1>
+      <h1 class="note-title">Codex Validation Hardening Handoff 2026-04-28</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Racket</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">racket-lang, language-oriented-programming, lisp-scheme</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Validation Hardening Handoff 2026-04-28</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">validation-hardening-handoff, orphan-check-followup</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
@@ -443,28 +443,123 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Racket</h1>
-<p>Racket is a descendant of Scheme and a pioneer of <strong>Language-Oriented Programming (LOP)</strong>. It is designed to be a &quot;programmable programming language.&quot;</p>
-<h2>Language-Oriented Programming</h2>
-<p>Racket&#39;s primary strength is the ease with which one can create new Domain-Specific Languages (DSLs).</p>
+        <h1>Codex Validation Hardening Handoff 2026-04-28</h1>
+<h2>Current State</h2>
+<p>The repo is clean and <code>main</code> is synced to <code>origin/main</code>.</p>
+<p>Recent validation improvements already landed:</p>
 <ul>
-<li><strong>Hygienic Macros:</strong> Unlike C-style macros, Racket macros are syntax-aware and prevent accidental variable capture.
+<li><code>3933b49</code> — <code>ci: run Python and Rust tests in vault validation</code>
 </li>
-<li><strong>#lang:</strong> Every Racket file starts with a <code>#lang</code> declaration, specifying the language/dialect being used.
+<li><code>b19200f</code> — <code>feat(validation): parse and enforce YANP frontmatter</code>
+</li>
+<li><code>d14644a</code> — <code>feat(validation): improve broken link diagnostics</code>
 </li>
 </ul>
-<h2>Engineering Standards</h2>
+<h2>What Changed</h2>
+<h3>CI</h3>
 <ul>
-<li><strong>Software Contracts:</strong> Formal boundaries between modules that catch errors at the interface level.
+<li><code>.github/workflows/validate-vault.yml</code>
 </li>
-<li><strong>Typed Racket:</strong> A sibling language that adds a static type system to the Racket ecosystem.
+<li>CI now runs:
+<ul>
+<li><code>pytest 02_System/test_chunker.py 02_System/test_memory_mcp.py</code>
+</li>
+<li><code>cargo test --manifest-path 00_Raw/tier-0/Cargo.toml</code>
 </li>
 </ul>
-<h2>See Also</h2>
-<ul>
-<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
-<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> (Connecting LOP to the concept of self-documenting code)
+</ul>
+<h3>YANP Validation</h3>
+<ul>
+<li><code>02_System/audit-yanp.ps1</code>
+</li>
+<li>Replaced regex-only validation with frontmatter parsing.
+</li>
+<li>Validates required fields: <code>title</code>, <code>author</code>, <code>date</code>, <code>status</code>, <code>type</code>.
+</li>
+<li>Enforces allowed <code>type</code> and <code>status</code>.
+</li>
+<li>Recurses through <code>01_Wiki</code>, including subfolders.
+</li>
+<li>Reports duplicate aliases and titles as warnings, not failures.
+</li>
+</ul>
+<h3>Schema Fix</h3>
+<ul>
+<li><code>01_Wiki/lit-verbalized-sampling-paper.md</code>
+</li>
+<li>Added missing <code>type: literature</code>.
+</li>
+</ul>
+<h3>Broken Link Validation</h3>
+<ul>
+<li><code>02_System/check-broken-links.ps1</code>
+</li>
+<li>Reports broken links with source path, line number, target, and line preview.
+</li>
+<li>Ignores fenced code blocks.
+</li>
+<li>Ignores non-markdown asset wikilinks such as <code><a href="...pdf.html" class="wikilink">...pdf</a></code>.
+</li>
+<li>Exits nonzero on real broken links.
+</li>
+</ul>
+<h2>Next Recommended Task</h2>
+<p>Tighten <code>02_System/orphan-check.ps1</code>.</p>
+<h3>Why</h3>
+<ul>
+<li>It is still much cruder than the other validators.
+</li>
+<li>It uses non-recursive file discovery.
+</li>
+<li>It scans the whole vault as one string.
+</li>
+<li>It lacks path-aware reporting.
+</li>
+<li>It has no line-level or summary diagnostics.
+</li>
+<li>It likely has false positives and false negatives around aliases and path forms.
+</li>
+</ul>
+<h2>Recommended Direction</h2>
+<p>Upgrade <code>02_System/orphan-check.ps1</code> to match the newer validator standard:</p>
+<ul>
+<li>Recurse through <code>01_Wiki</code>.
+</li>
+<li>Build a real note set from filenames.
+</li>
+<li>Scan source files line-by-line or file-by-file with the same wikilink semantics used in <code>check-broken-links.ps1</code>.
+</li>
+<li>Report orphan notes with relative path, title, type, and status.
+</li>
+<li>Add a summary count.
+</li>
+<li>Decide whether to fail nonzero on orphans or only warn.
+</li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>Keep the pass small.
+</li>
+<li>Prefer compatibility with current vault conventions over idealized schema changes.
+</li>
+<li>Do not broaden into a full graph-health refactor unless explicitly requested.
+</li>
+<li>Reuse parsing and link-normalization patterns from <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>.
+</li>
+</ul>
+<h2>Verification Targets</h2>
+<ul>
+<li><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1</code>
+</li>
+<li>Optionally <code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code> if time permits
+</li>
+</ul>
+<h2>Git Hygiene</h2>
+<ul>
+<li>Commit the orphan-check improvement separately.
+</li>
+<li>Suggested message: <code>feat(validation): improve orphan note diagnostics</code>
 </li>
 </ul>
       </main>
@@ -477,14 +572,9 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
+            <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
+<li><a href="...pdf.html" class="">...pdf</a></li>
 </ul>
           </div>
         </div>
