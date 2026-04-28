@@ -429,10 +429,10 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Visitor Directives (Multi-Agent Protocol)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Visitor Directives (Multi-Agent Protocol)</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Visitor Directives (Multi-Agent Protocol)</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
       </div>
     </header>
@@ -490,7 +490,21 @@
 <ul>
 <li>Use <code>New-WikiSeam -Goal &lt;string&gt; -Seam &lt;string&gt; -NextStep &lt;string&gt;</code>.
 </li>
+<li>Note that <code>New-WikiSeam</code> now writes to the vault&#39;s SQLite database.
+</li>
+<li>Use <code>Get-LastSeam -Target &lt;agent&gt;</code> to retrieve the prior seam record without reading markdown.
+</li>
 <li>If the next agent needs more than a one-line handoff, create or update a dedicated note using the structure in <a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>.
+</li>
+</ul>
+<h2>6. Experiment Capture</h2>
+<p>All experimental work (scripts, debates, sampling runs) is captured in <code>04_Experiments/</code> using the <a href="experiment-capture-protocol.html" class="wikilink">experiment-capture-protocol</a>.</p>
+<ul>
+<li>Use <code>02_System/new-experiment.ps1</code> to scaffold a new experiment directory.
+</li>
+<li>For adversarial debates, use <code>New-DebateLog</code> from <code>poshwiki-tools.ps1</code> to write a structured SQLite record.
+</li>
+<li>Completed experiments with durable findings should be ingested into <code>01_Wiki/</code> via the normal pipeline.
 </li>
 </ul>
 <hr>
@@ -508,12 +522,16 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="claude-codex-interop-test.html" class="">claude-codex-interop-test</a></li>
+<li><a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="">codex-roadmap-sprint-handoff-2026-04-27</a></li>
+<li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
 <li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="productivity-roadmap-2026-04-27.html" class="">productivity-roadmap-2026-04-27</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
 <li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
 </ul>
           </div>

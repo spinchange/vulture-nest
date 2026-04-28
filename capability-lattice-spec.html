@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Capability Lattice — Formal Specification</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25T00:00:00.000Z</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Capability Lattice — Formal Specification</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
       </div>
     </header>
 
@@ -444,7 +444,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Capability Lattice: Formal Specification</h1>
-<p><strong>Context:</strong> <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> proposes that MCP tool manifests and Rust/C# type systems encode the same permission-boundary principle at different abstraction layers. This spec formalizes the bridge: how an MCP tool definition maps to a concrete language type signature, and how composing agents produces a new, derivable capability set.</p>
+<p><strong>Context:</strong> <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> proposes that <a href="mcp-moc.html" class="wikilink">MCP</a> tool manifests and <a href="rust.html" class="wikilink">rust</a>/C# type systems encode the same permission-boundary principle at different abstraction layers. This spec formalizes the bridge: how an MCP tool definition maps to a concrete language type signature, and how composing agents produces a new, derivable capability set.</p>
 <hr>
 <h2>1. JSON Schema → Language Type Mapping</h2>
 <p>MCP tool schemas are expressed in JSON Schema (draft 2020-12). The following table defines the canonical mapping to Rust and C# primitive types.</p>
@@ -892,6 +892,130 @@ builder.Services.AddMcpServer().WithTool&lt;FileManagerTools&gt;();</code></pre>
     AND state → operation is valid     ← session type</code></pre>
 <p>The full formal treatment — including MCP&#39;s lifecycle expressed as a session type and a sketch of a phantom-typed MCP client SDK — is in <a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>. That note has <code>status: draft</code>; the two analyses compose but neither subsumes the other.</p>
 <hr>
+<hr>
+<h2>8. Callback Guardrails: Execution-Phase Type Safety</h2>
+<p><strong>Context:</strong> This section is the lattice response to the RFC in <a href="rfc-agent-orchestration-handoff.html" class="wikilink">rfc-agent-orchestration-handoff</a> &#167;Recommendations/3. It addresses <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>&#39;s <code>before_tool_callback</code> pattern: a callback that runs before every tool invocation and can block it. The lattice currently proves *what* a tool can do; this section adds a proof that the callback phase *ran* before the tool did.</p>
+<h3>8.1 The Gap</h3>
+<p><code>Caps(A)</code> proves Agent A is allowed to call tool <code>T</code>. It does not prove that A&#39;s guardrail callbacks were executed before calling <code>T</code>. An agent could structurally possess a capability and invoke it without running the required safety checks.</p>
+<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> pattern makes callbacks explicit at the <a href="python.html" class="wikilink">python</a> level; they are not enforced structurally. An agent can be constructed without a <code>before_tool_callback</code> and the framework will proceed silently — the callback is optional by design.</p>
+<p>The goal is to make callback execution a <strong>compile-time requirement</strong> for sensitive tool invocations, not an optional runtime hook.</p>
+<h3>8.2 <code>GuardrailToken&lt;T&gt;</code> — Phantom Proof of Callback Execution</h3>
+<p>The mechanism mirrors <a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a>: a zero-sized token type that can only be produced by the callback runner. Tool invocation functions require this token, making it a type error to skip the callback phase.</p>
+<pre><code>use std::marker::PhantomData;
+
+// Zero-sized token: proves the guardrail callback ran for tool T
+pub struct GuardrailToken&lt;T: ToolCap&gt;(PhantomData&lt;T&gt;);
+
+// The callback runner is the only entity that produces tokens
+pub struct CallbackRunner;
+
+impl CallbackRunner {
+    pub fn run_before_tool&lt;T: ToolCap&gt;(
+        &amp;self,
+        context: &amp;CallbackContext,
+        args: &amp;T::Args,
+    ) -&gt; Result&lt;GuardrailToken&lt;T&gt;, GuardrailBlocked&gt; {
+        // Invoke the registered before_tool_callback.
+        // If it returns a blocking value, return Err(GuardrailBlocked).
+        // If it returns None, return Ok(GuardrailToken(PhantomData)).
+        todo!()
+    }
+}
+
+// Tool invocation requires both the capability AND the token
+pub fn invoke_tool&lt;T: ToolCap, A: HasCaps&lt;T&gt;&gt;(
+    agent: &amp;A,
+    args: T::Args,
+    _token: GuardrailToken&lt;T&gt;,  // proves before_tool_callback ran
+) -&gt; Result&lt;T::Output, McpError&gt; {
+    agent.call_tool(args)
+}</code></pre>
+<p>Attempting to call <code>invoke_tool</code> without a <code>GuardrailToken&lt;T&gt;</code> is a <strong>compile-time type error</strong>. The token is linear (not <code>Copy</code>) — it cannot be cloned or reused across invocations; each callback execution produces exactly one token.</p>
+<p><code>GuardrailBlocked</code> is a domain error (not <code>McpError</code>) because it represents a policy decision by the callback, not a protocol failure. The calling agent should surface this as a task-level outcome rather than a protocol error.</p>
+<h3>8.3 C# Equivalent — <code>GuardrailEvidence&lt;T&gt;</code></h3>
+<pre><code>// Sealed: only CallbackRunner can produce it
+public sealed class GuardrailEvidence&lt;T&gt; where T : IToolCap
+{
+    internal GuardrailEvidence() { }
+}
+
+public class CallbackRunner
+{
+    public Result&lt;GuardrailEvidence&lt;T&gt;, GuardrailBlocked&gt; RunBeforeTool&lt;T&gt;(
+        CallbackContext context, T.Args args) where T : IToolCap
+    {
+        // invoke registered before_tool_callback
+        // return Ok(new GuardrailEvidence&lt;T&gt;()) or Err(GuardrailBlocked)
+        throw new NotImplementedException();
+    }
+}
+
+// Tool method requires the evidence parameter
+public async Task&lt;T.Output&gt; InvokeTool&lt;T&gt;(
+    T.Args args,
+    GuardrailEvidence&lt;T&gt; evidence,  // proves callback ran
+    CancellationToken ct = default) where T : IToolCap
+{
+    // proceed with tool execution
+    throw new NotImplementedException();
+}</code></pre>
+<p>The <code>internal</code> constructor on <code>GuardrailEvidence&lt;T&gt;</code> prevents external code from forging the token. Only <code>CallbackRunner</code> (in the same assembly) can mint it.</p>
+<h3>8.4 Non-Propagation to Sub-Agents</h3>
+<p>ADK&#39;s documented behavior: &quot;Callbacks defined on a Parent agent do <strong>not</strong> automatically propagate to Sub-agents.&quot; The token model encodes this correctly without additional rules. <code>GuardrailToken&lt;T&gt;</code> is produced per-agent by that agent&#39;s own <code>CallbackRunner</code>. A parent&#39;s token cannot satisfy a sub-agent&#39;s <code>invoke_tool</code> signature — the types are distinct because the <code>CallbackRunner</code> instance is bound to the agent that owns it.</p>
+<p>If a sub-agent requires the same guardrail, it must register and run its own callback. There is no silent inheritance.</p>
+<h3>8.5 Agents Without Callbacks — <code>UncheckedInvocation</code></h3>
+<p>Not every tool call requires a guardrail. For tools where no <code>before_tool_callback</code> is registered, an <code>UncheckedInvocation</code> marker satisfies the token requirement explicitly. The declaration is intentional — it makes the absence of a guardrail visible in the code rather than implicit.</p>
+<pre><code>// Explicit opt-out from callback enforcement
+pub struct UncheckedInvocation&lt;T: ToolCap&gt;(PhantomData&lt;T&gt;);
+
+impl&lt;T: ToolCap&gt; UncheckedInvocation&lt;T&gt; {
+    // Only constructible if T: NoGuardrailRequired (sealed trait impl by tool author)
+    pub fn new() -&gt; Self where T: NoGuardrailRequired {
+        UncheckedInvocation(PhantomData)
+    }
+}
+
+impl&lt;T: ToolCap + NoGuardrailRequired&gt; From&lt;UncheckedInvocation&lt;T&gt;&gt; for GuardrailToken&lt;T&gt; {
+    fn from(u: UncheckedInvocation&lt;T&gt;) -&gt; GuardrailToken&lt;T&gt; {
+        GuardrailToken(PhantomData)
+    }
+}</code></pre>
+<p>Tools that implement <code>NoGuardrailRequired</code> are read-only or idempotent operations where a callback adds no safety value. The choice must be made by the tool author at definition time, not by the calling agent at invocation time.</p>
+<h3>8.6 Relationship to Existing Lattice Layers</h3>
+<table>
+<thead><tr>
+<th>Enforcement layer</th>
+<th>Proves</th>
+<th>When checked</th>
+</tr></thead><tbody>
+<tr>
+<td>Capability lattice (&#167;4)</td>
+<td>Agent is allowed to call tool T</td>
+<td>Compile time (type checker)</td>
+</tr>
+<tr>
+<td><strong>Guardrail token (&#167;8)</strong></td>
+<td><strong>Callback phase ran before T executed</strong></td>
+<td><strong>Compile time (type checker)</strong></td>
+</tr>
+<tr>
+<td>Session types (&#167;7)</td>
+<td>Tool T is valid at current connection phase</td>
+<td>Compile time (session type checker)</td>
+</tr>
+<tr>
+<td>Runtime isolation</td>
+<td>Tool T cannot escape sandbox</td>
+<td>Runtime (OS boundary)</td>
+</tr>
+</tbody>
+</table>
+<p>The three compile-time layers are orthogonal and compose:</p>
+<pre><code>Safe(agent, tool, connection_state) iff
+    tool ∈ Caps(agent)                  ← &#167;4 lattice
+    AND GuardrailToken&lt;tool&gt; exists     ← &#167;8 callback guardrail
+    AND state → tool is valid           ← &#167;7 session type</code></pre>
+<hr>
 <h2>References</h2>
 <ul>
 <li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
@@ -912,6 +1036,10 @@ builder.Services.AddMcpServer().WithTool&lt;FileManagerTools&gt;();</code></pre>
 </li>
 <li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a>
 </li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>
+</li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="wikilink">rfc-agent-orchestration-handoff</a>
+</li>
 </ul>
 <hr>
 <h2>References</h2>
@@ -919,6 +1047,25 @@ builder.Services.AddMcpServer().WithTool&lt;FileManagerTools&gt;();</code></pre>
 <li><a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a>
 </li>
 </ul>
+<hr>
+<h2>8. Callback Guardrails: Execution-Phase Type Safety</h2>
+<p><strong>Context:</strong> Addresses the <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a> <code>before_tool_callback</code> pattern.</p>
+<h3>8.1 Guardrail Tokens</h3>
+<ul>
+<li><strong><code>GuardrailToken&lt;T&gt;</code> (Rust)</strong> / <strong><code>GuardrailEvidence&lt;T&gt;</code> (C#)</strong>: Zero-sized, phantom-typed tokens minted only by the <code>CallbackRunner</code>.
+</li>
+<li><strong>Enforcement</strong>: <code>invoke_tool</code> requires this token as an argument. Skipping the callback phase is a compile-time type error.
+</li>
+<li><strong>Non-propagation</strong>: Tokens are per-agent and do not inherit to sub-agents, matching ADK semantics.
+</li>
+</ul>
+<h3>8.2 <code>UncheckedInvocation</code></h3>
+<p>Explicit opt-out via <code>NoGuardrailRequired</code> trait/attribute for idempotent tools. The absence of a guardrail must be declared, not implicit.</p>
+<h3>8.3 Three-Layer Safety Predicate</h3>
+<pre><code>Safe(agent, tool, state) iff 
+    tool ∈ Caps(agent) (Lattice) ∧ 
+    GuardrailToken&lt;tool&gt; exists (Guardrail) ∧ 
+    state → tool is valid (Session Type)</code></pre>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -935,26 +1082,45 @@ builder.Services.AddMcpServer().WithTool&lt;FileManagerTools&gt;();</code></pre>
 <li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
 <li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
 <li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
+<li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
+<li><a href="lattice-implementation-guide.html" class="">lattice-implementation-guide</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
+<li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 <li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>

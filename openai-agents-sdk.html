@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">OpenAI Agents SDK</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">openai-agents, production-agents-sdk</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Agents SDK</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -444,51 +444,77 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>OpenAI Agents SDK</h1>
-<p>The <strong>OpenAI Agents SDK</strong> is the production-ready evolution of the experimental <a href="openai-swarm.html" class="wikilink">Swarm</a> framework. It provides a robust, code-first approach to building, running, and scaling multi-agent systems.</p>
-<h2>Core Philosophy</h2>
-<p>Unlike fully-hosted agent solutions, the SDK is designed for applications that want to own:</p>
+<p>The <strong>OpenAI Agents SDK</strong> is the production-grade framework for building, running, and scaling AI agents. Unlike the experimental <a href="openai-swarm.html" class="wikilink">openai-swarm</a>, the Agents SDK is designed for applications where the developer owns the orchestration, tool execution, and state management.</p>
+<h2>Core Capabilities</h2>
+<h3>1. Agent Definitions</h3>
+<p>Agents are defined as specialists with specific contracts (instructions, models, and tools).</p>
 <ul>
-<li><strong>Orchestration</strong>: Direct control over how agents interact and hand off tasks.
+<li><strong>Specialization:</strong> Focus on defining clear contracts for single &quot;specialist&quot; agents.
 </li>
-<li><strong>Tool Execution</strong>: Running code and APIs within the application&#39;s own security boundary.
-</li>
-<li><strong>State Management</strong>: Handling conversation history and persistent data.
-</li>
-<li><strong>Approvals</strong>: Explicit human-in-the-loop checkpoints.
+<li><strong>Providers:</strong> Support for various model providers and configurations.
 </li>
 </ul>
-<h2>Key Components</h2>
+<h3>2. Orchestration &amp; Handoffs</h3>
+<p>Supports multi-agent collaboration where one agent can &quot;handoff&quot; to another better suited for a sub-task.</p>
 <ul>
-<li><strong>Agent Definitions</strong>: Clear separation of instructions, tools, and model configuration.
+<li><strong>Control:</strong> The application (server) owns the orchestration logic and determines who owns the reply at any given time.
 </li>
-<li><strong>Sandbox Agents</strong>: Container-based environments that provide secure execution for files, commands, and packages.
-</li>
-<li><strong>Guardrails</strong>: Integrated mechanisms for safety, validation, and user approvals.
-</li>
-<li><strong>Orchestration</strong>: Support for complex patterns like handoffs, parallel execution, and hierarchical teams.
+<li><strong>Patterns:</strong> Parallel execution, hierarchical teams, and dynamic routing.
 </li>
 </ul>
-<h2>Advanced Patterns</h2>
+<h3>3. State &amp; Results</h3>
+<p>Provides structured ways to handle the output of an agent run and manage resumable state.</p>
 <ul>
-<li><strong>Realtime API Integration</strong>: Building voice and low-latency interactive agents.
+<li><strong>Run Objects:</strong> Comprehensive return objects containing final outputs and trace data.
 </li>
-<li><strong>MCP Integration</strong>: Leveraging the <a href="mcp-architecture.html" class="wikilink">Model Context Protocol</a> for standardized tool and resource access.
-</li>
-<li><strong>Observability</strong>: Built-in hooks for tracking agent reasoning, tool calls, and results.
+<li><strong>Resumable State:</strong> Strategies for continuing work across multiple turns or sessions.
 </li>
 </ul>
+<h3>4. Guardrails &amp; Approvals</h3>
+<p>Built-in support for safety validation and human-in-the-loop (HITL) patterns.</p>
+<ul>
+<li><strong>Approvals:</strong> Mechanisms to pause or block work before risky actions are taken.
+</li>
+<li><strong>Validation:</strong> Ensuring agent outputs or tool arguments meet safety criteria.
+</li>
+</ul>
+<h2>Tooling &amp; Integrations</h2>
+<h3><a href="mcp-moc.html" class="wikilink">MCP</a> (Model Context Protocol)</h3>
+<p>The Agents SDK natively supports <strong><a href="mcp-architecture.html" class="wikilink">MCP</a></strong> for integrating external tools and data sources. This allows agents to interact with a wide ecosystem of pre-built MCP servers.</p>
+<h3>Sandbox Agents</h3>
+<p>Agents can be run in container-based environments with access to files, commands, and packages—ideal for code execution or file manipulation tasks.</p>
+<h2>Comparison: Swarm vs. Agents SDK</h2>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>[[openai-swarm</th>
+<th>Swarm]]</th>
+<th>Agents SDK</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Experimental / Educational</td>
+<td>Production-Ready</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>Stateless (Caller manages)</td>
+<td>Resumable / Managed</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Lightweight (Function-based)</td>
+<td>Comprehensive / Tool-based</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Minimal</td>
+<td>Guardrails / Sandbox / Approvals</td>
+</tr>
+</tbody>
+</table>
 <hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/openai-agents-and-swarm.md</code>
-</li>
-<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>
-</li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
-</li>
-<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
-</li>
-</ul>
+<p>*Source: <a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -503,13 +529,15 @@
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 </ul>
           </div>

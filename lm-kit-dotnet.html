@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">LM-Kit.NET</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">lm-kit, dotnet-llm-sdk, lmkit-dotnet, lm-kit-inference</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LM-Kit.NET</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">lm-kit, dotnet-llm-sdk, lmkit-dotnet, lm-kit-inference</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -446,7 +446,7 @@
         <h1>LM-Kit.NET</h1>
 <p><strong>LM-Kit.NET</strong> is a commercial SDK that wraps <code>llama.cpp</code> and exposes a .NET-native inference API for local GGUF model execution. It is the primary way to run LLMs entirely on-device within a C#/.NET application.</p>
 <h2>Position in the Tier Model</h2>
-<p>In the <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> tier hierarchy, LM-Kit.NET is the <strong>Tier-0→Tier-1 bridge</strong>: it brings Tier-0 inference (systems-level, hardware-accelerated model execution) into a Tier-1 C# API surface, without requiring a Python subprocess or a cloud endpoint.</p>
+<p>In the <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> tier hierarchy, LM-Kit.NET is the <strong>Tier-0→Tier-1 bridge</strong>: it brings Tier-0 inference (systems-level, hardware-accelerated model execution) into a Tier-1 C# API surface, without requiring a <a href="python.html" class="wikilink">python</a> subprocess or a cloud endpoint.</p>
 <p>This means the full <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (Thought → Action → Observation) can run entirely within .NET:</p>
 <ul>
 <li><strong>Thought</strong> — LM-Kit.NET provides the inference
@@ -609,6 +609,7 @@ var result = await kernel.InvokePromptAsync(&quot;List orphaned notes.&quot;);</
 <li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
 <li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
 <li><a href="ms-semantic-kernel.html" class="">ms-semantic-kernel</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="react-pattern.html" class="">react-pattern</a></li>
 </ul>
           </div>

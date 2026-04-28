@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agent Development Kit (ADK) — Vulture Portal</title>
+  <title>Agent Development Kit ([[agent-development-kit|ADK]]) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Agent Development Kit (ADK)</span>
+      <span>Agent Development Kit ([[agent-development-kit|ADK]])</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Agent Development Kit (ADK)</h1>
+      <h1 class="note-title">Agent Development Kit ([[agent-development-kit|ADK]])</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Development Kit (ADK)</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Development Kit ([[agent-development-kit|ADK]])</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -447,15 +447,15 @@
 <p>The <strong>Agent Development Kit (ADK)</strong> is an open-source, code-first toolkit for building, evaluating, and deploying sophisticated AI agents with high flexibility and control. It is particularly optimized for Google&#39;s Gemini models but designed for broad LLM support.</p>
 <h2>Core Concepts</h2>
 <ul>
-<li><strong>Agent</strong>: The fundamental worker unit. Can be an <code>LlmAgent</code> (reasoning) or a <strong>Workflow Agent</strong> (deterministic control like <code>SequentialAgent</code>, <code>ParallelAgent</code>, <code>LoopAgent</code>).
+<li><strong>Agent</strong>: The fundamental worker unit. Can be an <code>LlmAgent</code> (reasoning) or a <a href="workflow-agents.html" class="wikilink">Workflow Agent</a> (deterministic control like <code>SequentialAgent</code>, <code>ParallelAgent</code>, <code>LoopAgent</code>).
 </li>
-<li><strong>Tool</strong>: Capabilities beyond conversation (APIs, code execution, search).
+<li><strong>Tool</strong>: Capabilities beyond conversation (APIs, code execution, search). See <a href="agent-tools.html" class="wikilink">agent-tools</a>.
 </li>
-<li><strong>Session &amp; State</strong>: Manages conversational context (<code>Session</code>) and short-term working memory (<code>State</code>).
+<li><strong><a href="adk-session-service.html" class="wikilink">Session &amp;amp; State</a></strong>: Manages conversational context (<code>Session</code>) and short-term working memory (<code>State</code>).
 </li>
 <li><strong>Memory</strong>: Long-term recall across multiple sessions.
 </li>
-<li><strong>Artifacts</strong>: Management of files and binary data (images, PDFs) associated with a session.
+<li><strong><a href="adk-artifact-service.html" class="wikilink">Artifacts</a></strong>: Management of files and binary data (images, PDFs) associated with a session.
 </li>
 <li><strong>Runner</strong>: The engine that orchestrates the execution flow and agent interactions.
 </li>
@@ -494,6 +494,8 @@
 </li>
 <li><a href="agent-tools.html" class="wikilink">agent-tools</a>
 </li>
+<li><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>
+</li>
 </ul>
       </main>
 
@@ -507,18 +509,51 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
+<li><a href="adk-advanced-capabilities.html" class="">adk-advanced-capabilities</a></li>
+<li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="adk-evaluation-framework.html" class="">adk-evaluation-framework</a></li>
+<li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
+<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
 <li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>
         </div>

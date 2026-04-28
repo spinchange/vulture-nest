@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MCP Client Development — Vulture Portal</title>
+  <title>[[mcp-moc|MCP]] Client Development — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>MCP Client Development</span>
+      <span>[[mcp-moc|MCP]] Client Development</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">MCP Client Development</h1>
+      <h1 class="note-title">[[mcp-moc|MCP]] Client Development</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-host-build, mcp-client-sdk, build-mcp-client</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP Client Development</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Client Development</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-host-build, mcp-client-sdk, build-mcp-client</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -457,7 +457,7 @@
 </li>
 </ol>
 <h2>Implementation Patterns</h2>
-<h3>1. Python (ClientSession)</h3>
+<h3>1. <a href="python.html" class="wikilink">python</a> (ClientSession)</h3>
 <p>The Python SDK uses <code>ClientSession</code> within an <code>AsyncExitStack</code> for robust transport lifecycle management.</p>
 <ul>
 <li><strong>Connection</strong>: <code>server_params = StdioServerParameters(command=&quot;uv&quot;, args=[&quot;run&quot;, &quot;server.py&quot;])</code>
@@ -467,7 +467,7 @@
 <li><strong>Tool Execution</strong>: <code>result = await session.call_tool(tool_name, tool_args)</code>
 </li>
 </ul>
-<h3>2. TypeScript / Node.js</h3>
+<h3>2. <a href="typescript.md.html" class="wikilink">TypeScript</a> / Node.js</h3>
 <p>The TypeScript SDK uses a <code>Client</code> class with pluggable transports.</p>
 <ul>
 <li><strong>Connection</strong>: <code>const transport = new StdioClientTransport({ command: &quot;node&quot;, args: [&quot;server.js&quot;] });</code>
@@ -537,6 +537,10 @@
 <li><a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a>
 </li>
 </ul>
+<ul>
+<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -562,14 +566,18 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
 <li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="typescript.md.html" class="">typescript.md</a></li>
 </ul>
           </div>
         </div>

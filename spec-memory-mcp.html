@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spec: Memory MCP Server — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Spec: Memory MCP Server</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Spec: Memory MCP Server</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Memory MCP Server</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Spec: Memory MCP Server</h1>
+<p><strong>Purpose:</strong> An MCP server that instantiates the <a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a> as a query-able, agent-writable memory store. Provides two scopes — <strong>session</strong> (volatile, per-conversation) and <strong>vault</strong> (persistent, cross-session) — over a SQLite backend. Exposes memory via standard MCP Resources and Tools so any MCP-compatible agent (ADK, Claude, Swarm) can read and write without provider-specific APIs.</p>
+<hr>
+<h2>1. Architecture</h2>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                   MCP Host (Agent)                  │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               MCP Client                    │   │
+│  └──────────────────┬───────────────────────────┘   │
+└─────────────────────┼───────────────────────────────┘
+                      │ JSON-RPC 2.0 (Stdio or HTTP)
+┌─────────────────────┴───────────────────────────────┐
+│              Memory MCP Server                      │
+│  ┌──────────────┐  ┌────────────────────────────┐   │
+│  │  Resource     │  │        Tool Handlers       │   │
+│  │  Handler      │  │  commit / search / prune   │   │
+│  └──────┬───────┘  └───────────┬────────────────┘   │
+│         └──────────────┬───────┘                    │
+│              ┌──────────┴────────┐                   │
+│              │   SQLite DB       │                   │
+│              │  session_memories │                   │
+│              │  vault_memories   │                   │
+│              └───────────────────┘                   │
+└─────────────────────────────────────────────────────┘</code></pre>
+<p>Transport: <strong>Stdio</strong> (default, for local agent use) or <strong>Streamable HTTP</strong> (for multi-agent deployments). SQLite file is co-located with the server binary; session_memories are cleared at server restart or explicit prune.</p>
+<hr>
+<h2>2. SQLite Schema</h2>
+<pre><code>CREATE TABLE session_memories (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id  TEXT    NOT NULL,
+    key         TEXT    NOT NULL,
+    content     TEXT    NOT NULL,
+    tags        TEXT    NOT NULL DEFAULT &#39;[]&#39;,  -- JSON array of strings
+    created_at  TEXT    NOT NULL DEFAULT (strftime(&#39;%Y-%m-%dT%H:%M:%SZ&#39;, &#39;now&#39;)),
+    UNIQUE(session_id, key)
+);
+
+CREATE INDEX idx_session_memories_session ON session_memories(session_id);
+CREATE INDEX idx_session_memories_tags    ON session_memories(tags);  -- partial, via LIKE
+
+CREATE TABLE vault_memories (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    key         TEXT    NOT NULL UNIQUE,
+    content     TEXT    NOT NULL,
+    tags        TEXT    NOT NULL DEFAULT &#39;[]&#39;,  -- JSON array of strings
+    embedding   BLOB,                           -- optional: float32 LE array (D=1536)
+    created_at  TEXT    NOT NULL DEFAULT (strftime(&#39;%Y-%m-%dT%H:%M:%SZ&#39;, &#39;now&#39;)),
+    updated_at  TEXT    NOT NULL DEFAULT (strftime(&#39;%Y-%m-%dT%H:%M:%SZ&#39;, &#39;now&#39;))
+);
+
+CREATE INDEX idx_vault_memories_tags ON vault_memories(tags);
+
+-- Full-text search (FTS5) — covers both tables via content= tables
+CREATE VIRTUAL TABLE session_fts USING fts5(
+    key, content, tags,
+    content=session_memories, content_rowid=id
+);
+
+CREATE VIRTUAL TABLE vault_fts USING fts5(
+    key, content, tags,
+    content=vault_memories, content_rowid=id
+);
+
+-- Triggers to keep FTS in sync
+CREATE TRIGGER session_ai AFTER INSERT ON session_memories BEGIN
+    INSERT INTO session_fts(rowid, key, content, tags) VALUES (new.id, new.key, new.content, new.tags);
+END;
+CREATE TRIGGER session_ad AFTER DELETE ON session_memories BEGIN
+    INSERT INTO session_fts(session_fts, rowid, key, content, tags) VALUES(&#39;delete&#39;, old.id, old.key, old.content, old.tags);
+END;
+CREATE TRIGGER session_au AFTER UPDATE ON session_memories BEGIN
+    INSERT INTO session_fts(session_fts, rowid, key, content, tags) VALUES(&#39;delete&#39;, old.id, old.key, old.content, old.tags);
+    INSERT INTO session_fts(rowid, key, content, tags) VALUES (new.id, new.key, new.content, new.tags);
+END;
+-- (Identical triggers for vault_memories / vault_fts omitted for brevity)</code></pre>
+<p><strong>Embedding column:</strong> <code>BLOB</code> storing a little-endian <code>float32[D]</code> array. When present, <code>search_memories</code> can perform cosine-similarity ranking in addition to FTS. Embeddings are written by the agent via <code>commit_memory</code> (optional field); the server does not generate them. D=1536 matches <code>text-embedding-3-small</code>; set D at server init via config.</p>
+<hr>
+<h2>3. MCP Primitives</h2>
+<h3>3.1 Resources</h3>
+<table>
+<thead><tr>
+<th>URI</th>
+<th>Scope</th>
+<th>Content</th>
+</tr></thead><tbody>
+<tr>
+<td><code>memory://session/{session_id}</code></td>
+<td>volatile</td>
+<td>All memories for the given session, as a JSON array</td>
+</tr>
+<tr>
+<td><code>memory://vault</code></td>
+<td>persistent</td>
+<td>All vault memories (paginated via <code>?offset=&amp;limit=</code>), as a JSON array</td>
+</tr>
+<tr>
+<td><code>memory://vault/{key}</code></td>
+<td>persistent</td>
+<td>Single vault memory by key, as a JSON object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resource schema (single memory object):</strong></p>
+<pre><code>{
+  &quot;key&quot;: &quot;user_preference_language&quot;,
+  &quot;content&quot;: &quot;User prefers Python examples over TypeScript.&quot;,
+  &quot;tags&quot;: [&quot;preference&quot;, &quot;coding&quot;],
+  &quot;scope&quot;: &quot;vault&quot;,
+  &quot;created_at&quot;: &quot;2026-04-27T14:00:00Z&quot;,
+  &quot;updated_at&quot;: &quot;2026-04-27T14:00:00Z&quot;
+}</code></pre>
+<p>Resources support <code>listChanged</code> notifications — the server emits <code>notifications/resources/list_changed</code> after any <code>commit_memory</code> or <code>prune_memory</code> call that modifies the resource set.</p>
+<h3>3.2 Tools</h3>
+<h4><code>commit_memory</code></h4>
+<pre><code>{
+  &quot;name&quot;: &quot;commit_memory&quot;,
+  &quot;description&quot;: &quot;Store a memory entry in the session (volatile) or vault (persistent) scope. Upserts on key collision.&quot;,
+  &quot;inputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;scope&quot;:     { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;session&quot;, &quot;vault&quot;] },
+      &quot;key&quot;:       { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Unique identifier for this memory within its scope.&quot; },
+      &quot;content&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The memory content to store.&quot; },
+      &quot;tags&quot;:      { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;string&quot; }, &quot;description&quot;: &quot;Categorization tags for retrieval.&quot; },
+      &quot;embedding&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;number&quot; }, &quot;description&quot;: &quot;Optional pre-computed embedding vector (float32[D]).&quot; }
+    },
+    &quot;required&quot;: [&quot;scope&quot;, &quot;key&quot;, &quot;content&quot;]
+  },
+  &quot;outputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;committed&quot;: { &quot;type&quot;: &quot;boolean&quot; },
+      &quot;key&quot;:       { &quot;type&quot;: &quot;string&quot; },
+      &quot;scope&quot;:     { &quot;type&quot;: &quot;string&quot; }
+    },
+    &quot;required&quot;: [&quot;committed&quot;, &quot;key&quot;, &quot;scope&quot;]
+  }
+}</code></pre>
+<p><strong>Behavior:</strong> <code>INSERT OR REPLACE</code> (upsert). For <code>vault</code> scope, updates <code>updated_at</code>. For <code>session</code> scope, requires <code>session_id</code> from server state (set at connection initialization via a custom <code>initialize</code> param or via a <code>set_session_id</code> tool call — see &#167;4).</p>
+<h4><code>search_memories</code></h4>
+<pre><code>{
+  &quot;name&quot;: &quot;search_memories&quot;,
+  &quot;description&quot;: &quot;Search memories by text query, tags, or both. Returns ranked results. Semantic ranking used if embeddings are present and a query_embedding is provided.&quot;,
+  &quot;inputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;query&quot;:           { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Full-text search query (FTS5 syntax supported).&quot; },
+      &quot;scope&quot;:           { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;session&quot;, &quot;vault&quot;, &quot;all&quot;], &quot;description&quot;: &quot;Which scope(s) to search.&quot; },
+      &quot;tags&quot;:            { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;string&quot; }, &quot;description&quot;: &quot;Filter: only return memories with ALL specified tags.&quot; },
+      &quot;query_embedding&quot;: { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;number&quot; }, &quot;description&quot;: &quot;Optional: embedding of the query for semantic re-ranking.&quot; },
+      &quot;limit&quot;:           { &quot;type&quot;: &quot;integer&quot;, &quot;description&quot;: &quot;Max results to return.&quot;, &quot;default&quot;: 10 }
+    },
+    &quot;required&quot;: [&quot;query&quot;]
+  },
+  &quot;outputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;results&quot;: {
+        &quot;type&quot;: &quot;array&quot;,
+        &quot;items&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;key&quot;:       { &quot;type&quot;: &quot;string&quot; },
+            &quot;content&quot;:   { &quot;type&quot;: &quot;string&quot; },
+            &quot;tags&quot;:      { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;string&quot; } },
+            &quot;scope&quot;:     { &quot;type&quot;: &quot;string&quot; },
+            &quot;relevance&quot;: { &quot;type&quot;: &quot;number&quot;, &quot;description&quot;: &quot;Score in [0,1]; 1.0 = exact match.&quot; }
+          },
+          &quot;required&quot;: [&quot;key&quot;, &quot;content&quot;, &quot;tags&quot;, &quot;scope&quot;, &quot;relevance&quot;]
+        }
+      },
+      &quot;total_searched&quot;: { &quot;type&quot;: &quot;integer&quot; }
+    },
+    &quot;required&quot;: [&quot;results&quot;, &quot;total_searched&quot;]
+  }
+}</code></pre>
+<p><strong>Ranking algorithm:</strong></p>
+<ol>
+<li>FTS5 BM25 score (always computed).
+</li>
+<li>If <code>query_embedding</code> provided AND vault memory has an <code>embedding</code>: cosine similarity computed in-process, blended with BM25: <code>relevance = 0.4 * bm25_norm + 0.6 * cosine_sim</code>.
+</li>
+<li>Tag filter applied as a pre-filter (SQL WHERE clause on <code>json_each(tags)</code>).
+</li>
+<li>Results sorted descending by <code>relevance</code>, limited by <code>limit</code>.
+</li>
+</ol>
+<h4><code>prune_memory</code></h4>
+<pre><code>{
+  &quot;name&quot;: &quot;prune_memory&quot;,
+  &quot;description&quot;: &quot;Delete memory entries. Can target a specific key, or bulk-delete by age or scope.&quot;,
+  &quot;inputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;scope&quot;:       { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;session&quot;, &quot;vault&quot;, &quot;all&quot;] },
+      &quot;key&quot;:         { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;If provided, delete only this key (within scope).&quot; },
+      &quot;older_than&quot;:  { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;ISO 8601 datetime. Delete entries created before this timestamp.&quot; },
+      &quot;tags&quot;:        { &quot;type&quot;: &quot;array&quot;, &quot;items&quot;: { &quot;type&quot;: &quot;string&quot; }, &quot;description&quot;: &quot;Delete entries matching ALL these tags.&quot; }
+    },
+    &quot;required&quot;: [&quot;scope&quot;]
+  },
+  &quot;outputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;pruned_count&quot;: { &quot;type&quot;: &quot;integer&quot; }
+    },
+    &quot;required&quot;: [&quot;pruned_count&quot;]
+  }
+}</code></pre>
+<p><strong>Safety rule:</strong> <code>prune_memory</code> with <code>scope: &quot;vault&quot;</code> and no <code>key</code>, <code>older_than</code>, or <code>tags</code> filter is rejected with <code>McpError::InvalidParams(&quot;Bulk vault prune requires at least one filter.&quot;)</code>. Session scope without filters is allowed (clears the entire session on disconnect).</p>
+<hr>
+<h2>4. Session Identity</h2>
+<p>The server needs a <code>session_id</code> to namespace volatile memories. Two options:</p>
+<p><strong>Option A (Stdio):</strong> The server reads a <code>MEMORY_MCP_SESSION_ID</code> environment variable at startup. Simple, appropriate for single-agent local use.</p>
+<p><strong>Option B (HTTP + custom init param):</strong> During the MCP <code>initialize</code> handshake, the client includes a <code>sessionId</code> in <code>clientInfo.extra</code>:</p>
+<pre><code>{
+  &quot;clientInfo&quot;: { &quot;name&quot;: &quot;claude-agent&quot;, &quot;version&quot;: &quot;1.0&quot;, &quot;extra&quot;: { &quot;sessionId&quot;: &quot;sess_abc123&quot; } }
+}</code></pre>
+<p>The server extracts and stores this for the connection&#39;s lifetime.</p>
+<p><strong>Session cleanup:</strong> On connection close (Stdio EOF / HTTP disconnect), the server deletes all <code>session_memories</code> rows for that <code>session_id</code>. Configurable via <code>MEMORY_MCP_SESSION_PERSIST=true</code> to skip cleanup (useful for debugging).</p>
+<hr>
+<h2>5. C# Implementation Blueprint</h2>
+<pre><code>// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton&lt;MemoryDb&gt;(sp =&gt;
+    new MemoryDb(builder.Configuration[&quot;MEMORY_MCP_DB_PATH&quot;] ?? &quot;memory.db&quot;));
+builder.Services.AddScoped&lt;ISessionContext, SessionContext&gt;();  // reads session_id from HTTP context
+builder.Services.AddMcpServer()
+    .WithTool&lt;CommitMemoryTool&gt;()
+    .WithTool&lt;SearchMemoriesTool&gt;()
+    .WithTool&lt;PruneMemoryTool&gt;()
+    .WithResource&lt;SessionMemoryResource&gt;()
+    .WithResource&lt;VaultMemoryResource&gt;();
+
+// CommitMemoryTool.cs
+[McpTool(&quot;commit_memory&quot;, &quot;Store a memory in session or vault scope.&quot;)]
+public async Task&lt;CommitMemoryResult&gt; CommitMemory(
+    CommitMemoryArgs args,
+    [FromServices] MemoryDb db,
+    [FromServices] ISessionContext session,
+    CancellationToken ct = default)
+{
+    var sessionId = session.SessionId;
+    await db.UpsertAsync(args.Scope, sessionId, args.Key, args.Content, args.Tags, args.Embedding, ct);
+    return new CommitMemoryResult(Committed: true, Key: args.Key, Scope: args.Scope);
+}
+
+// Records
+public record CommitMemoryArgs(
+    string Scope, string Key, string Content,
+    string[]? Tags = null, float[]? Embedding = null);
+public record CommitMemoryResult(bool Committed, string Key, string Scope);</code></pre>
+<p><strong>Key dependencies:</strong> <code>Microsoft.Data.Sqlite</code>, <code>ModelContextProtocol</code> (C# MCP SDK), <code>System.Numerics.Tensors</code> (for cosine similarity on <code>float[]</code>).</p>
+<hr>
+<h2>6. Python Implementation Blueprint</h2>
+<pre><code># server.py
+import asyncio, json, sqlite3
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import Tool, Resource, TextContent
+
+db = sqlite3.connect(&quot;memory.db&quot;, check_same_thread=False)
+app = Server(&quot;memory-mcp&quot;)
+
+@app.call_tool()
+async def call_tool(name: str, arguments: dict) -&gt; list[TextContent]:
+    if name == &quot;commit_memory&quot;:
+        scope = arguments[&quot;scope&quot;]
+        key   = arguments[&quot;key&quot;]
+        content = arguments[&quot;content&quot;]
+        tags  = json.dumps(arguments.get(&quot;tags&quot;, []))
+        if scope == &quot;session&quot;:
+            db.execute(
+                &quot;INSERT OR REPLACE INTO session_memories(session_id,key,content,tags) VALUES(?,?,?,?)&quot;,
+                (SESSION_ID, key, content, tags))
+        else:
+            db.execute(
+                &quot;INSERT INTO vault_memories(key,content,tags) VALUES(?,?,?) &quot;
+                &quot;ON CONFLICT(key) DO UPDATE SET content=excluded.content, tags=excluded.tags, &quot;
+                &quot;updated_at=strftime(&#39;%Y-%m-%dT%H:%M:%SZ&#39;,&#39;now&#39;)&quot;,
+                (key, content, tags))
+        db.commit()
+        return [TextContent(type=&quot;text&quot;, text=json.dumps({&quot;committed&quot;: True, &quot;key&quot;: key, &quot;scope&quot;: scope}))]
+
+    elif name == &quot;search_memories&quot;:
+        query = arguments[&quot;query&quot;]
+        scope = arguments.get(&quot;scope&quot;, &quot;all&quot;)
+        limit = arguments.get(&quot;limit&quot;, 10)
+        results = []
+        if scope in (&quot;session&quot;, &quot;all&quot;):
+            rows = db.execute(
+                &quot;SELECT s.key, s.content, s.tags, bm25(session_fts) as score &quot;
+                &quot;FROM session_fts JOIN session_memories s ON session_fts.rowid=s.id &quot;
+                &quot;WHERE session_fts MATCH ? AND s.session_id=? ORDER BY score LIMIT ?&quot;,
+                (query, SESSION_ID, limit)).fetchall()
+            results += [{&quot;key&quot;: r[0], &quot;content&quot;: r[1], &quot;tags&quot;: json.loads(r[2]),
+                         &quot;scope&quot;: &quot;session&quot;, &quot;relevance&quot;: min(1.0, -r[3]/10)} for r in rows]
+        if scope in (&quot;vault&quot;, &quot;all&quot;):
+            rows = db.execute(
+                &quot;SELECT v.key, v.content, v.tags, bm25(vault_fts) as score &quot;
+                &quot;FROM vault_fts JOIN vault_memories v ON vault_fts.rowid=v.id &quot;
+                &quot;WHERE vault_fts MATCH ? ORDER BY score LIMIT ?&quot;,
+                (query, limit)).fetchall()
+            results += [{&quot;key&quot;: r[0], &quot;content&quot;: r[1], &quot;tags&quot;: json.loads(r[2]),
+                         &quot;scope&quot;: &quot;vault&quot;, &quot;relevance&quot;: min(1.0, -r[3]/10)} for r in rows]
+        results.sort(key=lambda r: r[&quot;relevance&quot;], reverse=True)
+        return [TextContent(type=&quot;text&quot;, text=json.dumps({&quot;results&quot;: results[:limit], &quot;total_searched&quot;: len(results)}))]
+
+    elif name == &quot;prune_memory&quot;:
+        scope = arguments[&quot;scope&quot;]
+        key   = arguments.get(&quot;key&quot;)
+        if key:
+            if scope == &quot;session&quot;:
+                cur = db.execute(&quot;DELETE FROM session_memories WHERE session_id=? AND key=?&quot;, (SESSION_ID, key))
+            else:
+                cur = db.execute(&quot;DELETE FROM vault_memories WHERE key=?&quot;, (key,))
+        else:
+            if scope == &quot;session&quot;:
+                cur = db.execute(&quot;DELETE FROM session_memories WHERE session_id=?&quot;, (SESSION_ID,))
+            else:
+                raise ValueError(&quot;Bulk vault prune requires a key or older_than filter.&quot;)
+        db.commit()
+        return [TextContent(type=&quot;text&quot;, text=json.dumps({&quot;pruned_count&quot;: cur.rowcount}))]
+
+async def main():
+    async with stdio_server() as (read, write):
+        await app.run(read, write, app.create_initialization_options())
+
+if __name__ == &quot;__main__&quot;:
+    SESSION_ID = os.environ.get(&quot;MEMORY_MCP_SESSION_ID&quot;, &quot;default&quot;)
+    asyncio.run(main())</code></pre>
+<p><strong>Key dependencies:</strong> <code>mcp</code> (Python MCP SDK), <code>sqlite3</code> (stdlib).</p>
+<hr>
+<h2>7. Capability Integration</h2>
+<p>This server&#39;s MCP manifest defines two capability levels:</p>
+<table>
+<thead><tr>
+<th>Agent scope</th>
+<th>Permitted tools</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Read-only</strong></td>
+<td><code>search_memories</code></td>
+<td>Safe for any agent; no state mutation</td>
+</tr>
+<tr>
+<td><strong>Read-write</strong></td>
+<td><code>commit_memory</code>, <code>search_memories</code>, <code>prune_memory</code></td>
+<td>Requires explicit grant</td>
+</tr>
+</tbody>
+</table>
+<p>Per <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a>, the orchestrating agent&#39;s <code>Scope</code> must include <code>CommitMemory</code> to delegate a task that calls <code>commit_memory</code>. The server&#39;s capability set:</p>
+<pre><code>Caps(MemoryMCP) = { SearchMemory, CommitMemory, PruneMemory }</code></pre>
+<p>A read-only orchestrator&#39;s effective delegation:</p>
+<pre><code>Effective = { SearchMemory, CommitMemory, PruneMemory } ∩ { SearchMemory } = { SearchMemory }</code></pre>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a>
+</li>
+<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
+</li>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+</li>
+<li><a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a>
+</li>
+<li><a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a>
+</li>
+<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
+</li>
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>
+</li>
+<li><a href="semantic-embedding-pipeline.html" class="wikilink">semantic-embedding-pipeline</a>
+</li>
+<li><a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a>
+</li>
+<li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

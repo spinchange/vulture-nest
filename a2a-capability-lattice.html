@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">A2A Capability Lattice</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26T00:00:00.000Z</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">A2A Capability Lattice</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
       </div>
     </header>
 
@@ -444,7 +444,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>A2A Capability Lattice</h1>
-<p><strong>Context:</strong> <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> formalizes how MCP tool manifests map to typed capability sets and how agent delegation is bounded by their intersection (&#167;4). This note extends that lattice to the A2A layer, completing the formal closure of the <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> theory.</p>
+<p><strong>Context:</strong> <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> formalizes how <a href="mcp-moc.html" class="wikilink">MCP</a> tool manifests map to typed capability sets and how agent delegation is bounded by their intersection (&#167;4). This note extends that lattice to the A2A layer, completing the formal closure of the <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> theory.</p>
 <p><code>status: draft</code> — the A2A specification reached v1.0 but remains under active development. The lattice formalism here is grounded in the current spec; the static analysis layer (&#167;4) is aspirational pending schema stabilization.</p>
 <hr>
 <h2>1. Capability Set for A2A Agents</h2>
@@ -472,7 +472,7 @@
 <li><code>Scope(O)</code> = skills O is currently authorized to invoke, as a subset of O&#39;s OAuth-granted scopes
 </li>
 </ul>
-<p>The <strong>monotonicity invariant</strong> holds at both layers: delegation can only reduce or preserve capability, never increase it. An orchestrator cannot grant a skill it does not itself possess — the A2A equivalent of Rust&#39;s &quot;you cannot move a value you&#39;ve already moved.&quot;</p>
+<p>The <strong>monotonicity invariant</strong> holds at both layers: delegation can only reduce or preserve capability, never increase it. An orchestrator cannot grant a skill it does not itself possess — the A2A equivalent of <a href="rust.html" class="wikilink">rust</a>&#39;s &quot;you cannot move a value you&#39;ve already moved.&quot;</p>
 <h3>Lattice Structure</h3>
 <pre><code>         ⊤ (all possible skills)
         / \
@@ -597,6 +597,7 @@ function delegate&lt;O extends SharedCaps, S extends SharedCaps, SharedCaps&gt;(
 <li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
@@ -606,7 +607,9 @@ function delegate&lt;O extends SharedCaps, S extends SharedCaps, SharedCaps&gt;(
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 </ul>
           </div>
         </div>

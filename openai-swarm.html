@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">OpenAI Swarm</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">swarm, openai-swarm-experimental</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Swarm</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -444,46 +444,77 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>OpenAI Swarm</h1>
-<p>OpenAI Swarm is an experimental, educational framework designed to explore lightweight <strong>multi-agent orchestration</strong>. It focuses on making agent coordination and execution highly controllable and easily testable.</p>
-<p>&gt; [!IMPORTANT] &gt; Swarm is considered experimental and has been largely superseded by the <a href="https://github.com/openai/openai-agents-python">OpenAI Agents SDK</a>, which is the production-ready evolution of these patterns.</p>
+<p><strong>OpenAI Swarm</strong> is an experimental, educational framework for orchestrating multiple agents. It prioritizes a lightweight, stateless approach to multi-agent systems, focusing on <strong>Handoffs</strong> and <strong>Routines</strong>.</p>
 <h2>Core Primitives</h2>
-<p>Swarm operates on two primary abstractions:</p>
-<ol>
-<li><strong>Agents</strong>: An <code>Agent</code> encompasses <code>instructions</code> and <code>tools</code>.
-</li>
-<li><strong>Handoffs</strong>: An <code>Agent</code> can choose to hand off a conversation to another <code>Agent</code> at any point by returning the next agent from a function call.
-</li>
-</ol>
-<h2>Philosophy</h2>
+<h3>1. The <code>Agent</code></h3>
+<p>An <code>Agent</code> encapsulates:</p>
 <ul>
-<li><strong>Lightweight</strong>: Minimal overhead for agent coordination.
+<li><strong>Instructions:</strong> The system prompt (can be a string or a callable returning a string).
 </li>
-<li><strong>Stateless</strong>: Swarm runs almost entirely on the client and does not store state between calls (unlike the Assistants API).
+<li><strong>Functions:</strong> A list of <a href="python.html" class="wikilink">python</a> functions the agent can call.
 </li>
-<li><strong>Controllable</strong>: Developers have full control over the handoff logic and agent interactions.
+<li><strong>Model:</strong> The underlying LLM (defaults to <code>gpt-4o</code>).
 </li>
 </ul>
-<h2>Swarm vs. Assistants API</h2>
+<h3>2. Handoffs</h3>
+<p>A handoff occurs when an agent&#39;s function returns another <code>Agent</code> object.</p>
 <ul>
-<li><strong>Swarm</strong>: Best for large numbers of independent capabilities that are difficult to encode in a single prompt. It is stateless and client-side.
+<li><strong>Mechanism:</strong> When the framework sees a returned <code>Agent</code>, it switches the active agent to the new one and continues the conversation with the new agent&#39;s instructions.
 </li>
-<li><strong>Assistants API</strong>: Best for fully-hosted threads, built-in memory management, and retrieval.
+<li><strong>Use Case:</strong> Triage agents routing users to specialized departments (e.g., &quot;Billing&quot;, &quot;Refunds&quot;).
 </li>
 </ul>
-<h2>Implementation Pattern</h2>
-<p>The &quot;Handoff&quot; pattern in Swarm is implemented by functions that return another <code>Agent</code> object. This allows for dynamic routing based on user input or agent reasoning.</p>
-<pre><code>def transfer_to_agent_b():
-    return agent_b</code></pre>
+<h3>3. Context Variables</h3>
+<p>Shared state passed into <code>client.run()</code>.</p>
+<ul>
+<li><strong>Access:</strong> Functions can declare <code>context_variables</code> as an argument to receive the current state.
+</li>
+<li><strong>Updates:</strong> Functions can return a <code>Result</code> object to update these variables.
+</li>
+</ul>
+<h2>Key Features</h2>
+<h3>Stateless Execution</h3>
+<p>The <code>client.run()</code> loop is stateless. It processes the current turn, handles any function calls, manages handoffs, and returns the final response along with the updated <code>context_variables</code> and active <code>agent</code>. The caller is responsible for persisting this state.</p>
+<h3><code>Result</code> Object</h3>
+<p>A powerful return type for functions that allows for atomic updates:</p>
+<pre><code>return Result(
+    value=&quot;Final answer for the user&quot;,
+    agent=next_agent,           # The Handoff
+    context_variables={&quot;key&quot;: &quot;val&quot;} # State update
+)</code></pre>
+<h2>Comparison: Swarm vs. <a href="agent-development-kit.html" class="wikilink">ADK</a></h2>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>OpenAI Swarm</th>
+<th>[[agent-development-kit</th>
+<th>ADK]]</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>State Management</strong></td>
+<td>External (Stateless)</td>
+<td>Internal ([[adk-session-service</td>
+<td>Session Service]])</td>
+</tr>
+<tr>
+<td><strong>Handoff Type</strong></td>
+<td>Return-based (returns <code>Agent</code>)</td>
+<td>Tool-based (<code>transfer_to_agent</code>)</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Dynamic (Loop-based)</td>
+<td>Mixed (Deterministic &amp; Dynamic)</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Minimal</td>
+<td>High (Full SDK)</td>
+</tr>
+</tbody>
+</table>
 <hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/openai-agents-and-swarm.md</code>
-</li>
-<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
-</li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
-</li>
-</ul>
+<p>*Source: <a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -496,15 +527,21 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="python.html" class="">python</a></li>
 </ul>
           </div>
         </div>

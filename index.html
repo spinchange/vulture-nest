@@ -429,10 +429,10 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
       </div>
     </header>
@@ -443,7 +443,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Index (YANP Compliant)</h1>
-<h2>The Maps (MOCs)</h2>
+<h2>Maps of Content</h2>
 <ul>
 <li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> - Philosophy &amp; YANP
 </li>
@@ -451,7 +451,7 @@
 </li>
 <li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> - Systems &amp; Workflow
 </li>
-<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> - Lab notes, build logs, and workflow trials
+<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> - Lab notes, build logs, and workflow trials; now covers the 04_Experiments/ pipeline
 </li>
 <li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> - Agency &amp; Mechanics
 </li>
@@ -459,7 +459,7 @@
 </li>
 <li><a href="agentic-tdd-patterns.html" class="wikilink">agentic-tdd-patterns</a> - Executable Intent &amp; EDD
 </li>
-<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a> - Swarm vs. ADK Comparison
+<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a> - Swarm vs. <a href="agent-development-kit.html" class="wikilink">ADK</a> Comparison
 </li>
 <li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a> - Hugging Face Agents Course Reference
 </li>
@@ -488,9 +488,65 @@
 <li><a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a> - Deterministic + Semantic Strategy (Design)
 </li>
 </ul>
+<h2>Blueprint Specs (How to Build It)</h2>
+<ul>
+<li><a href="spec-memory-mcp.html" class="wikilink">spec-memory-mcp</a> - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
+</li>
+<li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
+</li>
+<li><a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a> - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
+</li>
+<li><a href="spec-visual-vault-language.html" class="wikilink">spec-visual-vault-language</a> - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
+</li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> - External Source Ingestion: Firecrawl → Postgres/Supabase + pgvector RAG
+</li>
+</ul>
+<h2>Agent Development Kit (ADK)</h2>
+<ul>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> - Core Overview
+</li>
+<li><a href="adk-session-service.html" class="wikilink">adk-session-service</a> - Session Management &amp; State Persistence
+</li>
+<li><a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a> - Binary &amp; File Data Lifecycle
+</li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a> - Hooking into Agent Execution
+</li>
+<li><a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a> - Vector Search &amp; Cross-Session Recall
+</li>
+<li><a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> - Hierarchical &amp; Parallel Patterns
+</li>
+<li><a href="adk-evaluation-framework.html" class="wikilink">adk-evaluation-framework</a> - Trajectory-Based Assessment
+</li>
+<li><a href="adk-advanced-capabilities.html" class="wikilink">adk-advanced-capabilities</a> - Planning, Thinking, &amp; Code Execution
+</li>
+<li><a href="adk-go-implementation.html" class="wikilink">adk-go-implementation</a> - Native Performance Reference
+</li>
+</ul>
+<h2>Multi-Agent Pattern Language</h2>
+<ul>
+<li><a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a> - Agent A calls Agent B, waits for result (delegation primitive)
+</li>
+<li><a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a> - Flat key-value working memory across agent boundaries
+</li>
+<li><a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a> - Lattice enforcement before every delegation edge
+</li>
+<li><a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a> - Concurrent dispatch to N agents + barrier sync
+</li>
+<li><a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a> - Expose complete agent as opaque callable in tool roster
+</li>
+<li><a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a> - Three-phase atomic transfer of task ownership
+</li>
+<li><a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a> - Mid-task pause/resume for human input or authorization
+</li>
+</ul>
+<h2>System / Protocol</h2>
+<ul>
+<li><a href="experiment-capture-protocol.html" class="wikilink">experiment-capture-protocol</a> - Lightweight YANP variant for 04_Experiments/; covers runs and adversarial debates
+</li>
+</ul>
 <h2>Protocol Bridges</h2>
 <ul>
-<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a> - MCP↔Agent Spec
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a> - <a href="mcp-moc.html" class="wikilink">MCP</a>↔Agent Spec
 </li>
 <li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> - High-Performance .NET Tooling
 </li>
@@ -501,6 +557,26 @@
 <li><a href="csharp-pattern-matching.html" class="wikilink">csharp-pattern-matching</a> - Advanced Control Flow
 </li>
 <li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a> - Shared Resume, Seam, and Reply-Slot Process
+</li>
+</ul>
+<h2>Roadmaps / Active Work</h2>
+<ul>
+<li><a href="productivity-roadmap-2026-04-27.html" class="wikilink">productivity-roadmap-2026-04-27</a> - April 2026 fleet roadmap: seam tightening, experiment capture, debate logging, git attribution
+</li>
+</ul>
+<h2>Multi-Agent Handoffs (Session Seams)</h2>
+<ul>
+<li><a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">codex-roadmap-sprint-handoff-2026-04-27</a> - Codex: implement seams, debate log, experiment scaffold, git attribution (Current)
+</li>
+<li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">gemini-roadmap-sprint-handoff-2026-04-27</a> - Gemini: 04_Experiments/ structure, visitor-directives, index (Current, after Codex)
+</li>
+<li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="wikilink">codex-gemini-cleanup-handoff-2026-04-27</a> - Gemini cleanup boundary (Complete)
+</li>
+<li><a href="claude-community-summary-handoff.html" class="wikilink">claude-community-summary-handoff</a> - Phase 2: Community Summarization (Pending)
+</li>
+<li><a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> - Ingestion &amp; Clustering Path (Complete)
+</li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> - Technical Specifications Path (Complete)
 </li>
 </ul>
 <h2>Emergent Communities</h2>
@@ -514,6 +590,44 @@
 <li><a href="the-vulture-portal.html" class="wikilink">the-vulture-portal</a> - High-Density Web Interface
 </li>
 <li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a> - The Core Thesis (from LLM Wiki)
+</li>
+<li><a href="community-report-generator.html" class="wikilink">community-report-generator</a> - Algorithm: k-means → LLM → Community Report notes
+</li>
+</ul>
+<h2>Community Reports (Synthesis)</h2>
+<ul>
+<li><a href="agentic-protocols.html" class="wikilink">Agentic Protocols</a> - Communication &amp; Thought Cycles
+</li>
+<li><a href="dotnet-csharp.html" class="wikilink">Dotnet &amp;amp; C#</a> - Ecosystem &amp; SDK Patterns
+</li>
+<li><a href="frameworks-eval.html" class="wikilink">Frameworks &amp;amp; Evaluation</a> - ADK vs. Swarm Comparison
+</li>
+<li><a href="lattice-interop.html" class="wikilink">Lattice &amp;amp; Interop</a> - Capability Lattice Theory
+</li>
+<li><a href="mcp-ecosystem.html" class="wikilink">MCP Ecosystem</a> - Server &amp; Client Architecture
+</li>
+<li><a href="pkm-history.html" class="wikilink">PKM History</a> - Genealogy of Personal Knowledge
+</li>
+<li><a href="rust-type-systems.html" class="wikilink">Rust Type Systems</a> - Memory Safety &amp; Session Types
+</li>
+<li><a href="vault-systems.html" class="wikilink">Vault Systems</a> - Gardening &amp; Maintenance Standards
+</li>
+</ul>
+<h2>Literature Notes (Grounded Sources)</h2>
+<ul>
+<li><a href="lit-typescript-handbook.html" class="wikilink">lit-typescript-handbook</a> - TypeScript Handbook (structural types, discriminated unions)
+</li>
+<li><a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a> - The Rust Book (ownership, fearless concurrency)
+</li>
+<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> - MCP Architecture Overview (primitives, lifecycle, transports)
+</li>
+<li><a href="lit-python-standard-library.html" class="wikilink">lit-python-standard-library</a> - Python stdlib (asyncio, typing, concurrency)
+</li>
+<li><a href="lit-skills-agent-behavior.html" class="wikilink">lit-skills-agent-behavior</a> - Skills vs. Vault Knowledge (active/passive split)
+</li>
+<li><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a> - ADK Documentation (multi-agent toolkit)
+</li>
+<li><a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a> - OpenAI Swarm (handoffs, context_variables)
 </li>
 </ul>
 <h2>Sources (Raw Data)</h2>
@@ -548,7 +662,7 @@
 </li>
 <li><a href="https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-repo-poshwiki.md">00_Raw/ms-repo-poshwiki.md</a>
 </li>
-<li><a href="https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi">00_Raw/PoShWiKi/</a> - Minimal PowerShell 7 Wiki for Agents
+<li><a href="https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi">00_Raw/PoShWiKi/</a> - Minimal <a href="powershell.md.html" class="wikilink">PowerShell</a> 7 Wiki for Agents
 </li>
 <li><a href="https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-actions-unit.md">00_Raw/agent-actions-unit.md</a>
 </li>
@@ -621,17 +735,42 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-advanced-capabilities.html" class="">adk-advanced-capabilities</a></li>
+<li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="adk-evaluation-framework.html" class="">adk-evaluation-framework</a></li>
+<li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="agentic-tdd-patterns.html" class="">agentic-tdd-patterns</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
+<li><a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="">codex-roadmap-sprint-handoff-2026-04-27</a></li>
+<li><a href="codex-usage-loop-handoff.html" class="">codex-usage-loop-handoff</a></li>
 <li><a href="cognitive-architectures.html" class="">cognitive-architectures</a></li>
 <li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
 <li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="csharp-moc.html" class="">csharp-moc</a></li>
@@ -639,34 +778,76 @@
 <li><a href="csharp-records.html" class="">csharp-records</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
+<li><a href="dotnet-csharp.html" class="">dotnet-csharp</a></li>
 <li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
 <li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
 <li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="frameworks-eval.html" class="">frameworks-eval</a></li>
+<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="github-deployment.html" class="">github-deployment</a></li>
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
 <li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
 <li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="lattice-implementation-guide.html" class="">lattice-implementation-guide</a></li>
+<li><a href="lattice-interop.html" class="">lattice-interop</a></li>
+<li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
+<li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
+<li><a href="lit-skills-agent-behavior.html" class="">lit-skills-agent-behavior</a></li>
+<li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-ecosystem.html" class="">mcp-ecosystem</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="pkm-history.html" class="">pkm-history</a></li>
 <li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
 <li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
 <li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="powershell.md.html" class="">powershell.md</a></li>
+<li><a href="productivity-roadmap-2026-04-27.html" class="">productivity-roadmap-2026-04-27</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
 <li><a href="rust-macros.html" class="">rust-macros</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
 <li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
 <li><a href="tool-registry.html" class="">tool-registry</a></li>
 <li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
+<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="vault-systems.html" class="">vault-systems</a></li>
 <li><a href="visitor-directives.html" class="">visitor-directives</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 <li><a href="wpf-moc.html" class="">wpf-moc</a></li>
+<li><a href="zettelkasten.html" class="">zettelkasten</a></li>
 </ul>
           </div>
         </div>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Session Types — Foundational Reference</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types, linear-types, affine-types, dyadic-interaction</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types — Foundational Reference</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types, linear-types, affine-types, dyadic-interaction</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -517,7 +517,7 @@ Loop   = rec α. (?Query.!Result.α) ⊕ End</code></pre>
 </tbody>
 </table>
 <p>A <strong>session channel is a linear type on a channel</strong>: the channel must be driven through every step of its declared protocol to <code>End</code>. Abandoning it mid-session — closing the connection before completing the handshake — is a type error in a fully linear type system.</p>
-<p><strong>Rust is affine, not linear.</strong> Rust&#39;s ownership system enforces &quot;at most once&quot; (you cannot move a value twice) but allows silent drop (you may simply not use a value). This means Rust can encode session types but cannot natively enforce the &quot;must complete&quot; constraint. See <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> for the workaround.</p>
+<p><strong><a href="rust.html" class="wikilink">rust</a> is affine, not linear.</strong> Rust&#39;s ownership system enforces &quot;at most once&quot; (you cannot move a value twice) but allows silent drop (you may simply not use a value). This means Rust can encode session types but cannot natively enforce the &quot;must complete&quot; constraint. See <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> for the workaround.</p>
 <hr>
 <h2>4. Duality</h2>
 <p>In a two-party session, the two ends of a channel must have *complementary* types. The <strong>dual</strong> of a session type flips every send into a receive and every receive into a send:</p>
@@ -528,7 +528,7 @@ dual(S₁ &amp; S₂) = dual(S₁) ⊕ dual(S₂)   ← external becomes interna
 dual(End)       = End
 dual(rec α. S)  = rec α. dual(S)</code></pre>
 <p>Duality is the type-level enforcement of protocol agreement. If the client has type <code>!Request.?Response.End</code>, the server *must* have type <code>?Request.!Response.End</code> — its dual. A type system that checks duality at the point where the two ends of a channel are connected catches mismatched protocol implementations at compile time.</p>
-<h3>Duality and MCP</h3>
+<h3>Duality and <a href="mcp-moc.html" class="wikilink">MCP</a></h3>
 <p>In MCP&#39;s initialization handshake:</p>
 <pre><code>Client = !Initialize.?InitializeResult.!Initialized.ActiveClient
 Server = ?Initialize.!InitializeResult.?Initialized.ActiveServer</code></pre>
@@ -636,6 +636,8 @@ Validator_local    = ?Result.!ValidationReport.End</code></pre>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 <li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
 </ul>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">RFC — Polyglot Agent Platform ADR</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-superseded">superseded</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">RFC — Polyglot Agent Platform ADR</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-superseded">superseded</span></span>
       </div>
     </header>
 
@@ -449,7 +449,7 @@
 <h2>Problem Statement</h2>
 <p>The vault contains tooling across four languages. Without explicit selection criteria, two failure modes emerge:</p>
 <ol>
-<li><strong>Tier Collapse</strong> — agents default to Python (Tier-3) for everything, losing compile-time safety (Tier-0 Rust) and DI composability (Tier-1 C#).
+<li><strong>Tier Collapse</strong> — agents default to <a href="python.html" class="wikilink">python</a> (Tier-3) for everything, losing compile-time safety (Tier-0 <a href="rust.html" class="wikilink">rust</a>) and DI composability (Tier-1 C#).
 </li>
 <li><strong>Tier Creep</strong> — automation scripts grow into services without formalizing the service contract, producing brittle cross-tier dependencies with no documented failure-mode ownership.
 </li>
@@ -464,12 +464,14 @@
 <tr>
 <td>0</td>
 <td>Rust</td>
-<td><code>vulture-mcp</code> (MCP server, stdio)</td>
+<td><code>vulture-mcp</code> ([[mcp-moc</td>
+<td>MCP]] server, stdio)</td>
 </tr>
 <tr>
 <td>1</td>
 <td>C# / .NET</td>
-<td>PoShWiKi (<code>Microsoft.Data.Sqlite</code> via PowerShell/.NET), proposed <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a></td>
+<td>PoShWiKi (<code>Microsoft.Data.Sqlite</code> via [[powershell.md</td>
+<td>PowerShell]]/.NET), proposed <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a></td>
 </tr>
 <tr>
 <td>2</td>
@@ -610,7 +612,7 @@
 </li>
 <li><strong>PoShWiKi tier classification:</strong> PoShWiKi is PowerShell (Tier-2) but its core is <code>Microsoft.Data.Sqlite</code> (Tier-1 CLR). Should PoShWiKi be classified as Tier-1 or Tier-2, and does that change the contract table?
 </li>
-<li><strong>Workbench tier:</strong> <code>00_Raw/workbench/</code> is TypeScript/Node. The tier model has no Tier for JS. Does it belong as Tier-3 (dynamic, rapid iteration) or does it need its own slot given it hosts the Codex tool runner?
+<li><strong>Workbench tier:</strong> <code>00_Raw/workbench/</code> is <a href="typescript.md.html" class="wikilink">TypeScript</a>/Node. The tier model has no Tier for JS. Does it belong as Tier-3 (dynamic, rapid iteration) or does it need its own slot given it hosts the Codex tool runner?
 </li>
 <li><strong>Enforcement precedent:</strong> Does <code>audit-yanp.ps1</code> already have extensible hooks for custom field validation, or would the <code>tier</code> field require a new validation path?
 </li>
@@ -712,8 +714,13 @@
 <li><a href="dotnet-mcp-server-patterns.html" class="">dotnet-mcp-server-patterns</a></li>
 <li><a href="foundry-local.html" class="">foundry-local</a></li>
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
+<li><a href="powershell.md.html" class="">powershell.md</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust.html" class="">rust</a></li>
+<li><a href="typescript.md.html" class="">typescript.md</a></li>
 <li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
 </ul>
           </div>

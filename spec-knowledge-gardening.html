@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spec: Knowledge Gardening &amp; Pruning — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Spec: Knowledge Gardening &amp; Pruning</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Spec: Knowledge Gardening &amp; Pruning</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Knowledge Gardening &amp; Pruning</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Spec: Knowledge Gardening &amp; Pruning</h1>
+<p><strong>Purpose:</strong> Define the operational protocol for keeping the vault high-signal over time. As the vault grows, three failure modes emerge: <strong>Thin Nodes</strong> (low information density), <strong>Orphaned Concepts</strong> (unreachable from the graph), and <strong>Concept Drift</strong> (content that no longer matches its declared identity). This spec defines how to detect and remediate all three.</p>
+<p>A Gardening Session is a structured audit-and-action cycle, not an ad-hoc cleanup. Each session should be logged in <a href="02_System/log.html" class="wikilink">02_System/log</a> with the date, candidates found, and actions taken.</p>
+<hr>
+<h2>1. Failure Mode Taxonomy</h2>
+<table>
+<thead><tr>
+<th>Failure Mode</th>
+<th>Definition</th>
+<th>Risk</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Thin Node</strong></td>
+<td>A note with low information density — too short or too sparsely connected to contribute synthesis value</td>
+<td>Acts as a dead weight in retrieval; dilutes community reports</td>
+</tr>
+<tr>
+<td><strong>Orphan</strong></td>
+<td>A note with zero inbound wikilinks — unreachable from the rest of the graph</td>
+<td>Never retrieved in graph traversal; knowledge siloed</td>
+</tr>
+<tr>
+<td><strong>Concept Drift</strong></td>
+<td>A note whose content has diverged from its <code>title</code> and <code>aliases</code> — the note is about something different than its declared identity</td>
+<td>Breaks semantic retrieval; misleads agents that rely on the title</td>
+</tr>
+<tr>
+<td><strong>Blob</strong></td>
+<td>A note that has grown so large it contains multiple distinct concepts</td>
+<td>Should be split; inhibits precision retrieval</td>
+</tr>
+<tr>
+<td><strong>Shadow Duplicate</strong></td>
+<td>Two notes with high content overlap (&gt; 60% semantic similarity)</td>
+<td>Fragmented knowledge; inconsistency risk</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>2. Identification Metrics</h2>
+<h3>2.1 Thin Node</h3>
+<p>A note qualifies as Thin if it meets <strong>two or more</strong> of the following:</p>
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Thin threshold</th>
+</tr></thead><tbody>
+<tr>
+<td>Word count (body, excl. frontmatter)</td>
+<td>&lt; 80 words</td>
+</tr>
+<tr>
+<td>Outbound wikilinks</td>
+<td>≤ 1</td>
+</tr>
+<tr>
+<td>Inbound wikilinks</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Number of H2 sections</td>
+<td>0 (no structure)</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>fleeting</code> with <code>status: active</code> and age &gt; 14 days</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query (SQLite):</strong></p>
+<pre><code>SELECT note_id, title, word_count, outbound_link_count, inbound_link_count
+FROM Notes
+WHERE word_count &lt; 80
+  AND outbound_link_count &lt;= 1
+  AND status = &#39;active&#39;
+  AND type NOT IN (&#39;community&#39;, &#39;fleeting&#39;)  -- communities are auto-generated; fleeting handled separately
+ORDER BY word_count ASC;</code></pre>
+<p><strong>Agent action options:</strong></p>
+<ul>
+<li><strong>Expand:</strong> Add synthesis prose, connections, and references to bring the note to full density.
+</li>
+<li><strong>Absorb:</strong> Merge the thin note&#39;s content into the most-linked parent note, redirect all wikilinks, delete the thin note.
+</li>
+<li><strong>Archive:</strong> If the concept is genuinely complete at low density (e.g., a pure cross-reference), set <code>status: archived</code>.
+</li>
+</ul>
+<h3>2.2 Orphaned Concept</h3>
+<p>A note with <code>inbound_link_count = 0</code> from *other permanent/literature notes* (system notes like <code>index.md</code> don&#39;t count as meaningful inbound links).</p>
+<pre><code>SELECT n.note_id, n.title, n.type, n.date
+FROM Notes n
+LEFT JOIN Links l ON l.target_id = n.note_id
+  AND l.source_id NOT IN (SELECT note_id FROM Notes WHERE type = &#39;community&#39; OR title LIKE &#39;%index%&#39;)
+WHERE l.target_id IS NULL
+  AND n.status = &#39;active&#39;
+  AND n.type IN (&#39;permanent&#39;, &#39;literature&#39;, &#39;spec&#39;)
+ORDER BY n.date ASC;</code></pre>
+<p><strong>Agent action options:</strong></p>
+<ul>
+<li><strong>Wire:</strong> Find 2–3 thematically related notes and add <code><a href="orphan-note.html" class="wikilink">orphan-note</a></code> wikilinks to their References sections.
+</li>
+<li><strong>Absorb:</strong> If the concept belongs inside a larger note, merge and redirect.
+</li>
+<li><strong>Archive:</strong> If the concept is complete and genuinely standalone (rare), demote to <code>status: archived</code>.
+</li>
+</ul>
+<h3>2.3 Concept Drift</h3>
+<p>Drift is measured by comparing the embedding of the note&#39;s title + aliases against the embedding of its full body content. A high drift score means the note has &quot;wandered&quot; away from its declared identity.</p>
+<p><strong>Detection algorithm:</strong></p>
+<pre><code>import numpy as np
+
+def drift_score(note_id: str, db) -&gt; float:
+    title_aliases = db.get_title_and_aliases(note_id)   # e.g., &quot;rust-tier-0-patterns Rust Safe Core tier-0-substrate&quot;
+    body_text = db.get_body_text(note_id)
+    
+    title_emb = embed(title_aliases)   # call embedding model
+    body_emb  = embed(body_text)
+    
+    cosine_sim = np.dot(title_emb, body_emb) / (np.linalg.norm(title_emb) * np.linalg.norm(body_emb))
+    return 1.0 - cosine_sim  # 0.0 = perfect alignment; 1.0 = completely unrelated
+
+# Flag notes with drift_score &gt; 0.30</code></pre>
+<p><strong>Supplementary signal (no embedding required):</strong></p>
+<ul>
+<li>Aliases contain terms that do not appear in the body text.
+</li>
+<li>The note has accumulated ≥ 3 dated appendix sections that collectively redirect to a different topic.
+</li>
+<li>The note&#39;s <code>type</code> field no longer matches its content structure (e.g., <code>type: permanent</code> but it reads like a fleeting session log).
+</li>
+</ul>
+<p><strong>Agent action options:</strong></p>
+<ul>
+<li><strong>Retitle:</strong> Update <code>title</code> and <code>aliases</code> to match current content.
+</li>
+<li><strong>Refocus:</strong> Rewrite the body to realign with the declared title — move drifted content to a new note.
+</li>
+<li><strong>Split:</strong> If both the original concept AND the drifted content are valuable, split into two separate notes.
+</li>
+</ul>
+<h3>2.4 Blob Detection</h3>
+<p>A note qualifies as a Blob if it meets <strong>two or more</strong> of the following:</p>
+<table>
+<thead><tr>
+<th>Metric</th>
+<th>Blob threshold</th>
+</tr></thead><tbody>
+<tr>
+<td>Word count</td>
+<td>&gt; 1,500 words</td>
+</tr>
+<tr>
+<td>Number of H2 sections</td>
+<td>&gt; 8</td>
+</tr>
+<tr>
+<td>Title contains &quot;and&quot; or &quot;/&quot;</td>
+<td>e.g., &quot;A and B Patterns&quot;</td>
+</tr>
+<tr>
+<td>Number of distinct concepts in aliases</td>
+<td>≥ 4 unrelated terms</td>
+</tr>
+<tr>
+<td>Embedding variance across sections</td>
+<td>&gt; 0.25 (measured by section-level embeddings)</td>
+</tr>
+</tbody>
+</table>
+<h3>2.5 Shadow Duplicate Detection</h3>
+<p>Two notes qualify as Shadow Duplicates if their body embedding cosine similarity &gt; 0.82 AND they share &lt; 20% of their wikilinks (meaning they are not intentionally complementary notes on the same topic from different angles).</p>
+<pre><code>SELECT a.note_id as note_a, b.note_id as note_b, e.similarity
+FROM NoteEmbeddingSimilarity e
+JOIN Notes a ON e.note_a_id = a.note_id
+JOIN Notes b ON e.note_b_id = b.note_id
+WHERE e.similarity &gt; 0.82
+  AND a.note_id &lt; b.note_id  -- avoid duplicates in result set
+ORDER BY e.similarity DESC;</code></pre>
+<hr>
+<h2>3. Remediation Actions</h2>
+<h3>3.1 Absorb (Merge Into Parent)</h3>
+<p>Use when: a thin node or orphan belongs conceptually inside a larger, better-connected note.</p>
+<p><strong>Protocol:</strong></p>
+<ol>
+<li>Identify the target (absorbing) note.
+</li>
+<li>Append the thin note&#39;s unique content to the target under a new H3 section.
+</li>
+<li>In every note that wikilinked to the thin note, replace <code><a href="thin-note.html" class="wikilink">thin-note</a></code> with <code>[target-note#new-section|thin-note]</code>.
+</li>
+<li>Set the thin note&#39;s frontmatter to <code>status: archived</code> and add a redirect line: <code>&gt; Merged into [target-note] on YYYY-MM-DD.</code>
+</li>
+<li>Do <strong>not</strong> delete the thin note file — Git history and inbound links from external sources may still reference it.
+</li>
+<li>Log the merge in <a href="02_System/log.html" class="wikilink">02_System/log</a>.
+</li>
+</ol>
+<h3>3.2 Split (Concept → MOC + Children)</h3>
+<p>Use when: a Blob has grown to contain multiple distinct first-class concepts.</p>
+<p><strong>Protocol:</strong></p>
+<ol>
+<li>Identify the distinct sub-concepts (each becomes a child note).
+</li>
+<li>Create each child note as a new <code>type: permanent</code> file with full frontmatter.
+</li>
+<li>Replace the Blob&#39;s content sections with wikilinks to the child notes.
+</li>
+<li>Promote the Blob to <code>type: community</code> or keep as a <code>permanent</code> MOC-style note (depending on whether it serves as a hub or a synthesis).
+</li>
+<li>Update the <code>index.md</code> to reflect the new structure.
+</li>
+<li>Verify no new orphans are created by the split — all child notes must be wikilinked from at least the parent.
+</li>
+</ol>
+<p><strong>When to promote to MOC:</strong> If the original note was functioning as a hub (lots of inbound links, minimal unique prose), convert it to a MOC explicitly. Set <code>type: community</code> and restructure as a bullet-list of <code><a href="child-note.html" class="wikilink">child-note</a> — one-line summary</code> entries.</p>
+<h3>3.3 Wire (Add Inbound Links)</h3>
+<p>Use when: an orphan is genuinely valuable but simply missed during the linking phase.</p>
+<p><strong>Protocol:</strong></p>
+<ol>
+<li>Search the vault for notes that discuss related concepts (semantic search on the orphan&#39;s title + body).
+</li>
+<li>For the top 3–5 results, add <code><a href="orphan-note.html" class="wikilink">orphan-note</a></code> to their References section with a one-line annotation.
+</li>
+<li>Verify the orphan itself links back to those notes.
+</li>
+<li>Log in <a href="02_System/log.html" class="wikilink">02_System/log</a>.
+</li>
+</ol>
+<h3>3.4 Retitle / Refocus (Drift Correction)</h3>
+<p><strong>Protocol:</strong></p>
+<ol>
+<li>Read the full note body to determine its actual current topic.
+</li>
+<li>If the current content is coherent but the title is stale: update <code>title</code>, <code>aliases</code>, and the H1 heading. Update all inbound wikilinks that used the old title text.
+</li>
+<li>If the note mixes old and new content: extract the new-topic content into a fresh note. Leave the original focused on its declared topic. Wire the two notes to each other.
+</li>
+<li>Re-embed the note after changes to reset its position in the semantic graph.
+</li>
+</ol>
+<hr>
+<h2>4. Gardening Session Protocol</h2>
+<p>A complete Gardening Session runs in four phases:</p>
+<h3>Phase 1: Audit (Automated)</h3>
+<p>Run the identification queries and algorithms above. Produce a <strong>Triage List</strong> — a markdown table in <code>02_System/log.md</code> with columns: <code>note_id | failure_mode | metric_value | suggested_action</code>.</p>
+<p>Expected session scope: 5–15 candidates per 50 notes added since the last session.</p>
+<h3>Phase 2: Triage (Agent Review)</h3>
+<p>For each candidate, the gardening agent reads the note and confirms or overrides the suggested action. Valid outcomes: <code>Expand</code>, <code>Absorb</code>, <code>Wire</code>, <code>Split</code>, <code>Retitle</code>, <code>Archive</code>, <code>OK (false positive)</code>.</p>
+<p>Rule: <strong>Never delete</strong> — only archive. Deletion is a destructive action that breaks Git history and external links.</p>
+<h3>Phase 3: Action (Execution)</h3>
+<p>Execute actions in this order to minimize link breakage:</p>
+<ol>
+<li><strong>Splits</strong> first — new notes exist before their parent is restructured.
+</li>
+<li><strong>Merges / Absorbs</strong> second — redirect links after target notes are updated.
+</li>
+<li><strong>Wires</strong> third — link additions are pure additions, no breakage risk.
+</li>
+<li><strong>Retitles</strong> last — update all inbound links after the note is stable.
+</li>
+</ol>
+<h3>Phase 4: Verification</h3>
+<p>After all actions:</p>
+<pre><code>-- Confirm no new orphans were created
+SELECT note_id, title FROM Notes
+WHERE inbound_link_count = 0 AND status = &#39;active&#39; AND type = &#39;permanent&#39;;
+
+-- Confirm no broken wikilinks (links pointing to non-existent notes)
+SELECT source_id, target_ref FROM Links WHERE resolved = 0;</code></pre>
+<p>Log the session summary: notes audited, actions taken, net orphan count change, net thin node count change.</p>
+<hr>
+<h2>5. Cadence</h2>
+<table>
+<thead><tr>
+<th>Trigger</th>
+<th>Action</th>
+</tr></thead><tbody>
+<tr>
+<td>Every 50 notes added</td>
+<td>Full Gardening Session</td>
+</tr>
+<tr>
+<td>Any new Literature note created</td>
+<td>Wire-only session (ensure the lit note is linked from its subject&#39;s permanent notes)</td>
+</tr>
+<tr>
+<td>Community Report Generator run</td>
+<td>Check for drift: do existing community reports still align with current note embeddings?</td>
+</tr>
+<tr>
+<td>Manual request</td>
+<td>Ad-hoc session on a specific sub-graph</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
+</li>
+<li><a href="wiki-pattern-operations.html" class="wikilink">wiki-pattern-operations</a>
+</li>
+<li><a href="hierarchical-graph-synthesis.html" class="wikilink">hierarchical-graph-synthesis</a>
+</li>
+<li><a href="semantic-embedding-pipeline.html" class="wikilink">semantic-embedding-pipeline</a>
+</li>
+<li><a href="community-report-generator.html" class="wikilink">community-report-generator</a>
+</li>
+<li><a href="02_System/index.html" class="wikilink">02_System/index</a>
+</li>
+<li><a href="knowledge-gardening-principles.html" class="wikilink">knowledge-gardening-principles</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="02_System/index.html" class="">02_System/index</a></li>
+<li><a href="02_System/log.html" class="">02_System/log</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="child-note.html" class="">child-note</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
+<li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
+<li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
+<li><a href="orphan-note.html" class="">orphan-note</a></li>
+<li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
+<li><a href="thin-note.html" class="">thin-note</a></li>
+<li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

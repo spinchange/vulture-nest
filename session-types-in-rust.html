@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Session Types in Rust — Vulture Portal</title>
+  <title>Session Types in [[rust]] — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Session Types in Rust</span>
+      <span>Session Types in [[rust]]</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Session Types in Rust</h1>
+      <h1 class="note-title">Session Types in [[rust]]</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types-rust, phantom-session, dialectic-crate, session-types-crate</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types in Rust</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types in [[rust]]</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types-rust, phantom-session, dialectic-crate, session-types-crate</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -605,7 +605,7 @@ async fn echo_client(chan: Chan&lt;EchoOnce, impl Transmit&lt;String&gt; + Recei
 }</code></pre>
 <p>This converts the type-level failure into a runtime panic — better than a silent bug, worse than a compile error. The theoretical gap between affine and linear types cannot be fully closed without language-level linear type support.</p>
 <hr>
-<h2>5. Putting It Together: A Typed MCP Initialization Handshake</h2>
+<h2>5. Putting It Together: A Typed <a href="mcp-moc.html" class="wikilink">MCP</a> Initialization Handshake</h2>
 <p>The following sketches what an MCP client SDK would look like if it used session types. This is illustrative — a complete implementation is specified in <a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>.</p>
 <pre><code>// Session type aliases for MCP initialization
 type McpInit = Send&lt;Initialize, Recv&lt;InitializeResult, Send&lt;Initialized, McpActive&gt;&gt;&gt;;
@@ -704,6 +704,8 @@ async fn call_tool(
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>

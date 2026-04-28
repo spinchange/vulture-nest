@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">A2A Protocol</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26T00:00:00.000Z</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">A2A Protocol</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -444,7 +444,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>A2A Protocol</h1>
-<p><strong>A2A (Agent-to-Agent)</strong> is an open protocol for peer-to-peer communication between autonomous AI agents. Originally developed by Google and now governed by the <code>a2aproject</code> organization, it handles the layer MCP does not: agent-to-agent delegation and multi-turn collaboration between opaque, stateful peers.</p>
+<p><strong>A2A (Agent-to-Agent)</strong> is an open protocol for peer-to-peer communication between autonomous AI agents. Originally developed by Google and now governed by the <code>a2aproject</code> organization, it handles the layer <a href="mcp-moc.html" class="wikilink">MCP</a> does not: agent-to-agent delegation and multi-turn collaboration between opaque, stateful peers.</p>
 <p>Where MCP standardizes how an agent accesses tools and resources (agent ↔ tool), A2A standardizes how agents communicate with each other as peers (agent ↔ agent). Together they cover the full communication surface of a multi-agent system. See <a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a>.</p>
 <hr>
 <h2>Agent Card</h2>
@@ -635,8 +635,14 @@
                     ↘ CANCELED
                     ↘ REJECTED
                     ↘ INPUT_REQUIRED → (client sends follow-up) → WORKING
-                    ↘ AUTH_REQUIRED  → (client provides credential) → WORKING</code></pre>
-<p><code>INPUT_REQUIRED</code> and <code>AUTH_REQUIRED</code> are the multi-turn hooks: the agent pauses, delivers a message describing what it needs, and the client resumes the task with a follow-up <code>SendMessage</code>.</p>
+                    ↘ AUTH_REQUIRED  → (client provides credential) → WORKING
+                    ↘ TRANSFERRED    (terminal for A; task continues on B)</code></pre>
+<p><code>INPUT_REQUIRED</code>, <code>AUTH_REQUIRED</code>, and <code>TRANSFERRED</code> are the multi-turn hooks.</p>
+<h3>Task States &amp; Transitions</h3>
+<ul>
+<li><strong>TRANSFERRED</strong>: terminal for the originating agent&#39;s task. The orchestrator reads the <code>transfer</code> field in <code>TaskStatus</code> and routes the conversation to the target agent. The originating agent must pre-create the receiving task before transitioning to prevent races.
+</li>
+</ul>
 <h3>RPC Methods</h3>
 <table>
 <thead><tr>
@@ -761,6 +767,135 @@
 <p>For mid-task authorization needs, the agent transitions to <code>AUTH_REQUIRED</code> and delivers a message describing the required credential. The client supplies it and the task resumes — no task teardown or restart required.</p>
 <p><strong>Contrast with MCP:</strong> MCP trust is session-scoped and negotiated within the protocol at connection time. A2A trust is request-scoped and handled by external identity infrastructure (OAuth 2.0 / OIDC), making it more suitable for cross-organization agent federation where no shared session context exists.</p>
 <hr>
+<hr>
+<h2>Delegation and Handoffs</h2>
+<p>The A2A task lifecycle covers the *within-agent* state machine. This section covers the *between-agent* transitions: how an agent passes work to a peer.</p>
+<p>Two primitives are distinguished because their control semantics differ:</p>
+<table>
+<thead><tr>
+<th>Primitive</th>
+<th>Description</th>
+<th>Analogy</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Delegation</strong></td>
+<td>Agent A calls Agent B, waits for <code>COMPLETED</code>, uses B&#39;s <code>Artifacts</code> as a result, then continues. A retains the active task.</td>
+<td>[[agent-development-kit</td>
+<td>ADK]] <code>AgentTool</code></td>
+</tr>
+<tr>
+<td><strong>Handoff</strong></td>
+<td>Agent A transfers its active task to Agent B and terminates its own involvement. The task continues on B&#39;s endpoint.</td>
+<td>ADK <code>transfer_to_agent</code> / Swarm return-based handoff</td>
+</tr>
+</tbody>
+</table>
+<h3>Delegation</h3>
+<p>Delegation requires no new primitives. Agent A creates a new task on Agent B via <code>SendMessage</code>, polls or streams until <code>COMPLETED</code>, extracts B&#39;s <code>Artifacts</code>, and incorporates them as input to its own ongoing task. The orchestrator&#39;s task on A remains <code>WORKING</code> throughout. Capability constraints follow the lattice meet: <code>Effective(A → B) = Caps(B) ∩ Scope(A)</code> — A cannot grant B a capability A does not itself hold (see <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4.3).</p>
+<h3>Handoff — <code>TRANSFERRED</code> State</h3>
+<p>A handoff terminates the originating agent&#39;s task with a new quasi-terminal state:</p>
+<pre><code>SUBMITTED → WORKING → COMPLETED
+                    ↘ FAILED
+                    ↘ CANCELED
+                    ↘ REJECTED
+                    ↘ INPUT_REQUIRED → (client sends follow-up) → WORKING
+                    ↘ AUTH_REQUIRED  → (client provides credential) → WORKING
+                    ↘ TRANSFERRED    (terminal for A; task continues on B)</code></pre>
+<p><code>TRANSFERRED</code> is terminal for the originating agent&#39;s task. The orchestrator reads the <code>transfer</code> field in <code>TaskStatus</code> and routes the conversation to the target agent.</p>
+<h4><code>TaskStatus</code> when <code>state = TRANSFERRED</code></h4>
+<pre><code>{
+  &quot;state&quot;: &quot;TRANSFERRED&quot;,
+  &quot;timestamp&quot;: &quot;2026-04-26T12:00:00Z&quot;,
+  &quot;transfer&quot;: {
+    &quot;agent_endpoint&quot;: &quot;https://billing.example.com&quot;,
+    &quot;task_id&quot;: &quot;task_xyz_billing&quot;,
+    &quot;reason&quot;: &quot;User query identified as billing — routing to Billing specialist&quot;
+  }
+}</code></pre>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>agent_endpoint</code></td>
+<td>URL</td>
+<td>The A2A base URL of the receiving agent</td>
+</tr>
+<tr>
+<td><code>task_id</code></td>
+<td>string</td>
+<td>The task ID already created on the receiving agent (pre-created by A during handoff)</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>string (optional)</td>
+<td>Human-readable explanation for audit logs</td>
+</tr>
+</tbody>
+</table>
+<p>The originating agent is expected to create the receiving task *before* transitioning to <code>TRANSFERRED</code> — atomically, these form the handoff. This prevents the orchestrator from receiving a <code>TRANSFERRED</code> status pointing at a task that does not yet exist.</p>
+<h3>Context Transfer — <code>transfer_context</code></h3>
+<p>A flat conversation history is too expensive to pass verbatim across a handoff. Instead, the originating agent serializes its working state into a <code>transfer_context</code> block, included in the <code>SendMessage</code> request when creating the receiving task on Agent B.</p>
+<p><code>transfer_context</code> is an optional field on the A2A <code>Message</code> object:</p>
+<pre><code>{
+  &quot;role&quot;: &quot;user&quot;,
+  &quot;parts&quot;: [{ &quot;kind&quot;: &quot;text&quot;, &quot;text&quot;: &quot;The user needs a refund for order #88234.&quot; }],
+  &quot;transfer_context&quot;: {
+    &quot;originating_task_id&quot;: &quot;task_abc_triage&quot;,
+    &quot;originating_agent&quot;: &quot;https://triage.example.com&quot;,
+    &quot;state&quot;: {
+      &quot;user_intent&quot;:  &quot;billing_refund&quot;,
+      &quot;account_id&quot;:   &quot;ACC-12345&quot;,
+      &quot;order_id&quot;:     &quot;ORD-88234&quot;
+    },
+    &quot;output_keys&quot;: {
+      &quot;triage_classification&quot;: &quot;BILLING_REFUND&quot;,
+      &quot;sentiment&quot;:             &quot;frustrated&quot;
+    }
+  }
+}</code></pre>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Type</th>
+<th>Maps from</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><code>originating_task_id</code></td>
+<td>string</td>
+<td>—</td>
+<td>Audit trail; links B&#39;s task back to A&#39;s</td>
+</tr>
+<tr>
+<td><code>originating_agent</code></td>
+<td>URL</td>
+<td>—</td>
+<td>Source agent endpoint</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>object</td>
+<td>Swarm <code>context_variables</code></td>
+<td>Flat key-value working memory; survives the handoff</td>
+</tr>
+<tr>
+<td><code>output_keys</code></td>
+<td>object</td>
+<td>ADK <code>output_key</code> / <code>State</code></td>
+<td>Named outputs from completed pipeline steps</td>
+</tr>
+</tbody>
+</table>
+<p>The receiving agent bootstraps its own working memory from <code>transfer_context.state</code> and <code>output_keys</code>. It does not need the full message history to serve the user; the originating agent is responsible for summarizing relevant context before transferring.</p>
+<h3>Lattice Compliance for Handoffs</h3>
+<p>A handoff is a constrained delegation: before transitioning to <code>TRANSFERRED</code>, the originating agent must verify that the target agent&#39;s required skills fall within the allowed workflow scope:</p>
+<pre><code>Allowed = Caps(TargetAgent) ∩ Scope(OriginatingAgent)
+Required ⊆ Allowed   ← must hold; violation = refuse handoff, transition to FAILED</code></pre>
+<p>If <code>Required ⊄ Allowed</code>, the handoff must not proceed. The task should transition to <code>FAILED</code> (or <code>INPUT_REQUIRED</code> if human escalation is appropriate) rather than silently forwarding to an agent outside the authorized scope. This keeps every handoff path statically analyzable as a delegation edge in the workflow graph described in <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4.4.</p>
+<hr>
 <h2>References</h2>
 <ul>
 <li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a>
@@ -777,6 +912,10 @@
 </li>
 <li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
 </li>
+<li><a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a>
+</li>
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>
+</li>
 </ul>
 <hr>
 <h2>References</h2>
@@ -784,6 +923,52 @@
 <li><a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a>
 </li>
 </ul>
+<hr>
+<h2>Delegation and Handoffs</h2>
+<p>The A2A task lifecycle covers the *within-agent* state machine. This section covers the *between-agent* transitions: how an agent passes work to a peer.</p>
+<table>
+<thead><tr>
+<th>Primitive</th>
+<th>Description</th>
+<th>Analogy</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Delegation</strong></td>
+<td>Agent A calls Agent B, waits for <code>COMPLETED</code>, uses B&#39;s <code>Artifacts</code> as a result, then continues. A retains the active task.</td>
+<td>ADK <code>AgentTool</code></td>
+</tr>
+<tr>
+<td><strong>Handoff</strong></td>
+<td>Agent A transfers its active task to Agent B and terminates its own involvement. The task continues on B&#39;s endpoint.</td>
+<td>ADK <code>transfer_to_agent</code> / Swarm return-based handoffs</td>
+</tr>
+</tbody>
+</table>
+<h3>Delegation (Agent as Tool)</h3>
+<p>Delegation is supported by existing A2A primitives. Agent A creates a new task on Agent B via <code>SendMessage</code>, polls or streams until <code>COMPLETED</code>, extracts B&#39;s <code>Artifacts</code>, and incorporates them as input to its own ongoing task. No new RPCs are required.</p>
+<h3>Handoff (<code>TRANSFERRED</code> State)</h3>
+<p>A handoff terminates the originating agent&#39;s task with the <code>TRANSFERRED</code> state.</p>
+<h4><code>TaskStatus</code> when <code>state = TRANSFERRED</code></h4>
+<pre><code>{
+  &quot;state&quot;: &quot;TRANSFERRED&quot;,
+  &quot;transfer&quot;: {
+    &quot;agent_endpoint&quot;: &quot;https://billing.example.com&quot;,
+    &quot;task_id&quot;: &quot;task_xyz_billing&quot;,
+    &quot;reason&quot;: &quot;Routing to Billing specialist&quot;
+  }
+}</code></pre>
+<h3>Context Transfer (<code>transfer_context</code>)</h3>
+<p>An optional <code>transfer_context</code> field on the <code>Message</code> object serializes the working memory:</p>
+<ul>
+<li><code>state</code>: Maps to Swarm <code>context_variables</code>.
+</li>
+<li><code>output_keys</code>: Maps to ADK <code>output_key</code>.
+</li>
+<li><code>originating_task_id</code> / <code>originating_agent</code>: Audit trail.
+</li>
+</ul>
+<h3>Lattice Compliance</h3>
+<p>Before any handoff, the originating agent must verify the required skills fall within <code>Caps(B) ∩ Scope(A)</code>. Violation leads to a <code>FAILED</code> state, not a silent forward.</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -801,17 +986,35 @@
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="a2a-capability-lattice.html" class="">a2a-capability-lattice</a></li>
 <li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 </ul>
           </div>
         </div>

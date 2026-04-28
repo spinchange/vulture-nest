@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Python Context Managers — Vulture Portal</title>
+  <title>[[python]] Context Managers — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Python Context Managers</span>
+      <span>[[python]] Context Managers</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Python Context Managers</h1>
+      <h1 class="note-title">[[python]] Context Managers</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">contextlib, with-statement, resource-management</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python Context Managers</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[python]] Context Managers</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">contextlib, with-statement, resource-management</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -472,7 +472,7 @@ def temporary_resource():
 <h3>3. Asynchronous (<code>async with</code>)</h3>
 <p>Used for managing resources in asynchronous code (e.g., <code>httpx</code> clients). Implemented via <code>__aenter__</code> and <code>__aexit__</code>.</p>
 <h2>Agentic Use Case</h2>
-<p>In <strong><a href="mcp-client-development.html" class="wikilink">MCP Clients</a></strong>, context managers (specifically <code>AsyncExitStack</code>) are the &quot;Golden Path&quot; for managing multiple server connections. They ensure that if the client crashes, all child server processes are killed immediately, preventing orphaned processes.</p>
+<p>In <strong><a href="mcp-client-development.html" class="wikilink"><a href="mcp-moc%7CMCP%3C/a%3E%20Clients.html" class="wikilink">mcp-moc|MCP&lt;/a&gt; Clients</a></strong>, context managers (specifically <code>AsyncExitStack</code>) are the &quot;Golden Path&quot; for managing multiple server connections. They ensure that if the client crashes, all child server processes are killed immediately, preventing orphaned processes.</p>
 <hr>
 <h2>Related</h2>
 <ul>
@@ -500,6 +500,7 @@ def temporary_resource():
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 </ul>

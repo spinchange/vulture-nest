@@ -306,7 +306,7 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-04-26 18:42</span>
+          <span>Generated 2026-04-28 10:40</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
@@ -320,12 +320,12 @@
     <section class="metrics">
       <article class="panel metric">
         <div class="metric-label terminal">Total Notes</div>
-        <div class="metric-value">236</div>
+        <div class="metric-value">285</div>
         <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Link Density</div>
-        <div class="metric-value">7.64</div>
+        <div class="metric-value">9.62</div>
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
@@ -335,17 +335,17 @@
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">PoShWiKi Pages</div>
-        <div class="metric-value">4</div>
+        <div class="metric-value">6</div>
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Session Actions</div>
-        <div class="metric-value">3</div>
-        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-04-26</span>.</div>
+        <div class="metric-value">4</div>
+        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-04-26</span>. Latest session page is <span class='terminal'>Session 2026-04-28</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
-        <div class="metric-value">22/22</div>
+        <div class="metric-value">24/24</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
       </article>
     </section>
@@ -359,11 +359,11 @@
             <tr><th>Note</th><th style="text-align:right">Incoming</th></tr>
           </thead>
           <tbody>
-            <tr><td class='rank'>agentic-frameworks-moc</td><td class='value'>50</td></tr>
-<tr><td class='rank'>capability-lattice-spec</td><td class='value'>39</td></tr>
-<tr><td class='rank'>mcp-architecture</td><td class='value'>38</td></tr>
-<tr><td class='rank'>community-protocol-trust-substrate</td><td class='value'>34</td></tr>
-<tr><td class='rank'>wiki-as-codebase</td><td class='value'>32</td></tr>
+            <tr><td class='rank'>mcp-moc</td><td class='value'>77</td></tr>
+<tr><td class='rank'>capability-lattice-spec</td><td class='value'>65</td></tr>
+<tr><td class='rank'>rust</td><td class='value'>60</td></tr>
+<tr><td class='rank'>agent-development-kit</td><td class='value'>55</td></tr>
+<tr><td class='rank'>python</td><td class='value'>53</td></tr>
           </tbody>
         </table>
         <div class="callout">Centrality is computed from the <span class="terminal">Links</span> table in PoShWiKi by incoming link count.</div>
@@ -375,27 +375,28 @@
         <div class="split">
           <section>
             <h3>PoShWiKi Session</h3>
-            <div class="callout">Latest session page: <span class='terminal'>Session 2026-04-26</span></div>
+            <div class="callout">Latest page with an <span class='terminal'>Actions</span> section: <span class='terminal'>Session 2026-04-26</span>. Latest session page: <span class='terminal'>Session 2026-04-28</span>.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 26 18:41 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>Apr 26 18:41 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>Apr 26 18:41 | action</span><span class='feed-text'>[13</span></li>
+              <li><span class='feed-meta'>Apr 28 10:40 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 28 10:40 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 28 10:40 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 28 10:40 | action</span><span class='feed-text'>[13</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 26 18:41 | Current Seam</span><span class='feed-text'>Semantic embedding pipeline fully implemented and pushed to GitHub. | New scripts: | 02_System/sync-embeddings.ps1 — incremental Gemini embedding sync (gemini-embedding-001, 768-dim) | 02_System/suggest-links.ps1 — pairwise cosine similarity orphan detector | 02_System/auto-link.ps1 — Claude Haiku judge + wikilink writer | Updated scripts: | 02_System/vulture-search.ps1 — gained -Semantic flag for neural retrieval tier | 02_System/run-maintenance.ps1 — sync-embeddings added as optional step 8/8 | 00_Raw/PoShWiKi/PoShWiKi.psm1 — Initialize-Wiki now creates Links + NoteEmbeddings tables | Results: 224 notes embedded. 4 auto-link passes. Semantic orphans 164 -&gt; ~51. Links 1478 -&gt; 1621 (+143). | New wiki notes: | 01_Wiki/karpathy-vision-gap-analysis.md — why we built this, design decisions, remaining gaps | 01_Wiki/semantic-embedding-pipeline.md — full usage reference and maintenance guide | Dashboard auto-deploying via GitHub Actions. Health at 90%.</span></li>
-<li><span class='feed-meta'>Apr 26 18:41 | Next Step</span><span class='feed-text'>Run sync-embeddings.ps1 after batch note ingestion to keep vectors fresh. Run auto-link.ps1 monthly or after large ingestion events. Consider surfacing semantic orphan count as a dashboard health metric. Address remaining Karpathy gaps</span></li>
+              <li><span class='feed-meta'>Apr 28 10:40 | Current Seam</span><span class='feed-text'>Semantic embedding pipeline fully implemented and pushed to GitHub. | New scripts: | 02_System/sync-embeddings.ps1 — incremental Gemini embedding sync (gemini-embedding-001, 768-dim) | 02_System/suggest-links.ps1 — pairwise cosine similarity orphan detector | 02_System/auto-link.ps1 — Claude Haiku judge + wikilink writer | Updated scripts: | 02_System/vulture-search.ps1 — gained -Semantic flag for neural retrieval tier | 02_System/run-maintenance.ps1 — sync-embeddings added as optional step 8/8 | 00_Raw/PoShWiKi/PoShWiKi.psm1 — Initialize-Wiki now creates Links + NoteEmbeddings tables | Results: 224 notes embedded. 4 auto-link passes. Semantic orphans 164 -&gt; ~51. Links 1478 -&gt; 1621 (+143). | New wiki notes: | 01_Wiki/karpathy-vision-gap-analysis.md — why we built this, design decisions, remaining gaps | 01_Wiki/semantic-embedding-pipeline.md — full usage reference and maintenance guide | Dashboard auto-deploying via GitHub Actions. Health at 90%.</span></li>
+<li><span class='feed-meta'>Apr 28 10:40 | Next Step</span><span class='feed-text'>Run sync-embeddings.ps1 after batch note ingestion to keep vectors fresh. Run auto-link.ps1 monthly or after large ingestion events. Consider surfacing semantic orphan count as a dashboard health metric. Address remaining Karpathy gaps</span></li>
             </ul>
           </section>
           <section>
             <h3>log.md Major Actions</h3>
             <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
             <ul class="feed">
-              <li><span class='feed-text'>[2026-04-26 13:24] auto-link: mutual link mcp-client-development &lt;-&gt; mcp-debugging (sim=0.8098) — Note A describes MCP client implementation patterns while Note B addresses debugging those clients; they are complementary guides where developers implementing clients (A) need debugging strategies (B) and debuggers need to understand client architecture (A).</span></li>
-<li><span class='feed-text'>[2026-04-26 13:24] auto-link: added workbench-codex-runner-handoff to codex-polyglot-adr-handoff (sim=0.8097) — Note A explicitly identifies 00_Raw/workbench/ as an open question about tier classification, and Note B documents the resolution of that artifact&#39;s role in the hardened Codex environment, making B a necessary reference for completing A&#39;s verification.</span></li>
-<li><span class='feed-text'>[2026-04-26 13:24] auto-link: mutual link community-living-knowledge-system &lt;-&gt; community-polyglot-agent-platform (sim=0.8096) — Note A describes the knowledge system architecture and execution model that Note B&#39;s polyglot platform must implement across its language tiers; conversely, Note B demonstrates the concrete technical realization of Note A&#39;s abstract principle that &#39;a note is code&#39; through language-specific operational constraints.</span></li>
-<li><span class='feed-text'>[2026-04-26 13:25] auto-link: mutual link mcp-client-development &lt;-&gt; mcp-remote-connections (sim=0.8094) — Note A describes client development patterns for local/stdio connections while Note B covers remote HTTP/SSE connections; together they represent complementary transport mechanisms that MCP clients must support, and each would benefit from cross-referencing the other&#39;s transport approach.</span></li>
-<li><span class='feed-text'>[2026-04-26 13:25] auto-link: mutual link community-protocol-trust-substrate &lt;-&gt; mcp-moc (sim=0.8093) — Note A develops an emergent theory about MCP&#39;s trust architecture that grounds itself in MCP fundamentals, while Note B provides the comprehensive structural reference that Note A&#39;s theoretical claims depend on; each note strengthens the other by creating a bidirectional pathway between conceptual abstraction (A) and practical taxonomy (B).</span></li>
+              <li><span class='feed-text'>[2026-04-27 02:43] auto-link: added lit-mcp-architecture to mcp-remote-connections (sim=0.8243) - Note A discusses remote connections as a specific implementation pattern within MCP, and should reference Note B&#39;s foundational architecture overview to ground readers in the protocol&#39;s broader design, but Note B is a general literature reference that does not need to link to every specific connection type.</span></li>
+<li><span class='feed-text'>[2026-04-27 02:44] auto-link: added lit-mcp-architecture to mcp-best-practices (sim=0.8242) - Note A (best practices) builds on and assumes knowledge of the foundational MCP architecture documented in Note B, making B a natural prerequisite reference for A.</span></li>
+<li><span class='feed-text'>[2026-04-27 02:44] auto-link: mutual link claude-synthesis-handoff and gemini-build-sprint-handoff (sim=0.8233) - These are complementary handoff notes from the same date describing sequential work phases: Claude&#39;s synthesis and architecture planning (Pillar 1-3) directly enables Gemini&#39;s build sprint execution (embedding sync, graph integration, clustering), making bidirectional reference essential for continuity.</span></li>
+<li><span class='feed-text'>[2026-04-27 02:44] auto-link: added claude-blueprint-handoff-2026-04-27 to gemini-build-sprint-handoff (sim=0.8229) - Note B (Gemini&#39;s build sprint) needs to reference Note A (Claude&#39;s completed blueprint handoff) because the 17 new notes that Gemini is ingesting were created by Claude in the blueprint phase, making Note A the source context for Note B&#39;s integration work.</span></li>
+<li><span class='feed-text'>[2026-04-27 02:44] auto-link: added spec-visual-vault-language to claude-gardening-visuals-handoff (sim=0.8201) - Note A is a handoff document that assigns the creation of spec-visual-vault-language as a task, so it should reference the completed Note B as its deliverable; Note B should not link back as it is the standalone specification being handed off to.</span></li>
             </ul>
           </section>
         </div>
@@ -405,14 +406,14 @@
     <section class="commit-strip">
       <h3>Recent Commits</h3>
       <div class="commit-track">
-        <span class='commit-pill'><span class='sha'>e3319d8</span><span>feat(wiki): bridge .NET peninsula, densify MCP docs, and restore semantic links</span></span>
-<span class='commit-pill'><span class='sha'>c560d73</span><span>fix(wiki): fix broken wikilinks in semantic-embedding-pipeline note</span></span>
-<span class='commit-pill'><span class='sha'>7832aea</span><span>chore: update PoShWiKi submodule pointer after session seam</span></span>
-<span class='commit-pill'><span class='sha'>8a0b5bc</span><span>docs(wiki): add semantic embedding pipeline and Karpathy gap analysis notes</span></span>
-<span class='commit-pill'><span class='sha'>fb3e83f</span><span>feat(graph): add semantic embedding pipeline and 143 auto-linked pairs</span></span>
-<span class='commit-pill'><span class='sha'>ac0c8a3</span><span>chore: Commit files modified by maintenance script</span></span>
-<span class='commit-pill'><span class='sha'>eab202a</span><span>fix(automation): Add dashboard generation to watchdog</span></span>
-<span class='commit-pill'><span class='sha'>a97b6cd</span><span>fix(dashboard): Align health score calculation with link checker</span></span>
+        <span class='commit-pill'><span class='sha'>b5bcd3a</span><span>feat(structure): 04_Experiments tier, protocol updates, index maintenance</span></span>
+<span class='commit-pill'><span class='sha'>3361bc9</span><span>fix(tooling): handle null optional values in structured logs</span></span>
+<span class='commit-pill'><span class='sha'>f86f218</span><span>feat(tooling): structured seams, debate log, experiment scaffold, human attribution</span></span>
+<span class='commit-pill'><span class='sha'>a2de574</span><span>chore(tracking): capture untracked experiment artifacts and tooling</span></span>
+<span class='commit-pill'><span class='sha'>78859cb</span><span>docs(handoff): establish Claude community summarization seam</span></span>
+<span class='commit-pill'><span class='sha'>f50349a</span><span>feat(gemini): execute build sprint tasks</span></span>
+<span class='commit-pill'><span class='sha'>b41c067</span><span>docs(wiki): reconcile content, index ADK notes, and integrate community reports</span></span>
+<span class='commit-pill'><span class='sha'>44ff45e</span><span>feat(impl): Codex build sprint, vault health repair, and proof round</span></span>
       </div>
     </section>
   </main>

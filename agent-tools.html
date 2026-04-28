@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Tools</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">tool-definition, function-calling, mcp</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Tools</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">tool-definition, function-calling, mcp</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -454,12 +454,12 @@
 </li>
 <li><strong>Arguments:</strong> Names and types (e.g., <code>location: str</code>).
 </li>
-<li><strong>Callable:</strong> The actual code (Python, JS, API) that executes the task.
+<li><strong>Callable:</strong> The actual code (<a href="python.html" class="wikilink">python</a>, JS, API) that executes the task.
 </li>
 </ul>
 <h2>Auto-Documentation</h2>
 <p>Modern frameworks use Python introspection (decorators like <code>@tool</code>) to automatically generate tool descriptions from docstrings and type hints. This reduces the risk of the LLM receiving a mismatched specification.</p>
-<h2>Model Context Protocol (MCP)</h2>
+<h2>Model Context Protocol (<a href="mcp-moc.html" class="wikilink">MCP</a>)</h2>
 <p>MCP is an open standard designed to unify how tools are provided to LLMs, allowing tools to be shared across different agentic frameworks without re-implementation.</p>
 <h2>See Also</h2>
 <ul>
@@ -492,6 +492,7 @@
 <li><a href="gala-agent-use-case.html" class="">gala-agent-use-case</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
@@ -502,8 +503,10 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 </ul>
           </div>

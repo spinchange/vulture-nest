@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gemini Handoff — Build Sprint (2026-04-27) — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Gemini Handoff — Build Sprint (2026-04-27)</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Gemini Handoff — Build Sprint (2026-04-27)</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Gemini Handoff — Build Sprint (2026-04-27)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Gemini Handoff: Build Sprint 2026-04-27</h1>
+<h2>Context</h2>
+<p>Claude added 17 new notes across three sessions today. The semantic graph does not yet know they exist — no embeddings, no auto-links, no graph entries. Your job is to integrate them, grow the graph, create three missing stub notes, write a clustering script, and optionally bootstrap the external source pipeline.</p>
+<p>Execute in order. Each task builds on the previous one.</p>
+<p><strong>All shell commands use <code>pwsh</code> (PowerShell 7). Never use Windows PowerShell 5.1.</strong></p>
+<hr>
+<h2>Task 1 — Embedding Sync (Run the Pipeline)</h2>
+<p><strong>Script:</strong> <code>02_System/sync-embeddings.ps1</code> <strong>Time estimate:</strong> ~25 minutes (17 new notes &#215; 1.2s rate-limit gap + API latency) <strong>Prereq:</strong> <code>$env:GEMINI_API_KEY</code> must be set</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-embeddings.ps1</code></pre>
+<p>The script is incremental — it SHA-256 hashes every note and only calls the API for notes whose content has changed since the last run. The 17 new notes will be caught automatically. Existing notes are skipped.</p>
+<p><strong>Expected output:</strong> <code>Embedding 17 note(s) via Gemini text-embedding-004...</code> followed by progress lines, ending with <code>Done. 17 note(s) embedded and stored.</code></p>
+<p><strong>If it outputs <code>0 notes to embed</code>:</strong> The hashes are already current — run with <code>-Force</code> to re-embed regardless:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-embeddings.ps1 -Force</code></pre>
+<p>After the run, verify the new notes are in the DB:</p>
+<pre><code># Quick spot-check — should return 17 rows dated today
+pwsh -NoProfile -ExecutionPolicy Bypass -Command @&#39;
+$db = &quot;$PSScriptRoot/../00_Raw/PoShWiKi/wiki.db&quot;
+# or check the count directly:
+Write-Host &quot;Run sync-embeddings.ps1 then check NoteEmbeddings table for today&#39;s rows&quot;
+&#39;@</code></pre>
+<hr>
+<h2>Task 2 — Graph Sync</h2>
+<p><strong>Script:</strong> <code>02_System/sync-vault-graph.ps1</code> <strong>Time estimate:</strong> &lt; 2 minutes</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
+<p>This parses all wikilinks from <code>01_Wiki/</code> into the <code>Links</code> table. The 17 new notes contain ~80 new wikilinks that are not yet in the graph. Run this before auto-link so the auto-link judge has a current picture of what is already connected.</p>
+<hr>
+<h2>Task 3 — Auto-Link Pass</h2>
+<p><strong>Script:</strong> <code>02_System/auto-link.ps1</code> <strong>Time estimate:</strong> ~10 minutes (30 pairs at ~20s each) <strong>Prereq:</strong> Task 1 and Task 2 complete; <code>$env:GEMINI_API_KEY</code> set</p>
+<p>First, do a dry run to inspect what the judge would link:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -DryRun -TopN 40 -Threshold 0.82</code></pre>
+<p>Review the output. If the suggested pairs look sensible (no false positives like linking two unrelated specs just because both contain &quot;agent&quot;), proceed:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/auto-link.ps1 -TopN 40 -Threshold 0.82</code></pre>
+<p><strong>Why 0.82?</strong> The vault&#39;s prior auto-link sessions used 0.85 and produced 143 pairs. The 17 new pattern/spec notes are semantically tight clusters — 0.82 will catch legitimate cross-connections without producing noise. Do not go below 0.80.</p>
+<p>After the run, do a second graph sync to capture the new wikilinks:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
+<p>Record the new link count in <code>02_System/log.md</code>:</p>
+<pre><code>## [2026-04-27] Post-Sprint Auto-Link Pass
+* Notes embedded: 17
+* New auto-links: N (from Xprevious to Ynew)
+* Threshold: 0.82, TopN: 40</code></pre>
+<hr>
+<h2>Task 4 — Create Three Missing Stub Notes</h2>
+<p>These wikilink targets are referenced throughout the new notes but the files do not exist. Create them as proper YANP-compliant permanent notes with enough content to be non-thin (≥ 80 words, ≥ 2 outbound links).</p>
+<h3>4a. <code>01_Wiki/workflow-agents.md</code></h3>
+<p>Referenced by: <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>, <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>, <a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a></p>
+<p>Content to cover:</p>
+<ul>
+<li>The three ADK workflow agent types and when each is used
+</li>
+<li><code>SequentialAgent</code> — fixed-order pipeline; use when step N depends on step N-1&#39;s output
+</li>
+<li><code>ParallelAgent</code> — concurrent fan-out; use when steps are independent; maps to <a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a>
+</li>
+<li><code>LoopAgent</code> — repeat until condition; use for retry/polling patterns
+</li>
+<li>Key distinction from <code>LlmAgent</code>: workflow agents are <strong>deterministic</strong> — no LLM call decides the routing
+</li>
+</ul>
+<p>Required frontmatter:</p>
+<pre><code>---
+title: Workflow Agents
+author: gemini-cli
+date: &#39;2026-04-27&#39;
+status: active
+type: permanent
+aliases:
+  - workflow-agent
+  - sequential-agent
+  - parallel-agent
+  - loop-agent
+---</code></pre>
+<p>Required wikilinks in References: <code><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a></code>, <code><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a></code>, <code><a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a></code>, <code><a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a></code></p>
+<h3>4b. <code>01_Wiki/adk-session-service.md</code></h3>
+<p>Referenced by: <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>, <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>, <a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a></p>
+<p>Content to cover:</p>
+<ul>
+<li><code>Session</code> object: single conversation scope, contains <code>Events</code> (history) and <code>State</code> (working memory dict)
+</li>
+<li><code>State</code> vs <code>Memory</code>: State is session-scoped (lost when session ends); Memory is cross-session (long-term recall)
+</li>
+<li><code>SessionService</code>: the ADK service that persists sessions; <code>InMemorySessionService</code> for local, pluggable backends for production
+</li>
+<li><code>State</code> access patterns: <code>tool_context.state[&quot;key&quot;]</code> for reading, direct assignment for writing
+</li>
+<li><code>output_key</code> on <code>LlmAgent</code>: how a sub-agent&#39;s final response is automatically written into <code>session.state</code>
+</li>
+<li>Contrast with Swarm <code>context_variables</code> and A2A <code>transfer_context.state</code> — these are the same concept across frameworks (see <a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a>)
+</li>
+</ul>
+<p>Required frontmatter:</p>
+<pre><code>---
+title: ADK Session Service
+author: gemini-cli
+date: &#39;2026-04-27&#39;
+status: active
+type: permanent
+aliases:
+  - adk-session
+  - adk-state
+  - session-service
+---</code></pre>
+<p>Required wikilinks in References: <code><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a></code>, <code><a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a></code>, <code><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a></code>, <code><a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a></code>, <code><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a></code></p>
+<h3>4c. <code>01_Wiki/multi-agent-patterns-moc.md</code></h3>
+<p>Referenced by: index, PoShWiKi board. This is the Map of Content for the 7 pattern notes.</p>
+<p>Content to cover:</p>
+<ul>
+<li>Brief statement of the pattern language goal (model-agnostic standards synthesized from ADK + Swarm + A2A)
+</li>
+<li>Structured list of all 7 patterns grouped by concern:
+<ul>
+<li><strong>Execution flow:</strong> <a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a>, <a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a>
+</li>
+<li><strong>Ownership transfer:</strong> <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a>, <a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a>
+</li>
+<li><strong>State &amp; memory:</strong> <a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a>
+</li>
+<li><strong>Safety &amp; governance:</strong> <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a>, <a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a>
+</li>
+</ul>
+</li>
+<li>One-line description per pattern (what it solves, not how it works)
+</li>
+<li>Cross-reference to source frameworks: <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>, <a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a>, <a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>
+</li>
+</ul>
+<p>Required frontmatter:</p>
+<pre><code>---
+title: Multi-Agent Patterns MOC
+author: gemini-cli
+date: &#39;2026-04-27&#39;
+status: active
+type: community
+aliases:
+  - multi-agent-patterns
+  - agent-pattern-language
+  - patterns-moc
+---</code></pre>
+<p>After creating all three notes, run graph sync again:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
+<hr>
+<h2>Task 5 — Clustering Script (New Python Script)</h2>
+<p><strong>Output file:</strong> <code>02_System/cluster-notes.py</code> <strong>Prereq:</strong> Task 1 complete (embeddings in DB)</p>
+<p>Write a Python script that reads embeddings from the SQLite DB, runs k-means, and outputs cluster membership lists — the Phase 1 output that <a href="community-report-generator.html" class="wikilink">community-report-generator</a> requires Claude to summarize.</p>
+<pre><code>#!/usr/bin/env python3
+&quot;&quot;&quot;
+cluster-notes.py — Phase 1 of the Community Report Generator.
+Reads NoteEmbeddings from the vault DB, runs k-means clustering,
+and writes cluster membership files to 01_Wiki/community-reports/.
+
+Usage:
+    python 02_System/cluster-notes.py [--k 8] [--db path/to/wiki.db]
+&quot;&quot;&quot;
+import argparse, json, os, sqlite3
+from pathlib import Path
+
+import numpy as np
+from sklearn.cluster import KMeans
+
+VAULT_ROOT = Path(__file__).parent.parent
+DEFAULT_DB = VAULT_ROOT / &quot;00_Raw/PoShWiKi/wiki.db&quot;
+REPORTS_DIR = VAULT_ROOT / &quot;01_Wiki/community-reports&quot;
+
+def load_embeddings(db_path: str) -&gt; tuple[list[str], np.ndarray]:
+    &quot;&quot;&quot;Return (note_names, embeddings_matrix) for all active notes.&quot;&quot;&quot;
+    conn = sqlite3.connect(db_path)
+    rows = conn.execute(
+        &quot;SELECT NoteName, Embedding FROM NoteEmbeddings ORDER BY NoteName&quot;
+    ).fetchall()
+    conn.close()
+    names = [r[0] for r in rows]
+    vecs  = np.array([json.loads(r[1]) for r in rows], dtype=np.float32)
+    # L2-normalize for cosine similarity
+    norms = np.linalg.norm(vecs, axis=1, keepdims=True)
+    vecs  = vecs / np.where(norms == 0, 1, norms)
+    return names, vecs
+
+def estimate_k(vecs: np.ndarray, k_range=range(4, 16)) -&gt; int:
+    &quot;&quot;&quot;Elbow method: pick k where inertia improvement drops below 10%.&quot;&quot;&quot;
+    inertias = []
+    for k in k_range:
+        km = KMeans(n_clusters=k, random_state=42, n_init=10)
+        km.fit(vecs)
+        inertias.append(km.inertia_)
+    for i in range(1, len(inertias)):
+        if inertias[i-1] &gt; 0:
+            improvement = (inertias[i-1] - inertias[i]) / inertias[i-1]
+            if improvement &lt; 0.10:
+                return list(k_range)[i]
+    return list(k_range)[-1]
+
+def write_cluster_report(cluster_id: int, member_names: list[str], output_dir: Path):
+    &quot;&quot;&quot;Write a Level-1 cluster membership file in community-report-generator format.&quot;&quot;&quot;
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / f&quot;cluster-{cluster_id:02d}-members.md&quot;
+    lines = [
+        f&quot;---&quot;,
+        f&quot;title: &#39;Cluster {cluster_id:02d} — Members (Level-1)&#39;&quot;,
+        f&quot;author: gemini-cli&quot;,
+        f&quot;date: &#39;{__import__(&#39;datetime&#39;).date.today()}&#39;&quot;,
+        f&quot;status: active&quot;,
+        f&quot;type: community&quot;,
+        f&quot;cluster_id: &#39;cluster-{cluster_id:02d}&#39;&quot;,
+        f&quot;level: 1&quot;,
+        f&quot;member_count: {len(member_names)}&quot;,
+        f&quot;aliases:&quot;,
+        f&quot;  - cluster-{cluster_id:02d}&quot;,
+        f&quot;---&quot;,
+        f&quot;&quot;,
+        f&quot;# Cluster {cluster_id:02d} — Member Notes&quot;,
+        f&quot;&quot;,
+        f&quot;*This file was generated by `02_System/cluster-notes.py`. Feed to Claude Summarizer for [[community-report-generator]] Phase 2.*&quot;,
+        f&quot;&quot;,
+        f&quot;## Members ({len(member_names)} notes)&quot;,
+        f&quot;&quot;,
+    ]
+    for name in sorted(member_names):
+        lines.append(f&quot;- [[{name}]]&quot;)
+    lines += [&quot;&quot;, &quot;## References&quot;, &quot;- [[community-report-generator]]&quot;, &quot;&quot;]
+    path.write_text(&quot;\n&quot;.join(lines), encoding=&quot;utf-8&quot;)
+    return path
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(&quot;--k&quot;,   type=int, default=0,
+                        help=&quot;Number of clusters (0 = auto-detect via elbow method)&quot;)
+    parser.add_argument(&quot;--db&quot;,  default=str(DEFAULT_DB))
+    args = parser.parse_args()
+
+    print(f&quot;Loading embeddings from {args.db}...&quot;)
+    names, vecs = load_embeddings(args.db)
+    print(f&quot;  {len(names)} notes loaded.&quot;)
+
+    k = args.k if args.k &gt; 0 else estimate_k(vecs)
+    print(f&quot;  Using k={k} clusters.&quot;)
+
+    km = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = km.fit_predict(vecs)
+
+    clusters: dict[int, list[str]] = {}
+    for name, label in zip(names, labels):
+        clusters.setdefault(label, []).append(name)
+
+    print(f&quot;\nCluster sizes:&quot;)
+    for cid, members in sorted(clusters.items(), key=lambda x: -len(x[1])):
+        print(f&quot;  Cluster {cid:02d}: {len(members)} notes&quot;)
+
+    print(f&quot;\nWriting membership files to {REPORTS_DIR}/...&quot;)
+    for cid, members in clusters.items():
+        path = write_cluster_report(cid, members, REPORTS_DIR)
+        print(f&quot;  Written: {path.name}&quot;)
+
+    print(f&quot;\nDone. Run Claude Summarizer on each cluster file for Phase 2.&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p><strong>Dependencies:</strong> <code>numpy</code>, <code>scikit-learn</code> (install via <code>pip install numpy scikit-learn</code> if not present).</p>
+<p><strong>Run it:</strong></p>
+<pre><code>python 02_System/cluster-notes.py --k 8
+# or auto-detect k:
+python 02_System/cluster-notes.py</code></pre>
+<p>Expected output: 6–10 <code>.md</code> files in <code>01_Wiki/community-reports/</code>, one per cluster. Each file is a formatted member list ready to paste into the <a href="community-report-generator.html" class="wikilink">community-report-generator</a> Phase 2 Claude prompt.</p>
+<p>After writing the script and running it, commit it:</p>
+<ul>
+<li>Stage <code>02_System/cluster-notes.py</code>
+</li>
+<li>Stage all <code>01_Wiki/community-reports/cluster-*.md</code> files generated
+</li>
+</ul>
+<hr>
+<h2>Task 6 — Firecrawl Bootstrap (Conditional on API Key)</h2>
+<p><strong>Prereq:</strong> <code>$env:FIRECRAWL_API_KEY</code> set AND Tasks 1–4 complete</p>
+<p>If you have a Firecrawl API key, run the ingestion pipeline from <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> against these three priority targets (they cover the most-referenced external docs in the vault):</p>
+<table>
+<thead><tr>
+<th>Priority</th>
+<th>URL</th>
+<th><code>includePaths</code></th>
+<th>Approx pages</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td><code>https://modelcontextprotocol.io</code></td>
+<td><code>[&quot;/specification/&quot;, &quot;/docs/&quot;]</code></td>
+<td>~40</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>https://adk.dev</code></td>
+<td><code>[&quot;/get-started/&quot;, &quot;/agents/&quot;, &quot;/tools/&quot;]</code></td>
+<td>~30</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>https://docs.firecrawl.dev</code></td>
+<td><code>[&quot;/features/&quot;, &quot;/api-reference/&quot;]</code></td>
+<td>~20</td>
+</tr>
+</tbody>
+</table>
+<p>Use the Python ingestion script from spec &#167;7. Set <code>limit: 50</code> for each site on the first run to stay within free-tier credits (500 pages/month total).</p>
+<p>If <code>FIRECRAWL_API_KEY</code> is not set: skip this task entirely. Do not attempt to simulate it.</p>
+<hr>
+<h2>Final Verification &amp; Commit</h2>
+<p>After all tasks are complete:</p>
+<pre><code># Full maintenance run — must complete 100/100
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code></pre>
+<p>Create a new PoShWiKi session page for this sprint: <code>02_System/poshwiki-pages/Session 2026-04-27.md</code></p>
+<pre><code># Session 2026-04-27
+
+## Session Goal
+Integrate 17 new Claude notes into the semantic graph, grow auto-links, create 3 stub notes, write clustering script.
+
+## Current Seam
+[Fill in after completion]
+
+## Next Steps
+[Fill in after completion]
+
+## Actions
+- sync-embeddings.ps1: N notes embedded
+- auto-link.ps1: N new links added (threshold 0.82, TopN 40)
+- sync-vault-graph.ps1: run 3&#215;
+- stub notes created: workflow-agents, adk-session-service, multi-agent-patterns-moc
+- cluster-notes.py: written + run, K clusters output to 01_Wiki/community-reports/</code></pre>
+<p>Commit all changes:</p>
+<pre><code>chore(graph): post-sprint graph integration — embeddings, auto-links, stubs, clustering
+
+sync-embeddings: 17 new notes embedded (pattern-*, lit-*, spec-*)
+auto-link: N new wikilinks (threshold 0.82)
+stubs: workflow-agents, adk-session-service, multi-agent-patterns-moc
+cluster-notes.py: Phase 1 clustering script, K clusters → 01_Wiki/community-reports/</code></pre>
+<hr>
+<h2>Pre-verified Facts (Do Not Re-derive)</h2>
+<ul>
+<li><code>sync-embeddings.ps1</code> uses <code>gemini-embedding-001</code> (768-dim vectors stored as JSON in <code>NoteEmbeddings.Embedding</code>). The model name in the script is already correct — do not change it.
+</li>
+<li><code>auto-link.ps1</code> uses <code>claude-haiku-4-5-20251001</code> as the judge model (already set in the script&#39;s default <code>-Model</code> param). Do not change it.
+</li>
+<li>DB path: <code>$env:POSHWIKI_DB_PATH</code> if set, otherwise <code>00_Raw/PoShWiKi/wiki.db</code>.
+</li>
+<li>The 17 new notes are all in <code>01_Wiki/</code> with correct YANP frontmatter — no frontmatter fixes needed before embedding.
+</li>
+<li><code>01_Wiki/community-reports/</code> may already exist from a prior session (community 7 was written 2026-05-18 per the log). Do not delete it — the clustering script appends new files, it does not overwrite existing ones.
+</li>
+</ul>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="semantic-embedding-pipeline.html" class="wikilink">semantic-embedding-pipeline</a> — embedding pipeline reference
+</li>
+<li><a href="community-report-generator.html" class="wikilink">community-report-generator</a> — Phase 1 source (this task produces its inputs)
+</li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> — Task 6 source
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> — source for stub 4b
+</li>
+<li><a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a> — source for stub 4a
+</li>
+<li><a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a> — source for stub 4b
+</li>
+<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a> — handoff format reference
+</li>
+<li><a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a>
+</li>
+<li><a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a>
+</li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
+<li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
+<li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="%7Bname%7D.html" class="">{name}</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

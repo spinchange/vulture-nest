@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Community — The Protocol Trust Substrate</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">trust-substrate, type-safe-agents, mcp-rust-community, capability-governance</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Community — The Protocol Trust Substrate</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">trust-substrate, type-safe-agents, mcp-rust-community, capability-governance</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -446,7 +446,7 @@
         <h1>Community: The Protocol Trust Substrate</h1>
 <p><strong>Hubs:</strong> <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>, <a href="rust-moc.html" class="wikilink">rust-moc</a>, <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a></p>
 <h2>Emergent Theory</h2>
-<p>Rust&#39;s ownership model and MCP&#39;s capability-scoped tool registration encode the same design principle at different abstraction layers: *explicit, statically-verifiable permission boundaries.* An MCP server declares a manifest of tools it exposes; the protocol enforces that a client can only invoke what has been explicitly offered. Rust&#39;s borrow checker declares which code can access which memory; the compiler enforces it at compile time, not via runtime policy.</p>
+<p><a href="rust.html" class="wikilink">rust</a>&#39;s ownership model and <a href="mcp-moc.html" class="wikilink">MCP</a>&#39;s capability-scoped tool registration encode the same design principle at different abstraction layers: *explicit, statically-verifiable permission boundaries.* An MCP server declares a manifest of tools it exposes; the protocol enforces that a client can only invoke what has been explicitly offered. Rust&#39;s borrow checker declares which code can access which memory; the compiler enforces it at compile time, not via runtime policy.</p>
 <p>This convergence — visible through shared nodes <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>, <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>, and <a href="agentic-protocols.html" class="wikilink">agentic-protocols</a> — suggests an emergent architecture: a <strong>Trust-by-Construction</strong> substrate for autonomous systems. Instead of policy engines that check permissions at runtime (which can be hallucinated around, misconfigured, or bypassed), the platform is built from languages and protocols where violating a permission boundary is a <strong>type error.</strong> An agent literally *cannot* call a tool that hasn&#39;t been registered in its MCP server manifest — not because a guard intervened, but because the type system has no route to it.</p>
 <p>This matters acutely for multi-agent systems. When an orchestrator delegates to a subagent, the orchestrator cannot grant permissions it doesn&#39;t itself possess — a property that mirrors Rust&#39;s ownership rule that you cannot move a value you&#39;ve already moved. The <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> and <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> frameworks operate at a higher level of abstraction, but their safety guarantees ultimately depend on whether this substrate layer holds.</p>
 <h2>Key Nodes</h2>
@@ -529,7 +529,10 @@
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
 </ul>
@@ -556,6 +559,7 @@
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-concurrency.html" class="">rust-concurrency</a></li>
 <li><a href="rust-lifetimes.html" class="">rust-lifetimes</a></li>
 <li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>

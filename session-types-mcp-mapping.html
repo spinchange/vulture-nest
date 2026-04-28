@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Session Types — MCP Lifecycle Mapping — Vulture Portal</title>
+  <title>Session Types — [[mcp-moc|MCP]] Lifecycle Mapping — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Session Types — MCP Lifecycle Mapping</span>
+      <span>Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Session Types — MCP Lifecycle Mapping</h1>
+      <h1 class="note-title">Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26T00:00:00.000Z</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types — MCP Lifecycle Mapping</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
       </div>
     </header>
 
@@ -652,7 +652,7 @@ async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
 <h2>6. Next Steps for This Spec</h2>
 <p>This note is <code>status: draft</code> because the phantom-type SDK (&#167;4) does not yet exist as a library. To move to <code>active</code>:</p>
 <ol>
-<li>Implement the <code>McpClient&lt;S&gt;</code> state machine as a published Rust crate.
+<li>Implement the <code>McpClient&lt;S&gt;</code> state machine as a published <a href="rust.html" class="wikilink">rust</a> crate.
 </li>
 <li>Handle the async notification channel (Option B from &#167;3) explicitly.
 </li>
@@ -689,6 +689,7 @@ async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
 <ul>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 </ul>
@@ -697,6 +698,8 @@ async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 </ul>
