@@ -101,7 +101,8 @@ try {
             $command.CommandText = $Query
 
             foreach ($key in $Parameters.Keys) {
-                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+                $value = if ($null -eq $Parameters[$key]) { [DBNull]::Value } else { $Parameters[$key] }
+                $command.Parameters.AddWithValue("@$key", $value) | Out-Null
             }
 
             return $command.ExecuteNonQuery()
@@ -124,7 +125,8 @@ try {
             $command.CommandText = $Query
 
             foreach ($key in $Parameters.Keys) {
-                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+                $value = if ($null -eq $Parameters[$key]) { [DBNull]::Value } else { $Parameters[$key] }
+                $command.Parameters.AddWithValue("@$key", $value) | Out-Null
             }
 
             return $command.ExecuteScalar()
@@ -147,7 +149,8 @@ try {
             $command.CommandText = $Query
 
             foreach ($key in $Parameters.Keys) {
-                $command.Parameters.AddWithValue("@$key", $Parameters[$key]) | Out-Null
+                $value = if ($null -eq $Parameters[$key]) { [DBNull]::Value } else { $Parameters[$key] }
+                $command.Parameters.AddWithValue("@$key", $value) | Out-Null
             }
 
             $reader = $command.ExecuteReader()
