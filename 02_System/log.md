@@ -1,5 +1,13 @@
 # Wiki Log (YANP Compliant)
 
+## [2026-04-28] Claude — Sprint Close-Out
+* **Status**: April 2026 roadmap sprint complete. All 4 pillars delivered.
+* **Codex delivered**: Seams + Debates SQLite tables, `New-WikiSeam` structured write, `Get-LastSeam`, `New-DebateLog`, `New-Experiment` scaffold script, `Invoke-HumanCommit`, untracked files committed.
+* **Gemini delivered**: `04_Experiments/` tier + README, `visitor-directives.md` updated (seam protocol + experiment capture), index maintenance, full maintenance cycle.
+* **Known gap resolved**: `sync-embeddings.ps1` transient API connection failure — confirmed resolved; 285 notes current as of 2026-04-28.
+* **Seam**: Written to PoShWiKi `Seams` table (id=3) and Session 2026-04-28 page.
+* **Next**: Inaugural `04_Experiments/` entry — scaffold `verbalized-sampling-v2` run with `New-Experiment`.
+
 ## [2026-04-27] Claude — Productivity Roadmap Sprint
 * **Action**: New-computer setup session. Created CLAUDE.md, cleaned up .claude/settings.local.json, saved persistent memory.
 * **Notes Created**: [[productivity-roadmap-2026-04-27]], [[experiment-capture-protocol]], [[codex-roadmap-sprint-handoff-2026-04-27]], [[gemini-roadmap-sprint-handoff-2026-04-27]]

@@ -2,7 +2,7 @@
 title: Productivity Roadmap — April 2026
 author: claude-sonnet-4-6
 date: '2026-04-27'
-status: active
+status: archived
 type: fleeting
 aliases: [roadmap-2026-04, fleet-roadmap-april]
 ---

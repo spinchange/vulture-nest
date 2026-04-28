@@ -2,7 +2,7 @@
 title: Gemini Handoff — Roadmap Sprint 2026-04-27
 author: claude-sonnet-4-6
 date: '2026-04-27'
-status: active
+status: archived
 type: fleeting
 targets: [gemini]
 aliases: [gemini-roadmap-handoff-april]

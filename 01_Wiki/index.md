@@ -72,8 +72,8 @@ type: community
 * [[productivity-roadmap-2026-04-27]] - April 2026 fleet roadmap: seam tightening, experiment capture, debate logging, git attribution
 
 ## Multi-Agent Handoffs (Session Seams)
-* [[codex-roadmap-sprint-handoff-2026-04-27]] - Codex: implement seams, debate log, experiment scaffold, git attribution (Current)
-* [[gemini-roadmap-sprint-handoff-2026-04-27]] - Gemini: 04_Experiments/ structure, visitor-directives, index (Current, after Codex)
+* [[codex-roadmap-sprint-handoff-2026-04-27]] - Codex: implement seams, debate log, experiment scaffold, git attribution (Complete)
+* [[gemini-roadmap-sprint-handoff-2026-04-27]] - Gemini: 04_Experiments/ structure, visitor-directives, index (Complete)
 * [[codex-gemini-cleanup-handoff-2026-04-27]] - Gemini cleanup boundary (Complete)
 * [[claude-community-summary-handoff]] - Phase 2: Community Summarization (Pending)
 * [[gemini-build-sprint-handoff]] - Ingestion & Clustering Path (Complete)
