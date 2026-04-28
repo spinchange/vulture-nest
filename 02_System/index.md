@@ -54,3 +54,5 @@
 - [[gemini-build-sprint-handoff]] - Gemini graph-integration path for the build sprint.
 - [[codex-usage-loop-handoff]] - Database feedback loop implementation.
 - [[rfc-agent-orchestration-handoff]] - Protocol formalization proposal.
+
+- [[lit-verbalized-sampling-paper]]: Verbalized Sampling for mitigating mode collapse.

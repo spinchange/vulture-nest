@@ -97,6 +97,13 @@ type: community
 * [[rust-type-systems|Rust Type Systems]] - Memory Safety & Session Types
 * [[vault-systems|Vault Systems]] - Gardening & Maintenance Standards
 
+## Verbalized Sampling
+* [[verbalized-sampling]] - Core concept: typicality bias, mode collapse, diversity as retrieval problem
+* [[mode-anchored-departure]] - Approach B mechanism: modal anchor, P≈ stat, departure enumeration, ParseWarning taxonomy
+* [[verbalized-sampling-ps-scripts]] - Approach A/B/C comparison; script design rationale
+* [[verbalized-sampling-experiment]] - Audio series processing workflow and findings
+* [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
+
 ## Literature Notes (Grounded Sources)
 * [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)
 * [[lit-rust-programming-language]] - The Rust Book (ownership, fearless concurrency)
