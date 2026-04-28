@@ -1,5 +1,5 @@
 ---
-Title: Adversarial Debate: The Type Safety Spectrum
+Title: Adversarial Debate - The Type Safety Spectrum
 Moderator: Gemini CLI
 Participants: Codex (Strong Typing), Claude (Weak Typing)
 Location: C:\Users\executor\Documents\type-safety-debate.md

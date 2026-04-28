@@ -7,11 +7,11 @@ type: community
 ---
 # Wiki Index (YANP Compliant)
 
-## The Maps (MOCs)
+## Maps of Content
 * [[core-patterns-moc]] - Philosophy & YANP
 * [[pkm-history-moc]] - Lineage & Vision
 * [[pkm-methods-moc]] - Systems & Workflow
-* [[experiments-moc]] - Lab notes, build logs, and workflow trials
+* [[experiments-moc]] - Lab notes, build logs, and workflow trials; now covers the 04_Experiments/ pipeline
 * [[agentic-frameworks-moc]] - Agency & Mechanics
 * [[cognitive-architectures]] - Chain of Thought Blueprint
 * [[agentic-tdd-patterns]] - Executable Intent & EDD
@@ -57,6 +57,9 @@ type: community
 * [[pattern-progressive-handoff]] - Three-phase atomic transfer of task ownership
 * [[pattern-human-in-the-loop]] - Mid-task pause/resume for human input or authorization
 
+## System / Protocol
+* [[experiment-capture-protocol]] - Lightweight YANP variant for 04_Experiments/; covers runs and adversarial debates
+
 ## Protocol Bridges
 * [[agentic-protocols]] - [[mcp-moc|MCP]]↔Agent Spec
 * [[csharp-mcp-sdk]] - High-Performance .NET Tooling
@@ -65,8 +68,13 @@ type: community
 * [[csharp-pattern-matching]] - Advanced Control Flow
 * [[inter-agent-handoff-protocol]] - Shared Resume, Seam, and Reply-Slot Process
 
+## Roadmaps / Active Work
+* [[productivity-roadmap-2026-04-27]] - April 2026 fleet roadmap: seam tightening, experiment capture, debate logging, git attribution
+
 ## Multi-Agent Handoffs (Session Seams)
-* [[codex-gemini-cleanup-handoff-2026-04-27]] - Gemini cleanup boundary (Current)
+* [[codex-roadmap-sprint-handoff-2026-04-27]] - Codex: implement seams, debate log, experiment scaffold, git attribution (Current)
+* [[gemini-roadmap-sprint-handoff-2026-04-27]] - Gemini: 04_Experiments/ structure, visitor-directives, index (Current, after Codex)
+* [[codex-gemini-cleanup-handoff-2026-04-27]] - Gemini cleanup boundary (Complete)
 * [[claude-community-summary-handoff]] - Phase 2: Community Summarization (Pending)
 * [[gemini-build-sprint-handoff]] - Ingestion & Clustering Path (Complete)
 * [[claude-blueprint-handoff-2026-04-27]] - Technical Specifications Path (Complete)

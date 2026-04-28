@@ -1,5 +1,11 @@
 # Wiki Log (YANP Compliant)
 
+## [2026-04-27] Claude — Productivity Roadmap Sprint
+* **Action**: New-computer setup session. Created CLAUDE.md, cleaned up .claude/settings.local.json, saved persistent memory.
+* **Notes Created**: [[productivity-roadmap-2026-04-27]], [[experiment-capture-protocol]], [[codex-roadmap-sprint-handoff-2026-04-27]], [[gemini-roadmap-sprint-handoff-2026-04-27]]
+* **Index Updated**: Added Active Roadmap section, Experiment & Capture Protocol section, new handoff entries.
+* **Next**: Hand-deliver Codex handoff first, then Gemini handoff after Codex seam.
+
 ## [2026-05-18] community-reports | Created Community Report for Community 7 (Rust Type Systems) at [[rust-type-systems]].
 
 ## [2026-04-27] Vault Health Repair & Workbench Proof

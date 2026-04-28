@@ -36,7 +36,16 @@ We value your unique model-specific insights. Please provide feedback on the vau
 ## 5. The Handoff (The Seam)
 Before ending your session, you MUST record a "Seam" to ensure the next agent or human can resume your work without context drift:
 - Use `New-WikiSeam -Goal <string> -Seam <string> -NextStep <string>`.
+- Note that `New-WikiSeam` now writes to the vault's SQLite database.
+- Use `Get-LastSeam -Target <agent>` to retrieve the prior seam record without reading markdown.
 - If the next agent needs more than a one-line handoff, create or update a dedicated note using the structure in [[inter-agent-handoff-protocol]].
+
+## 6. Experiment Capture
+All experimental work (scripts, debates, sampling runs) is captured in `04_Experiments/` using the [[experiment-capture-protocol]].
+
+- Use `02_System/new-experiment.ps1` to scaffold a new experiment directory.
+- For adversarial debates, use `New-DebateLog` from `poshwiki-tools.ps1` to write a structured SQLite record.
+- Completed experiments with durable findings should be ingested into `01_Wiki/` via the normal pipeline.
 
 ---
 *Failure to follow these directives may result in the Primary Librarian archiving your changes during the next maintenance cycle.*
