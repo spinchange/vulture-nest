@@ -439,6 +439,29 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-04-30] Claude — Synthesis Intelligence Layer Implementation</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> — built the &quot;Mind&quot; of the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>.
+</li>
+<li><strong>Epistemic Risk Classifier</strong>: <code>02_System/vulture-ingest/epistemic_classifier.py</code> — T0–T5 classification logic; <code>classify_claim()</code> and <code>classify_draft()</code> functions. Reads policy thresholds at runtime.
+</li>
+<li><strong>Conflict Resolution Templates</strong>: <code>02_System/vulture-ingest/conflict_templates.py</code> — Arbitration prompt templates for direct_contradiction, version_skew, scope_overlap; <code>ConflictReport</code> dataclass; <code>parse_conflict_report()</code> enforces Escalate→AUTH_REQUIRED invariant.
+</li>
+<li><strong>Provenance Block Generator</strong>: <code>02_System/vulture-ingest/provenance.py</code> — <code>generate_provenance_block()</code> and <code>render_provenance_yaml()</code> matching &#167;7 schema (source_record_ids, chunk_ids, retrieved_at, acting_agent).
+</li>
+<li><strong>Synthesis Quality Rubric</strong>: <code>02_System/vulture-ingest/synthesis_rubric.py</code> — Atomicity checker: word count, section count, scope statement presence, concept-boundary phrase detection; returns <code>atomicity_score</code> 0.0–1.0.
+</li>
+<li><strong>MCP Wiring</strong>: Extended <code>02_System/vulture-ingest/server.py</code> with four new tools: <code>classify_synthesis_draft</code>, <code>get_conflict_resolution_template</code>, <code>run_synthesis_rubric</code>, <code>build_provenance_block</code>.
+</li>
+<li><strong>Tests</strong>: <code>02_System/test_synthesis_intelligence.py</code> — 29 tests, all passing. Existing 6 pipeline tests unaffected.
+</li>
+<li><strong>Note Created</strong>: <a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a> — permanent note documenting the intelligence layer architecture.
+</li>
+<li><strong>Index Updated</strong>: Added synthesis-intelligence-layer to Blueprint Specs.
+</li>
+<li><strong>Next</strong>: Await Codex infrastructure seam (index_crawled_source, verify_source_index, promote_synthesis_candidate) to enable first end-to-end ingestion test.
+</li>
+</ul>
 <h2>[2026-04-29] Gemini — Master Agentic Source Orchestrator Synthesis</h2>
 <ul>
 <li><strong>Synthesis Complete</strong>: Unified v1 (Gemini), v2 (Codex), and v3 (Claude) into a single Master Specification at <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>.
@@ -1402,6 +1425,19 @@
 <li><strong>Next</strong>: Proceed with <a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> infrastructure tasks.
 </li>
 </ul>
+<h2>[2026-04-30] Codex — Orchestrator Infrastructure Scaffold</h2>
+<ul>
+<li><strong>Built</strong>: Added <code>02_System/pipeline-policy.yaml</code> and a fail-closed loader at <code>02_System/vulture-ingest/policy.py</code>.
+</li>
+<li><strong>Built</strong>: Added <code>02_System/vulture-ingest/schema.sql</code> with <code>source_pages</code>, <code>source_chunks</code>, extensions, HNSW index, and <code>match_documents()</code>.
+</li>
+<li><strong>Built</strong>: Scaffolded <code>02_System/vulture-ingest/server.py</code> with <code>propose_source_intake</code>, <code>orchestrate_ingestion</code>, and <code>execute_source_crawl</code>, each enforcing denied-domain and quota policy before execution.
+</li>
+<li><strong>Verified</strong>: Added <code>02_System/test_vulture_ingest.py</code> to cover missing-policy failure, invalid policy rejection, denied-domain blocking, new-domain HITL gating, and dry-run crawl policy enforcement.
+</li>
+<li><strong>Seam</strong>: Infrastructure scaffold is in place; actual Supabase provisioning and live Firecrawl execution still depend on runtime credentials and network access. Next step is integrated verification and then Claude&#39;s synthesis-layer work against this tool surface.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -1596,6 +1632,7 @@
 <li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
 <li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
 <li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
+<li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
 <li><a href="tauri.html" class="">tauri</a></li>
 <li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>

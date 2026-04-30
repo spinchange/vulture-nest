@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[[rust]] Affine Types — Vulture Portal</title>
+  <title>Synthesis Intelligence Layer — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[[rust]] Affine Types</span>
+      <span>Synthesis Intelligence Layer</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[[rust]] Affine Types</h1>
+      <h1 class="note-title">Synthesis Intelligence Layer</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[rust]] Affine Types</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-linear-types, substructural-types, rust-ownership-theory</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Synthesis Intelligence Layer</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -443,142 +443,109 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Rust Affine Types</h1>
-<p>Rust&#39;s ownership model is an implementation of an <strong>affine type system</strong> — a specific point in the formal taxonomy of substructural type systems. Understanding this characterization completes the theoretical argument in <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> and names the mechanism behind Rust&#39;s safety guarantees.</p>
+        <h1>Synthesis Intelligence Layer</h1>
+<p>The Synthesis Intelligence Layer is the &quot;Mind&quot; of the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>. It governs what ingested material is allowed to become permanent knowledge by enforcing epistemic gates at every stage of the synthesis pipeline.</p>
+<p>The complementary &quot;Body&quot; (infrastructure, state machine, SQL schemas) is built by Codex; see <a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a>.</p>
 <hr>
-<h2>The Substructural Type Taxonomy</h2>
-<p>Classical type theory assumes three structural rules that allow arbitrary manipulation of typed variables:</p>
-<ul>
-<li><strong>Weakening</strong>: You may discard a value without using it.
-</li>
-<li><strong>Contraction</strong>: You may duplicate a value and use it multiple times.
-</li>
-<li><strong>Exchange</strong>: You may reorder how values appear.
-</li>
-</ul>
-<p>Substructural type systems restrict one or more of these rules. The resulting taxonomy (Walker, *ATTAPL*, Chapter 1):</p>
+<h2>Scope Statement</h2>
+<p>This note covers the four intelligence components that the Chronicler (Claude) owns within the orchestrator: the epistemic risk classifier, conflict resolution templates, provenance block generator, and synthesis quality rubric. It does not cover the ingestion infrastructure, policy enforcement, or MCP server wiring.</p>
+<hr>
+<h2>Components</h2>
+<h3>1. Epistemic Risk Classifier (<code>epistemic_classifier.py</code>)</h3>
+<p>Classifies every claim in a synthesis draft against the T0–T5 risk tiers defined in <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> &#167;3. The classifier evaluates each claim&#39;s supporting evidence chunks and returns the most restrictive applicable tier.</p>
 <table>
 <thead><tr>
-<th>Name</th>
-<th>Weakening</th>
-<th>Contraction</th>
-<th>Meaning</th>
+<th>Tier</th>
+<th>Gate Logic</th>
 </tr></thead><tbody>
 <tr>
-<td><strong>Unrestricted</strong> (structural)</td>
-<td>✓ allowed</td>
-<td>✓ allowed</td>
-<td>Values may be used any number of times. Most languages.</td>
+<td>T0 — Fabrication</td>
+<td>Zero evidence chunks supplied</td>
 </tr>
 <tr>
-<td><strong>Affine</strong></td>
-<td>✓ allowed</td>
-<td>✗ forbidden</td>
-<td>Values may be used <strong>at most once</strong> — they can be dropped but not duplicated.</td>
+<td>T1 — Weak Evidence</td>
+<td>No chunk meets the <code>min_similarity_threshold</code></td>
 </tr>
 <tr>
-<td><strong>Linear</strong></td>
-<td>✗ forbidden</td>
-<td>✗ forbidden</td>
-<td>Values must be used <strong>exactly once</strong> — cannot be dropped or duplicated.</td>
+<td>T2 — Unmarked Inference</td>
+<td>Inference language present but no <code>[Derived]</code> annotation</td>
 </tr>
 <tr>
-<td><strong>Relevant</strong></td>
-<td>✗ forbidden</td>
-<td>✓ allowed</td>
-<td>Values must be used <strong>at least once</strong> — cannot be dropped, but may be duplicated.</td>
+<td>T3 — Stale Evidence</td>
+<td>All strong chunks older than <code>freshness_threshold_days</code></td>
+</tr>
+<tr>
+<td>T4 — Conflict</td>
+<td>Negation mismatch detected against existing wiki claims</td>
+</tr>
+<tr>
+<td>T5 — Verified</td>
+<td>At least one fresh, high-similarity chunk supports the claim</td>
 </tr>
 </tbody>
 </table>
-<p>Exchange is restricted only in non-commutative / ordered type systems (e.g., Lambek calculus for natural language parsing) — not relevant here.</p>
-<p><strong>Source:</strong> Walker, David. &quot;Substructural Type Systems.&quot; In *Advanced Topics in Types and Programming Languages* (ATTAPL), ed. Pierce, MIT Press, 2005. Chapter 1. Freely available via the ATTAPL website.</p>
-<hr>
-<h2>Rust as an Affine Type System</h2>
-<p>Rust&#39;s <code>move</code> semantics enforce the affine rule: a value may be moved (used once) or dropped, but it cannot be used after a move. This is affine, not linear, because Rust permits weakening — you can drop a value without using it at all (<code>drop(x)</code> or simply letting it go out of scope).</p>
-<pre><code>let s = String::from(&quot;hello&quot;);
-let t = s;          // s is moved into t
-println!(&quot;{}&quot;, s);  // compile error: s has been moved</code></pre>
-<p>The borrow checker is the enforcement mechanism. After the move, <code>s</code> is in a &quot;moved-from&quot; state that the type system rejects at every use site. This is not a runtime check — the compiler eliminates the moved-from value from the type environment.</p>
-<h3>Why Not Linear?</h3>
-<p>A linear type system would forbid weakening: every value must be consumed by a meaningful operation, not silently dropped. Rust allows both:</p>
-<pre><code>{
-    let s = String::from(&quot;hello&quot;);
-    // s is dropped here without being used — weakening allowed
-}</code></pre>
-<pre><code>drop(s);  // explicit discard — still weakening</code></pre>
-<p>Rust&#39;s partial gesture toward linearity is the <code>#[must_use]</code> attribute, which emits a warning (not an error) when a value is silently discarded:</p>
-<pre><code>#[must_use]
-fn compute() -&gt; Result&lt;i32, Error&gt; { ... }
-
-compute();  // warning: unused Result that must be used</code></pre>
-<p><code>#[must_use]</code> approximates the &quot;at least once&quot; relevant rule at the value level, but it is advisory and can be suppressed with <code>let _ = compute();</code>.</p>
-<p>True linear types — where dropping a value is a compile error — would require explicit consumption of every <code>Result</code>, every <code>File</code>, every mutex guard. Some Rust libraries approximate this for specific types (e.g., the <code>must-use</code> crate, or session type libraries that require channels to be fully consumed), but the language does not enforce it universally.</p>
-<hr>
-<h2>Connection to the Trust Substrate</h2>
-<p><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> claims that Rust&#39;s ownership model encodes &quot;explicit, statically-verifiable permission boundaries&quot; with the property that &quot;you cannot grant permissions you don&#39;t possess.&quot; The formal name for this property is <strong>the affine rule applied to capability values</strong>.</p>
-<p>When a capability is expressed as a Rust value (a struct, an owned handle, a token), moving it is an affine operation:</p>
-<pre><code>let capability = WritePermission::new();
-grant_to_subagent(capability);  // capability is moved — original holder can no longer use it
-// use(capability);  // compile error: value moved</code></pre>
-<p>The original holder cannot use the capability after granting it. This is not enforced by runtime authorization logic — it is enforced by the type checker. The affine rule makes &quot;you cannot use what you have given away&quot; a structural property of the language, not a convention.</p>
-<p>This is why <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4.3 uses consuming <code>self</code> (not <code>&amp;self</code>) for the delegation operation: the delegation is a move. The orchestrator&#39;s capability token is consumed; a new <code>DelegatedAgent&lt;SharedCaps&gt;</code> is returned with a strictly smaller or equal capability set. You cannot grant what you no longer hold.</p>
-<hr>
-<h2>Connection to Session Types</h2>
-<p>Session types (see <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a>) require <strong>linear</strong> channels: a channel must be fully consumed according to its protocol — it cannot be dropped mid-protocol. Rust&#39;s affine system can simulate but not enforce this:</p>
+<p><strong>MCP tool:</strong> <code>classify_synthesis_draft</code> — accepts a <code>claims</code> list (each with <code>text</code> and <code>chunks</code>), returns per-claim tiers plus an <code>overall_tier</code> for the draft.</p>
+<h3>2. Conflict Resolution Templates (<code>conflict_templates.py</code>)</h3>
+<p>Arbitration prompt templates for the three conflict types identified in &#167;5 of the master spec:</p>
+<table>
+<thead><tr>
+<th>Conflict Type</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>direct_contradiction</code></td>
+<td>A says X, incoming source says &#172;X</td>
+</tr>
+<tr>
+<td><code>version_skew</code></td>
+<td>Both true but for different versions or time periods</td>
+</tr>
+<tr>
+<td><code>scope_overlap</code></td>
+<td>Incoming claim overlaps but does not contradict existing note</td>
+</tr>
+</tbody>
+</table>
+<p>Each template produces a structured <strong>Conflict Report</strong> (JSON) with four resolution options: Update, Narrow, Parallelize, Escalate. Choosing <code>Escalate</code> forces <code>auth_required: true</code>, triggering an <code>AUTH_REQUIRED</code> <a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a> gate.</p>
+<p><strong>MCP tool:</strong> <code>get_conflict_resolution_template</code> — accepts <code>conflict_type</code> and context variables, returns the filled arbitration prompt.</p>
+<h3>3. Provenance Block Generator (<code>provenance.py</code>)</h3>
+<p>Generates the YANP <code>provenance</code> frontmatter block required on every permanent note promoted through the orchestrator (&#167;7). Links the Wiki note back to the specific Supabase chunk IDs and source record IDs that supported it.</p>
+<pre><code>provenance:
+  source_record_ids: [&quot;sr_abc&quot;]
+  chunk_ids: [&quot;chk_1&quot;, &quot;chk_2&quot;]
+  retrieved_at: &quot;2026-04-30T12:00:00Z&quot;
+  acting_agent: &quot;claude-chronicler&quot;</code></pre>
+<p><strong>MCP tool:</strong> <code>build_provenance_block</code> — accepts chunk and source record IDs; optional <code>render_yaml: true</code> flag returns the YAML text ready for frontmatter insertion.</p>
+<h3>4. Synthesis Quality Rubric (<code>synthesis_rubric.py</code>)</h3>
+<p>Checks a synthesis draft for YANP atomicity compliance before the promotion step:</p>
 <ul>
-<li>A session-typed channel library can prevent *use-after-move* (affine) — you cannot use a channel in state <code>S</code> after transitioning it to state <code>S&#39;</code>.
+<li>Word count within bounds (50–800 words)
 </li>
-<li>But Rust cannot prevent *drop-without-consuming* (the linear requirement) unless the channel&#39;s <code>Drop</code> implementation panics, which is a runtime check, not a type-level one.
+<li>Section count ≤ 5
+</li>
+<li>Scope Statement section present
+</li>
+<li>No concept-boundary crossing phrases detected
 </li>
 </ul>
-<p>Libraries like <code>session-types</code> or <code>dialectic</code> achieve the use-after-move guarantee through phantom types (see <a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a>) but rely on runtime panic for the linearity requirement. This is the practical limit of Rust&#39;s affine system for session type encoding.</p>
+<p>Returns <code>passed: bool</code>, <code>atomicity_score</code> (0.0–1.0), and per-issue suggestions.</p>
+<p><strong>MCP tool:</strong> <code>run_synthesis_rubric</code> — accepts <code>draft_text</code>, returns the full rubric result.</p>
 <hr>
-<h2>The <code>Copy</code> Trait: Explicit Opt-Out of Affinity</h2>
-<p>Types that implement <code>Copy</code> opt out of the affine rule for that type. <code>Copy</code> requires that the type is trivially duplicable (no heap allocation, no unique ownership semantics):</p>
-<pre><code>let x: i32 = 5;
-let y = x;       // x is copied, not moved
-println!(&quot;{}&quot;, x);  // fine — i32 is Copy</code></pre>
-<p><code>Copy</code> is only derivable if all fields are <code>Copy</code>. <code>String</code>, <code>Vec&lt;T&gt;</code>, <code>Box&lt;T&gt;</code>, and any type with unique ownership cannot implement <code>Copy</code>. The affine rule is the default; <code>Copy</code> is the explicit, opt-in exception.</p>
-<p><code>Clone</code> (explicit duplication via <code>.clone()</code>) is a weakening operation — you are creating a new value, not using the original. The original survives the clone. This is different from the linear/affine distinction, which is about what happens to the *original*.</p>
+<h2>Integration Point</h2>
+<p>All four tools are registered in <code>02_System/vulture-ingest/server.py</code> alongside the existing ingestion tools (<code>propose_source_intake</code>, <code>orchestrate_ingestion</code>, <code>execute_source_crawl</code>). The synthesis tools consume policy thresholds from <code>02_System/pipeline-policy.yaml</code> at runtime — changing <code>min_similarity_threshold</code> or <code>freshness_threshold_days</code> in the policy file propagates automatically to the classifier.</p>
 <hr>
-<h2>Summary: What the Formal Framing Buys</h2>
-<p>Naming Rust&#39;s ownership model as an affine type system does three things:</p>
-<ol>
-<li><strong>Connects it to a body of formal theory.</strong> The properties of affine systems (no aliasing without explicit borrow, safe deallocation, no use-after-free) are proven in the literature, not just asserted by the Rust documentation.
-</li>
-<li><strong>Clarifies the limits.</strong> Rust is affine, not linear — certain invariants (every handle must be consumed) require additional conventions or runtime checks.
-</li>
-<li><strong>Grounds the capability model.</strong> The trust substrate&#39;s claim that &quot;you cannot grant what you don&#39;t possess&quot; is not a design principle — it is a consequence of the affine rule applied to capability tokens.
-</li>
-</ol>
-<hr>
-<h2>Relationship to Other Notes</h2>
-<ul>
-<li><strong><a href="rust-ownership.html" class="wikilink">rust-ownership</a></strong>: The practical rules that implement the affine system.
-</li>
-<li><strong><a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a></strong>: The mechanism for encoding capability state in types; the affine rule (consuming <code>self</code>) is what makes the state transitions irrevocable.
-</li>
-<li><strong><a href="rust-type-level-programming.html" class="wikilink">rust-type-level-programming</a></strong>: Orthogonal; type-level computation in Rust is about what types can express, not about the substructural properties of values.
-</li>
-<li><strong><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a></strong>: The &quot;permission boundaries&quot; claim that this note formally grounds.
-</li>
-<li><strong><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a></strong>: &#167;4.3 uses the affine move as the delegation mechanism.
-</li>
-<li><strong><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a></strong>: Session types require linearity; Rust provides affinity — see that handoff for the gap and workarounds.
-</li>
-</ul>
+<h2>Next Seam</h2>
+<p>Once Codex completes the infrastructure seam (schema migrations, <code>index_crawled_source</code>, <code>verify_source_index</code>, <code>promote_synthesis_candidate</code>), the first <strong>End-to-End</strong> ingestion test can run: ingest a source → classify claims → check rubric → generate provenance → promote to <code>01_Wiki/</code>.</p>
 <hr>
 <h2>References</h2>
 <ul>
-<li>Walker, David. &quot;Substructural Type Systems.&quot; In *ATTAPL* (Pierce, ed.), MIT Press, 2005. Chapter 1.
+<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> — Master spec: T0–T5 tiers, &#167;3, &#167;5, &#167;7
 </li>
-<li>Wadler, Philip. &quot;Linear Types Can Change the World.&quot; *Programming Concepts and Methods* (IFIP), 1990.
+<li><a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a> — AUTH_REQUIRED escalation pattern
 </li>
-<li>The Rustonomicon — Ownership and Moves: <code>doc.rust-lang.org/nomicon/ownership.html</code>
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a> — YANP frontmatter standards
 </li>
-<li>The Rust Reference — <code>Copy</code> types
-</li>
-<li>Rust RFC #0019 — Ownership system (historical)
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> — Complementary infrastructure build
 </li>
 </ul>
       </main>
@@ -593,23 +560,15 @@ println!(&quot;{}&quot;, x);  // fine — i32 is Copy</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
-<li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
-<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
-<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
-<li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
-<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="rust.html" class="">rust</a></li>
-<li><a href="rust-ownership.html" class="">rust-ownership</a></li>
-<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
-<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
 </ul>
           </div>
         </div>
