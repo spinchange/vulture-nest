@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Function Calling — Vulture Portal</title>
+  <title>Spec: Agentic Source Orchestrator — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Function Calling</span>
+      <span>Spec: Agentic Source Orchestrator</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Function Calling</h1>
+      <h1 class="note-title">Spec: Agentic Source Orchestrator</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Function Calling</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">native-tool-use, json-mode-actions</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Agentic Source Orchestrator</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-29</span></span>
       </div>
     </header>
 
@@ -443,55 +443,161 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Function Calling</h1>
-<p><strong>Function Calling</strong> is a native model capability where an LLM is fine-tuned to recognize tool definitions and generate structured output (usually JSON) that can be directly executed by an external system.</p>
-<h2>Comparison: ReAct vs. Function Calling</h2>
+        <h1>Spec: Agentic Source Orchestrator</h1>
+<p><strong>Purpose:</strong> Define the unified multi-agent orchestration layer for the <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>. This spec establishes the &quot;Knowledge Compiler&quot; protocol, transforming raw web ingestion into a hardened, auditable, and epistemically verified knowledge graph within the YANP framework.</p>
+<hr>
+<h2>1. The Multi-Agent Trinity (Roles)</h2>
+<p>Execution is distributed across the fleet to enforce the <strong>Two-Role Invariant</strong>: *No single agent may both ingest source material and promote it to a permanent note.*</p>
 <table>
 <thead><tr>
-<th>Feature</th>
-<th>[[react-pattern</th>
-<th>ReAct]]</th>
-<th>Function Calling</th>
+<th>Agent</th>
+<th>Responsibility</th>
+<th>Primary Metrics</th>
 </tr></thead><tbody>
 <tr>
-<td><strong>Mechanism</strong></td>
-<td>Guided Prompting</td>
-<td>Native Fine-Tuning</td>
+<td><strong>Gemini (Librarian)</strong></td>
+<td><strong>Gap Detection &amp; Discovery:</strong> Identifies vault gaps, maps source candidates, manages the Index and Log.</td>
+<td>Gap-to-Crawl Ratio, Index Accuracy.</td>
 </tr>
 <tr>
-<td><strong>Output</strong></td>
-<td>Text (Reasoning + JSON)</td>
-<td>Structured JSON (directly)</td>
+<td><strong>Codex (Engineer)</strong></td>
+<td><strong>Control &amp; Infrastructure:</strong> Manages the state machine, SQL schemas, MCP Tool implementation, and policy enforcement.</td>
+<td>System Uptime, Policy Compliance, Audit Integrity.</td>
 </tr>
 <tr>
-<td><strong>Precision</strong></td>
-<td>Lower (requires parsing)</td>
-<td>Higher (consistent format)</td>
-</tr>
-<tr>
-<td><strong>Learning</strong></td>
-<td>Few-Shot Examples</td>
-<td>Learned Behavior</td>
+<td><strong>Claude (Chronicler)</strong></td>
+<td><strong>Synthesis &amp; Intelligence:</strong> Distills claims from chunks, resolves conflicts, and ensures epistemic quality.</td>
+<td>Evidence Coverage, Claim-to-Evidence Ratio.</td>
 </tr>
 </tbody>
 </table>
-<h2>Workflow</h2>
+<hr>
+<h2>2. The Source Intake Lifecycle (State Machine)</h2>
+<p>The orchestrator manages a strict 8-stage lifecycle. No stage may be bypassed.</p>
 <ol>
-<li><strong>Definitions</strong>: The system provides a list of functions with JSON Schemas.
+<li><strong>Proposed:</strong> Agent registers a source request based on a vault gap or user directive.
 </li>
-<li><strong>Detection</strong>: The model identifies when a user query requires a function and generates the JSON arguments.
+<li><strong>Mapped:</strong> Firecrawl <code>/map</code> identifies the URL graph and cost estimate.
 </li>
-<li><strong>Execution</strong>: The system runs the function and returns the result using the <code>tool</code> role.
+<li><strong>Approved:</strong> Human or policy gate grants permission to crawl.
+</li>
+<li><strong>Crawled:</strong> Raw Markdown is fetched and stored in the sidecar.
+</li>
+<li><strong>Indexed:</strong> Content is chunked, embedded, and stamped with provenance.
+</li>
+<li><strong>Verified:</strong> Integrity checks (coherence, metadata, sample retrieval) pass.
+</li>
+<li><strong>Synthesized:</strong> A draft note is created with claim-level evidence citations.
+</li>
+<li><strong>Promoted:</strong> The draft is reviewed and merged as a Permanent Note in <code>01_Wiki/</code>.
 </li>
 </ol>
 <hr>
+<h2>3. Epistemic Risk &amp; Quality Gates</h2>
+<p>The system treats knowledge as <strong>Compiled Output</strong>. Claims must pass the following risk classification before promotion:</p>
+<table>
+<thead><tr>
+<th>Tier</th>
+<th>Classification</th>
+<th>Action Required</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>T0 — Fabrication</strong></td>
+<td>No supporting evidence or inference marker.</td>
+<td><strong>Reject immediately.</strong></td>
+</tr>
+<tr>
+<td><strong>T1 — Weak Evidence</strong></td>
+<td>Tangential or low-similarity chunks.</td>
+<td>Flag for human arbitration.</td>
+</tr>
+<tr>
+<td><strong>T2 — Unmarked Inference</strong></td>
+<td>Valid conclusion but missing &quot;Derived&quot; label.</td>
+<td>Annotate and proceed.</td>
+</tr>
+<tr>
+<td><strong>T3 — Stale Evidence</strong></td>
+<td>Evidence retrieved &gt; 90 days ago.</td>
+<td>Stamp as stale; queue re-ingestion.</td>
+</tr>
+<tr>
+<td><strong>T4 — Conflict</strong></td>
+<td>Contradicts existing permanent notes.</td>
+<td>Trigger Conflict Resolution (&#167;5).</td>
+</tr>
+<tr>
+<td><strong>T5 — Verified</strong></td>
+<td>Direct support from high-similarity, fresh chunks.</td>
+<td>Eligible for promotion.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>4. The MCP Tool Surface (The Reflex)</h2>
+<p>The orchestrator is exposed via a unified MCP server, ensuring all agents share the same operational interface.</p>
+<ul>
+<li><code>propose_source_intake</code>: Register a request; validates against <code>denied_domains</code>.
+</li>
+<li><code>orchestrate_ingestion</code>: Generates the map and cost estimate.
+</li>
+<li><code>execute_source_crawl</code>: Performs the crawl; enforces the credit quota.
+</li>
+<li><code>index_crawled_source</code>: Chunks and embeds using the Heading-Aware strategy.
+</li>
+<li><code>verify_source_index</code>: Runs integrity and provenance audits.
+</li>
+<li><code>semantic_search_sources</code>: Retrieves attributed chunks with metadata.
+</li>
+<li><code>promote_synthesis_candidate</code>: Compiles the &quot;Promotion Packet&quot; for review.
+</li>
+</ul>
+<hr>
+<h2>5. Conflict Resolution &amp; Arbitration</h2>
+<p>When an incoming claim contradicts the existing graph, the agent must choose a resolution path:</p>
+<ol>
+<li><strong>Update:</strong> New evidence is fresher/more authoritative. Supersede old claim.
+</li>
+<li><strong>Narrow:</strong> Existing claim is too general. Add scope qualifiers.
+</li>
+<li><strong>Parallelize:</strong> Both are true under different conditions (e.g., versions). Create conditioned notes.
+</li>
+<li><strong>Escalate:</strong> High-stakes contradiction. Trigger <code>AUTH_REQUIRED</code> for human review.
+</li>
+</ol>
+<hr>
+<h2>6. Policy Framework (<code>pipeline-policy.yaml</code>)</h2>
+<pre><code>version: 1.0
+quotas:
+  max_credits_per_session: 100
+  max_pages_per_source: 200
+safety:
+  denied_domains: [&quot;*.social&quot;, &quot;reddit.com&quot;]
+  require_hitl_for_costs_over: 20
+  require_hitl_for_new_domain: true
+synthesis:
+  freshness_threshold_days: 90
+  min_similarity_threshold: 0.78
+  require_provenance_block: true</code></pre>
+<hr>
+<h2>7. Provenance &amp; Audit Trail</h2>
+<p>Every permanent note promoted via this orchestrator MUST contain a YAML <code>provenance</code> block in its frontmatter:</p>
+<pre><code>provenance:
+  source_record_ids: [&quot;sr_123&quot;]
+  chunk_ids: [&quot;chk_456&quot;, &quot;chk_457&quot;]
+  retrieved_at: &quot;2026-04-29T12:00:00Z&quot;
+  acting_agent: &quot;claude-chronicler&quot;</code></pre>
+<p>This creates a stable link between the <strong>Wiki (Permanent Knowledge)</strong> and the <strong>Sidecar (Evidence Chunks)</strong>.</p>
+<hr>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/hf-agents-bonus1.md</code>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
 </li>
-<li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
 </li>
-<li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+<li><a href="visitor-directives.html" class="wikilink">visitor-directives</a>
+</li>
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
 </li>
 </ul>
       </main>
@@ -506,18 +612,15 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="chat-templates.html" class="">chat-templates</a></li>
-<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="lora.html" class="">lora</a></li>
-<li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="spec-agentic-source-orchestrator-v3.html" class="">spec-agentic-source-orchestrator-v3</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-tools.html" class="">agent-tools</a></li>
-<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
-<li><a href="react-pattern.html" class="">react-pattern</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="visitor-directives.html" class="">visitor-directives</a></li>
 </ul>
           </div>
         </div>
