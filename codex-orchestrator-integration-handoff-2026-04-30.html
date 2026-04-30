@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Memex — Vulture Portal</title>
+  <title>Handoff: Codex Orchestrator Integration — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Memex</span>
+      <span>Handoff: Codex Orchestrator Integration</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Memex</h1>
+      <h1 class="note-title">Handoff: Codex Orchestrator Integration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">vannevar-bush-1945</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-23</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Memex</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Codex Orchestrator Integration</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">memory-extender, associative-trails</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -444,17 +443,99 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Memex</h1>
-<p>The <strong>Memex</strong> is a conceptual &quot;memory extender&quot; first proposed by Vannevar Bush in his 1945 essay *&quot;As We May Think.&quot;*</p>
-<h2>Core Idea</h2>
-<p>A mechanized private file and library that works by <strong>association</strong> rather than hierarchy, mirroring the human mind.</p>
-<h2>Impact on Knowledge Management</h2>
+        <h1>Handoff: Codex Orchestrator Integration</h1>
+<p><strong>Context:</strong> The Infrastructure (Codex) and Intelligence (Claude) layers are scaffolded and verified. Your mission is to bridge the gap and make the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> <strong>End-to-End Operational</strong> by implementing the remaining lifecycle tools.</p>
+<h2>1. Directives (Integration)</h2>
+<ol>
+<li><strong>Index &amp; Embedding (<code>index_crawled_source</code>):</strong>
 <ul>
-<li>Introduced <strong>Associative Trails</strong>: Paths through related documents that could be named and shared.
+<li>
+<ul>
+<li>Implement heading-aware chunking (using <code>02_System/chunker.py</code> as a reference).
 </li>
-<li>Inspired the development of Hypertext and the World Wide Web.
+<li>Integrate with the Supabase <code>source_chunks</code> table.
 </li>
-<li>Serves as the philosophical foundation for the <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>.
+<li><strong>Goal:</strong> Transform crawled Markdown into vector-ready chunks.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><strong>Retrieval Logic (<code>semantic_search_sources</code>):</strong>
+<ul>
+<li>
+<ul>
+<li>Implement the <code>match_documents</code> RPC call defined in <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>.
+</li>
+<li>Ensure results include metadata (source_url, title, heading) for Claude&#39;s provenance blocks.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><strong>Integrity Audit (<code>verify_source_index</code>):</strong>
+<ul>
+<li>
+<ul>
+<li>Implement automated checks for chunk coherence and provenance link stability.
+</li>
+<li>Check for T3 (Stale Evidence) if re-indexing an existing source.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><strong>Promotion Workflow (<code>promote_synthesis_candidate</code>):</strong>
+<ul>
+<li>
+<ul>
+<li>Handle the final transition from <code>Synthesized</code> -&gt; <code>Promoted</code>.
+</li>
+<li>Update the Postgres <code>source_pages</code> status.
+</li>
+<li>Ensure the <code>provenance</code> block is validated against the DB records before merging to <code>01_Wiki/</code>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><strong>Test Hardening:</strong>
+<ul>
+<li>
+<ul>
+<li>Update <code>02_System/test_vulture_ingest.py</code> to cover these new state transitions.
+</li>
+<li>Mock the Supabase/Firecrawl network calls to ensure CI stability.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2>2. Dependencies</h2>
+<ul>
+<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> (The Master Spec)
+</li>
+<li><code>02_System/vulture-ingest/server.py</code> (The tool surface)
+</li>
+<li><a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a> (The Mind)
+</li>
+</ul>
+<h2>3. Next Seam</h2>
+<p>Once these four tools are implemented and mocked tests pass, the orchestrator is ready for its <strong>Inaugural Ingestion Run</strong> with live credentials.</p>
+<h2>Related</h2>
+<ul>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a>
+</li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a>
 </li>
 </ul>
       </main>
@@ -469,15 +550,16 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
-<li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
-<li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
-<li><a href="roam-research.html" class="">roam-research</a></li>
-<li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
 </ul>
           </div>
         </div>
