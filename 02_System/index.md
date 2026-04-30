@@ -45,6 +45,7 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
+- [[gemini-orchestrator-test-handoff-2026-04-30]] - Inaugural End-to-End Test for the Orchestrator.
 - [[codex-orchestrator-integration-handoff-2026-04-30]] - Integration & State-Machine completion for the Orchestrator.
 - [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Intelligence & Epistemic Gates for the Orchestrator.
 - [[codex-orchestrator-build-handoff-2026-04-29]] - Infrastructure & Pipeline foundation for the Orchestrator.
