@@ -13,6 +13,10 @@ CREATE TABLE IF NOT EXISTS source_pages (
     etag          TEXT,
     last_modified TEXT,
     content_hash  TEXT NOT NULL,
+    status        TEXT NOT NULL DEFAULT 'Crawled',
+    verified_at   TIMESTAMPTZ,
+    promoted_at   TIMESTAMPTZ,
+    promoted_note_path TEXT,
     domain        TEXT GENERATED ALWAYS AS (
         split_part(regexp_replace(url, 'https?://', ''), '/', 1)
     ) STORED

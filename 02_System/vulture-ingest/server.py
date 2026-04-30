@@ -6,6 +6,7 @@ import os
 import signal
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from urllib import error, parse, request
@@ -42,7 +43,13 @@ from provenance import generate_provenance_block, render_provenance_yaml  # noqa
 
 FIRECRAWL_API_BASE = os.environ.get("FIRECRAWL_API_BASE", "https://api.firecrawl.dev/v2")
 FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY", "")
+OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE", "https://api.openai.com/v1")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_EMBEDDING_MODEL = os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
 POLICY_PATH = Path(os.environ.get("VULTURE_PIPELINE_POLICY_PATH", DEFAULT_POLICY_PATH))
+WIKI_ROOT = Path(os.environ.get("VULTURE_WIKI_ROOT", Path(__file__).resolve().parents[2] / "01_Wiki"))
 RUNTIME_LEDGER = RuntimeLedger()
 
 
@@ -70,12 +77,225 @@ def _json_request(method: str, path: str, payload: dict[str, Any]) -> dict[str, 
         raise RuntimeError(f"Firecrawl request failed: {exc.reason}") from exc
 
 
+def _json_http_request(
+    *,
+    method: str,
+    url: str,
+    payload: dict[str, Any] | list[Any] | None = None,
+    headers: dict[str, str] | None = None,
+) -> Any:
+    body = None if payload is None else json.dumps(payload).encode("utf-8")
+    request_headers = {"Content-Type": "application/json"}
+    if headers:
+        request_headers.update(headers)
+    req = request.Request(url, data=body, method=method.upper(), headers=request_headers)
+    try:
+        with request.urlopen(req, timeout=30) as response:
+            raw = response.read().decode("utf-8")
+            if not raw:
+                return {}
+            return json.loads(raw)
+    except error.HTTPError as exc:  # pragma: no cover - depends on live API
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"HTTP request failed: {exc.code} {detail}") from exc
+    except error.URLError as exc:  # pragma: no cover - depends on network
+        raise RuntimeError(f"HTTP request failed: {exc.reason}") from exc
+
+
+def _supabase_headers(*, prefer: str | None = None) -> dict[str, str]:
+    if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+        raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be configured.")
+    headers = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+    }
+    if prefer:
+        headers["Prefer"] = prefer
+    return headers
+
+
+def _supabase_request(
+    method: str,
+    path: str,
+    *,
+    payload: dict[str, Any] | list[dict[str, Any]] | None = None,
+    params: dict[str, Any] | None = None,
+    prefer: str | None = None,
+) -> Any:
+    url = f"{SUPABASE_URL}{path}"
+    if params:
+        query = parse.urlencode({key: value for key, value in params.items() if value is not None}, doseq=True)
+        if query:
+            url = f"{url}?{query}"
+    return _json_http_request(
+        method=method,
+        url=url,
+        payload=payload,
+        headers=_supabase_headers(prefer=prefer),
+    )
+
+
+def _embed_texts(texts: list[str]) -> list[list[float]]:
+    if not texts:
+        return []
+    if not OPENAI_API_KEY:
+        raise RuntimeError("OPENAI_API_KEY is not configured for embedding generation.")
+    payload = {"model": OPENAI_EMBEDDING_MODEL, "input": texts}
+    response = _json_http_request(
+        method="POST",
+        url=f"{OPENAI_API_BASE}/embeddings",
+        payload=payload,
+        headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
+    )
+    data = response.get("data")
+    if not isinstance(data, list) or len(data) != len(texts):
+        raise RuntimeError(f"Embedding API returned an unexpected payload: {response}")
+    return [item["embedding"] for item in data]
+
+
 def _estimate_credits(page_count: int) -> int:
     return max(1, page_count)
 
 
 def _load_runtime_policy() -> PipelinePolicy:
     return load_policy(POLICY_PATH)
+
+
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _isoformat(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _parse_timestamp(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    normalized = value.replace("Z", "+00:00")
+    return datetime.fromisoformat(normalized)
+
+
+def _extract_page_payload(
+    *,
+    crawled_page: dict[str, Any] | None = None,
+    url: str | None = None,
+    markdown: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    language: str | None = None,
+    status_code: int | None = None,
+    crawled_at: str | None = None,
+    etag: str | None = None,
+    last_modified: str | None = None,
+) -> dict[str, Any]:
+    if crawled_page:
+        data = crawled_page.get("data", crawled_page)
+        metadata = data.get("metadata", {})
+        markdown = markdown or data.get("markdown")
+        url = url or metadata.get("sourceURL") or data.get("source_url") or data.get("url")
+        title = title or metadata.get("title") or data.get("title")
+        description = description or metadata.get("description") or data.get("description")
+        language = language or metadata.get("language") or data.get("language")
+        status_code = status_code if status_code is not None else metadata.get("statusCode") or data.get("status_code")
+        crawled_at = crawled_at or data.get("crawled_at") or metadata.get("crawledAt")
+        etag = etag or metadata.get("etag") or data.get("etag")
+        last_modified = last_modified or metadata.get("lastModified") or data.get("last_modified")
+
+    if not url:
+        raise ValueError("A source URL is required.")
+    if not markdown:
+        raise ValueError("Markdown content is required for indexing.")
+
+    return {
+        "url": url,
+        "markdown": markdown,
+        "title": title,
+        "description": description,
+        "language": language or "en",
+        "status_code": status_code,
+        "crawled_at": crawled_at or _isoformat(_utcnow()),
+        "etag": etag,
+        "last_modified": last_modified,
+    }
+
+
+def _normalize_provenance_input(
+    *,
+    provenance: dict[str, Any] | None = None,
+    chunk_ids: list[str] | None = None,
+    source_record_ids: list[str] | None = None,
+    retrieved_at: str | None = None,
+    acting_agent: str = "claude-chronicler",
+) -> dict[str, Any]:
+    if provenance is None:
+        provenance = generate_provenance_block(
+            chunk_ids or [],
+            source_record_ids or [],
+            retrieved_at=retrieved_at,
+            acting_agent=acting_agent,
+        )
+    block = provenance.get("provenance", provenance)
+    return {
+        "provenance": {
+            "source_record_ids": list(block.get("source_record_ids", [])),
+            "chunk_ids": list(block.get("chunk_ids", [])),
+            "retrieved_at": block.get("retrieved_at") or retrieved_at or _isoformat(_utcnow()),
+            "acting_agent": block.get("acting_agent") or acting_agent,
+        }
+    }
+
+
+def _with_provenance_frontmatter(note_text: str, provenance_block: dict[str, Any]) -> str:
+    provenance_yaml = render_provenance_yaml(provenance_block)
+    if note_text.startswith("---\n"):
+        end = note_text.find("\n---", 4)
+        if end == -1:
+            raise ValueError("Draft note frontmatter is not terminated.")
+        frontmatter = note_text[4:end]
+        body = note_text[end + 4 :]
+        if "provenance:" in frontmatter:
+            return note_text
+        frontmatter = frontmatter.rstrip()
+        stitched = f"---\n{frontmatter}\n{provenance_yaml}\n---{body}"
+        return stitched
+    return f"---\n{provenance_yaml}\n---\n\n{note_text.lstrip()}"
+
+
+def _validate_provenance_records(provenance_block: dict[str, Any]) -> dict[str, Any]:
+    block = provenance_block["provenance"]
+    source_ids = block["source_record_ids"]
+    chunk_ids = block["chunk_ids"]
+    if not source_ids:
+        raise ValueError("Provenance must include at least one source_record_id.")
+    if not chunk_ids:
+        raise ValueError("Provenance must include at least one chunk_id.")
+
+    pages = _supabase_request(
+        "GET",
+        "/rest/v1/source_pages",
+        params={"select": "id,url,status", "id": f"in.({','.join(source_ids)})"},
+    )
+    if len(pages) != len(set(source_ids)):
+        found = {row["id"] for row in pages}
+        missing = [source_id for source_id in source_ids if source_id not in found]
+        raise RuntimeError(f"Provenance references unknown source_record_ids: {missing}")
+
+    chunks = _supabase_request(
+        "GET",
+        "/rest/v1/source_chunks",
+        params={"select": "id,page_id,source_url,chunk_index", "id": f"in.({','.join(chunk_ids)})"},
+    )
+    if len(chunks) != len(set(chunk_ids)):
+        found = {row["id"] for row in chunks}
+        missing = [chunk_id for chunk_id in chunk_ids if chunk_id not in found]
+        raise RuntimeError(f"Provenance references unknown chunk_ids: {missing}")
+
+    invalid = [chunk["id"] for chunk in chunks if chunk["page_id"] not in source_ids]
+    if invalid:
+        raise RuntimeError(f"Provenance chunk/page mismatch detected for chunk_ids: {invalid}")
+
+    return {"pages": pages, "chunks": chunks}
 
 
 def propose_source_intake(
@@ -241,6 +461,339 @@ def execute_source_crawl(
     raise RuntimeError(f"Crawl job {job_id} did not complete in time. Last response: {last_response}")
 
 
+def index_crawled_source(
+    *,
+    crawled_page: dict[str, Any] | None = None,
+    url: str | None = None,
+    markdown: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    language: str | None = None,
+    status_code: int | None = None,
+    crawled_at: str | None = None,
+    etag: str | None = None,
+    last_modified: str | None = None,
+    embeddings: list[list[float]] | None = None,
+) -> dict[str, Any]:
+    from chunker import chunk_markdown, sha256
+
+    page = _extract_page_payload(
+        crawled_page=crawled_page,
+        url=url,
+        markdown=markdown,
+        title=title,
+        description=description,
+        language=language,
+        status_code=status_code,
+        crawled_at=crawled_at,
+        etag=etag,
+        last_modified=last_modified,
+    )
+
+    prior_rows = _supabase_request(
+        "GET",
+        "/rest/v1/source_pages",
+        params={"select": "id,content_hash,crawled_at,status", "url": f"eq.{page['url']}"},
+    )
+    prior_row = prior_rows[0] if prior_rows else None
+
+    page_hash = sha256(page["markdown"])
+    page_row = {
+        "url": page["url"],
+        "title": page["title"],
+        "description": page["description"],
+        "language": page["language"],
+        "markdown": page["markdown"],
+        "status_code": page["status_code"],
+        "crawled_at": page["crawled_at"],
+        "etag": page["etag"],
+        "last_modified": page["last_modified"],
+        "content_hash": page_hash,
+        "status": "Indexed",
+    }
+    upserted_pages = _supabase_request(
+        "POST",
+        "/rest/v1/source_pages",
+        payload=page_row,
+        params={"on_conflict": "url", "select": "id,url,content_hash,crawled_at,status"},
+        prefer="resolution=merge-duplicates,return=representation",
+    )
+    indexed_page = upserted_pages[0]
+
+    if prior_row and prior_row["content_hash"] == page_hash:
+        existing_chunks = _supabase_request(
+            "GET",
+            "/rest/v1/source_chunks",
+            params={"select": "id,chunk_index", "page_id": f"eq.{indexed_page['id']}"},
+        )
+        return {
+            "status": "indexed",
+            "page_id": indexed_page["id"],
+            "source_url": page["url"],
+            "chunk_count": len(existing_chunks),
+            "reindexed": False,
+            "content_changed": False,
+            "next_state": "verified",
+        }
+
+    _supabase_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{indexed_page['id']}"})
+
+    chunks = chunk_markdown(
+        page["markdown"],
+        {"url": page["url"], "title": page["title"], "crawled_at": page["crawled_at"]},
+    )
+    if not chunks:
+        raise RuntimeError("Chunking produced zero chunks; markdown is too thin to index.")
+
+    vectors = embeddings or _embed_texts([chunk["content"] for chunk in chunks])
+    if len(vectors) != len(chunks):
+        raise RuntimeError("Embedding count does not match chunk count.")
+
+    insert_rows: list[dict[str, Any]] = []
+    for chunk, vector in zip(chunks, vectors):
+        insert_rows.append(
+            {
+                "page_id": indexed_page["id"],
+                "content": chunk["content"],
+                "content_hash": chunk["content_hash"],
+                "source_url": chunk["source_url"],
+                "domain": chunk["domain"],
+                "page_title": chunk["page_title"],
+                "section_heading": chunk["section_heading"],
+                "chunk_index": chunk["chunk_index"],
+                "chunk_total": chunk["chunk_total"],
+                "crawled_at": chunk["crawled_at"],
+                "embedding": vector,
+                "embedded_at": _isoformat(_utcnow()),
+            }
+        )
+
+    inserted_chunks = _supabase_request(
+        "POST",
+        "/rest/v1/source_chunks",
+        payload=insert_rows,
+        params={"select": "id,chunk_index,section_heading"},
+        prefer="return=representation",
+    )
+    return {
+        "status": "indexed",
+        "page_id": indexed_page["id"],
+        "source_url": page["url"],
+        "chunk_count": len(inserted_chunks),
+        "chunk_ids": [row["id"] for row in inserted_chunks],
+        "reindexed": prior_row is not None,
+        "content_changed": True,
+        "previous_crawled_at": prior_row["crawled_at"] if prior_row else None,
+        "next_state": "verified",
+    }
+
+
+def semantic_search_sources(
+    *,
+    query: str | None = None,
+    query_embedding: list[float] | None = None,
+    match_threshold: float | None = None,
+    match_count: int = 10,
+    filter_domain: str | None = None,
+) -> dict[str, Any]:
+    policy = _load_runtime_policy()
+    if query_embedding is None:
+        if not query:
+            raise ValueError("Either query or query_embedding is required.")
+        query_embedding = _embed_texts([query])[0]
+
+    results = _supabase_request(
+        "POST",
+        "/rest/v1/rpc/match_documents",
+        payload={
+            "query_embedding": query_embedding,
+            "match_threshold": match_threshold or policy.synthesis.min_similarity_threshold,
+            "match_count": match_count,
+            "filter_domain": filter_domain,
+        },
+    )
+
+    return {
+        "status": "retrieved",
+        "query": query,
+        "result_count": len(results),
+        "results": [
+            {
+                "chunk_id": row["id"],
+                "content": row["content"],
+                "source_url": row["source_url"],
+                "domain": row["domain"],
+                "title": row.get("page_title"),
+                "heading": row.get("section_heading"),
+                "chunk_index": row["chunk_index"],
+                "crawled_at": row["crawled_at"],
+                "similarity": row["similarity"],
+            }
+            for row in results
+        ],
+    }
+
+
+def verify_source_index(
+    *,
+    page_id: str | None = None,
+    url: str | None = None,
+) -> dict[str, Any]:
+    policy = _load_runtime_policy()
+    if not page_id and not url:
+        raise ValueError("page_id or url is required for verification.")
+
+    params = {"select": "id,url,title,crawled_at,status"}
+    if page_id:
+        params["id"] = f"eq.{page_id}"
+    else:
+        params["url"] = f"eq.{url}"
+    pages = _supabase_request("GET", "/rest/v1/source_pages", params=params)
+    if not pages:
+        raise RuntimeError("Indexed source page not found.")
+    page = pages[0]
+
+    chunks = _supabase_request(
+        "GET",
+        "/rest/v1/source_chunks",
+        params={
+            "select": "id,page_id,content,source_url,page_title,section_heading,chunk_index,chunk_total,crawled_at",
+            "page_id": f"eq.{page['id']}",
+            "order": "chunk_index.asc",
+        },
+    )
+    findings: list[dict[str, Any]] = []
+    if not chunks:
+        findings.append({"severity": "error", "code": "NO_CHUNKS", "message": "No chunks found for indexed page."})
+    else:
+        chunk_total = chunks[0]["chunk_total"]
+        if chunk_total != len(chunks):
+            findings.append(
+                {
+                    "severity": "error",
+                    "code": "CHUNK_TOTAL_MISMATCH",
+                    "message": f"chunk_total={chunk_total} but fetched {len(chunks)} chunks.",
+                }
+            )
+        indexes = [chunk["chunk_index"] for chunk in chunks]
+        if indexes != list(range(len(chunks))):
+            findings.append(
+                {
+                    "severity": "error",
+                    "code": "CHUNK_INDEX_GAP",
+                    "message": f"Chunk indexes are not contiguous: {indexes}",
+                }
+            )
+        for chunk in chunks:
+            if chunk["source_url"] != page["url"]:
+                findings.append(
+                    {
+                        "severity": "error",
+                        "code": "PROVENANCE_URL_MISMATCH",
+                        "message": f"Chunk {chunk['id']} points to {chunk['source_url']} instead of {page['url']}",
+                    }
+                )
+            if chunk.get("page_title") != page.get("title"):
+                findings.append(
+                    {
+                        "severity": "warning",
+                        "code": "TITLE_MISMATCH",
+                        "message": f"Chunk {chunk['id']} title does not match page title.",
+                    }
+                )
+            if len(chunk["content"].split()) < 50:
+                findings.append(
+                    {
+                        "severity": "warning",
+                        "code": "THIN_CHUNK",
+                        "message": f"Chunk {chunk['id']} is below the minimum coherence threshold.",
+                    }
+                )
+
+    stale_cutoff = _utcnow() - timedelta(days=policy.synthesis.freshness_threshold_days)
+    crawled_at = _parse_timestamp(page.get("crawled_at"))
+    if crawled_at and crawled_at < stale_cutoff:
+        findings.append(
+            {
+                "severity": "warning",
+                "code": "T3_STALE_EVIDENCE",
+                "message": f"Source was crawled at {page['crawled_at']}, older than {policy.synthesis.freshness_threshold_days} days.",
+            }
+        )
+
+    verification_status = "passed" if not any(item["severity"] == "error" for item in findings) else "failed"
+    if verification_status == "passed":
+        _supabase_request(
+            "PATCH",
+            "/rest/v1/source_pages",
+            payload={"status": "Verified", "verified_at": _isoformat(_utcnow())},
+            params={"id": f"eq.{page['id']}"},
+        )
+
+    return {
+        "status": verification_status,
+        "page_id": page["id"],
+        "source_url": page["url"],
+        "chunk_count": len(chunks),
+        "findings": findings,
+        "next_state": "synthesized" if verification_status == "passed" else "indexed",
+    }
+
+
+def promote_synthesis_candidate(
+    *,
+    draft_path: str,
+    note_path: str | None = None,
+    provenance: dict[str, Any] | None = None,
+    chunk_ids: list[str] | None = None,
+    source_record_ids: list[str] | None = None,
+    retrieved_at: str | None = None,
+    acting_agent: str = "claude-chronicler",
+    overwrite: bool = False,
+) -> dict[str, Any]:
+    provenance_block = _normalize_provenance_input(
+        provenance=provenance,
+        chunk_ids=chunk_ids,
+        source_record_ids=source_record_ids,
+        retrieved_at=retrieved_at,
+        acting_agent=acting_agent,
+    )
+    validated = _validate_provenance_records(provenance_block)
+
+    draft = Path(draft_path)
+    if not draft.exists():
+        raise RuntimeError(f"Draft note not found: {draft}")
+
+    target = Path(note_path) if note_path else WIKI_ROOT / draft.name
+    if target.exists() and not overwrite:
+        raise RuntimeError(f"Target note already exists: {target}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+
+    promoted_text = _with_provenance_frontmatter(draft.read_text(encoding="utf-8"), provenance_block)
+    target.write_text(promoted_text, encoding="utf-8")
+
+    promoted_at = _isoformat(_utcnow())
+    for page in validated["pages"]:
+        _supabase_request(
+            "PATCH",
+            "/rest/v1/source_pages",
+            payload={
+                "status": "Promoted",
+                "promoted_at": promoted_at,
+                "promoted_note_path": str(target),
+            },
+            params={"id": f"eq.{page['id']}"},
+        )
+
+    return {
+        "status": "promoted",
+        "note_path": str(target),
+        "source_record_ids": provenance_block["provenance"]["source_record_ids"],
+        "chunk_ids": provenance_block["provenance"]["chunk_ids"],
+        "next_state": "promoted",
+    }
+
+
 def classify_synthesis_draft(
     *,
     claims: list[dict],
@@ -323,6 +876,14 @@ def build_server():
                 payload = orchestrate_ingestion(**arguments)
             elif name == "execute_source_crawl":
                 payload = execute_source_crawl(**arguments)
+            elif name == "index_crawled_source":
+                payload = index_crawled_source(**arguments)
+            elif name == "semantic_search_sources":
+                payload = semantic_search_sources(**arguments)
+            elif name == "verify_source_index":
+                payload = verify_source_index(**arguments)
+            elif name == "promote_synthesis_candidate":
+                payload = promote_synthesis_candidate(**arguments)
             elif name == "classify_synthesis_draft":
                 payload = classify_synthesis_draft(**arguments)
             elif name == "get_conflict_resolution_template":

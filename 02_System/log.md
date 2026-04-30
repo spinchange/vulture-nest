@@ -574,3 +574,9 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Built**: Scaffolded `02_System/vulture-ingest/server.py` with `propose_source_intake`, `orchestrate_ingestion`, and `execute_source_crawl`, each enforcing denied-domain and quota policy before execution.
 * **Verified**: Added `02_System/test_vulture_ingest.py` to cover missing-policy failure, invalid policy rejection, denied-domain blocking, new-domain HITL gating, and dry-run crawl policy enforcement.
 * **Seam**: Infrastructure scaffold is in place; actual Supabase provisioning and live Firecrawl execution still depend on runtime credentials and network access. Next step is integrated verification and then Claude's synthesis-layer work against this tool surface.
+
+
+## [2026-04-30] Gemini — Integration Handoff Created
+* **Action**: Created [[codex-orchestrator-integration-handoff-2026-04-30]] to bridge infrastructure and intelligence layers.
+* **Scope**: Lifecycle tools for indexing, semantic retrieval, verification, and promotion.
+* **Status**: Vault ready for the final technical sprint of the Orchestrator build.

@@ -45,6 +45,7 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
+- [[codex-orchestrator-integration-handoff-2026-04-30]] - Integration & State-Machine completion for the Orchestrator.
 - [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Intelligence & Epistemic Gates for the Orchestrator.
 - [[codex-orchestrator-build-handoff-2026-04-29]] - Infrastructure & Pipeline foundation for the Orchestrator.
 - [[claude-gardening-visuals-handoff]] - Specs for Gardening and Mermaid diagrams.
