@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[mcp-moc|MCP]] Best Practices</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Best Practices</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-patterns, mcp-optimization, mcp-security-hardening</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-patterns, mcp-optimization, mcp-security-hardening</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Best Practices</span></span>
       </div>
     </header>
 
@@ -444,61 +444,16 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Best Practices</h1>
-<p>To build robust, scalable, and secure MCP implementations, developers should follow these established patterns and security guidelines.</p>
+<p>To build robust, scalable, and secure MCP implementations, follow these established patterns.</p>
 <h2>1. Context Optimization</h2>
-<p>As the number of tools and servers grows, naive loading of all definitions upfront wastes tokens and degrades LLM performance.</p>
-<h3>Progressive Tool Discovery</h3>
-<p>Instead of loading everything, use a layered approach:</p>
-<ul>
-<li><strong>Layer 1: Catalog</strong>: Expose a lightweight <code>search_tools</code> meta-tool.
-</li>
-<li><strong>Layer 2: Inspect</strong>: The model fetches the full schema for a specific tool only when needed.
-</li>
-<li><strong>Layer 3: Execute</strong>: The model calls the tool with full knowledge.
-</li>
-</ul>
-<h3>Dynamic Server Management</h3>
-<p>Connect and disconnect servers based on active <a href="agent-skills-index.html" class="wikilink">Agent Skills</a> or user intent to keep the context window focused.</p>
-<h2>2. Programmatic Tool Calling (&quot;Code Mode&quot;)</h2>
-<p>For complex tasks requiring multiple tool calls (e.g., read -&gt; transform -&gt; write), have the model write a script instead of making individual round trips.</p>
-<ul>
-<li><strong>Benefit</strong>: Massive reduction in tokens and latency.
-</li>
-<li><strong>Requirement</strong>: Execute the model-generated script in a secure, network-isolated <strong>Sandbox</strong> (e.g., Deno, Wasmtime).
-</li>
-</ul>
+<p>Use progressive tool discovery to keep the context window focused and reduce token waste.</p>
+<h2>2. Programmatic Tool Calling</h2>
+<p>For complex tasks, have the model write a script instead of making individual round trips.</p>
 <h2>3. Security Hardening</h2>
-<h3>Mitigation: Confused Deputy Attack</h3>
-<p>Exploited when an MCP proxy server uses a static client ID for third-party APIs.</p>
+<p>Implement per-client consent and validate that tokens were issued specifically for the MCP server.</p>
+<h2>See Also</h2>
 <ul>
-<li><strong>Fix</strong>: Implement <strong>per-client consent</strong> before forwarding to the third-party authorization server.
-</li>
-</ul>
-<h3>Mitigation: Token Passthrough</h3>
-<p>The anti-pattern of accepting a client&#39;s token and passing it blindly to a downstream API.</p>
-<ul>
-<li><strong>Fix</strong>: Always validate that tokens were issued specifically for the MCP server (enforce <code>aud</code> claim).
-</li>
-</ul>
-<h3>Mitigation: SSRF (Server-Side Request Forgery)</h3>
-<p>Malicious servers can induce clients to fetch URLs pointing to internal resources (e.g., <code>169.254.169.254</code>).</p>
-<ul>
-<li><strong>Fix</strong>: Enforce HTTPS, block private IP ranges, and use egress proxies for client deployments.
-</li>
-</ul>
-<h2>4. Implementation Guidelines</h2>
-<ul>
-<li><strong>Stdio vs. HTTP</strong>: Use Stdio for local, single-user scripts; use HTTP/SSE for cloud-hosted or multi-user applications.
-</li>
-<li><strong>Logging</strong>: Always log to <code>stderr</code> in stdio servers. Redact credentials and tokens from all logs.
-</li>
-<li><strong>Error Handling</strong>: Use <code>isError: true</code> in protocol responses to signal tool-level failures without crashing the transport.
-</li>
-</ul>
-<hr>
-<h2>References</h2>
-<ul>
-<li>Source: <code>00_Raw/mcp/Client Best Practices.md</code>, <code>00_Raw/mcp/Secuirty Best Practices.md</code>
+<li><a href="index.html" class="wikilink">index</a>
 </li>
 <li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
 </li>
@@ -506,17 +461,7 @@
 </li>
 <li><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>
 </li>
-<li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
-</li>
-<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>
-</li>
-<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
-</li>
-<li><a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a>
-</li>
-</ul>
-<ul>
-<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
 </li>
 </ul>
       </main>
@@ -543,16 +488,11 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-skills-index.html" class="">agent-skills-index</a></li>
-<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
-<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>
-<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
-<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 </ul>
           </div>
         </div>

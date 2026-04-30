@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[mcp-moc|MCP]] Authorization</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Authorization</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-oauth, mcp-permissions, user-consent</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-oauth, mcp-permissions, user-consent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Authorization</span></span>
       </div>
     </header>
 
@@ -444,54 +444,34 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Authorization</h1>
-<p>Authorization in MCP secures access to sensitive resources and operations. It primarily follows the <strong>OAuth 2.1</strong> standard for remote connections and provides flexible options for local integrations.</p>
-<h2>Core Flow (Remote HTTP/SSE)</h2>
+<p>Authorization in MCP secures access to sensitive resources and operations. It primarily follows the <strong>OAuth 2.1</strong> standard for remote connections.</p>
+<h2>Core Flow</h2>
 <ol>
-<li><strong>Handshake</strong>: Client connects; Server responds with <code>401 Unauthorized</code> and a <code>WWW-Authenticate</code> header pointing to <strong>Protected Resource Metadata (PRM)</strong>.
+<li><strong>Handshake</strong>: Client connects; Server responds with <code>401 Unauthorized</code>.
 </li>
-<li><strong>Discovery</strong>: Client fetches PRM (RFC 9728) to identify the authorization server and supported scopes (e.g., <code>mcp:tools</code>).
+<li><strong>Discovery</strong>: Client fetches PRM to identify the authorization server.
 </li>
-<li><strong>Registration</strong>: Client registers with the Auth Server, either via <strong>Dynamic Client Registration (DCR)</strong> or pre-registration.
+<li><strong>Authorization</strong>: User grants permission.
 </li>
-<li><strong>Authorization</strong>: User logs in via a browser and grants permission.
-</li>
-<li><strong>Access</strong>: Client receives a Bearer token and includes it in the <code>Authorization</code> header of subsequent MCP requests.
+<li><strong>Access</strong>: Client receives a Bearer token.
 </li>
 </ol>
-<h2>Local Authorization (Stdio)</h2>
-<p>For servers running locally, OAuth is often overkill. Instead:</p>
-<ul>
-<li><strong>Environment Variables</strong>: Pass API keys or credentials via the client&#39;s <code>env</code> configuration.
-</li>
-<li><strong>Local Secret Managers</strong>: The server can interact directly with the OS keychain or local credential stores.
-</li>
-</ul>
-<h2>Implementation Principles</h2>
-<ul>
-<li><strong>Audience Enforcement</strong>: Tokens must include an <code>aud</code> claim matching the MCP server&#39;s URI to prevent token passthrough attacks.
-</li>
-<li><strong>Least-Privilege Scopes</strong>: Scopes should be granular (e.g., <code>mcp:tools:read-only</code>) rather than broad.
-</li>
-<li><strong>Token Validation</strong>: Servers should use token introspection (RFC 7662) or local JWT validation libraries to verify signatures and expiration.
-</li>
-</ul>
 <h2>Best Practices</h2>
 <ul>
 <li><strong>Encrypted Storage</strong>: Cache tokens in secure, encrypted local storage.
 </li>
-<li><strong>No Credential Logging</strong>: Ensure that tokens and secrets are redacted from server and client logs.
-</li>
-<li><strong>HTTPS Only</strong>: Enforce TLS for all remote transport and callback URLs.
+<li><strong>No Credential Logging</strong>: Ensure that tokens and secrets are redacted from logs.
 </li>
 </ul>
-<hr>
-<h2>References</h2>
+<h2>See Also</h2>
 <ul>
-<li>Source: <code>00_Raw/mcp/Understanding Authorization in MCP.md</code>
+<li><a href="index.html" class="wikilink">index</a>
 </li>
 <li><a href="mcp-security.html" class="wikilink">mcp-security</a>
 </li>
 <li><a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a>
+</li>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
 </li>
 </ul>
       </main>
@@ -506,12 +486,14 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>

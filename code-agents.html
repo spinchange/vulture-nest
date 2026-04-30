@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Code Agents</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Code Agents</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, smolagents, programmable-agents</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, smolagents, programmable-agents</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Code Agents</span></span>
       </div>
     </header>
 
@@ -447,7 +447,7 @@
 <p><strong>Code Agents</strong> are a sophisticated class of agents that interact with their environment by generating and executing high-level code (typically <a href="python.html" class="wikilink">python</a>) rather than simple JSON schemas.</p>
 <h2>Advantages over JSON Agents</h2>
 <ul>
-<li><strong>Expressiveness:</strong> Code naturally handles complex logic, loops, and conditional branching that are cumbersome in JSON.
+<li><strong>Expressiveness:</strong> Code naturally handles complex logic, loops, and conditional branching.
 </li>
 <li><strong>Modularity:</strong> Agents can define and reuse functions within a single turn.
 </li>
@@ -455,11 +455,13 @@
 </li>
 </ul>
 <h2>Security Considerations</h2>
-<p>Executing agent-generated code requires strict sandboxing to prevent prompt injection from escalating into system-level compromise. Tools like <code>smolagents</code> or secure execution environments are mandatory.</p>
+<p>Executing agent-generated code requires strict sandboxing. Tools like <code>smolagents</code> or secure execution environments are mandatory.</p>
 <h2>Relationship to Wiki Architecture</h2>
-<p>In a <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> model, Code Agents are particularly effective because they can treat the wiki&#39;s system layer (<code>02_System/</code>) as a library of available tools.</p>
+<p>In a <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> model, Code Agents can treat the wiki&#39;s system layer (<code>02_System/</code>) as a library of available tools.</p>
 <h2>See Also</h2>
 <ul>
+<li><a href="index.html" class="wikilink">index</a>
+</li>
 <li><a href="agent-actions.html" class="wikilink">agent-actions</a>
 </li>
 <li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
@@ -489,6 +491,7 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
