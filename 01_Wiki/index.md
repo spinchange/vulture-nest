@@ -36,9 +36,9 @@ type: community
 * [[spec-knowledge-gardening]] - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
 * [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
 * [[spec-firecrawl-pgvector-pipeline]] - External Source Ingestion: Firecrawl → Postgres/Supabase + pgvector RAG
-* [[spec-agentic-source-orchestrator]] - Orchestration Layer v1: roles, triggers, MCP surface, seam protocol (Gemini)
-* [[spec-agentic-source-orchestrator-v2]] - Orchestration Layer v2: lifecycle state, HITL enforcement, policy, audit (Codex)
-* [[spec-agentic-source-orchestrator-v3]] - Orchestration Layer v3: epistemic tiers, conflict resolution, synthesis quality rubric, provenance (Claude)
+* [[spec-agentic-source-orchestrator]] - Master Orchestration Layer: Unified roles, lifecycle, policy, and epistemic gates
+* [[codex-orchestrator-build-handoff-2026-04-29]] - Orchestrator Infrastructure Build (Codex)
+* [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Orchestrator Synthesis Intelligence (Claude)
 
 ## Agent Development Kit (ADK)
 * [[agent-development-kit]] - Core Overview
