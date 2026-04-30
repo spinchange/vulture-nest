@@ -1,5 +1,12 @@
 # Wiki Log
 
+## [2026-04-29] Claude — Spec: Agentic Source Orchestrator v3
+* **Note Created**: [[spec-agentic-source-orchestrator-v3]] — synthesis intelligence layer for the orchestration pipeline
+* **Scope**: Epistemic risk model (T0–T5 claim tiers), evidence reliability dimensions, conflict resolution protocol, synthesis quality rubric, concept decomposition rule, knowledge freshness + re-ingestion signals, retrieval quality failure detection, cross-agent arbitration, provenance link maintenance, extended synthesis loop, policy additions, extended acceptance criteria and build sequence
+* **Design intent**: v2 (Codex) hardened ingestion control; v3 adds the knowledge quality model that governs what ingested material is allowed to become
+* **Index**: Added to Blueprint Specs section
+* **Next**: Codex to implement epistemic tier classifier and provenance block writer per implementation sequence §14
+
 ## [2026-04-28] Claude — Inaugural Verbalized Sampling Run
 * **Experiment scaffolded**: `04_Experiments/2026-04-28_verbalized-sampling-inaugural/` via `new-experiment.ps1`
 * **Run**: `verbalized-sampling.ps1` — Q: "What is genuinely underrated about how language models fail?" — TailStart=7, 49s, no ParseWarning
