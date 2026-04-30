@@ -51,3 +51,4 @@ The audio series processed here repeatedly converged on the same thesis: a model
 - [[orchestration-tradeoffs]]
 - [[verbalized-sampling-experiment]]
 - [[local-agent-environments]]
+- [[lit-verbalized-sampling-paper]]

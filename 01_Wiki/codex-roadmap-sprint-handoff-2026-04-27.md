@@ -204,3 +204,4 @@ Simple. No hooks. The `[human]` prefix in the message is the queryable signal. A
 - [[gemini-roadmap-sprint-handoff-2026-04-27]]
 - [[poshwiki]]
 - [[visitor-directives]]
+- [[gemini-build-sprint-handoff]]

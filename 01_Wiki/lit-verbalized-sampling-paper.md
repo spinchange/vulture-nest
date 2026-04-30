@@ -51,3 +51,6 @@ The paper details a method for **Diversity Tuning** using probability thresholds
 
 ---
 *Created during ingestion of 2510.01171v3.pdf.*
+
+## Related
+- [[verbalized-sampling]]

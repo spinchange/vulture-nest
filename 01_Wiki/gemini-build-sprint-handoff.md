@@ -419,3 +419,5 @@ cluster-notes.py: Phase 1 clustering script, K clusters → 01_Wiki/community-re
 - [[codex-build-sprint-handoff]]
 - [[claude-synthesis-handoff]]
 - [[claude-blueprint-handoff-2026-04-27]]
+- [[gemini-roadmap-sprint-handoff-2026-04-27]]
+- [[codex-roadmap-sprint-handoff-2026-04-27]]

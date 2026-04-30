@@ -70,3 +70,4 @@ The remaining dirty worktree is dominated by wiki and graph-layer changes, which
 - [[codex-build-sprint-handoff]]
 - [[gemini-build-sprint-handoff]]
 - [[log]]
+- [[gemini-roadmap-sprint-handoff-2026-04-27]]

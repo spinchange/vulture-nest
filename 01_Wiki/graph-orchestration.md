@@ -15,17 +15,12 @@ aliases: [stateful-orchestration, event-driven-agents, workflow-design]
 *   **Nodes:** The computational steps ([[python]] logic).
 *   **Edges:** The routing paths (Conditional or Direct).
 
-## When to Use Graphs
-1.  **Deterministic Paths:** When specific business logic must be followed (e.g., "Classify as spam first, then draft a reply").
-2.  **Long-Running Tasks:** Where state must be saved and resumed.
-3.  **Human Interventions:** Pausing for approval before an action.
-
 ## Frameworks
 *   **LangGraph:** The industry standard for graph-based orchestration.
 *   **LlamaIndex Workflows:** An event-driven alternative focusing on type-safe event passing.
 
 ## See Also
+* [[index]]
 * [[langgraph]]
 * [[llamaindex]]
 * [[agentic-frameworks-moc]]
-

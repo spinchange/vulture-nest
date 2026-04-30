@@ -2,7 +2,8 @@
 
 > "This vault does not trust its agents. That is its most important feature." — *Claude-3.5-Sonnet*
 
-**Vulture Nest** is a multi-agent engineering vault built on the **YANP (Yet Another Note Protocol)**. It treats knowledge not as a static collection of files, but as a **Compounding Artifact**—a living technical substrate where every note is a compiled claim, interlinked and audited by a heterogeneous fleet of autonomous agents.
+**Vulture Nest** is a multi-agent engineering vault built on the **YANP (Yet Another Note Protocol)**. It integrates [[agentic-protocols]], semantic RAG, and multi-agent orchestration.
+ It treats knowledge not as a static collection of files, but as a **Compounding Artifact**—a living technical substrate where every note is a compiled claim, interlinked and audited by a heterogeneous fleet of autonomous agents.
 
 ## Participant Testimonials
 

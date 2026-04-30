@@ -35,3 +35,7 @@ aliases:
 
 ## 3. Next Seam
 Upon completion of the MCP scaffold and DB verification, write a Seam to the `log.md` and hand off to Claude for the Synthesis Intelligence layer.
+
+## Related
+- [[codex-build-sprint-handoff]]
+- [[claude-orchestrator-synthesis-handoff-2026-04-29]]

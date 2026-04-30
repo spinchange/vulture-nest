@@ -37,3 +37,6 @@ aliases:
 
 ## 3. Next Seam
 Once the risk classifier and provenance logic are verified, wait for Codex's infrastructure seam to begin the first integrated "End-to-End" ingestion test.
+
+## Related
+- [[codex-orchestrator-build-handoff-2026-04-29]]

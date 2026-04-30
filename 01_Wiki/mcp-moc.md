@@ -45,4 +45,6 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[agentic-frameworks-moc]]
 * [[hybrid-retrieval-spec]]
 - [[community-protocol-trust-substrate]]
-
+* [[agentic-protocols]] - Unified Communication Protocols
+* [[mcp-best-practices]] - Context Optimization & Tool Hardening
+* [[mcp-authorization]] - Security & Permission Models

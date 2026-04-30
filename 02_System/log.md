@@ -527,3 +527,31 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - [2026-04-27 02:44] auto-link: added [[claude-blueprint-handoff-2026-04-27]] to [[gemini-build-sprint-handoff]] (sim=0.8229) - Note B (Gemini's build sprint) needs to reference Note A (Claude's completed blueprint handoff) because the 17 new notes that Gemini is ingesting were created by Claude in the blueprint phase, making Note A the source context for Note B's integration work.
 - [2026-04-27 02:44] auto-link: added [[spec-visual-vault-language]] to [[claude-gardening-visuals-handoff]] (sim=0.8201) - Note A is a handoff document that assigns the creation of spec-visual-vault-language as a task, so it should reference the completed Note B as its deliverable; Note B should not link back as it is the standalone specification being handed off to.
 - [2026-04-28 07:35:10] Ingested 2510.01171v3.pdf into [[lit-verbalized-sampling-paper]]. Implemented Mode-Anchored Departure (Approach B) focus.
+
+- [2026-04-29 23:08] auto-link: added [[codex-build-sprint-handoff]] to [[codex-orchestrator-build-handoff-2026-04-29]] (sim=0.8744) - Note B (orchestrator handoff, dated 2026-04-29) is a sequential follow-up to Note A (build sprint handoff, dated 2026-04-27) and should reference it as context for the prior gardening audit phase and task sequencing.
+
+- [2026-04-29 23:09] auto-link: mutual link [[verbalized-sampling]] and [[lit-verbalized-sampling-paper]] (sim=0.8732) - Note A is a conceptual permanent note about Verbalized Sampling, while Note B is the literature note documenting the primary paper that introduced the technique; they are directly complementary and each strengthens understanding of the other.
+
+- [2026-04-29 23:09] auto-link: added [[claude-orchestrator-synthesis-handoff-2026-04-29]] to [[claude-synthesis-handoff]] (sim=0.8695) - Note A (2026-04-27) outlines the three-pillar strategy and vault expansion mission, while Note B (2026-04-29) provides the concrete implementation directives for Pillar 3 (synthesis) and the epistemic gates; Note A should reference B as the detailed handoff that operationalizes its strategic vision.
+
+- [2026-04-29 23:09] auto-link: mutual link [[gemini-build-sprint-handoff]] and [[gemini-roadmap-sprint-handoff-2026-04-27]] (sim=0.8682) - Both are complementary handoff notes from the same date describing sequential work (Build Sprint → Roadmap Sprint) that explicitly reference waiting for the other's completion, making bidirectional links essential for understanding the full handoff context.
+
+- [2026-04-29 23:09] auto-link: mutual link [[gemini-build-sprint-handoff]] and [[codex-roadmap-sprint-handoff-2026-04-27]] (sim=0.8649) - Both are dated handoff notes from the same session (2026-04-27) describing sequential tasks for different agents (Gemini and Codex) working on the same wiki system, so each provides context for the other's work.
+
+- [2026-04-29 23:09] auto-link: mutual link [[claude-orchestrator-synthesis-handoff-2026-04-29]] and [[codex-orchestrator-build-handoff-2026-04-29]] (sim=0.8589) - These are complementary handoff notes describing interdependent work streams (Synthesis Intelligence and Infrastructure) that explicitly depend on each other's completion, with Note A's 'Next Seam' waiting for Note B's infrastructure and Note B's 'Next Seam' handing off to Note A.
+
+- [2026-04-29 23:09] auto-link: mutual link [[codex-gemini-cleanup-handoff-2026-04-27]] and [[gemini-roadmap-sprint-handoff-2026-04-27]] (sim=0.8552) - These are complementary handoff notes from the same sprint date describing different ownership lanes (Codex's engineering cleanup vs. Gemini's structural/protocol work) that together form a complete handoff boundary, so each should reference the other for full context.
+
+
+## Orphan Wiring Verification
+- [[agentic-protocols]]
+- [[code-agents]]
+- [[graph-orchestration]]
+- [[mcp-authorization]]
+- [[mcp-best-practices]]
+
+
+## [2026-04-30] Gemini — Index Maintenance & Status Sync
+* **Action**: Updated [[index]] to include [[spec-agentic-source-orchestrator]] and the 2026-04-29 implementation handoffs.
+* **Status**: Reconstructed current vault state for the user session. All 2026-04-29 deliverables are now indexed and discoverable.
+* **Next**: Proceed with [[codex-orchestrator-build-handoff-2026-04-29]] infrastructure tasks.

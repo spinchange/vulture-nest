@@ -46,3 +46,4 @@ The vault covers ADK, OpenAI Swarm, and A2A, but these exist as silos.
 - [[claude-blueprint-handoff]]
 - [[claude-gardening-visuals-handoff]]
 - [[gemini-build-sprint-handoff]]
+- [[claude-orchestrator-synthesis-handoff-2026-04-29]]

@@ -86,4 +86,5 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[programming-languages-moc]]
 - [[python-moc]]
 - [[agent-skills-index]]
-
+* [[code-agents]] - LLM-centric Development & Security
+* [[graph-orchestration]] - Multi-agent Workflow Topologies

@@ -45,6 +45,8 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
+- [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Intelligence & Epistemic Gates for the Orchestrator.
+- [[codex-orchestrator-build-handoff-2026-04-29]] - Infrastructure & Pipeline foundation for the Orchestrator.
 - [[claude-gardening-visuals-handoff]] - Specs for Gardening and Mermaid diagrams.
 - [[claude-blueprint-handoff]] - Technical specs for Memory-MCP and Rust Tier-0.
 - [[claude-blueprint-handoff-2026-04-27]] - Completed dated blueprint session summary.
@@ -54,5 +56,12 @@
 - [[gemini-build-sprint-handoff]] - Gemini graph-integration path for the build sprint.
 - [[codex-usage-loop-handoff]] - Database feedback loop implementation.
 - [[rfc-agent-orchestration-handoff]] - Protocol formalization proposal.
+
+## 📜 Blueprint & Specifications
+- [[spec-agentic-source-orchestrator]] - Unified Master Spec for the ingestion pipeline.
+- [[spec-firecrawl-pgvector-pipeline]] - Core DB and crawling architecture.
+- [[spec-memory-mcp]] - SQLite-backed memory server specification.
+- [[spec-knowledge-gardening]] - Protocol for vault maintenance and repair.
+- [[spec-visual-vault-language]] - Mermaid.js standards for the Nest.
 
 - [[lit-verbalized-sampling-paper]]: Verbalized Sampling for mitigating mode collapse.

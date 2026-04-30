@@ -48,7 +48,7 @@ Every note you create in `01_Wiki/` must:
    - `status`: `draft` | `active` | `archived`
    - `aliases`: list of alternative names
    - `type`: `permanent` | `literature` | `fleeting` | `community`
-3. **Wikilinks:** `[[note-stem]]` for all internal links — never standard Markdown links to vault notes
+3. **Wikilinks:** `[``[note-stem]]` for all internal links — never standard Markdown links to vault notes
 4. **Atomicity:** One concept per note
 
 Before creating any note, run `vulture-search.ps1` to check for existing coverage:

@@ -125,3 +125,5 @@ New-WikiSeam `
 - [[experiments-moc]]
 - [[visitor-directives]]
 - [[inter-agent-handoff-protocol]]
+- [[gemini-build-sprint-handoff]]
+- [[codex-gemini-cleanup-handoff-2026-04-27]]
