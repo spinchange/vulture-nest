@@ -1,6 +1,18 @@
 # Wiki Log
 
 
+## [2026-04-30] Claude — Synthesis Intelligence Layer Implementation
+* **Directive**: Executed [[claude-orchestrator-synthesis-handoff-2026-04-29]] — built the "Mind" of the [[spec-agentic-source-orchestrator]].
+* **Epistemic Risk Classifier**: `02_System/vulture-ingest/epistemic_classifier.py` — T0–T5 classification logic; `classify_claim()` and `classify_draft()` functions. Reads policy thresholds at runtime.
+* **Conflict Resolution Templates**: `02_System/vulture-ingest/conflict_templates.py` — Arbitration prompt templates for direct_contradiction, version_skew, scope_overlap; `ConflictReport` dataclass; `parse_conflict_report()` enforces Escalate→AUTH_REQUIRED invariant.
+* **Provenance Block Generator**: `02_System/vulture-ingest/provenance.py` — `generate_provenance_block()` and `render_provenance_yaml()` matching §7 schema (source_record_ids, chunk_ids, retrieved_at, acting_agent).
+* **Synthesis Quality Rubric**: `02_System/vulture-ingest/synthesis_rubric.py` — Atomicity checker: word count, section count, scope statement presence, concept-boundary phrase detection; returns `atomicity_score` 0.0–1.0.
+* **MCP Wiring**: Extended `02_System/vulture-ingest/server.py` with four new tools: `classify_synthesis_draft`, `get_conflict_resolution_template`, `run_synthesis_rubric`, `build_provenance_block`.
+* **Tests**: `02_System/test_synthesis_intelligence.py` — 29 tests, all passing. Existing 6 pipeline tests unaffected.
+* **Note Created**: [[synthesis-intelligence-layer]] — permanent note documenting the intelligence layer architecture.
+* **Index Updated**: Added synthesis-intelligence-layer to Blueprint Specs.
+* **Next**: Await Codex infrastructure seam (index_crawled_source, verify_source_index, promote_synthesis_candidate) to enable first end-to-end ingestion test.
+
 ## [2026-04-29] Gemini — Master Agentic Source Orchestrator Synthesis
 * **Synthesis Complete**: Unified v1 (Gemini), v2 (Codex), and v3 (Claude) into a single Master Specification at [[spec-agentic-source-orchestrator]].
 * **Design DNA**: Integrated 8-stage lifecycle (Codex), Epistemic Risk Tiers (Claude), and Agent Trinity roles (Gemini).
@@ -555,3 +567,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Action**: Updated [[index]] to include [[spec-agentic-source-orchestrator]] and the 2026-04-29 implementation handoffs.
 * **Status**: Reconstructed current vault state for the user session. All 2026-04-29 deliverables are now indexed and discoverable.
 * **Next**: Proceed with [[codex-orchestrator-build-handoff-2026-04-29]] infrastructure tasks.
+
+## [2026-04-30] Codex — Orchestrator Infrastructure Scaffold
+* **Built**: Added `02_System/pipeline-policy.yaml` and a fail-closed loader at `02_System/vulture-ingest/policy.py`.
+* **Built**: Added `02_System/vulture-ingest/schema.sql` with `source_pages`, `source_chunks`, extensions, HNSW index, and `match_documents()`.
+* **Built**: Scaffolded `02_System/vulture-ingest/server.py` with `propose_source_intake`, `orchestrate_ingestion`, and `execute_source_crawl`, each enforcing denied-domain and quota policy before execution.
+* **Verified**: Added `02_System/test_vulture_ingest.py` to cover missing-policy failure, invalid policy rejection, denied-domain blocking, new-domain HITL gating, and dry-run crawl policy enforcement.
+* **Seam**: Infrastructure scaffold is in place; actual Supabase provisioning and live Firecrawl execution still depend on runtime credentials and network access. Next step is integrated verification and then Claude's synthesis-layer work against this tool surface.

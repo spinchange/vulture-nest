@@ -37,6 +37,7 @@ type: community
 * [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
 * [[spec-firecrawl-pgvector-pipeline]] - External Source Ingestion: Firecrawl → Postgres/Supabase + pgvector RAG
 * [[spec-agentic-source-orchestrator]] - Master Orchestration Layer: Unified roles, lifecycle, policy, and epistemic gates
+* [[synthesis-intelligence-layer]] - Epistemic gates: T0–T5 classifier, conflict templates, provenance generator, synthesis rubric
 * [[codex-orchestrator-build-handoff-2026-04-29]] - Orchestrator Infrastructure Build (Codex)
 * [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Orchestrator Synthesis Intelligence (Claude)
 
