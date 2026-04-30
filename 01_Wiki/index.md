@@ -5,7 +5,7 @@ date: 2026-04-25
 status: active
 type: community
 ---
-# Wiki Index (YANP Compliant)
+# Wiki Index
 
 ## Maps of Content
 * [[core-patterns-moc]] - Philosophy & YANP

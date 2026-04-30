@@ -1,4 +1,4 @@
-# Wiki Log (YANP Compliant)
+# Wiki Log
 
 ## [2026-04-28] Claude — Inaugural Verbalized Sampling Run
 * **Experiment scaffolded**: `04_Experiments/2026-04-28_verbalized-sampling-inaugural/` via `new-experiment.ps1`
