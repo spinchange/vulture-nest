@@ -1,0 +1,14 @@
+version: 1.0
+quotas:
+  max_credits_per_session: 100
+  max_pages_per_source: 200
+safety:
+  denied_domains:
+    - "*.social"
+    - "reddit.com"
+  require_hitl_for_costs_over: 20
+  require_hitl_for_new_domain: true
+synthesis:
+  freshness_threshold_days: 90
+  min_similarity_threshold: 0.78
+  require_provenance_block: true
