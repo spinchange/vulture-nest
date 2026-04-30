@@ -306,7 +306,7 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-04-30 12:36</span>
+          <span>Generated 2026-04-30 23:10</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
@@ -320,12 +320,12 @@
     <section class="metrics">
       <article class="panel metric">
         <div class="metric-label terminal">Total Notes</div>
-        <div class="metric-value">293</div>
+        <div class="metric-value">294</div>
         <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Link Density</div>
-        <div class="metric-value">9.73</div>
+        <div class="metric-value">9.72</div>
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
@@ -377,26 +377,26 @@
             <h3>PoShWiKi Session</h3>
             <div class="callout">Latest page with an <span class='terminal'>Actions</span> section: <span class='terminal'>Session 2026-04-26</span>. Latest session page: <span class='terminal'>Session 2026-04-28</span>.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 30 12:35 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>Apr 30 12:35 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>Apr 30 12:35 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>Apr 30 12:35 | action</span><span class='feed-text'>[13</span></li>
+              <li><span class='feed-meta'>Apr 30 23:09 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 30 23:09 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 30 23:09 | action</span><span class='feed-text'>[13</span></li>
+<li><span class='feed-meta'>Apr 30 23:09 | action</span><span class='feed-text'>[13</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>Apr 30 12:35 | Current Seam</span><span class='feed-text'>Semantic embedding pipeline fully implemented and pushed to GitHub. | New scripts: | 02_System/sync-embeddings.ps1 — incremental Gemini embedding sync (gemini-embedding-001, 768-dim) | 02_System/suggest-links.ps1 — pairwise cosine similarity orphan detector | 02_System/auto-link.ps1 — Claude Haiku judge + wikilink writer | Updated scripts: | 02_System/vulture-search.ps1 — gained -Semantic flag for neural retrieval tier | 02_System/run-maintenance.ps1 — sync-embeddings added as optional step 8/8 | 00_Raw/PoShWiKi/PoShWiKi.psm1 — Initialize-Wiki now creates Links + NoteEmbeddings tables | Results: 224 notes embedded. 4 auto-link passes. Semantic orphans 164 -&gt; ~51. Links 1478 -&gt; 1621 (+143). | New wiki notes: | 01_Wiki/karpathy-vision-gap-analysis.md — why we built this, design decisions, remaining gaps | 01_Wiki/semantic-embedding-pipeline.md — full usage reference and maintenance guide | Dashboard auto-deploying via GitHub Actions. Health at 90%.</span></li>
-<li><span class='feed-meta'>Apr 30 12:35 | Next Step</span><span class='feed-text'>Run sync-embeddings.ps1 after batch note ingestion to keep vectors fresh. Run auto-link.ps1 monthly or after large ingestion events. Consider surfacing semantic orphan count as a dashboard health metric. Address remaining Karpathy gaps</span></li>
+              <li><span class='feed-meta'>Apr 30 23:09 | Current Seam</span><span class='feed-text'>Semantic embedding pipeline fully implemented and pushed to GitHub. | New scripts: | 02_System/sync-embeddings.ps1 — incremental Gemini embedding sync (gemini-embedding-001, 768-dim) | 02_System/suggest-links.ps1 — pairwise cosine similarity orphan detector | 02_System/auto-link.ps1 — Claude Haiku judge + wikilink writer | Updated scripts: | 02_System/vulture-search.ps1 — gained -Semantic flag for neural retrieval tier | 02_System/run-maintenance.ps1 — sync-embeddings added as optional step 8/8 | 00_Raw/PoShWiKi/PoShWiKi.psm1 — Initialize-Wiki now creates Links + NoteEmbeddings tables | Results: 224 notes embedded. 4 auto-link passes. Semantic orphans 164 -&gt; ~51. Links 1478 -&gt; 1621 (+143). | New wiki notes: | 01_Wiki/karpathy-vision-gap-analysis.md — why we built this, design decisions, remaining gaps | 01_Wiki/semantic-embedding-pipeline.md — full usage reference and maintenance guide | Dashboard auto-deploying via GitHub Actions. Health at 90%.</span></li>
+<li><span class='feed-meta'>Apr 30 23:09 | Next Step</span><span class='feed-text'>Run sync-embeddings.ps1 after batch note ingestion to keep vectors fresh. Run auto-link.ps1 monthly or after large ingestion events. Consider surfacing semantic orphan count as a dashboard health metric. Address remaining Karpathy gaps</span></li>
             </ul>
           </section>
           <section>
             <h3>log.md Major Actions</h3>
             <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
             <ul class="feed">
-              <li><span class='feed-text'>[2026-04-29 23:09] auto-link: mutual link claude-orchestrator-synthesis-handoff-2026-04-29 and codex-orchestrator-build-handoff-2026-04-29 (sim=0.8589) - These are complementary handoff notes describing interdependent work streams (Synthesis Intelligence and Infrastructure) that explicitly depend on each other&#39;s completion, with Note A&#39;s &#39;Next Seam&#39; waiting for Note B&#39;s infrastructure and Note B&#39;s &#39;Next Seam&#39; handing off to Note A.</span></li>
-<li><span class='feed-text'>[2026-04-29 23:09] auto-link: mutual link codex-gemini-cleanup-handoff-2026-04-27 and gemini-roadmap-sprint-handoff-2026-04-27 (sim=0.8552) - These are complementary handoff notes from the same sprint date describing different ownership lanes (Codex&#39;s engineering cleanup vs. Gemini&#39;s structural/protocol work) that together form a complete handoff boundary, so each should reference the other for full context.</span></li>
+              <li><span class='feed-text'>[2026-04-29 23:09] auto-link: mutual link codex-gemini-cleanup-handoff-2026-04-27 and gemini-roadmap-sprint-handoff-2026-04-27 (sim=0.8552) - These are complementary handoff notes from the same sprint date describing different ownership lanes (Codex&#39;s engineering cleanup vs. Gemini&#39;s structural/protocol work) that together form a complete handoff boundary, so each should reference the other for full context.</span></li>
 <li><span class='feed-text'>[2026-04-30] Gemini — Index Maintenance &amp; Status Sync</span></li>
 <li><span class='feed-text'>[2026-04-30] Codex — Orchestrator Infrastructure Scaffold</span></li>
 <li><span class='feed-text'>[2026-04-30] Gemini — Integration Handoff Created</span></li>
+<li><span class='feed-text'>[2026-04-30] Gemini — Test Handoff Created</span></li>
             </ul>
           </section>
         </div>
@@ -406,14 +406,14 @@
     <section class="commit-strip">
       <h3>Recent Commits</h3>
       <div class="commit-track">
-        <span class='commit-pill'><span class='sha'>a9d6e1f</span><span>feat: finalize orchestrator integration and state-machine tools</span></span>
+        <span class='commit-pill'><span class='sha'>829170f</span><span>docs: handoff for inaugural orchestrator test session</span></span>
+<span class='commit-pill'><span class='sha'>a9d6e1f</span><span>feat: finalize orchestrator integration and state-machine tools</span></span>
 <span class='commit-pill'><span class='sha'>5d915b4</span><span>feat: implement orchestrator infrastructure and synthesis intelligence</span></span>
 <span class='commit-pill'><span class='sha'>884cb1e</span><span>feat(wiki): implement synthesis intelligence layer for agentic orchestrator</span></span>
 <span class='commit-pill'><span class='sha'>2b18e02</span><span>chore: sync vault state and activate orchestrator implementation phase</span></span>
 <span class='commit-pill'><span class='sha'>d889333</span><span>fix(log): resolve broken link to archived spec v3</span></span>
 <span class='commit-pill'><span class='sha'>1c60c45</span><span>feat(handoff): initiate orchestrator build sprint for Codex and Claude</span></span>
 <span class='commit-pill'><span class='sha'>553afa0</span><span>feat(spec): establish master Agentic Source Orchestrator protocol</span></span>
-<span class='commit-pill'><span class='sha'>58b7860</span><span>docs(wiki): remove (YANP Compliant) from index and log</span></span>
       </div>
     </section>
   </main>

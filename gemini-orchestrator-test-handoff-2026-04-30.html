@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codex Handoff — ps-automation-spec Compliance Pass — Vulture Portal</title>
+  <title>Handoff: Inaugural Orchestrator Integration Test — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Codex Handoff — ps-automation-spec Compliance Pass</span>
+      <span>Handoff: Inaugural Orchestrator Integration Test</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Codex Handoff — ps-automation-spec Compliance Pass</h1>
+      <h1 class="note-title">Handoff: Inaugural Orchestrator Integration Test</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-compliance-handoff, tier2-compliance-handoff</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Handoff — ps-automation-spec Compliance Pass</span></span>
-<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Inaugural Orchestrator Integration Test</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
       </div>
     </header>
 
@@ -444,149 +443,66 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Codex Handoff: ps-automation-spec Compliance Pass</h1>
-<h2>Objective</h2>
-<p>Harden all non-compliant <code>02_System/*.ps1</code> scripts to satisfy <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>, then create <code>02_System/test-tier-compliance.ps1</code> as the Option A enforcement artifact specified in <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>.</p>
-<p>Two deliverables, in this order:</p>
-<ol>
-<li><strong>Compliance pass</strong> — patch the 12 non-compliant scripts listed below.
+        <h1>Handoff: Inaugural Orchestrator Integration Test</h1>
+<p><strong>Context:</strong> The technical &quot;Trinity Build&quot; of the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> is finished. Infrastructure (Codex), Intelligence (Claude), and the State-Machine (Integration) are all versioned and passing mocked tests. The mission for the next session is to execute the first <strong>Live End-to-End Ingestion Run</strong>.</p>
+<h2>1. Prerequisites (Credentials Required)</h2>
+<p>Before starting, ensure the following environment variables are set in the shell (DO NOT COMMIT THESE):</p>
+<ul>
+<li><code>FIRECRAWL_API_KEY</code>: For crawling and mapping.
 </li>
-<li><strong>Enforcement script</strong> — create <code>test-tier-compliance.ps1</code> and wire it into <code>run-maintenance.ps1</code>.
+<li><code>SUPABASE_URL</code> &amp; <code>SUPABASE_SERVICE_KEY</code>: For vector storage and state tracking.
+</li>
+<li><code>OPENAI_API_KEY</code>: For generating text-embedding-3-small vectors.
+</li>
+</ul>
+<h2>2. Test Target Selection</h2>
+<p>Choose a high-signal, atomic technical source.</p>
+<ul>
+<li><strong>Primary Candidate:</strong> <a href="https://docs.firecrawl.dev/features/crawling">Firecrawl Documentation - Crawling</a>
+</li>
+<li><strong>Alternative:</strong> A specific technical blog post about MCP or Agentic RAG.
+</li>
+<li><strong>Goal:</strong> Ingest ~5-10 high-quality chunks to verify the T5 (Verified) epistemic path.
+</li>
+</ul>
+<h2>3. The 8-Stage Execution Sequence</h2>
+<p>Execute the following tools via the <code>vulture-ingest</code> MCP server:</p>
+<ol>
+<li><strong>Stage 1 (Propose):</strong> <code>propose_source_intake</code> (Set <code>human_approved: true</code>).
+</li>
+<li><strong>Stage 2 (Map):</strong> <code>orchestrate_ingestion</code> (Set <code>dry_run: false</code>). Verify URLs returned.
+</li>
+<li><strong>Stage 3 (Crawl):</strong> <code>execute_source_crawl</code> (Set <code>dry_run: false</code>). Confirm Markdown retrieval.
+</li>
+<li><strong>Stage 4 (Index):</strong> <code>index_crawled_source</code>. Confirm Supabase <code>source_chunks</code> population.
+</li>
+<li><strong>Stage 5 (Verify):</strong> <code>verify_source_index</code>. Look for <code>status: passed</code> and any T3 warnings.
+</li>
+<li><strong>Stage 6 (Search):</strong> <code>semantic_search_sources</code> with a specific query from the text to verify retrieval quality.
+</li>
+<li><strong>Stage 7 (Synthesize):</strong> Claude to draft a Permanent Note in <code>01_Wiki/</code> based on retrieved chunks.
+</li>
+<li><strong>Stage 8 (Promote):</strong> <code>promote_synthesis_candidate</code> to merge the draft with its validated <code>provenance</code> block.
 </li>
 </ol>
-<h2>Verified Facts</h2>
-<p>Spot-check completed by Claude on 2026-04-25. Results are exact — do not re-derive.</p>
-<h3>Compliant (no changes needed)</h3>
+<h2>4. Success Criteria</h2>
 <ul>
-<li><code>orphan-check.ps1</code> — fixed this session
+<li>[ ] Raw source stored in Supabase <code>source_pages</code>.
 </li>
-<li><code>generate-wiki.ps1</code>
+<li>[ ] Chunks embedded and searchable via vector query.
 </li>
-<li><code>generate-dashboard.ps1</code>
+<li>[ ] Epistemic gate (T5) successfully identifies direct evidence.
+</li>
+<li>[ ] Final YANP note created in <code>01_Wiki/</code> with a valid, auditable <code>provenance</code> block.
 </li>
 </ul>
-<h3>Missing <code>try/catch</code> only</h3>
+<h2>Related</h2>
 <ul>
-<li><code>run-maintenance.ps1</code> — has <code>$ErrorActionPreference = &#39;Stop&#39;</code>, missing outer <code>try/catch</code>
+<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>
 </li>
-</ul>
-<h3>Missing <code>$ErrorActionPreference = &#39;Stop&#39;</code> only</h3>
-<ul>
-<li><code>watch-wiki.ps1</code>
+<li><a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a>
 </li>
-<li><code>sync-vault-graph.ps1</code>
-</li>
-<li><code>vulture-search.ps1</code>
-</li>
-<li><code>poshwiki-tools.ps1</code>
-</li>
-<li><code>install-vulture-daemon.ps1</code>
-</li>
-</ul>
-<h3>Missing both</h3>
-<ul>
-<li><code>audit-yanp.ps1</code>
-</li>
-<li><code>check-broken-links.ps1</code>
-</li>
-<li><code>create-yanp-note.ps1</code>
-</li>
-<li><code>find-thin-nodes.ps1</code>
-</li>
-<li><code>generate-wiki-stats.ps1</code>
-</li>
-<li><code>generate-tool-registry.ps1</code>
-</li>
-</ul>
-<h2>Constraints</h2>
-<ul>
-<li>Do not change any script&#39;s logic, output format, or public interface — only add the error-handling scaffolding.
-</li>
-<li><code>run-maintenance.ps1</code> is the CI backbone. Its internal structure (the numbered <code>[1/6]</code> step sequence and child <code>pwsh -File</code> invocations) must be preserved exactly. The try/catch should wrap the entire body, not individual steps, so the exit code reflects overall failure.
-</li>
-<li>Scripts that write files or update the SQLite database need the <code>try/catch</code> most urgently — prioritize those if you need to batch the work.
-</li>
-<li>Vault health must be 100/100 after the compliance pass. Run <code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code> to verify before committing.
-</li>
-</ul>
-<h2>Pattern to Apply</h2>
-<p>For scripts missing <code>$ErrorActionPreference = &#39;Stop&#39;</code>: add as the first non-comment line after the param block (or after the help block if there is no param block).</p>
-<p>For scripts missing <code>try/catch</code>: wrap the entire body in:</p>
-<pre><code>try {
-    # existing body here
-} catch {
-    Write-Error &quot;&lt;script-stem&gt;.ps1 failed: $_&quot;
-    exit 1
-}</code></pre>
-<p>Do not nest try/catch inside an existing try/catch — if the script already has inner try/catch blocks, add only the outer wrapper.</p>
-<h2>Deliverable 1: Compliance Pass</h2>
-<p>Apply the pattern above to all 12 scripts in the non-compliant lists. Commit as a single atomic commit with message:</p>
-<pre><code>Fix: Apply ps-automation-spec error-handling to all 02_System scripts
-
-Add $ErrorActionPreference = &#39;Stop&#39; and outer try/catch to 12 scripts
-that were missing one or both per compliance spot-check. No logic changes.
-
-Vault health 100/100.</code></pre>
-<h2>Deliverable 2: test-tier-compliance.ps1</h2>
-<p>Create <code>02_System/test-tier-compliance.ps1</code>. This is the Option A enforcement artifact from <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>.</p>
-<p><strong>What it checks (scope is Tier-2 only — the only live tier in the vault):</strong></p>
-<p>For every <code>.ps1</code> file in <code>02_System/</code>:</p>
-<ol>
-<li>Is <code>$ErrorActionPreference = &#39;Stop&#39;</code> present?
-</li>
-<li>Is a <code>try { ... } catch { ... }</code> block present?
-</li>
-</ol>
-<p>Output a compliance table (one row per script) with columns: <code>Script</code>, <code>HasEAP</code>, <code>HasTryCatch</code>, <code>Compliant</code>. Report a summary count. Exit with code <code>1</code> if any script is non-compliant; <code>0</code> if all pass.</p>
-<p><strong>Script must satisfy <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> itself:</strong></p>
-<ul>
-<li><code>.SYNOPSIS</code> / <code>.DESCRIPTION</code> / <code>.EXAMPLE</code> help block
-</li>
-<li><code>$ErrorActionPreference = &#39;Stop&#39;</code>
-</li>
-<li><code>try/catch</code> with <code>exit 1</code>
-</li>
-<li>Output as <code>[PSCustomObject]</code> rows for machine readability
-</li>
-</ul>
-<p><strong>Wire into <code>run-maintenance.ps1</code>:</strong> add a new numbered step (e.g., <code>[7/7] Checking Tier-2 Compliance...</code>) that invokes:</p>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File &quot;$PSScriptRoot/test-tier-compliance.ps1&quot;</code></pre>
-<p>After wiring, <code>run-maintenance.ps1</code> should itself become fully compliant (it gains the outer try/catch from Deliverable 1, plus this step proves compliance is enforced from within maintenance).</p>
-<p>Commit as a second atomic commit:</p>
-<pre><code>Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)
-
-Implements Option A from polyglot-platform-adr: a [[powershell.md|PowerShell]] script that
-checks all 02_System/*.ps1 files for $ErrorActionPreference and try/catch
-compliance. Wired into run-maintenance.ps1 as step [7/7].
-
-Vault health 100/100.</code></pre>
-<h2>Evidence</h2>
-<ul>
-<li><code>02_System/*.ps1</code> — the target files
-</li>
-<li><code>01_Wiki/polyglot-platform-adr.md</code> — ADR specifying Option A enforcement
-</li>
-<li><code>01_Wiki/ps-automation-spec.md</code> — the standard being enforced
-</li>
-<li><code>02_System/orphan-check.ps1</code> — reference implementation (compliant, just patched)
-</li>
-<li><code>02_System/generate-dashboard.ps1</code> — reference implementation (compliant)
-</li>
-</ul>
-<h2>Next Decision</h2>
-<p>After both commits, update the PoShWiKi session page (<code>Session 2026-04-25</code>) with an <code>Actions</code> entry and update <code>Current Seam</code> to reflect that Option A is live. Log in <code>02_System/log.md</code>.</p>
-<hr>
-<h2>References</h2>
-<ul>
-<li><a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>
-</li>
-<li><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>
-</li>
-<li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>
-</li>
-<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>
-</li>
-<li><a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>
+<li><a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="wikilink">codex-orchestrator-integration-handoff-2026-04-30</a>
 </li>
 </ul>
       </main>
@@ -601,18 +517,14 @@ Vault health 100/100.</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="claude-portal-breadcrumbs-handoff.html" class="">claude-portal-breadcrumbs-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
-<li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
-<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
-<li><a href="powershell.md.html" class="">powershell.md</a></li>
-<li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
-<li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
+<li><a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="">codex-orchestrator-integration-handoff-2026-04-30</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
 </ul>
           </div>
         </div>
