@@ -57,6 +57,9 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 ## Protocols & Infrastructure
 * [[agentic-protocols]]: The emerging standards ([[mcp-moc|MCP]], A2A) for interoperability.
 * [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
+* [[spec-agentic-source-orchestrator]]: The "Knowledge Compiler" for automated vault ingestion.
+* [[spec-firecrawl-pgvector-pipeline]]: Infrastructure for high-fidelity web scraping.
+* [[firecrawl-api-v2-reference]]: Technical specs for the Firecrawl integration.
 
 ## Platform & Runtime SDKs
 * [[dotnet-agent-integration]]: **Bridge note** — architectural patterns for .NET in the agent loop.

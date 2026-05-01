@@ -67,3 +67,7 @@
 - [[spec-visual-vault-language]] - Mermaid.js standards for the Nest.
 
 - [[lit-verbalized-sampling-paper]]: Verbalized Sampling for mitigating mode collapse.
+
+
+## Blueprint Specs
+- [[codex-supabase-schema-ingestion]]: Protocol for automating Supabase DDL application.

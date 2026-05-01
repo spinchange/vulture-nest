@@ -585,3 +585,16 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 ## [2026-04-30] Gemini — Test Handoff Created
 * **Action**: Created [[gemini-orchestrator-test-handoff-2026-04-30]] for the first live E2E run.
 * **Mission**: Execute the full 8-stage lifecycle against a live target this evening.
+
+
+## [2026-04-30] Gemini — Schema Ingestion Handoff
+* **Action**: Created [[codex-supabase-schema-ingestion]] to delegate Supabase DDL application to Codex.
+* **Purpose**: Avoid manual SQL execution and automate infrastructure setup for the Orchestrator.
+* **Status**: Awaiting Codex execution.
+
+
+## [2026-04-30] Gemini — Inaugural Ingestion Test Success
+* **Action**: Successfully executed the full 8-stage lifecycle for [[firecrawl-crawling-capabilities]], [[firecrawl-map-capabilities]], [[firecrawl-scrape-capabilities]], and [[firecrawl-api-v2-reference]].
+* **Infrastructure**: Unblocked Supabase schema via manual bridge and verified T5 (Verified) epistemic path.
+* **Gardening**: Updated [[agentic-frameworks-moc]] and interlinked the Firecrawl knowledge cluster.
+* **Status**: Vault healthy; ready for commit.

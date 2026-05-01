@@ -491,7 +491,11 @@ async def ingest_site(root_url: str, include_paths: list[str] = None):
 
 This pipeline is the **ingestion layer** for all external sources referenced in the vault. Its output (chunks + provenance) feeds:
 
-- [[semantic-embedding-pipeline]] — which handles *internal* vault note embeddings; this spec handles *external* source embeddings. The two can share the same Supabase instance with separate tables.
+- [[firecrawl-crawling-capabilities]] — Implementation reference for `/crawl`.
+- [[firecrawl-map-capabilities]] — Implementation reference for `/map`.
+- [[firecrawl-scrape-capabilities]] — Implementation reference for `/scrape`.
+- [[firecrawl-api-v2-reference]] — Technical foundations and authentication.
+- [[semantic-embedding-pipeline]] — which handles *internal* vault note embeddings; this spec handles *external* source embeddings.
 - [[community-report-generator]] — community reports can be grounded in external source chunks, not just internal notes.
 - [[spec-memory-mcp]] — the Memory MCP Server can be extended to serve `source_chunks` rows in addition to agent memories (same `match_documents` pattern, separate resource: `memory://sources`).
 - [[lit-mcp-architecture]] — the `match_documents` RPC is a natural fit for an MCP Tool (`search_sources`), exposing this pipeline to any MCP-compatible agent.

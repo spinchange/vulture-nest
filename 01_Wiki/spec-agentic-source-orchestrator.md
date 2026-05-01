@@ -121,6 +121,10 @@ This creates a stable link between the **Wiki (Permanent Knowledge)** and the **
 
 ## References
 - [[spec-firecrawl-pgvector-pipeline]]
+- [[firecrawl-crawling-capabilities]]
+- [[firecrawl-map-capabilities]]
+- [[firecrawl-scrape-capabilities]]
+- [[firecrawl-api-v2-reference]]
 - [[the-compounding-artifact]]
 - [[visitor-directives]]
 - [[agent-note-conventions]]
