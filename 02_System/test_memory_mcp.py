@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent / "memory_mcp"))
 
-from server import commit_memory, init_db, prune_memory, search_memories
+from server import TOOL_DEFINITIONS, commit_memory, init_db, prune_memory, search_memories
 
 
 def test_memory_mcp_smoke():
@@ -37,3 +37,11 @@ def test_memory_mcp_smoke():
 
 def test_server_module_loads_without_mcp_sdk():
     assert importlib.util.find_spec("server") is not None
+
+
+def test_memory_mcp_advertises_expected_tools():
+    from mcp.types import Tool
+
+    tools = [Tool(**definition) for definition in TOOL_DEFINITIONS]
+    assert [tool.name for tool in tools] == ["commit_memory", "search_memories", "prune_memory"]
+    assert all(tool.inputSchema["type"] == "object" for tool in tools)

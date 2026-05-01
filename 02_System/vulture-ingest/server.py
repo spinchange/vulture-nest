@@ -14,11 +14,12 @@ from urllib import error, parse, request
 try:
     from mcp.server import Server
     from mcp.server.stdio import stdio_server
-    from mcp.types import TextContent
+    from mcp.types import TextContent, Tool
 except ImportError:  # pragma: no cover - keeps module importable without SDK
     Server = None
     stdio_server = None
     TextContent = None
+    Tool = None
 
 
 MODULE_DIR = Path(__file__).resolve().parent
@@ -27,8 +28,11 @@ if str(MODULE_DIR) not in sys.path:
 
 # Load environment variables from .env if it exists
 try:
-    from dotenv import load_dotenv
-    load_dotenv(MODULE_DIR / ".env")
+    from dotenv import dotenv_values
+
+    for key, value in dotenv_values(MODULE_DIR / ".env").items():
+        if value is not None and not os.environ.get(key):
+            os.environ[key] = value
 except ImportError:
     pass
 
@@ -58,6 +62,175 @@ SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
 POLICY_PATH = Path(os.environ.get("VULTURE_PIPELINE_POLICY_PATH", DEFAULT_POLICY_PATH))
 WIKI_ROOT = Path(os.environ.get("VULTURE_WIKI_ROOT", Path(__file__).resolve().parents[2] / "01_Wiki"))
 RUNTIME_LEDGER = RuntimeLedger()
+
+
+TOOL_DEFINITIONS = [
+    {
+        "name": "propose_source_intake",
+        "description": "Register a source request and validate it against ingestion policy.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string"},
+                "rationale": {"type": "string"},
+                "requested_by": {"type": "string", "default": "unknown"},
+                "expected_pages": {"type": "integer", "minimum": 1, "default": 1},
+                "human_approved": {"type": "boolean", "default": False},
+            },
+            "required": ["url", "rationale"],
+        },
+    },
+    {
+        "name": "orchestrate_ingestion",
+        "description": "Map a source and produce a bounded ingestion plan.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string"},
+                "include_paths": {"type": "array", "items": {"type": "string"}},
+                "exclude_paths": {"type": "array", "items": {"type": "string"}},
+                "expected_pages": {"type": "integer", "minimum": 1, "default": 25},
+                "human_approved": {"type": "boolean", "default": False},
+                "dry_run": {"type": "boolean", "default": True},
+            },
+            "required": ["url"],
+        },
+    },
+    {
+        "name": "execute_source_crawl",
+        "description": "Perform a bounded crawl after policy and approval checks.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string"},
+                "include_paths": {"type": "array", "items": {"type": "string"}},
+                "exclude_paths": {"type": "array", "items": {"type": "string"}},
+                "expected_pages": {"type": "integer", "minimum": 1, "default": 25},
+                "human_approved": {"type": "boolean", "default": False},
+                "dry_run": {"type": "boolean", "default": True},
+                "poll_interval_seconds": {"type": "integer", "minimum": 1, "default": 5},
+                "max_polls": {"type": "integer", "minimum": 1, "default": 60},
+            },
+            "required": ["url"],
+        },
+    },
+    {
+        "name": "index_crawled_source",
+        "description": "Chunk, embed, and store crawled source content in Supabase.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "crawled_page": {"type": "object"},
+                "url": {"type": "string"},
+                "markdown": {"type": "string"},
+                "title": {"type": "string"},
+                "description": {"type": "string"},
+                "language": {"type": "string"},
+                "status_code": {"type": "integer"},
+                "crawled_at": {"type": "string"},
+                "etag": {"type": "string"},
+                "last_modified": {"type": "string"},
+                "embeddings": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+            },
+        },
+    },
+    {
+        "name": "semantic_search_sources",
+        "description": "Retrieve indexed source chunks by semantic query or provided embedding.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "query_embedding": {"type": "array", "items": {"type": "number"}},
+                "match_threshold": {"type": "number"},
+                "match_count": {"type": "integer", "minimum": 1, "default": 10},
+                "filter_domain": {"type": "string"},
+            },
+        },
+    },
+    {
+        "name": "verify_source_index",
+        "description": "Validate indexed source chunks and provenance metadata.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "page_id": {"type": "string"},
+                "url": {"type": "string"},
+            },
+        },
+    },
+    {
+        "name": "promote_synthesis_candidate",
+        "description": "Promote a grounded synthesis draft into the wiki with provenance.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "draft_path": {"type": "string"},
+                "note_path": {"type": "string"},
+                "provenance": {"type": "object"},
+                "chunk_ids": {"type": "array", "items": {"type": "string"}},
+                "source_record_ids": {"type": "array", "items": {"type": "string"}},
+                "retrieved_at": {"type": "string"},
+                "acting_agent": {"type": "string", "default": "claude-chronicler"},
+                "overwrite": {"type": "boolean", "default": False},
+            },
+            "required": ["draft_path"],
+        },
+    },
+    {
+        "name": "classify_synthesis_draft",
+        "description": "Classify draft claims against the epistemic risk tiers.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "claims": {"type": "array", "items": {"type": "object"}},
+                "existing_wiki_claims": {"type": "array", "items": {"type": "string"}},
+                "min_similarity": {"type": "number"},
+                "freshness_days": {"type": "integer", "minimum": 1},
+            },
+            "required": ["claims"],
+        },
+    },
+    {
+        "name": "get_conflict_resolution_template",
+        "description": "Return an arbitration prompt template for a synthesis conflict.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "conflict_type": {
+                    "type": "string",
+                    "enum": ["direct_contradiction", "version_skew", "scope_overlap"],
+                }
+            },
+            "required": ["conflict_type"],
+            "additionalProperties": True,
+        },
+    },
+    {
+        "name": "run_synthesis_rubric",
+        "description": "Check a synthesis draft for atomicity and scope statement coverage.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"draft_text": {"type": "string"}},
+            "required": ["draft_text"],
+        },
+    },
+    {
+        "name": "build_provenance_block",
+        "description": "Generate a YANP provenance block for a Permanent Note.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "chunk_ids": {"type": "array", "items": {"type": "string"}},
+                "source_record_ids": {"type": "array", "items": {"type": "string"}},
+                "retrieved_at": {"type": "string"},
+                "acting_agent": {"type": "string", "default": "claude-chronicler"},
+                "render_yaml": {"type": "boolean", "default": False},
+            },
+            "required": ["chunk_ids", "source_record_ids"],
+        },
+    },
+]
 
 
 def _json_request(method: str, path: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -869,10 +1042,14 @@ def build_provenance_block(
 
 
 def build_server():
-    if Server is None or TextContent is None:
+    if Server is None or TextContent is None or Tool is None:
         raise RuntimeError("The Python MCP SDK is not installed.")
 
     app = Server("vulture-ingest")
+
+    @app.list_tools()
+    async def list_tools() -> list[Tool]:
+        return [Tool(**definition) for definition in TOOL_DEFINITIONS]
 
     @app.call_tool()
     async def call_tool(name: str, arguments: dict) -> list[TextContent]:

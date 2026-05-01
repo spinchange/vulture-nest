@@ -39,23 +39,25 @@ try {
 
     Write-Host "--- Starting Vault Maintenance ---" -ForegroundColor Cyan
 
-    Invoke-MaintenanceStep -Label "`n[1/9] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
+    Invoke-MaintenanceStep -Label "`n[1/10] Checking MCP Server Health..." -ScriptName 'check-mcp-health.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[2/9] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
+    Invoke-MaintenanceStep -Label "`n[2/10] Running YANP Compliance Audit..." -ScriptName 'audit-yanp.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[3/9] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
+    Invoke-MaintenanceStep -Label "`n[3/10] Checking for Orphaned Notes..." -ScriptName 'orphan-check.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[4/9] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
+    Invoke-MaintenanceStep -Label "`n[4/10] Updating Tool Registry..." -ScriptName 'generate-tool-registry.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[5/9] Exporting PoShWiKi Page Snapshots..." -ScriptName 'export-poshwiki-pages.ps1'
+    Invoke-MaintenanceStep -Label "`n[5/10] Checking for Broken Links..." -ScriptName 'check-broken-links.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[6/9] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
+    Invoke-MaintenanceStep -Label "`n[6/10] Exporting PoShWiKi Page Snapshots..." -ScriptName 'export-poshwiki-pages.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[7/9] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
+    Invoke-MaintenanceStep -Label "`n[7/10] Generating Visual Dashboard..." -ScriptName 'generate-dashboard.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[8/9] Checking Tier-2 Compliance..." -ScriptName 'test-tier-compliance.ps1'
+    Invoke-MaintenanceStep -Label "`n[8/10] Compiling Vulture Portal..." -ScriptName 'generate-wiki.ps1'
 
-    Invoke-MaintenanceStep -Label "`n[9/9] Syncing Note Embeddings (Gemini)..." -ScriptName 'sync-embeddings.ps1' -Optional
+    Invoke-MaintenanceStep -Label "`n[9/10] Checking Tier-2 Compliance..." -ScriptName 'test-tier-compliance.ps1'
+
+    Invoke-MaintenanceStep -Label "`n[10/10] Syncing Note Embeddings (Gemini)..." -ScriptName 'sync-embeddings.ps1' -Optional
 
     Write-Host "`n--- Maintenance Complete! ---" -ForegroundColor Green
 } catch {

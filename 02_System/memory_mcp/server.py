@@ -9,17 +9,66 @@ from pathlib import Path
 try:
     from mcp.server import Server
     from mcp.server.stdio import stdio_server
-    from mcp.types import TextContent
+    from mcp.types import TextContent, Tool
 except ImportError:  # pragma: no cover - keeps module testable without SDK
     Server = None
     stdio_server = None
     TextContent = None
+    Tool = None
 
 
 SESSION_ID = os.environ.get("MEMORY_MCP_SESSION_ID", "default")
 SESSION_PERSIST = os.environ.get("MEMORY_MCP_SESSION_PERSIST", "").lower() == "true"
 DEFAULT_DB_PATH = Path(os.environ.get("MEMORY_MCP_DB_PATH", Path(__file__).with_name("memory.db")))
 SCHEMA_PATH = Path(__file__).with_name("schema.sql")
+
+
+TOOL_DEFINITIONS = [
+    {
+        "name": "commit_memory",
+        "description": "Store a memory entry in the session or vault scope. Upserts on key collision.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "scope": {"type": "string", "enum": ["session", "vault"]},
+                "key": {"type": "string"},
+                "content": {"type": "string"},
+                "tags": {"type": "array", "items": {"type": "string"}},
+                "embedding": {"type": "array", "items": {"type": "number"}},
+            },
+            "required": ["scope", "key", "content"],
+        },
+    },
+    {
+        "name": "search_memories",
+        "description": "Search memories by text query and optional tags. Returns ranked results.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "scope": {"type": "string", "enum": ["session", "vault", "all"], "default": "all"},
+                "tags": {"type": "array", "items": {"type": "string"}},
+                "query_embedding": {"type": "array", "items": {"type": "number"}},
+                "limit": {"type": "integer", "minimum": 1, "default": 10},
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "prune_memory",
+        "description": "Delete memory entries by scope, key, age, or tags.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "scope": {"type": "string", "enum": ["session", "vault", "all"]},
+                "key": {"type": "string"},
+                "older_than": {"type": "string"},
+                "tags": {"type": "array", "items": {"type": "string"}},
+            },
+            "required": ["scope"],
+        },
+    },
+]
 
 
 def encode_embedding(embedding: list[float] | None) -> bytes | None:
@@ -212,10 +261,14 @@ def cleanup_session(db: sqlite3.Connection, session_id: str = SESSION_ID) -> Non
 
 
 def build_server(db: sqlite3.Connection):
-    if Server is None or TextContent is None:
+    if Server is None or TextContent is None or Tool is None:
         raise RuntimeError("The Python MCP SDK is not installed.")
 
     app = Server("memory-mcp")
+
+    @app.list_tools()
+    async def list_tools() -> list[Tool]:
+        return [Tool(**definition) for definition in TOOL_DEFINITIONS]
 
     @app.call_tool()
     async def call_tool(name: str, arguments: dict) -> list[TextContent]:

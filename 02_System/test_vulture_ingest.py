@@ -75,6 +75,40 @@ def test_propose_source_intake_passes_with_approval():
     assert payload["policy_version"] == 1.0
 
 
+def test_vulture_ingest_advertises_expected_tools():
+    from mcp.types import Tool
+
+    tools = [Tool(**definition) for definition in server.TOOL_DEFINITIONS]
+    names = [tool.name for tool in tools]
+
+    assert names == [
+        "propose_source_intake",
+        "orchestrate_ingestion",
+        "execute_source_crawl",
+        "index_crawled_source",
+        "semantic_search_sources",
+        "verify_source_index",
+        "promote_synthesis_candidate",
+        "classify_synthesis_draft",
+        "get_conflict_resolution_template",
+        "run_synthesis_rubric",
+        "build_provenance_block",
+    ]
+    assert all(tool.inputSchema["type"] == "object" for tool in tools)
+
+
+def test_dotenv_fills_empty_mcp_environment_values(monkeypatch):
+    for name in ("FIRECRAWL_API_KEY", "SUPABASE_URL", "SUPABASE_SERVICE_KEY", "OPENAI_API_KEY"):
+        monkeypatch.setenv(name, "")
+
+    fresh = _load_module("vulture_ingest_server_dotenv_reload", MODULE_DIR / "server.py")
+
+    assert fresh.FIRECRAWL_API_KEY
+    assert fresh.SUPABASE_URL
+    assert fresh.SUPABASE_SERVICE_KEY
+    assert fresh.OPENAI_API_KEY
+
+
 def test_execute_source_crawl_enforces_cost_threshold():
     with pytest.raises(policy.PolicyDeniedError, match="AUTH_REQUIRED"):
         server.execute_source_crawl(
