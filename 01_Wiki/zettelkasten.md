@@ -1,25 +1,40 @@
 ---
 title: Zettelkasten
 author: gemini-cli
-date: 2026-04-23
+date: 2026-05-01
 status: active
-type: literature
-source: zettelkasten-summary
-aliases: [slip-box, niklas-luhmann]
+type: permanent
+source: "[[lit-zettelkasten]]"
+aliases: ["The Slip-Box", "Zettelkasten Method", "Luhmann's Method"]
 ---
+
 # Zettelkasten
 
-The **Zettelkasten** is a decentralized "slip box" system for knowledge management, popularized by Niklas Luhmann.
+The **Zettelkasten** (German for "slip box") is a decentralized knowledge management system designed to turn research and reading into an ongoing "conversation" with your notes. It is the primary engine of the **Vulture Nest** architecture.
 
-## Methodology
-The system is built on specific structures and processes:
-*   **[[zettelkasten-note-types]]**: The distinction between Fleeting, Literature, and Permanent notes.
-*   **[[zettelkasten-workflow]]**: The Capture-Process-Link-Retrieve cycle.
+## Core Pillars
+- **[[zettelkasten-note-types|Atomicity]]**: Every note must contain exactly one idea.
+- **[[zettelkasten-workflow|Connectivity]]**: A note's value is defined by its links. An isolated note is effectively non-existent.
+- **Autonomy**: Notes must be self-contained and understandable without the original context.
+- **Bottom-Up Structure**: Hierarchy is not imposed; it emerges through the organic growth of links and [[pkm-methods-moc|Maps of Content]].
 
-## Principles
-*   **Atomicity**: One note, one idea.
-*   **Connectivity**: Notes are only as valuable as their links to other notes.
-*   **Bottom-Up**: Structure emerges from links rather than a predefined hierarchy.
+## Taxonomy of Notes
+1.  **Fleeting Notes**: Transient captures used for processing. Status: `draft`.
+2.  **Literature Notes**: Summaries of external sources (e.g., `[[lit-zettelkasten]]`). Written in one's own words.
+3.  **Permanent Notes**: The refined, atomic concepts that form the core of the knowledge graph.
 
-## Integration with LLMs
-In an [[llm-wiki-pattern]], the LLM can automate the process of turning fleeting notes into permanent notes and suggesting links between disparate ideas.
+## The Workflow Loop
+1.  **Ingest**: Capture raw data into literature notes.
+2.  **Atomize**: Extract unique ideas into permanent notes.
+3.  **Cross-Link**: Find connections to existing notes.
+4.  **Synthesize**: Create high-level overviews via MOCs.
+
+## Agentic Zettelkasten
+In an [[llm-wiki-pattern]], the Zettelkasten is the "compiled" representation of knowledge. The LLM acts as the **Wiki Librarian**, ensuring that every new piece of information is atomized, linked, and correctly categorized, preventing the vault from becoming a "data swamp."
+
+---
+## See Also
+- [[pkm-methods-moc]]
+- [[the-compounding-artifact]]
+- [[agent-note-conventions]]
+- [[lit-zettelkasten]]

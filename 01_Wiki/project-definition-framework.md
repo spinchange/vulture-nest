@@ -36,6 +36,6 @@ A central requirement of the framework is defining the **Source of Truth** for d
 This framework is the standard for defining new specifications within the vault, such as [[spec-agentic-source-orchestrator]] and [[spec-knowledge-gardening]]. It ensures that agent-authored projects maintain the same architectural rigor as human-authored ones.
 
 ## See Also
-- [[software-design-checklist]]
+- [[software-design-principles]]
 - [[the-compounding-artifact]]
 - [[agentic-tdd-patterns]]

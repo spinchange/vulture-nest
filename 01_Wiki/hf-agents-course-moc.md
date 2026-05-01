@@ -10,6 +10,11 @@ aliases: [hf-agents-course, agents-course-map]
 
 This map provides a theoretical and practical traversal of the Hugging Face Agents Course, focusing on the core mechanics of reasoning, tool-use, and production orchestration.
 
+## 📚 Course Literature
+- [[lit-hf-agents-fundamentals]]: Unit 1 (Fundamentals) & Unit 2 (Frameworks).
+- [[lit-hf-agents-applications]]: Unit 3 (Use Cases) & Unit 4 (Evaluation).
+- [[lit-hf-agents-bonus]]: Bonus Material (Fine-tuning, Observability, Gaming).
+
 ## Fundamentals (Unit 1)
 * [[agent-thought-cycle]]: Thought-Action-Observation.
 * [[react-pattern]]: Reasoning + Acting.

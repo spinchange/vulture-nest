@@ -33,6 +33,9 @@ This map organizes the various programming environments and paradigms captured w
 ## Comparative PKM
 * [[org-mode]]: Plain-text logic and Emacs Lisp.
 
+## Debates & Paradigms
+* [[type-safety-spectrum-debate]]: The trade-offs between static and dynamic typing.
+
 ---
 ## See Also
 * [[wiki-as-codebase]]

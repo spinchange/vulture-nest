@@ -25,7 +25,8 @@
 ## 🧠 Knowledge Management & Strategy
 - [[pkm-methods-moc]] - Methodologies for personal knowledge management.
 - [[pkm-history-moc]] - Philosophical and historical roots of PKM.
-- [[zettelkasten]] - Atomic note-taking and workflow.
+- [[zettelkasten]] - Foundational atomic note-taking methodology.
+- [[lit-yaml-spec]] - YAML 1.2.2 specification for vault metadata.
 - [[hierarchical-graph-synthesis]] - Spec for automated vault synthesis.
 - [[the-compounding-artifact]] - The core philosophy of the Vulture Nest.
 

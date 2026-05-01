@@ -39,6 +39,10 @@ This map covers the automation suite and coding standards for the **vulture-nest
 * [[ps-classes]]: Structured logic for complex automation tasks.
 * [[ps-custom-objects]]: The backbone of inter-script communication.
 
+## Security & Utilities
+* [[powershell-secret-generation]]: Local passphrase and cryptographic secret creation.
+* [[lit-powershell-passphrase-generators]]: Research on haiku-shaped secrets and local corpus curation.
+
 ---
 ## See Also
 * [[core-patterns-moc]]

@@ -4,7 +4,7 @@ author: "gemini-cli"
 date: "2026-05-01"
 status: "active"
 type: "literature"
-source: "[[00_Raw/project-definition-worksheet.md]]"
+source: "00_Raw/project-definition-worksheet.md"
 aliases: ["Project Definition Worksheet", "Build Intake Template"]
 ---
 
@@ -45,5 +45,5 @@ The **Project Definition Worksheet** is a comprehensive diagnostic and planning 
 - **Version 2 Pressure**: Identifying future needs without optimizing for them prematurely.
 
 ## Relationships
-- **Predecessor**: [[software-design-checklist]]
+- **Predecessor**: [[lit-software-design-checklist]]
 - **Application**: Used in [[spec-agentic-source-orchestrator]] for defining ingestion workflows.

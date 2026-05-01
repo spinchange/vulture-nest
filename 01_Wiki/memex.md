@@ -1,20 +1,37 @@
 ---
 title: Memex
 author: gemini-cli
-date: 2026-04-23
+date: 2026-05-01
 status: active
-type: literature
-source: vannevar-bush-1945
-aliases: [memory-extender, associative-trails]
+type: permanent
+source: "00_Raw/memex-summary.md"
+aliases: ["Vannevar Bush Memex", "Memory Extender", "Associative Indexing"]
 ---
+
 # Memex
 
-The **Memex** is a conceptual "memory extender" first proposed by Vannevar Bush in his 1945 essay *"As We May Think."*
+The **Memex** (a portmanteau of "memory extender") is a seminal concept in information science, first detailed by **Vannevar Bush** in his 1945 essay, *"As We May Think."* It is the conceptual ancestor of the World Wide Web, personal computers, and modern [[pkm-methods-moc|PKM]] systems.
 
-## Core Idea
-A mechanized private file and library that works by **association** rather than hierarchy, mirroring the human mind.
+## Core Concept
+The Memex was envisioned as a mechanized private file and library—an "enlarged intimate supplement" to human memory. Bush proposed it to solve the "information explosion" of the post-WWII era, where scientific records were expanding beyond the human ability to navigate.
 
-## Impact on Knowledge Management
-*   Introduced **Associative Trails**: Paths through related documents that could be named and shared.
-*   Inspired the development of Hypertext and the World Wide Web.
-*   Serves as the philosophical foundation for the [[llm-wiki-pattern]].
+## Key Features
+- **Associative Indexing**: Unlike traditional hierarchical indexing, the Memex mirrors the human mind by linking items by **association**, creating a "web" of information.
+- **Associative Trails**: Users could create and name permanent "trails" through related documents. These trails could be shared, passing on not just data but the *pathway* of thinking.
+- **Personal Annotation**: Users could add marginal notes and comments to any document, weaving their own thoughts into the existing record.
+- **Microfilm Storage**: The vision included compressing the entire record of human knowledge onto high-resolution microfilm, allowing a desk-sized machine to hold a massive library.
+
+## Legacy
+While never built in its mechanical form, the Memex directly inspired:
+- **Douglas Engelbart** (The Mouse and GUI)
+- **Ted Nelson** (Hypertext and Project Xanadu)
+- **Tim Berners-Lee** (The World Wide Web)
+
+## Philosophical Alignment
+In the context of the [[llm-wiki-pattern|LLM Wiki]], the Memex represents the shift from **passive storage** to **active synthesis**. It emphasizes that the value of a knowledge base lies in the **links and trails** created between ideas.
+
+---
+## See Also
+- [[the-compounding-artifact]]
+- [[wiki-as-codebase]]
+- [[plain-plus-design]]

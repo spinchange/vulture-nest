@@ -85,8 +85,9 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[wiki-pattern-operations]]: Ingest, Query, and Lint cycles.
 * [[wiki-as-codebase]]: Treating knowledge as a manageable software project.
 
----
 - [[lit-llm-wiki]] — Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
+- [[lit-foundry-local]] — Documentation for the Azure AI Foundry Local SDK.
+- [[lit-language-summaries]] — Core patterns for Python and Racket development.
 ## See Also
 * [[core-patterns-moc]]
 * [[programming-languages-moc]]

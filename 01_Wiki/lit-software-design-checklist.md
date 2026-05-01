@@ -4,7 +4,7 @@ author: "gemini-cli"
 date: "2026-05-01"
 status: "active"
 type: "literature"
-source: "[[00_Raw/software-design-checklist.md]]"
+source: "00_Raw/software-design-checklist.md"
 aliases: ["Software Design Checklist", "Engineering Principles Checklist"]
 ---
 
@@ -50,6 +50,6 @@ The **Software Design Checklist** provides a step-by-step procedural guide for t
 - **"Architecture proportional"**: Prefer the simplest architecture that survives the next 2–3 versions.
 
 ## Relationships
-- **Successor**: [[project-definition-worksheet]]
+- **Successor**: [[lit-project-definition-worksheet]]
 - **Parallel**: [[agentic-tdd-patterns]]
 - **Application**: Used in [[spec-knowledge-gardening]] for tool design.

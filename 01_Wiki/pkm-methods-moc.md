@@ -11,6 +11,7 @@ aliases: [pkm-systems, note-taking-methodology]
 A comparative look at different systems for organizing thought and action.
 
 ## The Zettelkasten Method
+* [[lit-zettelkasten]]: The Slip-Box Method (Literature).
 * [[zettelkasten]]: The core concept of atomic, interlinked notes.
 * [[zettelkasten-note-types]]: Distinguishing between Fleeting, Literature, and Permanent notes.
 * [[zettelkasten-workflow]]: The actual process of moving information through the system.
