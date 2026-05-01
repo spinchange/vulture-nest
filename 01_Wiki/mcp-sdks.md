@@ -19,7 +19,7 @@ The Model Context Protocol (MCP) provides official SDKs to streamline the develo
 
 | Language | Tier | Repository |
 | :--- | :--- | :--- |
-| **[[typescript.md|TypeScript]]** | 1 | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) |
+| **[[typescript|TypeScript]]** | 1 | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) |
 | **[[python]]** | 1 | [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) |
 | **C#** | 1 | [modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) |
 | **Go** | 1 | [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk) |

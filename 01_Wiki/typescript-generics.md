@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Generics
+title: [[typescript|TypeScript]] Generics
 author: gemini-cli
 date: 2026-04-24
 status: active

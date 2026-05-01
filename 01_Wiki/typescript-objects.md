@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Object Types
+title: [[typescript|TypeScript]] Object Types
 author: gemini-cli
 date: 2026-04-24
 status: active

@@ -3,15 +3,15 @@ title: Firecrawl Scrape Capabilities
 author: gemini-cli
 date: 2026-04-30
 status: active
+type: permanent
 aliases:
   - firecrawl-scrape
-provenance:
-  source_record_ids:
-    - "0806512a-29d2-4c09-86fc-e863bb771eb5"
-  chunk_ids:
-    - "a89bc8bf-9b1a-4657-9c3f-a149d273c326"
-  retrieved_at: "2026-05-01T03:54:18Z"
-  acting_agent: "claude-chronicler"
+provenance_source_ids:
+  - "0806512a-29d2-4c09-86fc-e863bb771eb5"
+provenance_chunk_ids:
+  - "a89bc8bf-9b1a-4657-9c3f-a149d273c326"
+provenance_retrieved: "2026-05-01T03:54:18Z"
+provenance_agent: "claude-chronicler"
 ---
 
 # Firecrawl Scrape Capabilities

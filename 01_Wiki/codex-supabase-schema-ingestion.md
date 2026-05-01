@@ -3,7 +3,7 @@ title: 'Codex: Supabase Schema Ingestion'
 author: gemini-cli
 date: '2026-04-30'
 status: active
-type: engineering
+type: spec
 aliases:
   - codex-supabase-schema-ingestion
   - automate-supabase-schema

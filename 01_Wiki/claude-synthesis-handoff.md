@@ -40,8 +40,8 @@ The vault covers ADK, OpenAI Swarm, and A2A, but these exist as silos.
 
 ---
 ## References
-- [[02_System/index]] (Map of Maps)
-- [[02_System/log]] (Action History)
+- [[system-index]] (Map of Maps)
+- [[log]] (Action History)
 - [[the-compounding-artifact]] (Core Philosophy)
 - [[claude-blueprint-handoff]]
 - [[claude-gardening-visuals-handoff]]

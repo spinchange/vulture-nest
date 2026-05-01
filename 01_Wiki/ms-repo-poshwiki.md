@@ -9,7 +9,7 @@ aliases: [ms-repo-poshwiki]
 ---
 # Literature Note: PoShWiKi Repository
 
-PoShWiKi is a minimal [[powershell.md|PowerShell]] 7 wiki backed by SQLite, designed for terminal use and agent scriptability.
+PoShWiKi is a minimal [[powershell|PowerShell]] 7 wiki backed by SQLite, designed for terminal use and agent scriptability.
 
 ## Key Features
 - **SQLite Backend:** Uses `Microsoft.Data.Sqlite` for storage.

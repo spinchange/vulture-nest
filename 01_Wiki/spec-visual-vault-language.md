@@ -407,4 +407,4 @@ When an agent generates a diagram (e.g., as part of a community report or spec):
 - [[pattern-progressive-handoff]]
 - [[pattern-capability-gating]]
 - [[agent-note-conventions]]
-- [[02_System/index]]
+- [[system-index]]

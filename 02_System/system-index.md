@@ -66,6 +66,7 @@
 - [[spec-knowledge-gardening]] - Protocol for vault maintenance and repair.
 - [[spec-visual-vault-language]] - Mermaid.js standards for the Nest.
 
+- [[lit-llm-wiki]]: Foundational LLM Wiki / Vulture Nest pattern.
 - [[lit-verbalized-sampling-paper]]: Verbalized Sampling for mitigating mode collapse.
 
 

@@ -19,7 +19,7 @@ Official and community reference implementations showcase the versatility of MCP
 *   **[Everything](https://github.com/modelcontextprotocol/servers/tree/main/src/everything)**: A comprehensive test server covering tools, resources, and prompts.
 
 ## Quick Start (Direct Execution)
-*   **[[typescript.md|TypeScript]] (npx)**: `npx -y @modelcontextprotocol/server-memory`
+*   **[[typescript|TypeScript]] (npx)**: `npx -y @modelcontextprotocol/server-memory`
 *   **[[python]] (uvx)**: `uvx mcp-server-git`
 
 ## Official Integrations

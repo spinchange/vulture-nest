@@ -28,7 +28,7 @@ $vaultRoot = "C:\Users\executor\Documents\vulture-nest"
 
 ## 3. Execution Context
 *   **Working Directory**: All executable notes must assume the vault root as the base directory.
-*   **Permissions**: All scripts must be compatible with the [[powershell-moc|win32/[[powershell.md|PowerShell]] 7+]] mandate and runnable via `-ExecutionPolicy Bypass`.
+*   **Permissions**: All scripts must be compatible with the [[powershell-moc|win32/[[powershell|PowerShell]] 7+]] mandate and runnable via `-ExecutionPolicy Bypass`.
 *   **Variables**: Agents should provide standard environment variables to the script context (e.g., `VAULT_ROOT`, `CURRENT_NOTE_PATH`).
 
 ## 4. Security Boundaries (The "Golden Rules")

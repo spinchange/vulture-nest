@@ -1,5 +1,5 @@
 ---
-title: [[powershell.md|PowerShell]] MOC
+title: [[powershell|PowerShell]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active

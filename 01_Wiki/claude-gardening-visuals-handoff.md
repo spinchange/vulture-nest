@@ -39,11 +39,11 @@ We need a standard for representing the Vulture Nest's architecture visually usi
 ## Vault Standards
 1. **Filenames:** lowercase-kebab-case.
 2. **Frontmatter:** Mandatory `title`, `author`, `date`, `status: active`, `type`, and `aliases`.
-3. **Linking:** Connect these operational specs to the [[02_System/index]] and the [[agent-note-conventions]].
+3. **Linking:** Connect these operational specs to the [[system-index]] and the [[agent-note-conventions]].
 
 ---
 ## References
-- [[02_System/log]]
+- [[log]]
 - [[agent-note-conventions]]
 - [[wiki-pattern-operations]]
 - [[hierarchical-graph-synthesis]]

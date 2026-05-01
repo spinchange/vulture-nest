@@ -24,7 +24,7 @@ The Python SDK uses `ClientSession` within an `AsyncExitStack` for robust transp
 *   **Handshake**: `async with stdio_client(server_params) as (read, write): async with ClientSession(read, write) as session: await session.initialize()`
 *   **Tool Execution**: `result = await session.call_tool(tool_name, tool_args)`
 
-### 2. [[typescript.md|TypeScript]] / Node.js
+### 2. [[typescript|TypeScript]] / Node.js
 The TypeScript SDK uses a `Client` class with pluggable transports.
 *   **Connection**: `const transport = new StdioClientTransport({ command: "node", args: ["server.js"] });`
 *   **Handshake**: `const client = new Client({ name: "client", version: "1.0.0" }); await client.connect(transport);`

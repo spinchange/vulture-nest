@@ -22,7 +22,7 @@ Effective debugging of MCP integrations requires monitoring the communication be
 *   **✅ ALWAYS** log to `stderr`.
 *   **Protocol Logging**: Use `notifications/message` to send structured logs to the client.
     *   [[python]]: `ctx.session.send_log_message(level="info", data="...")`
-    *   [[typescript.md|TypeScript]]: `server.sendLoggingMessage({ level: "info", data: "..." })`
+    *   [[typescript|TypeScript]]: `server.sendLoggingMessage({ level: "info", data: "..." })`
 
 ## Common Issues
 ### 1. Working Directory & Paths

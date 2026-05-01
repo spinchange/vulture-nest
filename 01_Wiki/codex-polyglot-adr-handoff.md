@@ -20,12 +20,12 @@ The RFC is at `01_Wiki/polyglot-adr-rfc.md`. Read it in full before starting.
 
 *(Established by Claude before this handoff — do not re-derive, verify only.)*
 
-- The vault uses four language tiers: [[rust]] (Tier-0), C# (Tier-1), [[powershell.md|PowerShell]] (Tier-2), [[python]] (Tier-3).
+- The vault uses four language tiers: [[rust]] (Tier-0), C# (Tier-1), [[powershell|PowerShell]] (Tier-2), [[python]] (Tier-3).
 - Tier-0 artifact: `00_Raw/vulture-mcp/` — a Rust [[mcp-moc|MCP]] server over stdio.
 - Tier-1 artifact: `00_Raw/PoShWiKi/` — PowerShell host loading `Microsoft.Data.Sqlite.dll`; proposed pattern in `01_Wiki/dotnet-mcp-server-patterns.md`.
 - Tier-2 artifacts: `02_System/*.ps1` (15 scripts), `00_Raw/PoShWiKi/wiki.ps1`.
 - Tier-3 artifacts: wiki knowledge only — no live Python tooling in the vault.
-- `00_Raw/workbench/` is [[typescript.md|TypeScript]]/Node and does **not** fit cleanly into any tier — the RFC leaves this open.
+- `00_Raw/workbench/` is [[typescript|TypeScript]]/Node and does **not** fit cleanly into any tier — the RFC leaves this open.
 - All 15 `02_System/` scripts follow [[ps-automation-spec]]: `$ErrorActionPreference`, `Try/Catch`, exit code 1 on failure.
 - `run-maintenance.ps1` invokes child scripts via `pwsh -File`; the Tier-2→Tier-1 contract is `Add-Type` (in-process assembly load in PoShWiKi).
 

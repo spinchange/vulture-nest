@@ -14,7 +14,7 @@ The PoShWiKi repository demonstrates a pragmatic pattern for **agentic tooling i
 ## Core Pattern
 
 For agent workflows, C#/.NET is strongest when it is used as the **deterministic substrate** beneath a looser shell or prompt interface:
-- **Shell/UI Layer:** [[powershell.md|PowerShell]] functions and CLI commands provide low-friction invocation.
+- **Shell/UI Layer:** [[powershell|PowerShell]] functions and CLI commands provide low-friction invocation.
 - **State Layer:** `Microsoft.Data.Sqlite` manages durable page storage and metadata.
 - **Agent Layer:** JSON or object output gives the model a stable contract.
 

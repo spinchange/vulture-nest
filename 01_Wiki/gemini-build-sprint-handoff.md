@@ -279,7 +279,7 @@ def write_cluster_report(cluster_id: int, member_names: list[str], output_dir: P
         f"",
     ]
     for name in sorted(member_names):
-        lines.append(f"- [[{name}]]")
+        lines.append(f"- `[[{name}]]`")
     lines += ["", "## References", "- [[community-report-generator]]", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     return path

@@ -105,14 +105,13 @@ synthesis:
 
 ## 7. Provenance & Audit Trail
 
-Every permanent note promoted via this orchestrator MUST contain a YAML `provenance` block in its frontmatter:
+Every permanent note promoted via this orchestrator MUST contain YAML provenance fields in its frontmatter:
 
 ```yaml
-provenance:
-  source_record_ids: ["sr_123"]
-  chunk_ids: ["chk_456", "chk_457"]
-  retrieved_at: "2026-04-29T12:00:00Z"
-  acting_agent: "claude-chronicler"
+provenance_source_ids: ["sr_123"]
+provenance_chunk_ids: ["chk_456", "chk_457"]
+provenance_retrieved: "2026-04-29T12:00:00Z"
+provenance_agent: "claude-chronicler"
 ```
 
 This creates a stable link between the **Wiki (Permanent Knowledge)** and the **Sidecar (Evidence Chunks)**.

@@ -9,7 +9,7 @@ aliases: [verbalized-sampling-paper, mode-collapse-mitigation]
 
 # VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY
 
-**Source:** [[00_Raw/2510.01171v3.pdf]]
+**Source:** `00_Raw/2510.01171v3.pdf`
 
 ## Overview
 The paper identifies **typicality bias** in human preference data as a primary cause of **mode collapse** in aligned LLMs. To mitigate this, it introduces **Verbalized Sampling (VS)**, a prompting strategy where the model explicitly verbalizes a probability distribution over a set of possible responses before sampling.
@@ -34,7 +34,7 @@ The paper details a method for **Diversity Tuning** using probability thresholds
 *   **Significance:** This provides a practical, inference-time mechanism for fine-grained diversity control without altering decoding parameters like temperature or top-p.
 
 ### Mode-Anchored Departure (Approach B)
-*Note: This specific terminology appears to be an implementation-level abstraction (e.g., in [[02_System/verbalized-sampling.ps1]]) derived from the paper's "Distribution-level prompt" and its treatment of reference distributions.*
+*Note: This specific terminology appears to be an implementation-level abstraction (e.g., in `02_System/verbalized-sampling.ps1`) derived from the paper's "Distribution-level prompt" and its treatment of reference distributions.*
 
 *   **Definition:** A two-call pipeline where the first call establishes a **Modal Anchor** (the most probable default response) and then enumerates departures from that anchor.
 *   **Approach B vs. A:** In this context, Approach B uses the modal anchor as an explicit reference point for calculating "departure distance," ensuring that tail responses are substantively different from the collapsed default.

@@ -14,7 +14,7 @@ type: literature
 ## Source Metadata
 *   **File:** `00_Raw/adk-documentation.md`
 *   **Topic:** Framework for building, evaluating, and deploying multi-agent systems.
-*   **Languages Supported:** Go, [[python]], Java, [[typescript.md|TypeScript]].
+*   **Languages Supported:** Go, [[python]], Java, [[typescript|TypeScript]].
 
 ## High-Level Summary
 The ADK is a code-first toolkit designed for sophisticated AI agent development. It moves beyond simple chat interfaces into structured, multi-agent orchestration and lifecycle management (Build, Evaluate, Deploy).

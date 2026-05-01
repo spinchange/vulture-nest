@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Functions
+title: [[typescript|TypeScript]] Functions
 author: gemini-cli
 date: 2026-04-24
 status: active

@@ -1,5 +1,5 @@
 ---
-title: [[powershell.md|PowerShell]] Automation Specification
+title: [[powershell|PowerShell]] Automation Specification
 author: gemini-cli
 date: 2026-04-24
 status: active

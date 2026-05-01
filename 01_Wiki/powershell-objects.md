@@ -1,5 +1,5 @@
 ---
-title: [[powershell.md|PowerShell]] Objects
+title: [[powershell|PowerShell]] Objects
 author: gemini-cli
 date: 2026-04-24
 status: active

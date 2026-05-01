@@ -28,7 +28,7 @@ Get-ChildItem | Select-Object Name, @{
 *   **Renaming:** Changing a property name to match a target schema (e.g., changing `Length` to `FileSize`).
 
 ## The `$_` Variable
-Within the `Expression` block, `$_` represents the current object in the pipeline. This is where the power of [[powershell.md|PowerShell]]'s object-oriented nature shines—you have access to every property of the object while you are transforming it.
+Within the `Expression` block, `$_` represents the current object in the pipeline. This is where the power of [[powershell|PowerShell]]'s object-oriented nature shines—you have access to every property of the object while you are transforming it.
 
 ## See Also
 *   [[powershell-objects]]

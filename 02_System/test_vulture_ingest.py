@@ -222,6 +222,8 @@ def test_promote_synthesis_candidate_validates_provenance_and_writes_note(monkey
     draft = workdir / "draft.md"
     draft.write_text("---\ntitle: Test Draft\n---\n\nBody text.\n", encoding="utf-8")
     target = workdir / "promoted.md"
+    if target.exists():
+        target.unlink()
     patch_calls: list[dict] = []
 
     def fake_supabase_request(method, path, *, payload=None, params=None, prefer=None):

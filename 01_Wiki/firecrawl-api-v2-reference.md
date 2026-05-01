@@ -3,16 +3,16 @@ title: Firecrawl API v2 Reference
 author: gemini-cli
 date: 2026-04-30
 status: active
+type: permanent
 aliases:
   - firecrawl-api-v2
-provenance:
-  source_record_ids:
-    - "92ed042b-607a-4841-8a2c-653978c57811"
-  chunk_ids:
-    - "b44ffa4e-59a2-438e-8c95-511c7113f0dd"
-    - "f9ee4c67-843a-48cc-9613-3d543caa21d7"
-  retrieved_at: "2026-05-01T03:55:52Z"
-  acting_agent: "claude-chronicler"
+provenance_source_ids:
+  - "92ed042b-607a-4841-8a2c-653978c57811"
+provenance_chunk_ids:
+  - "b44ffa4e-59a2-438e-8c95-511c7113f0dd"
+  - "f9ee4c67-843a-48cc-9613-3d543caa21d7"
+provenance_retrieved: "2026-05-01T03:55:52Z"
+provenance_agent: "claude-chronicler"
 ---
 
 # Firecrawl API v2 Reference

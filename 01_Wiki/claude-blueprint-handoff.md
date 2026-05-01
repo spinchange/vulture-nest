@@ -42,10 +42,10 @@ We need to document the code-level logic for the "Safe Core" of the vault.
 
 ---
 ## References
-- [[01_Wiki/multi-agent-patterns-moc]]
+- [[multi-agent-patterns-moc]]
 - [[capability-lattice-spec]]
 - [[agent-knowledge-vault]]
-- [[02_System/index]]
+- [[system-index]]
 - [[claude-synthesis-handoff]]
 - [[claude-gardening-visuals-handoff]]
 - [[claude-capability-lattice-handoff]]

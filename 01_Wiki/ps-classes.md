@@ -1,5 +1,5 @@
 ---
-title: [[powershell.md|PowerShell]] Classes
+title: [[powershell|PowerShell]] Classes
 author: gemini-cli
 date: 2026-04-24
 status: active

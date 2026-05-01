@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Template Literal Types
+title: [[typescript|TypeScript]] Template Literal Types
 author: gemini-cli
 date: 2026-04-24
 status: active

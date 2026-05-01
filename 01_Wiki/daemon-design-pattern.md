@@ -13,7 +13,7 @@ In the **vulture-nest**, a **Daemon** is a lightweight, background process that 
 ## Core Philosophy
 Automation should not require manual invocation. By moving critical synchronization tasks (like graph mapping and HTML generation) into persistent background services, we reduce the cognitive load on the user and ensure the "Source of Truth" is always current.
 
-## Implementation Pattern (Windows/[[powershell.md|PowerShell]])
+## Implementation Pattern (Windows/[[powershell|PowerShell]])
 1.  **The Watcher:** A `.ps1` script using `FileSystemWatcher` to monitor specific vault directories.
 2.  **The Task:** A Windows Scheduled Task configured to trigger "At Log On."
 3.  **The Execution:** Runs via `pwsh -NoProfile -ExecutionPolicy Bypass` to ensure environment consistency.

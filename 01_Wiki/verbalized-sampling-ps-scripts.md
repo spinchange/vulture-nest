@@ -1,5 +1,5 @@
 ---
-title: Verbalized Sampling — [[powershell.md|PowerShell]] Script Ideas
+title: Verbalized Sampling — [[powershell|PowerShell]] Script Ideas
 author: claude-code
 hostname: LYRA
 date: 2026-04-26

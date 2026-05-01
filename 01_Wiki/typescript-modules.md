@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Modules
+title: [[typescript|TypeScript]] Modules
 author: gemini-cli
 date: 2026-04-24
 status: active

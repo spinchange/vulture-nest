@@ -106,7 +106,7 @@ This adds a `[SEMANTIC NEIGHBORS]` tier to results alongside the existing symbol
 The Gemini free tier provides `gemini-embedding-001` with 1500 RPD at no cost — sufficient for incremental vault maintenance. The generative quota (`generateContent`) on the same key had `limit: 0`, making it unavailable for the judge role. Claude Haiku is better at nuanced directional reasoning anyway and costs fractions of a cent per decision.
 
 **Why store embeddings as JSON text in SQLite rather than a vector extension?**
-`sqlite-vec` would require loading a native extension into PoShWiKi's .NET SQLite setup. JSON text is simple, portable, and sufficient — cosine similarity over 224 notes in [[powershell.md|PowerShell]] completes in under 10 seconds.
+`sqlite-vec` would require loading a native extension into PoShWiKi's .NET SQLite setup. JSON text is simple, portable, and sufficient — cosine similarity over 224 notes in [[powershell|PowerShell]] completes in under 10 seconds.
 
 **Why 0.80 as the floor threshold?**
 Empirically, pairs below 0.80 tend to share vocabulary rather than concepts. The initial run showed 164 candidates above 0.80; after four passes the count stabilised around 51, suggesting that floor is approximately correct for this vault's content density.

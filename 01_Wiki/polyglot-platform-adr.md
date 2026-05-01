@@ -16,12 +16,12 @@ The vault keeps the four-tier language model as its architectural decision rule:
 
 - Tier-0: [[rust]] for long-lived, safety-critical services
 - Tier-1: C# / .NET for typed integration surfaces and hosted agent services
-- Tier-2: [[powershell.md|PowerShell]] for automation, maintenance, and shell-adjacent workflows
+- Tier-2: [[powershell|PowerShell]] for automation, maintenance, and shell-adjacent workflows
 - Tier-3: [[python]] for ML experiments and framework-specific orchestration
 
 This ADR also records a fifth classification that is not part of the production tier model:
 
-- [[typescript.md|TypeScript]]/Node development scaffolding sits outside the tier table unless it becomes a persistent product/runtime boundary in its own right
+- [[typescript|TypeScript]]/Node development scaffolding sits outside the tier table unless it becomes a persistent product/runtime boundary in its own right
 
 ## Verified Tier Inventory
 

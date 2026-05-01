@@ -24,7 +24,7 @@ The vault contains tooling across four languages. Without explicit selection cri
 | Tier | Language | Vault Artifacts |
 |------|----------|----------------|
 | 0 | Rust | `vulture-mcp` ([[mcp-moc|MCP]] server, stdio) |
-| 1 | C# / .NET | PoShWiKi (`Microsoft.Data.Sqlite` via [[powershell.md|PowerShell]]/.NET), proposed [[dotnet-mcp-server-patterns]] |
+| 1 | C# / .NET | PoShWiKi (`Microsoft.Data.Sqlite` via [[powershell|PowerShell]]/.NET), proposed [[dotnet-mcp-server-patterns]] |
 | 2 | PowerShell | `02_System/` (15 scripts), `00_Raw/PoShWiKi/wiki.ps1` |
 | 3 | Python | Wiki knowledge only (LangGraph, smolagents, etc.) — no live vault tooling |
 
@@ -105,7 +105,7 @@ Add `tier` as an optional YANP field for notes that describe executable tools. T
 
 1. **Inventory accuracy:** Are there any Rust, C#, or Python source files in the vault that the Tier Inventory table misses? Check `00_Raw/` subdirectories.
 2. **PoShWiKi tier classification:** PoShWiKi is PowerShell (Tier-2) but its core is `Microsoft.Data.Sqlite` (Tier-1 CLR). Should PoShWiKi be classified as Tier-1 or Tier-2, and does that change the contract table?
-3. **Workbench tier:** `00_Raw/workbench/` is [[typescript.md|TypeScript]]/Node. The tier model has no Tier for JS. Does it belong as Tier-3 (dynamic, rapid iteration) or does it need its own slot given it hosts the Codex tool runner?
+3. **Workbench tier:** `00_Raw/workbench/` is [[typescript|TypeScript]]/Node. The tier model has no Tier for JS. Does it belong as Tier-3 (dynamic, rapid iteration) or does it need its own slot given it hosts the Codex tool runner?
 4. **Enforcement precedent:** Does `audit-yanp.ps1` already have extensible hooks for custom field validation, or would the `tier` field require a new validation path?
 
 ## Proposed Note to Create

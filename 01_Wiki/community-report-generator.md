@@ -103,9 +103,9 @@ USER:
 Cluster ID: {cluster_id}
 Level: {1 | 2}
 Member Notes ({n} total):
-{for each note: "- [[{note_id}]] ({type}): {title} — {one-line summary}"}
+{for each note: "- `[[{note_id}]]` ({type}): {title} — {one-line summary}"}
 
-Parent Cluster (if Level-2): [[{parent_community_report}]]
+Parent Cluster (if Level-2): `[[{parent_community_report}]]`
 
 Generate the Community Report now.
 ```
@@ -148,7 +148,7 @@ After generation, the report must be integrated into the vault graph:
 
 1.  **Save** to `01_Wiki/community-reports/{cluster_id}.md`.
 2.  **Add wikilinks** from the report to all member notes (via `[[note_id]]` in the Members section).
-3.  **Back-link** each member note by appending `- [[community-reports/{cluster_id}]]` to its References section.
+3.  **Back-link** each member note by appending `- `[[community-reports/{cluster_id}]]`` to its References section.
 4.  **Index entry:** Add a line to `01_Wiki/index.md` under `## Emergent Communities`.
 5.  **Embed link** from Level-2 report to its Level-1 parent report.
 

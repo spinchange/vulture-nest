@@ -12,7 +12,7 @@ aliases: [polyglot-platform, heterogeneous-agents, language-tier-community, tier
 
 ## Emergent Theory
 
-The vault's coverage of [[rust]], C#, [[powershell.md|PowerShell]], and [[python]] is not pluralism for its own sake. Each language maps onto a distinct performance and trust envelope, and the emergent architecture is a **tiered platform** where a component's language is also a declaration of its operational constraints:
+The vault's coverage of [[rust]], C#, [[powershell|PowerShell]], and [[python]] is not pluralism for its own sake. Each language maps onto a distinct performance and trust envelope, and the emergent architecture is a **tiered platform** where a component's language is also a declaration of its operational constraints:
 
 | Tier | Language | Role | Governing Principle |
 |------|----------|------|---------------------|

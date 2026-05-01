@@ -18,7 +18,7 @@ Language choice in this vault is a **tier declaration** — each language carrie
 |------|----------|-----------------|----------------------|
 | 0 — Core | [[rust]] | [[mcp-moc|MCP]] servers, inference engines | Compile-time ownership; zero-cost abstraction |
 | 1 — Integration | C# / .NET | Agent frameworks, API surfaces, MCP clients | Type-safe, GC-managed; rich DI ecosystem |
-| 2 — Automation | [[powershell.md|PowerShell]] | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly |
+| 2 — Automation | [[powershell|PowerShell]] | Vault ops, CI/CD, SQLite orchestration | Scriptable, human-auditable, REPL-friendly |
 | 3 — Orchestration | [[python]] | ML pipelines, framework experimentation | Dynamic, ecosystem-rich, rapid iteration |
 
 In the Vulture substrate, .NET serves as the **Tier-1 Host** for performance-critical agent components, particularly when interacting with local memory, system automation, and local inference via [[lm-kit-dotnet]].

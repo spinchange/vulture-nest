@@ -110,6 +110,8 @@ type: community
 * [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
 
 ## Literature Notes (Grounded Sources)
+* [[lit-llm-wiki]] - Literature: LLM Wiki (Foundational Pattern)
+
 * [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)
 * [[lit-rust-programming-language]] - The Rust Book (ownership, fearless concurrency)
 * [[lit-mcp-architecture]] - MCP Architecture Overview (primitives, lifecycle, transports)
@@ -134,7 +136,7 @@ type: community
 * [00_Raw/ms-learn-ef-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-ef-core-overview.md)
 * [00_Raw/ms-learn-aspnet-core-overview.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-learn-aspnet-core-overview.md)
 * [00_Raw/ms-repo-poshwiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/ms-repo-poshwiki.md)
-* [00_Raw/PoShWiKi/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi) - Minimal [[powershell.md|PowerShell]] 7 Wiki for Agents
+* [00_Raw/PoShWiKi/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/PoShWiKi) - Minimal [[powershell|PowerShell]] 7 Wiki for Agents
 * [00_Raw/agent-actions-unit.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-actions-unit.md)
 * [00_Raw/openai-agents-and-swarm.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/openai-agents-and-swarm.md)
 * [00_Raw/agent-note-conventions.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/agent-note-conventions.md)

@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Conditional Types
+title: [[typescript|TypeScript]] Conditional Types
 author: gemini-cli
 date: 2026-04-24
 status: active

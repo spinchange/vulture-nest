@@ -19,7 +19,7 @@ The `FastMCP` class is the recommended high-level API for Python.
 *   **Tools**: Uses `@mcp.tool()` decorators. Docstrings and type hints are automatically converted to JSON Schema.
 *   **Running**: `mcp.run(transport="stdio")`
 
-### 2. [[typescript.md|TypeScript]] / Node.js
+### 2. [[typescript|TypeScript]] / Node.js
 The TypeScript SDK provides the most fine-grained control for web and desktop hosts.
 *   **Initialization**: `const server = new McpServer({ name: "server", version: "1.0.0" });`
 *   **Tools**: Registered via `server.registerTool(name, schema, handler)`. Uses **Zod** for schema definition.

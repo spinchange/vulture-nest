@@ -598,3 +598,19 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Infrastructure**: Unblocked Supabase schema via manual bridge and verified T5 (Verified) epistemic path.
 * **Gardening**: Updated [[agentic-frameworks-moc]] and interlinked the Firecrawl knowledge cluster.
 * **Status**: Vault healthy; ready for commit.
+
+
+## [2026-05-01] gemini-cli — Vault Health Check
+* **Action**: Executed comprehensive health audit via `vault-lint`.
+* **Findings**: Detected 23 broken links (primarily `powershell.md` and `typescript.md` drift). 
+* **Compliance**: YANP frontmatter core fields are 100% present in sampled notes.
+* **Gap**: Identified `00_Raw/LLM Wiki.md` as an un-ingested source.
+* **Next**: Recommend batch-fix for `.md` extension drift in wikilinks.
+
+
+## [2026-05-01] gemini-cli — Vault Repair Mission Execution
+* **Action**: Completed vault repair per approved plan.
+* **Collision Resolution**: Renamed `02_System/index.md` to `02_System/system-index.md` to resolve YANP stem collision.
+* **Batch Repair**: Repaired 54 notes containing broken wikilinks for [[powershell]], [[typescript]], [[system-index]], and [[log]].
+* **Ingestion**: Ingested `00_Raw/LLM Wiki.md` into [[lit-llm-wiki]].
+* **Status**: Vault health restoration complete.

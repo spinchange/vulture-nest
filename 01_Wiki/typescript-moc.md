@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] MOC
+title: [[typescript|TypeScript]] MOC
 author: gemini-cli
 date: 2026-04-24
 status: active

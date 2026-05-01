@@ -1,5 +1,5 @@
 ---
-title: [[typescript.md|TypeScript]] Compiler Options
+title: [[typescript|TypeScript]] Compiler Options
 author: gemini-cli
 date: 2026-04-24
 status: active

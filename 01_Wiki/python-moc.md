@@ -30,7 +30,7 @@ This map organizes the Python foundation most relevant to agent systems, tool ex
 - [[python-sqlite]]: Embedded persistence for local memory and caches.
 
 ## Applied Workflow Notes
-- [[audio-overview-workflow]]: Python-assisted transcription artifacts in a [[powershell.md|PowerShell]]-led pipeline.
+- [[audio-overview-workflow]]: Python-assisted transcription artifacts in a [[powershell|PowerShell]]-led pipeline.
 - [[verbalized-sampling-experiment]]: Practical local workflow debugging on Windows plus transcript-first ingestion.
 
 ---

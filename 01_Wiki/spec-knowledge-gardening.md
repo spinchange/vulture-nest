@@ -14,7 +14,7 @@ aliases:
 
 **Purpose:** Define the operational protocol for keeping the vault high-signal over time. As the vault grows, three failure modes emerge: **Thin Nodes** (low information density), **Orphaned Concepts** (unreachable from the graph), and **Concept Drift** (content that no longer matches its declared identity). This spec defines how to detect and remediate all three.
 
-A Gardening Session is a structured audit-and-action cycle, not an ad-hoc cleanup. Each session should be logged in [[02_System/log]] with the date, candidates found, and actions taken.
+A Gardening Session is a structured audit-and-action cycle, not an ad-hoc cleanup. Each session should be logged in [[log]] with the date, candidates found, and actions taken.
 
 ---
 
@@ -151,7 +151,7 @@ Use when: a thin node or orphan belongs conceptually inside a larger, better-con
 3. In every note that wikilinked to the thin note, replace `[[thin-note]]` with `[target-note#new-section|thin-note]`.
 4. Set the thin note's frontmatter to `status: archived` and add a redirect line: `> Merged into [target-note] on YYYY-MM-DD.`
 5. Do **not** delete the thin note file — Git history and inbound links from external sources may still reference it.
-6. Log the merge in [[02_System/log]].
+6. Log the merge in [[log]].
 
 ### 3.2 Split (Concept → MOC + Children)
 
@@ -175,7 +175,7 @@ Use when: an orphan is genuinely valuable but simply missed during the linking p
 1. Search the vault for notes that discuss related concepts (semantic search on the orphan's title + body).
 2. For the top 3–5 results, add `[[orphan-note]]` to their References section with a one-line annotation.
 3. Verify the orphan itself links back to those notes.
-4. Log in [[02_System/log]].
+4. Log in [[log]].
 
 ### 3.4 Retitle / Refocus (Drift Correction)
 
@@ -240,5 +240,5 @@ Log the session summary: notes audited, actions taken, net orphan count change, 
 - [[hierarchical-graph-synthesis]]
 - [[semantic-embedding-pipeline]]
 - [[community-report-generator]]
-- [[02_System/index]]
+- [[system-index]]
 - [[knowledge-gardening-principles]]

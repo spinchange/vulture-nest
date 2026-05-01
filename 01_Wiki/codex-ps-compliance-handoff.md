@@ -113,7 +113,7 @@ Commit as a second atomic commit:
 ```
 Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)
 
-Implements Option A from polyglot-platform-adr: a [[powershell.md|PowerShell]] script that
+Implements Option A from polyglot-platform-adr: a [[powershell|PowerShell]] script that
 checks all 02_System/*.ps1 files for $ErrorActionPreference and try/catch
 compliance. Wired into run-maintenance.ps1 as step [7/7].
 

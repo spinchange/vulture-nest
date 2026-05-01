@@ -4,7 +4,7 @@
 sources:
   - file: LLM Wiki.md
     domain: architecture
-    status: raw
+    status: processed
     source: community-capture
 
   - file: llm-wiki-pattern.md
@@ -111,3 +111,8 @@ sources:
     domain: agentic-frameworks
     status: processed
     source: research-paper
+
+  - file: powershell-passphrase-generators.md
+    domain: security
+    status: processed
+    source: internal-synthesis
