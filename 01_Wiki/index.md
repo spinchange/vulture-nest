@@ -110,6 +110,7 @@ type: community
 * [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
 
 ## Literature Notes (Grounded Sources)
+* [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up)
 * [[lit-llm-wiki]] - Literature: LLM Wiki (Foundational Pattern)
 
 * [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)
