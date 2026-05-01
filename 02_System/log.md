@@ -689,3 +689,12 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Index Updated**: Created **Software Methodology** section in [[system-index]].
 * **MOC Updated**: Added **Software Engineering & Methodology** section to [[core-patterns-moc]].
 * **Status**: Engineering foundation for new project intake established.
+
+
+### 2026-05-01 10:45 - Graph Integration: lit-mcp-authorization
+- **MOC Update**: Wired [[lit-mcp-authorization]] into [[mcp-moc]] under Deployment & Security.
+- **Back-reference**: Added link to [[lit-mcp-authorization]] from [[lit-mcp-security-and-auth]].
+- **Spec Enrichment**: Added "Protocol Instantiations" to [[capability-lattice-spec]] linking OAuth lattice implementation.
+- **Spec Enrichment**: Added HTTP authorization requirement to [[spec-agentic-source-orchestrator-v2]].
+- **Pattern Enrichment**: Added implementation reference to [[pattern-capability-gating]].
+- **Verification**: Index was already updated by Claude. Graph integrity confirmed.

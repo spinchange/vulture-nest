@@ -591,6 +591,12 @@ Safe(agent, tool, connection_state) iff
 
 ---
 
+## 9. Protocol Instantiations
+
+- [[lit-mcp-authorization]] — OAuth `aud` + `scope` as the runtime lattice gate for HTTP-transported MCP servers
+
+---
+
 ## References
 - [[community-protocol-trust-substrate]]
 - [[session-types-mcp-mapping]]

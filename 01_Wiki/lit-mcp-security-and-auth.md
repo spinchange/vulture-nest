@@ -52,6 +52,7 @@ For servers running over Stdio, OAuth is typically replaced by:
 ---
 ## See Also
 - [[mcp-authorization]] (Permanent Note)
+- [[lit-mcp-authorization]] - Specification-level coverage: discovery flow, audience binding, step-up, security risks
 - [[mcp-best-practices]]
 - [[lit-mcp-architecture]]
 - [[mcp-moc]]

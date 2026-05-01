@@ -104,6 +104,7 @@ Explicit FAILED transitions keep every path in the delegation graph **statically
 
 ## References
 - [[capability-lattice-spec]] — formal lattice model
+- [[lit-mcp-authorization]] — MCP's concrete implementation: OAuth `scope` as the capability declaration, `aud` as the gate boundary
 - [[a2a-capability-lattice]] — A2A-specific lattice treatment
 - [[a2a-protocol]] — TRANSFERRED state enforcement
 - [[community-protocol-trust-substrate]] — trust model requiring gating

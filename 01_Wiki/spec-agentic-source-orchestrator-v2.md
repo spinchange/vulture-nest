@@ -41,6 +41,9 @@ Authority is centralized in `02_System/pipeline-policy.yaml`.
 - **Fail-Closed**: If policy cannot be loaded, all ingestion tools must stop.
 - **Thresholds**: Mandatory human approval for new domains or costs > 20 credits.
 
+### 4.1 Transport Security & Authorization
+Tools exposed via HTTP transport MUST be protected per [[lit-mcp-authorization]]; the `propose_source_intake` and `promote_synthesis_candidate` gates are highest-privilege and SHOULD require scope validation before execution.
+
 ## 5. Handoff & Seams
 Every orchestration step must produce a **Seam Artifact** containing the current state, open risks, and next recommended action. This ensures continuity across agent sessions.
 

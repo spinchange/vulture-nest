@@ -29,6 +29,7 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[mcp-remote-connections]]: Connecting to remote servers via HTTP.
 * [[mcp-security]]: Production hardening and trust models.
 * [[mcp-authorization]]: Managing permissions and user consent (OAuth 2.1).
+* [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up flow)
 
 ## Operations & Tooling
 * [[mcp-debugging]]: Tools and strategies for protocol troubleshooting.
@@ -48,3 +49,4 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[agentic-protocols]] - Unified Communication Protocols
 * [[mcp-best-practices]] - Context Optimization & Tool Hardening
 * [[mcp-authorization]] - Security & Permission Models
+* [[lit-mcp-authorization]] - Specification-level grounding for OAuth 2.1 authorization
