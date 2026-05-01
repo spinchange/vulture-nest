@@ -25,6 +25,13 @@ MODULE_DIR = Path(__file__).resolve().parent
 if str(MODULE_DIR) not in sys.path:
     sys.path.insert(0, str(MODULE_DIR))
 
+# Load environment variables from .env if it exists
+try:
+    from dotenv import load_dotenv
+    load_dotenv(MODULE_DIR / ".env")
+except ImportError:
+    pass
+
 from policy import (  # noqa: E402
     DEFAULT_POLICY_PATH,
     PipelinePolicy,
@@ -607,7 +614,7 @@ def semantic_search_sources(
         "/rest/v1/rpc/match_documents",
         payload={
             "query_embedding": query_embedding,
-            "match_threshold": match_threshold or policy.synthesis.min_similarity_threshold,
+            "match_threshold": match_threshold if match_threshold is not None else policy.synthesis.min_similarity_threshold,
             "match_count": match_count,
             "filter_domain": filter_domain,
         },

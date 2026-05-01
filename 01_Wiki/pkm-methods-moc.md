@@ -15,6 +15,7 @@ A comparative look at different systems for organizing thought and action.
 * [[zettelkasten-note-types]]: Distinguishing between Fleeting, Literature, and Permanent notes.
 * [[zettelkasten-workflow]]: The actual process of moving information through the system.
 
+- [[lit-llm-wiki]] — Synthesis of LLMs and Zettelkasten for autonomous knowledge management.
 ## Task and Information Management
 * [[gtd]]: David Allen's "Getting Things Done" for actionable items.
 * [[actionable-vs-reference]]: The critical distinction between "To-Do" and "To-Know."

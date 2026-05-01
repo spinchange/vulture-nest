@@ -116,3 +116,14 @@ sources:
     domain: security
     status: processed
     source: internal-synthesis
+
+
+  - file: project-definition-worksheet.md
+    domain: engineering
+    status: processed
+    source: internal-synthesis
+
+  - file: software-design-checklist.md
+    domain: engineering
+    status: processed
+    source: internal-synthesis

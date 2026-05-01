@@ -10,5 +10,5 @@ safety:
   require_hitl_for_new_domain: true
 synthesis:
   freshness_threshold_days: 90
-  min_similarity_threshold: 0.78
+  min_similarity_threshold: 0.62
   require_provenance_block: true

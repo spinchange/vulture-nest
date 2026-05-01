@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent / "vulture-ingest"))
 
 from chunker import OVERLAP_TOKENS, chunk_markdown, sliding_window, split_by_heading
 

@@ -1,92 +1,78 @@
 ---
 title: 'Literature: MCP Architecture Overview'
-author: claude-sonnet-4-6
-date: '2026-04-27'
+author: gemini-cli
+date: 2026-05-01
 status: active
 type: literature
 aliases:
   - mcp-architecture-source
   - mcp-arch-docs
+provenance:
+  source_record_ids:
+    - "6187a48f-c4b1-43ed-95de-205f4c359987"
+  chunk_ids:
+    - "272dfbb7-47a1-4aac-909f-46e555080ace"
+    - "decf817d-c3f2-494c-b8c0-5fdc76fcbd48"
+    - "cae8914e-7c20-406d-ab24-01229fbc8ac8"
+    - "44eef166-4f2d-4db5-9b27-8e35d2db43c3"
+    - "31dc78eb-1747-4274-ad52-386440c159ff"
+    - "a9703018-8513-4e1f-9f4d-a364605f4ff4"
+    - "e5b5ecfc-42e3-4d25-a825-b109416b4292"
+    - "07afb6eb-2302-4815-95f1-5088b7695764"
+    - "1b7351a3-8266-4b5d-a51e-b40c4e17a5c9"
+    - "cae65482-ac51-4cf6-9f1c-9034f4fd9472"
+  retrieved_at: "2026-05-01T08:56:24Z"
+  acting_agent: "gemini-cli"
 ---
 
 # Literature: MCP Architecture Overview
 
 ## Source Metadata
-*   **File:** `00_Raw/mcp/Architecture overview.md`
-*   **Origin:** Anthropic Model Context Protocol documentation (`modelcontextprotocol.io`)
-*   **Domain:** protocols / AI tooling
-*   **Relevance:** MCP is the primary tool-access protocol in the vault — all MCP server patterns, C# SDK work, and Rust server designs derive from this foundation.
+* **File:** `https://modelcontextprotocol.io/docs/concepts/architecture`
+* **Origin:** Anthropic Model Context Protocol Documentation
+* **Relevance:** Canonical definition of the MCP layers, participants, and lifecycle.
 
 ## High-Level Summary
-MCP (Model Context Protocol) defines a **client-server architecture** for providing structured context to AI applications. Its scope is narrow by design: it governs how an agent accesses **tools, resources, and prompts** from servers. It does *not* govern agent-to-agent communication (that is A2A's domain). The protocol is JSON-RPC 2.0 over two transport layers (Stdio and Streamable HTTP).
+The Model Context Protocol (MCP) is a standard for connecting AI applications to data and tools. It defines a clear separation between the **Data Layer** (JSON-RPC 2.0 primitives) and the **Transport Layer** (how messages are moved).
 
-## Two-Layer Architecture
+## Core Concepts
 
-### Data Layer (JSON-RPC 2.0)
-The semantic heart of MCP. Defines message structure, lifecycle, and primitives.
+### Participants
+* **MCP Host:** The AI application (like Claude Desktop or an IDE) that initiates connections.
+* **MCP Client:** Maintains a 1:1 connection with a server, typically embedded within the Host.
+* **MCP Server:** Provides tools, resources, and prompts to the client.
 
-#### Server-Exposed Primitives
-| Primitive | Purpose | Discovery | Execution |
-|---|---|---|---|
-| **Tools** | Executable functions AI can invoke | `tools/list` | `tools/call` |
-| **Resources** | Contextual data sources (files, DB records) | `resources/list` | `resources/read` |
-| **Prompts** | Reusable interaction templates | `prompts/list` | `prompts/get` |
+### Layers
+* **Data Layer:** Defines the semantics of the protocol. It uses JSON-RPC 2.0 to handle tools, resources, prompts, and notifications.
+* **Transport Layer:** Handles the underlying communication. Supported transports include **Stdio** (local) and **HTTP with SSE** (remote).
 
-#### Client-Exposed Primitives
-| Primitive | Purpose |
-|---|---|
-| **Sampling** | Server requests LLM completion from the host; server stays model-independent |
-| **Elicitation** | Server requests additional information from the user |
-| **Logging** | Server sends diagnostic log messages to the client |
+## Lifecycle Management
 
-#### Experimental Primitives
-*   **Tasks:** Durable execution wrappers for deferred/long-running MCP requests — a bridge toward A2A-style stateful task tracking within the MCP protocol.
+### The Initialization Exchange
+A mandatory handshake occurs when a connection is established:
+1. **Initialize Request:** The client sends its protocol version and capabilities.
+2. **Initialize Response:** The server responds with its version and capabilities (e.g., whether it supports notifications).
+3. **Initialized Notification:** The client confirms it is ready to proceed.
 
-### Transport Layer
-| Transport | Mechanism | Use Case |
-|---|---|---|
-| **Stdio** | stdin/stdout streams | Local process-to-process, single client |
-| **Streamable HTTP** | HTTP POST + optional SSE | Remote servers, many clients, OAuth auth |
+## Primitives and Operations
 
-## Lifecycle Protocol
-1.  **Initialize:** Client sends `protocolVersion` + capability declarations. Server responds with its capability set.
-2.  **Initialized Notification:** Client signals readiness.
-3.  **Operation:** Standard JSON-RPC request/response/notification exchange.
-4.  **Termination:** Connection closed; server cleans up session state.
+### Tool Discovery and Execution
+* **Discovery:** Clients can list available tools using `tools/list`.
+* **Execution:** Clients invoke tools via `tools/call`. The server executes the logic and returns a result.
+* **Pseudo-code Flow:** Application finds the right session → calls tool → returns result to conversation.
 
-Capability negotiation at initialization is the mechanism by which a client learns whether a server supports `listChanged` notifications, streaming, elicitation, etc. This is analogous to A2A's Agent Card capability flags.
+### Real-time Updates (Notifications)
+MCP supports proactive server-to-client notifications.
+* **`notifications/tools/list_changed`**: Sent by the server when its tool roster changes.
+* **refresh cycle**: Upon receiving a notification, the client typically re-fetches the tool list via `tools/list`.
+* **Benefits**: Enables dynamic environments where tools may appear or disappear based on permissions or state.
 
-## Notification System
-Servers that declare `"listChanged": true` in their capability block can push `notifications/tools/list_changed` (or equivalent for resources/prompts) without a request. Clients re-fetch the list on receipt. This keeps the client's tool registry synchronized with dynamic server state.
+## Strategic Importance
+* **Dynamic Discovery:** Prevents hardcoding tool definitions; the AI application learns capabilities at runtime.
+* **Transport Independence:** The same Data Layer logic works over local pipes or web APIs.
+* **Standardized Context:** Provides a unified way for LLMs to interact with external systems without custom integrations for every tool.
 
-## Participant Model
-```
-MCP Host (AI Application)
-  ├── MCP Client 1 ──── dedicated connection ──── MCP Server A (Local, Stdio)
-  ├── MCP Client 2 ──── dedicated connection ──── MCP Server B (Local, Stdio)
-  └── MCP Client 3 ──── dedicated connection ──── MCP Server C (Remote, HTTP)
-```
-One client per server. The host manages all clients. Each client maintains its own capability negotiation and connection state independently.
-
-## Architectural Themes
-1.  **Narrow Scope:** MCP = agent ↔ tool. It explicitly does not define how AI uses the context it receives.
-2.  **Stateful Sessions:** MCP is stateful (though Streamable HTTP allows a stateless subset). Contrast with A2A which is request-scoped.
-3.  **Dynamic Discovery:** Primitives are listed at runtime, not compiled in. Allows servers to expose capabilities conditionally.
-4.  **Sampling Inversion:** The `sampling` primitive flips the call direction — server calls into the LLM, enabling server-side reasoning without bundling an LLM SDK.
-
-## Connections to Vault
-*   [[mcp-moc]] — full MCP Map of Content
-*   [[a2a-mcp-contrast]] — where MCP ends and A2A begins
-*   [[csharp-mcp-sdk]] — .NET implementation
-*   [[rust-mcp-patterns]] — high-performance server patterns
-*   [[dotnet-mcp-server-patterns]] — server-side implementation guide
-*   [[agentic-protocols]] — MCP in the broader protocol stack
-
-## Next Steps for Synthesis
-*   Map the `Tasks` (experimental) primitive to A2A's task lifecycle — are they converging?
-*   Detail the Streamable HTTP authentication flow (OAuth bearer) and map to A2A's out-of-band credential model.
-*   Write a note on the `Sampling` primitive as an architectural pattern for model-independent server reasoning.
-
-## Related
-- [[mcp-server-features]]
-- [[mcp-transport]]
+## References
+- [[mcp-moc]]
+- [[lit-mcp-architecture]] (prior version)
+- [[agentic-protocols]]

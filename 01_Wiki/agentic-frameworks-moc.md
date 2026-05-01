@@ -44,6 +44,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[graph-orchestration]]: Modelling behavior as deterministic workflows.
 * [[chromadb]]: Open-source embedding database for semantic memory.
 
+* [[community-report-generator]] — Automated synthesis of emergent communities via embedding-link hybrid weighting.
 ## Training & Fine-Tuning
 * [[function-calling]]: Moving from prompted to learned native agency.
 * [[lora]]: Lightweight adaptation for agentic specialized tasks.
@@ -61,6 +62,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[spec-firecrawl-pgvector-pipeline]]: Infrastructure for high-fidelity web scraping.
 * [[firecrawl-api-v2-reference]]: Technical specs for the Firecrawl integration.
 
+* [[synthesis-intelligence-layer]] — Epistemic risk tiers (T0–T5) and arbitration protocols for autonomous synthesis.
 ## Platform & Runtime SDKs
 * [[dotnet-agent-integration]]: **Bridge note** — architectural patterns for .NET in the agent loop.
 * [[dotnet-moc]]: The .NET ecosystem for high-performance agentic backends.
@@ -84,6 +86,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[wiki-as-codebase]]: Treating knowledge as a manageable software project.
 
 ---
+- [[lit-llm-wiki]] — Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
 ## See Also
 * [[core-patterns-moc]]
 * [[programming-languages-moc]]

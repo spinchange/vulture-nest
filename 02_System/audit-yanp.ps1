@@ -86,6 +86,28 @@ try {
             }
 
             if ([string]::IsNullOrWhiteSpace($value)) {
+                # Peek ahead to determine block type: list (- item) or nested mapping (key: val)
+                $peekIdx = $i + 1
+                while ($peekIdx -lt $lines.Count -and [string]::IsNullOrWhiteSpace($lines[$peekIdx])) { $peekIdx++ }
+                $isNestedMapping = $peekIdx -lt $lines.Count -and $lines[$peekIdx] -match '^\s+[A-Za-z0-9_-]+:\s*'
+
+                if ($isNestedMapping) {
+                    # Consume all indented lines as an opaque nested block
+                    $j = $i + 1
+                    $nestedLines = New-Object System.Collections.Generic.List[string]
+                    while ($j -lt $lines.Count) {
+                        $nextLine = $lines[$j]
+                        if ($nextLine.Trim() -eq '---') { break }
+                        if ($nextLine -match '^\s' -or [string]::IsNullOrWhiteSpace($nextLine)) {
+                            $nestedLines.Add($nextLine)
+                            $j++
+                            continue
+                        }
+                        break
+                    }
+                    $frontmatter[$key] = $nestedLines -join "`n"
+                    $i = $j - 1
+                } else {
                 $items = New-Object System.Collections.Generic.List[string]
                 $j = $i + 1
                 while ($j -lt $lines.Count) {
@@ -104,6 +126,7 @@ try {
                 }
                 $frontmatter[$key] = ,@($items)
                 $i = $j - 1
+                }
             } elseif ($value.Trim().StartsWith('[') -and $value.Trim().EndsWith(']')) {
                 $frontmatter[$key] = Convert-InlineList $value
             } else {

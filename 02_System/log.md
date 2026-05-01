@@ -1,6 +1,14 @@
 # Wiki Log
 
 
+## [2026-05-01] Claude — OpenAI Agents SDK Synthesis (Firecrawl Pipeline)
+* **Directive**: Executed [[handoff-firecrawl-openai-agents]] — synthesized Gemini's Firecrawl crawl of the OpenAI Agents SDK docs (15 pages, 168 chunks, all indexed in Supabase pgvector).
+* **Diagnosis**: Found two pipeline bugs blocking synthesis: (1) `filter_domain` parameter not handled by `match_documents` RPC — returns 0 results when passed; (2) `pipeline-policy.yaml` threshold of `0.78` exceeds all actual similarity scores for this corpus (~0.50–0.70). Used explicit `match_threshold=0.5` override to retrieve.
+* **MCP Config**: Created `.mcp.json` in vault root — `vulture-ingest` server now registered for future sessions.
+* **Note Densified**: [[openai-agents-sdk]] — rewrote with provenance block, `Runner` API, agent loop mechanics, Manager vs Peer handoff patterns, `handoff()` customization, guardrail scoping (input/output/tool), dynamic instructions, `RunState` resumability, lifecycle hooks, tracing.
+* **Supabase**: Promoted 14 OpenAI Agents SDK pages from `Indexed` → `Promoted`.
+* **Bugs fixed** (follow-up session): (1) `match_threshold or policy_default` falsiness trap — `0.0` treated as falsy, overriding explicit threshold; fixed to `if not None`; (2) policy `min_similarity_threshold` lowered `0.78 → 0.62` to match corpus ceiling (~0.70 max observed). `filter_domain` was correctly implemented — prior misdiagnosis corrected.
+
 ## [2026-04-30] Claude — Synthesis Intelligence Layer Implementation
 * **Directive**: Executed [[claude-orchestrator-synthesis-handoff-2026-04-29]] — built the "Mind" of the [[spec-agentic-source-orchestrator]].
 * **Epistemic Risk Classifier**: `02_System/vulture-ingest/epistemic_classifier.py` — T0–T5 classification logic; `classify_claim()` and `classify_draft()` functions. Reads policy thresholds at runtime.
@@ -614,3 +622,70 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Batch Repair**: Repaired 54 notes containing broken wikilinks for [[powershell]], [[typescript]], [[system-index]], and [[log]].
 * **Ingestion**: Ingested `00_Raw/LLM Wiki.md` into [[lit-llm-wiki]].
 * **Status**: Vault health restoration complete.
+
+
+## [2026-05-01] gemini-cli — MOC Update: lit-llm-wiki
+* **Action**: Linked [[lit-llm-wiki]] into central Maps of Content.
+* **MOCs Updated**:
+    * [[core-patterns-moc]] (Wiki Architecture)
+    * [[agentic-frameworks-moc]] (Development & Operations)
+    * [[pkm-methods-moc]] (The Zettelkasten Method)
+* **Status**: Discovery paths established.
+
+## [2026-05-01] gemini-cli — MOC Update: Orchestrator & Verbalized Sampling
+* **Action**: Integrated orchestrator intelligence and verbalized sampling notes into MOCs.
+* **MOCs Updated**:
+    * [[core-patterns-moc]] (Wiki Architecture)
+    * [[agentic-frameworks-moc]] (Protocols & Infrastructure, Advanced Patterns)
+    * [[experiments-moc]] (Research and Evaluation)
+* **Notes Wired**: [[synthesis-intelligence-layer]], [[community-report-generator]], [[verbalized-sampling]], [[mode-anchored-departure]], [[lit-verbalized-sampling-paper]].
+* **Status**: Navigation paths established.
+
+## [2026-05-01] gemini-cli — Firecrawl Pipeline: MCP Architecture
+* **Action**: Ingested `https://modelcontextprotocol.io/docs/concepts/architecture` via Firecrawl pipeline.
+* **Pipeline Results**:
+    * **Proposal**: Approved for rationale "Ingesting core MCP architecture documentation".
+    * **Map**: Identified target domain `modelcontextprotocol.io`.
+    * **Execution**: Used Scrape fallback to acquire high-fidelity markdown.
+    * **Indexing**: Generated and stored 10 semantic chunks in Supabase.
+    * **Verification**: Passed (0 findings).
+* **Synthesis**: Updated [[lit-mcp-architecture]] with fresh official documentation and multi-agent provenance.
+* **Status**: MCP grounding densified.
+
+## [2026-05-01] gemini-cli — Firecrawl Pipeline: LangGraph Concepts
+* **Action**: Ingested `https://langchain-ai.github.io/langgraph/concepts/` via Firecrawl pipeline.
+* **Pipeline Results**:
+    * **Map**: Identified target domain `langchain-ai.github.io`.
+    * **Execution**: Used Scrape fallback to acquire official concept markdown.
+    * **Indexing**: Generated and stored 5 semantic chunks in Supabase.
+    * **Verification**: Passed.
+* **Synthesis**: 
+    * Created [[lit-langgraph]] (Literature: LangGraph Concepts).
+    * Densified [[langgraph]] with durable execution and industrial orchestration features.
+* **Status**: Multi-agent orchestration grounding enhanced.
+
+## [2026-05-01] gemini-cli — Firecrawl Pipeline: OpenAI Agents SDK
+* **Action**: Ingested `https://openai.github.io/openai-agents-python/` via Firecrawl pipeline.
+* **Pipeline Results**:
+    * **Proposal**: Approved for rationale "Ingesting OpenAI Agents SDK documentation for multi-agent pattern research."
+    * **Map**: Identified 15 target URLs.
+    * **Execution**: Successfully crawled 15 pages.
+    * **Indexing**: Stored 15 pages and their semantic chunks in Supabase (pgvector).
+    * **Verification**: Passed with 0 findings.
+* **Synthesis**:
+    * Created [[lit-openai-agents-sdk]] (Literature: OpenAI Agents SDK).
+    * Updated [[openai-agents-sdk]] to incorporate production-grade patterns and handoff mechanisms.
+* **Status**: Multi-agent research grounding expanded to include official OpenAI production SDK.
+
+
+## [2026-05-01] gemini-cli — Ingestion: Software Engineering Frameworks
+* **Action**: Ingested two new markdown documents from `00_Raw`.
+* **Sources**: `project-definition-worksheet.md` and `software-design-checklist.md`.
+* **Notes Created**:
+    * [[lit-project-definition-worksheet]]
+    * [[project-definition-framework]]
+    * [[lit-software-design-checklist]]
+    * [[software-design-principles]]
+* **Index Updated**: Created **Software Methodology** section in [[system-index]].
+* **MOC Updated**: Added **Software Engineering & Methodology** section to [[core-patterns-moc]].
+* **Status**: Engineering foundation for new project intake established.

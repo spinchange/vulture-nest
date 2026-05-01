@@ -19,6 +19,9 @@ This map gathers practical build-and-learn threads where the vault is used as a 
 - [[verbalized-sampling-ps-scripts]]: Five candidate [[powershell|PowerShell]] scripts for recovering tail-distribution knowledge from an aligned LLM using verbalized sampling.
 
 ---
+- [[verbalized-sampling]] — The core methodology for recovering "long-tail" knowledge from aligned LLMs.
+- [[mode-anchored-departure]] — The "Approach B" mechanism for enumerating non-obvious departures from a modal anchor.
+- [[lit-verbalized-sampling-paper]] — Literature summary of 2510.01171v3 on typicality bias and diversity tuning.
 ## See Also
 - [[core-patterns-moc]]
 - [[powershell-moc]]

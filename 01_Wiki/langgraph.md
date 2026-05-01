@@ -16,14 +16,15 @@ LangGraph represents an application as a directed graph:
 *   **Edges:** Transitions between nodes.
 *   **State:** A user-defined object that flows through the graph, serving as the "shared memory" for all nodes.
 
-## Control vs. Freedom
-LangGraph is ideal for production systems where predictable behavior is mandatory.
-*   **Freedom:** Agents like `smolagents` can call tools in any order.
-*   **Control:** LangGraph enforces specific paths, loops, and branching logic.
+## Production Primitives
+Unlike pure autonomous loops, LangGraph provides "industrial" orchestration features:
+*   **Durable Execution:** Built-in persistence layers (checkpointers) ensure that the agent can survive process crashes and resume long-running tasks.
+*   **Human-in-the-loop:** First-class support for **interrupts**, allowing humans to inspect or modify the state before the graph continues execution.
+*   **Time Travel:** The capability to re-run specific branches of a graph or "rewind" to a previous state for debugging or strategy adjustment.
 
-## Key Mechanisms
-*   **Conditional Edges:** Routing logic that determines the next node based on the current `State`.
-*   **Human-in-the-loop:** Built-in support for pausing execution to wait for user approval or input.
+## Literature Analysis
+For a deep dive into the official concepts and lineage (Pregel, Apache Beam), see:
+*   [[lit-langgraph]] — Literature summary of the official LangGraph concepts.
 
 ## See Also
 * [[graph-orchestration]]

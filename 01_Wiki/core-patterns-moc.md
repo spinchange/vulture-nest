@@ -27,11 +27,20 @@ The vault is treated as a living codebase rather than a static document.
 * [[wiki-pattern-architecture]], [[wiki-pattern-operations]], [[wiki-pattern-tooling]]: The tactical implementation of the LLM-Wiki pattern.
 * [[memory-spectrum]]: Balancing flat-text, relational, and semantic storage.
 
+- [[lit-llm-wiki]] — Canonical literature source for the LLM Wiki pattern and Vulture Nest architecture.
+* [[synthesis-intelligence-layer]] — The epistemic gating system (Epistemic Classifier, Conflict Resolution, Provenance) for the Master Orchestrator.
+* [[community-report-generator]] — The hierarchical graph synthesis algorithm (k-means + Leiden) for generating emergent knowledge clusters.
 ## Agent System Standards
 Shared standards for multi-agent collaboration and memory.
 * [[agent-knowledge-vault]]: A model-agnostic knowledge base for humans and agents.
 * [[agent-skills-index]]: A directory of specialized agent capabilities.
 * [[agent-configuration-sync-strategy]]: Cross-machine state synchronization.
+
+## Software Engineering & Methodology
+* [[software-design-principles]]: Heuristics for proportional and durable systems.
+* [[project-definition-framework]]: Structured intake for project initialization.
+* [[agentic-tdd-patterns]]: Executable intent for agent-led builds.
+* [[lit-software-design-checklist]], [[lit-project-definition-worksheet]]: Foundational literature.
 
 ## Design Aesthetic
 * [[plain-plus-design]]: Minimalist, text-first UI.

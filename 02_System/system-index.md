@@ -29,6 +29,11 @@
 - [[hierarchical-graph-synthesis]] - Spec for automated vault synthesis.
 - [[the-compounding-artifact]] - The core philosophy of the Vulture Nest.
 
+## 🏗️ Software Methodology
+- [[project-definition-framework]] - Structured methodology for project initiation.
+- [[software-design-principles]] - Heuristic-based rules for durable system design.
+- [[agentic-tdd-patterns]] - Executable intent protocol for agent-led builds.
+
 ## 🛠️ System & Infrastructure
 - [[core-patterns-moc]] - Reusable architectural patterns.
 - [[agent-note-conventions]] - YANP standards for agent-authored content.
@@ -68,6 +73,9 @@
 
 - [[lit-llm-wiki]]: Foundational LLM Wiki / Vulture Nest pattern.
 - [[lit-verbalized-sampling-paper]]: Verbalized Sampling for mitigating mode collapse.
+- [[lit-openai-agents-sdk]]: Official documentation for the OpenAI Agents SDK.
+- [[lit-project-definition-worksheet]]: Build intake template and diagnostic tool.
+- [[lit-software-design-checklist]]: Procedural guide for project initialization.
 
 
 ## Blueprint Specs
