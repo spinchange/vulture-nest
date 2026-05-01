@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Spec: Agentic Source Orchestrator v2</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Agentic Source Orchestrator v2</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">derived_from</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Agentic Source Orchestrator v2</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -486,6 +486,8 @@
 <li><strong>Thresholds</strong>: Mandatory human approval for new domains or costs &gt; 20 credits.
 </li>
 </ul>
+<h3>4.1 Transport Security &amp; Authorization</h3>
+<p>Tools exposed via HTTP transport MUST be protected per <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a>; the <code>propose_source_intake</code> and <code>promote_synthesis_candidate</code> gates are highest-privilege and SHOULD require scope validation before execution.</p>
 <h2>5. Handoff &amp; Seams</h2>
 <p>Every orchestration step must produce a <strong>Seam Artifact</strong> containing the current state, open risks, and next recommended action. This ensures continuity across agent sessions.</p>
 <hr>
@@ -512,11 +514,15 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="claude-mcp-authorization-handoff-2026-05-01.html" class="">claude-mcp-authorization-handoff-2026-05-01</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="spec-agentic-source-orchestrator-v3.html" class="">spec-agentic-source-orchestrator-v3</a></li>
 <li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
 <li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
 <li><a href="spec-agentic-source-orchestrator-v3.html" class="">spec-agentic-source-orchestrator-v3</a></li>

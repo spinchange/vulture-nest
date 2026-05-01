@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Capability Lattice — Formal Specification</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Capability Lattice — Formal Specification</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -1016,6 +1016,12 @@ impl&lt;T: ToolCap + NoGuardrailRequired&gt; From&lt;UncheckedInvocation&lt;T&gt
     AND GuardrailToken&lt;tool&gt; exists     ← &#167;8 callback guardrail
     AND state → tool is valid           ← &#167;7 session type</code></pre>
 <hr>
+<h2>9. Protocol Instantiations</h2>
+<ul>
+<li><a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> — OAuth <code>aud</code> + <code>scope</code> as the runtime lattice gate for HTTP-transported MCP servers
+</li>
+</ul>
+<hr>
 <h2>References</h2>
 <ul>
 <li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
@@ -1085,6 +1091,7 @@ impl&lt;T: ToolCap + NoGuardrailRequired&gt; From&lt;UncheckedInvocation&lt;T&gt
 <li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
+<li><a href="claude-mcp-authorization-handoff-2026-05-01.html" class="">claude-mcp-authorization-handoff-2026-05-01</a></li>
 <li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
 <li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
@@ -1092,6 +1099,7 @@ impl&lt;T: ToolCap + NoGuardrailRequired&gt; From&lt;UncheckedInvocation&lt;T&gt
 <li><a href="community-report-generator.html" class="">community-report-generator</a></li>
 <li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
 <li><a href="lattice-implementation-guide.html" class="">lattice-implementation-guide</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
 <li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
@@ -1115,6 +1123,7 @@ impl&lt;T: ToolCap + NoGuardrailRequired&gt; From&lt;UncheckedInvocation&lt;T&gt
 <li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="dotnet-dependency-injection.html" class="">dotnet-dependency-injection</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
