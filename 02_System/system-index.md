@@ -27,6 +27,8 @@
 - [[pkm-history-moc]] - Philosophical and historical roots of PKM.
 - [[zettelkasten]] - Foundational atomic note-taking methodology.
 - [[lit-yaml-spec]] - YAML 1.2.2 specification for vault metadata.
+- [[spec-agentic-source-orchestrator-v2]] - Ingestion pipeline hardening and lifecycle control.
+- [[spec-agentic-source-orchestrator-v3]] - Synthesis intelligence and epistemic risk model.
 - [[hierarchical-graph-synthesis]] - Spec for automated vault synthesis.
 - [[the-compounding-artifact]] - The core philosophy of the Vulture Nest.
 
