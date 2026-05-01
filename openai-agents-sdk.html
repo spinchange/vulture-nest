@@ -429,12 +429,17 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">OpenAI Agents SDK</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">retrieved_at</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">provenance</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">acting_agent</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">chunk_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Agents SDK</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source_page_ids</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -444,50 +449,107 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>OpenAI Agents SDK</h1>
-<p>The <strong>OpenAI Agents SDK</strong> is the production-grade framework for building, running, and scaling AI agents. Unlike the experimental <a href="openai-swarm.html" class="wikilink">openai-swarm</a>, the Agents SDK is designed for applications where the developer owns the orchestration, tool execution, and state management.</p>
-<h2>Core Capabilities</h2>
-<h3>1. Agent Definitions</h3>
-<p>Agents are defined as specialists with specific contracts (instructions, models, and tools).</p>
+<p>The <strong>OpenAI Agents SDK</strong> is the production-grade Python framework for building, running, and scaling AI agents. It supersedes the experimental <a href="openai-swarm.html" class="wikilink">openai-swarm</a> with a focus on durability, safety, and multi-agent orchestration. The developer retains explicit ownership of orchestration, tool execution, and state management.</p>
+<h2>Running Agents</h2>
+<p>The <code>Runner</code> class is the primary entry point for agent execution. Three run modes are available:</p>
 <ul>
-<li><strong>Specialization:</strong> Focus on defining clear contracts for single &quot;specialist&quot; agents.
+<li><strong><code>Runner.run()</code></strong> — async, returns a <code>RunResult</code>
 </li>
-<li><strong>Providers:</strong> Support for various model providers and configurations.
+<li><strong><code>Runner.run_sync()</code></strong> — synchronous wrapper
+</li>
+<li><strong><code>Runner.run_streamed()</code></strong> — returns a <code>RunResultStreaming</code> for incremental output
 </li>
 </ul>
-<h3>2. Orchestration &amp; Handoffs</h3>
-<p>Supports multi-agent collaboration where one agent can &quot;handoff&quot; to another better suited for a sub-task.</p>
-<ul>
-<li><strong>Control:</strong> The application (server) owns the orchestration logic and determines who owns the reply at any given time.
+<p>Input can be a plain string (treated as a user message), a list of OpenAI Responses API items, or a <code>RunState</code> object to resume an interrupted run.</p>
+<h3>The Agent Loop</h3>
+<p>When <code>Runner.run()</code> is called, it executes a loop:</p>
+<ol>
+<li>Call the current agent&#39;s LLM with the accumulated conversation
 </li>
-<li><strong>Patterns:</strong> Parallel execution, hierarchical teams, and dynamic routing.
+<li>Execute any tool calls returned by the LLM
+</li>
+<li>If a handoff tool is invoked, switch the active agent
+</li>
+<li>Repeat until the LLM returns a final output (no more tool calls)
+</li>
+</ol>
+<h2>Agent Definition</h2>
+<p>An <code>Agent</code> is defined with:</p>
+<ul>
+<li><strong><code>instructions</code></strong> — system prompt, either a static string or a dynamic function <code>(RunContextWrapper, Agent) -&gt; str</code> that allows per-request context injection
+</li>
+<li><strong><code>tools</code></strong> — list of callable functions the LLM can invoke
+</li>
+<li><strong><code>handoffs</code></strong> — list of <code>Agent</code> instances or <code>Handoff</code> objects the agent can delegate to
+</li>
+<li><strong><code>model</code></strong> — the underlying LLM; supports multiple providers
 </li>
 </ul>
-<h3>3. State &amp; Results</h3>
-<p>Provides structured ways to handle the output of an agent run and manage resumable state.</p>
+<p>Dynamic instructions pattern:</p>
+<pre><code>def dynamic_instructions(context: RunContextWrapper[UserContext], agent: Agent) -&gt; str:
+    return f&quot;The user&#39;s name is {context.context.name}.&quot;</code></pre>
+<h2>Handoffs</h2>
+<p>Handoffs allow an agent to delegate the conversation to a specialist sub-agent. When a handoff is invoked, the delegated agent receives the full conversation history and becomes the active agent. Handoffs are represented as tools on the agent — the LLM invokes a handoff exactly as it invokes any other tool.</p>
+<h3>Two Multi-Agent Patterns</h3>
+<p><strong>Manager (agents as tools):</strong> A central orchestrator invokes specialist agents as tools and retains control of the conversation at all times. The manager synthesizes results.</p>
+<p><strong>Peer handoffs:</strong> Agents pass control laterally to a specialist that takes over the reply. The new agent drives the conversation until it completes or hands off again.</p>
+<h3>Customizing Handoffs</h3>
+<p>The <code>handoff()</code> function provides fine-grained control:</p>
 <ul>
-<li><strong>Run Objects:</strong> Comprehensive return objects containing final outputs and trace data.
+<li><code>agent</code> — target agent
 </li>
-<li><strong>Resumable State:</strong> Strategies for continuing work across multiple turns or sessions.
+<li><code>tool_name_override</code> — custom tool name (default: <code>transfer_to_&lt;agent_name&gt;</code>)
+</li>
+<li><code>on_handoff</code> — callback invoked when the handoff fires
 </li>
 </ul>
-<h3>4. Guardrails &amp; Approvals</h3>
-<p>Built-in support for safety validation and human-in-the-loop (HITL) patterns.</p>
+<p>Prompt discipline matters: include the <code>RECOMMENDED_PROMPT_PREFIX</code> from <code>agents.extensions.handoff_prompt</code> to ensure the LLM understands handoff semantics.</p>
+<h2>Guardrails</h2>
+<p>Guardrails attach to agents and run validations at defined workflow boundaries:</p>
+<table>
+<thead><tr>
+<th>Type</th>
+<th>When it runs</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Input guardrails</strong></td>
+<td>First agent in the chain only</td>
+</tr>
+<tr>
+<td><strong>Output guardrails</strong></td>
+<td>Final agent producing the terminal output</td>
+</tr>
+<tr>
+<td><strong>Tool guardrails</strong></td>
+<td>Every invocation of a custom function-tool</td>
+</tr>
+</tbody>
+</table>
+<p>Input guardrails run in three steps: receive the same input as the agent → execute the guardrail function → return a <code>GuardrailFunctionOutput</code>. A <code>tripwire</code> flag signals immediate abort. This design lets you use a cheap/fast model as a safety filter before the expensive primary model runs.</p>
+<h2>Lifecycle Hooks</h2>
+<p>Two hook scopes give observability into agent execution:</p>
 <ul>
-<li><strong>Approvals:</strong> Mechanisms to pause or block work before risky actions are taken.
+<li><strong><code>RunHooks</code></strong> — module-level, fires for any agent in the run
 </li>
-<li><strong>Validation:</strong> Ensuring agent outputs or tool arguments meet safety criteria.
+<li><strong><code>AgentHooks</code></strong> — agent-level, fires only for that specific agent
 </li>
 </ul>
-<h2>Tooling &amp; Integrations</h2>
-<h3><a href="mcp-moc.html" class="wikilink">MCP</a> (Model Context Protocol)</h3>
-<p>The Agents SDK natively supports <strong><a href="mcp-architecture.html" class="wikilink">MCP</a></strong> for integrating external tools and data sources. This allows agents to interact with a wide ecosystem of pre-built MCP servers.</p>
-<h3>Sandbox Agents</h3>
-<p>Agents can be run in container-based environments with access to files, commands, and packages—ideal for code execution or file manipulation tasks.</p>
+<p>Hooks support pre/post-tool, pre/post-handoff, and agent-start/end events. Primary use cases: logging, pre-fetching, usage recording.</p>
+<h2>MCP Integration</h2>
+<p>The SDK provides native support for the <a href="mcp-architecture.html" class="wikilink">Model Context Protocol</a>. MCP standardizes how applications expose tools and context to LLMs — &quot;MCP is like USB-C for AI.&quot; Agents connect to <code>MCPServer</code> instances to access any MCP-compliant tool or resource, enabling a wide ecosystem of pre-built integrations. See <a href="mcp-moc.html" class="wikilink">mcp-moc</a>.</p>
+<h2>Tracing</h2>
+<p>Built-in tracing records agent runs as structured traces. Multiple <code>Runner.run()</code> calls can be grouped into a single trace using the <code>trace()</code> context manager:</p>
+<pre><code>with trace(&quot;Workflow name&quot;):
+    result1 = await Runner.run(agent, &quot;...&quot;)
+    result2 = await Runner.run(agent, &quot;...&quot;)</code></pre>
+<p>Traces are visualizable for debugging agentic flows.</p>
+<h2>Resumable State</h2>
+<p>Interrupted runs (e.g., human-in-the-loop pauses) are resumed by passing a <code>RunState</code> object back to <code>Runner.run()</code>. This preserves the full conversation and tool-execution history across the interruption boundary.</p>
 <h2>Comparison: Swarm vs. Agents SDK</h2>
 <table>
 <thead><tr>
 <th>Feature</th>
-<th>[[openai-swarm</th>
+<th>[[openai-swarm\</th>
 <th>Swarm]]</th>
 <th>Agents SDK</th>
 </tr></thead><tbody>
@@ -498,23 +560,33 @@
 </tr>
 <tr>
 <td><strong>State</strong></td>
-<td>Stateless (Caller manages)</td>
-<td>Resumable / Managed</td>
+<td>Stateless (caller manages)</td>
+<td>Resumable via <code>RunState</code></td>
 </tr>
 <tr>
 <td><strong>Orchestration</strong></td>
-<td>Lightweight (Function-based)</td>
-<td>Comprehensive / Tool-based</td>
+<td>Lightweight function-based</td>
+<td><code>Runner</code> loop + typed hooks</td>
 </tr>
 <tr>
-<td><strong>Security</strong></td>
+<td><strong>Safety</strong></td>
 <td>Minimal</td>
-<td>Guardrails / Sandbox / Approvals</td>
+<td>Input/output/tool guardrails</td>
+</tr>
+<tr>
+<td><strong>Observability</strong></td>
+<td>None</td>
+<td>Built-in tracing</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>No</td>
+<td>Native</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p>*Source: <a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a>*</p>
+<p>*Source: <a href="lit-openai-agents-sdk.html" class="wikilink">lit-openai-agents-sdk</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -529,16 +601,18 @@
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
 <li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="openai-swarm%5C.html" class="">openai-swarm\</a></li>
 </ul>
           </div>
         </div>

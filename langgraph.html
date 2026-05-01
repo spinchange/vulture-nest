@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">LangGraph</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">langgraph-framework, graph-orchestration, production-agents</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">LangGraph</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">langgraph-framework, graph-orchestration, production-agents</span></span>
       </div>
     </header>
 
@@ -455,19 +455,20 @@
 <li><strong>State:</strong> A user-defined object that flows through the graph, serving as the &quot;shared memory&quot; for all nodes.
 </li>
 </ul>
-<h2>Control vs. Freedom</h2>
-<p>LangGraph is ideal for production systems where predictable behavior is mandatory.</p>
+<h2>Production Primitives</h2>
+<p>Unlike pure autonomous loops, LangGraph provides &quot;industrial&quot; orchestration features:</p>
 <ul>
-<li><strong>Freedom:</strong> Agents like <code>smolagents</code> can call tools in any order.
+<li><strong>Durable Execution:</strong> Built-in persistence layers (checkpointers) ensure that the agent can survive process crashes and resume long-running tasks.
 </li>
-<li><strong>Control:</strong> LangGraph enforces specific paths, loops, and branching logic.
+<li><strong>Human-in-the-loop:</strong> First-class support for <strong>interrupts</strong>, allowing humans to inspect or modify the state before the graph continues execution.
+</li>
+<li><strong>Time Travel:</strong> The capability to re-run specific branches of a graph or &quot;rewind&quot; to a previous state for debugging or strategy adjustment.
 </li>
 </ul>
-<h2>Key Mechanisms</h2>
+<h2>Literature Analysis</h2>
+<p>For a deep dive into the official concepts and lineage (Pregel, Apache Beam), see:</p>
 <ul>
-<li><strong>Conditional Edges:</strong> Routing logic that determines the next node based on the current <code>State</code>.
-</li>
-<li><strong>Human-in-the-loop:</strong> Built-in support for pausing execution to wait for user approval or input.
+<li><a href="lit-langgraph.html" class="wikilink">lit-langgraph</a> — Literature summary of the official LangGraph concepts.
 </li>
 </ul>
 <h2>See Also</h2>
@@ -495,12 +496,15 @@
 <li><a href="cognitive-architectures.html" class="">cognitive-architectures</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="python.html" class="">python</a></li>
 </ul>
           </div>

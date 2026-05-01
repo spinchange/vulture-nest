@@ -439,6 +439,21 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-01] Claude — OpenAI Agents SDK Synthesis (Firecrawl Pipeline)</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="handoff-firecrawl-openai-agents.html" class="wikilink">handoff-firecrawl-openai-agents</a> — synthesized Gemini&#39;s Firecrawl crawl of the OpenAI Agents SDK docs (15 pages, 168 chunks, all indexed in Supabase pgvector).
+</li>
+<li><strong>Diagnosis</strong>: Found two pipeline bugs blocking synthesis: (1) <code>filter_domain</code> parameter not handled by <code>match_documents</code> RPC — returns 0 results when passed; (2) <code>pipeline-policy.yaml</code> threshold of <code>0.78</code> exceeds all actual similarity scores for this corpus (~0.50–0.70). Used explicit <code>match_threshold=0.5</code> override to retrieve.
+</li>
+<li><strong>MCP Config</strong>: Created <code>.mcp.json</code> in vault root — <code>vulture-ingest</code> server now registered for future sessions.
+</li>
+<li><strong>Note Densified</strong>: <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> — rewrote with provenance block, <code>Runner</code> API, agent loop mechanics, Manager vs Peer handoff patterns, <code>handoff()</code> customization, guardrail scoping (input/output/tool), dynamic instructions, <code>RunState</code> resumability, lifecycle hooks, tracing.
+</li>
+<li><strong>Supabase</strong>: Promoted 14 OpenAI Agents SDK pages from <code>Indexed</code> → <code>Promoted</code>.
+</li>
+<li><strong>Bugs fixed</strong> (follow-up session): (1) <code>match_threshold or policy_default</code> falsiness trap — <code>0.0</code> treated as falsy, overriding explicit threshold; fixed to <code>if not None</code>; (2) policy <code>min_similarity_threshold</code> lowered <code>0.78 → 0.62</code> to match corpus ceiling (~0.70 max observed). <code>filter_domain</code> was correctly implemented — prior misdiagnosis corrected.
+</li>
+</ul>
 <h2>[2026-04-30] Claude — Synthesis Intelligence Layer Implementation</h2>
 <ul>
 <li><strong>Directive</strong>: Executed <a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> — built the &quot;Mind&quot; of the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>.
@@ -1500,6 +1515,178 @@
 <li><strong>Status</strong>: Vault health restoration complete.
 </li>
 </ul>
+<h2>[2026-05-01] gemini-cli — MOC Update: lit-llm-wiki</h2>
+<ul>
+<li><strong>Action</strong>: Linked <a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a> into central Maps of Content.
+</li>
+<li><strong>MOCs Updated</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> (Wiki Architecture)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> (Development &amp; Operations)
+</li>
+<li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> (The Zettelkasten Method)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Discovery paths established.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — MOC Update: Orchestrator &amp; Verbalized Sampling</h2>
+<ul>
+<li><strong>Action</strong>: Integrated orchestrator intelligence and verbalized sampling notes into MOCs.
+</li>
+<li><strong>MOCs Updated</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> (Wiki Architecture)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> (Protocols &amp; Infrastructure, Advanced Patterns)
+</li>
+<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> (Research and Evaluation)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Notes Wired</strong>: <a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a>, <a href="community-report-generator.html" class="wikilink">community-report-generator</a>, <a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a>, <a href="mode-anchored-departure.html" class="wikilink">mode-anchored-departure</a>, <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a>.
+</li>
+<li><strong>Status</strong>: Navigation paths established.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: MCP Architecture</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://modelcontextprotocol.io/docs/concepts/architecture</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Proposal</strong>: Approved for rationale &quot;Ingesting core MCP architecture documentation&quot;.
+</li>
+<li><strong>Map</strong>: Identified target domain <code>modelcontextprotocol.io</code>.
+</li>
+<li><strong>Execution</strong>: Used Scrape fallback to acquire high-fidelity markdown.
+</li>
+<li><strong>Indexing</strong>: Generated and stored 10 semantic chunks in Supabase.
+</li>
+<li><strong>Verification</strong>: Passed (0 findings).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>: Updated <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> with fresh official documentation and multi-agent provenance.
+</li>
+<li><strong>Status</strong>: MCP grounding densified.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: LangGraph Concepts</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://langchain-ai.github.io/langgraph/concepts/</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Map</strong>: Identified target domain <code>langchain-ai.github.io</code>.
+</li>
+<li><strong>Execution</strong>: Used Scrape fallback to acquire official concept markdown.
+</li>
+<li><strong>Indexing</strong>: Generated and stored 5 semantic chunks in Supabase.
+</li>
+<li><strong>Verification</strong>: Passed.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>:
+<ul>
+<li>
+<ul>
+<li>Created <a href="lit-langgraph.html" class="wikilink">lit-langgraph</a> (Literature: LangGraph Concepts).
+</li>
+<li>Densified <a href="langgraph.html" class="wikilink">langgraph</a> with durable execution and industrial orchestration features.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Multi-agent orchestration grounding enhanced.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: OpenAI Agents SDK</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://openai.github.io/openai-agents-python/</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Proposal</strong>: Approved for rationale &quot;Ingesting OpenAI Agents SDK documentation for multi-agent pattern research.&quot;
+</li>
+<li><strong>Map</strong>: Identified 15 target URLs.
+</li>
+<li><strong>Execution</strong>: Successfully crawled 15 pages.
+</li>
+<li><strong>Indexing</strong>: Stored 15 pages and their semantic chunks in Supabase (pgvector).
+</li>
+<li><strong>Verification</strong>: Passed with 0 findings.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>:
+<ul>
+<li>
+<ul>
+<li>Created <a href="lit-openai-agents-sdk.html" class="wikilink">lit-openai-agents-sdk</a> (Literature: OpenAI Agents SDK).
+</li>
+<li>Updated <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> to incorporate production-grade patterns and handoff mechanisms.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Multi-agent research grounding expanded to include official OpenAI production SDK.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Ingestion: Software Engineering Frameworks</h2>
+<ul>
+<li><strong>Action</strong>: Ingested two new markdown documents from <code>00_Raw</code>.
+</li>
+<li><strong>Sources</strong>: <code>project-definition-worksheet.md</code> and <code>software-design-checklist.md</code>.
+</li>
+<li><strong>Notes Created</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="lit-project-definition-worksheet.html" class="wikilink">lit-project-definition-worksheet</a>
+</li>
+<li><a href="project-definition-framework.html" class="wikilink">project-definition-framework</a>
+</li>
+<li><a href="lit-software-design-checklist.html" class="wikilink">lit-software-design-checklist</a>
+</li>
+<li><a href="software-design-principles.html" class="wikilink">software-design-principles</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Index Updated</strong>: Created <strong>Software Methodology</strong> section in <a href="system-index.html" class="wikilink">system-index</a>.
+</li>
+<li><strong>MOC Updated</strong>: Added <strong>Software Engineering &amp; Methodology</strong> section to <a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a>.
+</li>
+<li><strong>Status</strong>: Engineering foundation for new project intake established.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -1590,6 +1777,7 @@
 <li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
 <li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
 <li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
+<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
 <li><a href="firecrawl-api-v2-reference.html" class="">firecrawl-api-v2-reference</a></li>
 <li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
 <li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
@@ -1603,6 +1791,7 @@
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="gtd.html" class="">gtd</a></li>
+<li><a href="handoff-firecrawl-openai-agents.html" class="">handoff-firecrawl-openai-agents</a></li>
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
@@ -1611,13 +1800,18 @@
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
 <li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
+<li><a href="langgraph.html" class="">langgraph</a></li>
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
 <li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-project-definition-worksheet.html" class="">lit-project-definition-worksheet</a></li>
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
+<li><a href="lit-software-design-checklist.html" class="">lit-software-design-checklist</a></li>
 <li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
 <li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
@@ -1642,6 +1836,7 @@
 <li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
 <li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
+<li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
 <li><a href="ms-learn-aspnet-core-overview.html" class="">ms-learn-aspnet-core-overview</a></li>
 <li><a href="ms-learn-csharp-overview.html" class="">ms-learn-csharp-overview</a></li>
 <li><a href="ms-learn-dotnet-fundamentals.html" class="">ms-learn-dotnet-fundamentals</a></li>
@@ -1674,6 +1869,7 @@
 <li><a href="powershell-objects.html" class="">powershell-objects</a></li>
 <li><a href="productivity-roadmap-2026-04-27.html" class="">productivity-roadmap-2026-04-27</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="project-definition-framework.html" class="">project-definition-framework</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="ps-broken-link-checker.html" class="">ps-broken-link-checker</a></li>
 <li><a href="ps-calculated-properties.html" class="">ps-calculated-properties</a></li>
@@ -1702,6 +1898,7 @@
 <li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
+<li><a href="software-design-principles.html" class="">software-design-principles</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
 <li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
 <li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>

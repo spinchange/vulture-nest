@@ -429,12 +429,17 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: MCP Architecture Overview</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">source_record_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">retrieved_at</span><span class="fm-val">2026-05-01T08:56:24Z</span></span>
+<span class="fm-field"><span class="fm-key">provenance</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">chunk_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: MCP Architecture Overview</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">acting_agent</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -446,152 +451,79 @@
         <h1>Literature: MCP Architecture Overview</h1>
 <h2>Source Metadata</h2>
 <ul>
-<li><strong>File:</strong> <code>00_Raw/mcp/Architecture overview.md</code>
+<li><strong>File:</strong> <code>https://modelcontextprotocol.io/docs/concepts/architecture</code>
 </li>
-<li><strong>Origin:</strong> Anthropic Model Context Protocol documentation (<code>modelcontextprotocol.io</code>)
+<li><strong>Origin:</strong> Anthropic Model Context Protocol Documentation
 </li>
-<li><strong>Domain:</strong> protocols / AI tooling
-</li>
-<li><strong>Relevance:</strong> MCP is the primary tool-access protocol in the vault — all MCP server patterns, C# SDK work, and Rust server designs derive from this foundation.
+<li><strong>Relevance:</strong> Canonical definition of the MCP layers, participants, and lifecycle.
 </li>
 </ul>
 <h2>High-Level Summary</h2>
-<p>MCP (Model Context Protocol) defines a <strong>client-server architecture</strong> for providing structured context to AI applications. Its scope is narrow by design: it governs how an agent accesses <strong>tools, resources, and prompts</strong> from servers. It does *not* govern agent-to-agent communication (that is A2A&#39;s domain). The protocol is JSON-RPC 2.0 over two transport layers (Stdio and Streamable HTTP).</p>
-<h2>Two-Layer Architecture</h2>
-<h3>Data Layer (JSON-RPC 2.0)</h3>
-<p>The semantic heart of MCP. Defines message structure, lifecycle, and primitives.</p>
-<h4>Server-Exposed Primitives</h4>
-<table>
-<thead><tr>
-<th>Primitive</th>
-<th>Purpose</th>
-<th>Discovery</th>
-<th>Execution</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Tools</strong></td>
-<td>Executable functions AI can invoke</td>
-<td><code>tools/list</code></td>
-<td><code>tools/call</code></td>
-</tr>
-<tr>
-<td><strong>Resources</strong></td>
-<td>Contextual data sources (files, DB records)</td>
-<td><code>resources/list</code></td>
-<td><code>resources/read</code></td>
-</tr>
-<tr>
-<td><strong>Prompts</strong></td>
-<td>Reusable interaction templates</td>
-<td><code>prompts/list</code></td>
-<td><code>prompts/get</code></td>
-</tr>
-</tbody>
-</table>
-<h4>Client-Exposed Primitives</h4>
-<table>
-<thead><tr>
-<th>Primitive</th>
-<th>Purpose</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Sampling</strong></td>
-<td>Server requests LLM completion from the host; server stays model-independent</td>
-</tr>
-<tr>
-<td><strong>Elicitation</strong></td>
-<td>Server requests additional information from the user</td>
-</tr>
-<tr>
-<td><strong>Logging</strong></td>
-<td>Server sends diagnostic log messages to the client</td>
-</tr>
-</tbody>
-</table>
-<h4>Experimental Primitives</h4>
+<p>The Model Context Protocol (MCP) is a standard for connecting AI applications to data and tools. It defines a clear separation between the <strong>Data Layer</strong> (JSON-RPC 2.0 primitives) and the <strong>Transport Layer</strong> (how messages are moved).</p>
+<h2>Core Concepts</h2>
+<h3>Participants</h3>
 <ul>
-<li><strong>Tasks:</strong> Durable execution wrappers for deferred/long-running MCP requests — a bridge toward A2A-style stateful task tracking within the MCP protocol.
+<li><strong>MCP Host:</strong> The AI application (like Claude Desktop or an IDE) that initiates connections.
+</li>
+<li><strong>MCP Client:</strong> Maintains a 1:1 connection with a server, typically embedded within the Host.
+</li>
+<li><strong>MCP Server:</strong> Provides tools, resources, and prompts to the client.
 </li>
 </ul>
-<h3>Transport Layer</h3>
-<table>
-<thead><tr>
-<th>Transport</th>
-<th>Mechanism</th>
-<th>Use Case</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Stdio</strong></td>
-<td>stdin/stdout streams</td>
-<td>Local process-to-process, single client</td>
-</tr>
-<tr>
-<td><strong>Streamable HTTP</strong></td>
-<td>HTTP POST + optional SSE</td>
-<td>Remote servers, many clients, OAuth auth</td>
-</tr>
-</tbody>
-</table>
-<h2>Lifecycle Protocol</h2>
+<h3>Layers</h3>
+<ul>
+<li><strong>Data Layer:</strong> Defines the semantics of the protocol. It uses JSON-RPC 2.0 to handle tools, resources, prompts, and notifications.
+</li>
+<li><strong>Transport Layer:</strong> Handles the underlying communication. Supported transports include <strong>Stdio</strong> (local) and <strong>HTTP with SSE</strong> (remote).
+</li>
+</ul>
+<h2>Lifecycle Management</h2>
+<h3>The Initialization Exchange</h3>
+<p>A mandatory handshake occurs when a connection is established:</p>
 <ol>
-<li><strong>Initialize:</strong> Client sends <code>protocolVersion</code> + capability declarations. Server responds with its capability set.
+<li><strong>Initialize Request:</strong> The client sends its protocol version and capabilities.
 </li>
-<li><strong>Initialized Notification:</strong> Client signals readiness.
+<li><strong>Initialize Response:</strong> The server responds with its version and capabilities (e.g., whether it supports notifications).
 </li>
-<li><strong>Operation:</strong> Standard JSON-RPC request/response/notification exchange.
-</li>
-<li><strong>Termination:</strong> Connection closed; server cleans up session state.
+<li><strong>Initialized Notification:</strong> The client confirms it is ready to proceed.
 </li>
 </ol>
-<p>Capability negotiation at initialization is the mechanism by which a client learns whether a server supports <code>listChanged</code> notifications, streaming, elicitation, etc. This is analogous to A2A&#39;s Agent Card capability flags.</p>
-<h2>Notification System</h2>
-<p>Servers that declare <code>&quot;listChanged&quot;: true</code> in their capability block can push <code>notifications/tools/list_changed</code> (or equivalent for resources/prompts) without a request. Clients re-fetch the list on receipt. This keeps the client&#39;s tool registry synchronized with dynamic server state.</p>
-<h2>Participant Model</h2>
-<pre><code>MCP Host (AI Application)
-  ├── MCP Client 1 ──── dedicated connection ──── MCP Server A (Local, Stdio)
-  ├── MCP Client 2 ──── dedicated connection ──── MCP Server B (Local, Stdio)
-  └── MCP Client 3 ──── dedicated connection ──── MCP Server C (Remote, HTTP)</code></pre>
-<p>One client per server. The host manages all clients. Each client maintains its own capability negotiation and connection state independently.</p>
-<h2>Architectural Themes</h2>
-<ol>
-<li><strong>Narrow Scope:</strong> MCP = agent ↔ tool. It explicitly does not define how AI uses the context it receives.
-</li>
-<li><strong>Stateful Sessions:</strong> MCP is stateful (though Streamable HTTP allows a stateless subset). Contrast with A2A which is request-scoped.
-</li>
-<li><strong>Dynamic Discovery:</strong> Primitives are listed at runtime, not compiled in. Allows servers to expose capabilities conditionally.
-</li>
-<li><strong>Sampling Inversion:</strong> The <code>sampling</code> primitive flips the call direction — server calls into the LLM, enabling server-side reasoning without bundling an LLM SDK.
-</li>
-</ol>
-<h2>Connections to Vault</h2>
+<h2>Primitives and Operations</h2>
+<h3>Tool Discovery and Execution</h3>
 <ul>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a> — full MCP Map of Content
+<li><strong>Discovery:</strong> Clients can list available tools using <code>tools/list</code>.
 </li>
-<li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a> — where MCP ends and A2A begins
+<li><strong>Execution:</strong> Clients invoke tools via <code>tools/call</code>. The server executes the logic and returns a result.
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> — .NET implementation
-</li>
-<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> — high-performance server patterns
-</li>
-<li><a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> — server-side implementation guide
-</li>
-<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a> — MCP in the broader protocol stack
+<li><strong>Pseudo-code Flow:</strong> Application finds the right session → calls tool → returns result to conversation.
 </li>
 </ul>
-<h2>Next Steps for Synthesis</h2>
+<h3>Real-time Updates (Notifications)</h3>
+<p>MCP supports proactive server-to-client notifications.</p>
 <ul>
-<li>Map the <code>Tasks</code> (experimental) primitive to A2A&#39;s task lifecycle — are they converging?
+<li><strong><code>notifications/tools/list_changed</code></strong>: Sent by the server when its tool roster changes.
 </li>
-<li>Detail the Streamable HTTP authentication flow (OAuth bearer) and map to A2A&#39;s out-of-band credential model.
+<li><strong>refresh cycle</strong>: Upon receiving a notification, the client typically re-fetches the tool list via <code>tools/list</code>.
 </li>
-<li>Write a note on the <code>Sampling</code> primitive as an architectural pattern for model-independent server reasoning.
+<li><strong>Benefits</strong>: Enables dynamic environments where tools may appear or disappear based on permissions or state.
 </li>
 </ul>
-<h2>Related</h2>
+<h2>Strategic Importance</h2>
 <ul>
-<li><a href="mcp-server-features.html" class="wikilink">mcp-server-features</a>
+<li><strong>Dynamic Discovery:</strong> Prevents hardcoding tool definitions; the AI application learns capabilities at runtime.
 </li>
-<li><a href="mcp-transport.html" class="wikilink">mcp-transport</a>
+<li><strong>Transport Independence:</strong> The same Data Layer logic works over local pipes or web APIs.
+</li>
+<li><strong>Standardized Context:</strong> Provides a unified way for LLMs to interact with external systems without custom integrations for every tool.
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+</li>
+<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> (prior version)
+</li>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
 </ul>
       </main>
@@ -608,6 +540,8 @@
 <ul>
 <li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
@@ -622,14 +556,9 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="dotnet-mcp-server-patterns.html" class="">dotnet-mcp-server-patterns</a></li>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
-<li><a href="mcp-transport.html" class="">mcp-transport</a></li>
-<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
 </ul>
           </div>
         </div>
