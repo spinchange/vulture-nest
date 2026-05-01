@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Knowledge Compiler Specification — Vulture Portal</title>
+  <title>Literature: LLM Wiki — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Knowledge Compiler Specification</span>
+      <span>Literature: LLM Wiki</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Knowledge Compiler Specification</h1>
+      <h1 class="note-title">Literature: LLM Wiki</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Knowledge Compiler Specification</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli, claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: LLM Wiki</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -443,147 +443,79 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Knowledge Compiler Specification</h1>
-<p>This document provides the formal specification for compiling a YANP-compliant vault into a queryable, structured knowledge graph. It treats the vault not as a collection of documents, but as a codebase to be compiled.</p>
-<h2>1. Core Principles</h2>
+        <h1>Literature: LLM Wiki</h1>
+<h2>Source Metadata</h2>
 <ul>
-<li><strong>Source:</strong> YANP-compliant Markdown files (<code>.md</code>) in <code>01_Wiki/</code>.
+<li><strong>File:</strong> <code>00_Raw/LLM Wiki.md</code>
 </li>
-<li><strong>Compiler:</strong> The <code>ps-vault-maintenance</code> script orchestrates the compilation process.
+<li><strong>Origin:</strong> Internal Pattern Document (Vulture Nest Foundation)
 </li>
-<li><strong>Target:</strong> A structured SQLite database (<code>wiki.db</code>) and a static HTML web portal.
+<li><strong>Relevance:</strong> Canonical definition of the LLM Wiki / Vulture Nest architecture.
 </li>
 </ul>
-<h2>2. Compilation Units</h2>
-<p>The fundamental unit of compilation is a <strong>YANP Note</strong> (a single <code>.md</code> file). The compiler must parse the following components within each note:</p>
+<h2>High-Level Summary</h2>
+<p>The LLM Wiki pattern proposes an alternative to standard RAG. Instead of retrieving raw chunks from static documents, an LLM incrementally builds and maintains a <strong>persistent, compounding wiki</strong> of interlinked markdown files. The wiki acts as a &quot;compiled&quot; version of the knowledge base where synthesis, cross-referencing, and contradiction flagging happen at ingestion time rather than query time.</p>
+<h2>Key Concepts Identified</h2>
 <ul>
-<li><strong>Frontmatter:</strong> Parsed as a structured metadata block.
+<li><strong>Compounding Artifact:</strong> The wiki is not just a cache but a structured asset that grows richer over time.
 </li>
-<li><strong>Headings (<code>##</code>):</strong> Demarcate distinct logical sections or &quot;sub-modules&quot;.
-</li>
-<li><strong>Paragraphs:</strong> Treated as text content associated with the preceding heading.
-</li>
-<li><strong>Wikilinks (``<a href="....html" class="wikilink">...</a>``):</strong> Parsed as typed dependencies between compilation units.
-</li>
-<li><strong>Code Blocks:</strong> Parsed as literal code, potentially with language identifiers.
-</li>
-</ul>
-<h2>3. Link Typing (Dependency Analysis)</h2>
-<p>Wikilinks are not uniform. The compiler must infer the type of a link based on context:</p>
+<li><strong>Three-Layer Architecture:</strong>
 <ul>
-<li>`` <code><a href="note-a.html" class="wikilink">note-a</a></code> `` in a paragraph:<strong> A simple </strong>reference** or association.
-</li>
-<li>`` <code><a href="note-b.html" class="wikilink">note-b</a></code> `` under a <code>## References</code> or <code>## See Also</code> heading:<strong> A </strong>citation**.
-</li>
-<li>`` <code><a href="moc-a.html" class="wikilink">moc-a</a></code> `` in the <strong>Hubs</strong> line (top-level prose before the first <code>##</code>):<strong> An </strong>import** of a module or category.
-</li>
-</ul>
-<p>The formal <code>link_type</code> values for the &#167;5 schema are:</p>
-<table>
-<thead><tr>
-<th>Type</th>
-<th>Value</th>
-<th>Trigger context</th>
-</tr></thead><tbody>
-<tr>
-<td>Reference</td>
-<td><code>ref</code></td>
-<td>Wikilink in any non-References body section</td>
-</tr>
-<tr>
-<td>Citation</td>
-<td><code>cite</code></td>
-<td>Wikilink under <code>## References</code> or <code>## See Also</code></td>
-</tr>
-<tr>
-<td>Import</td>
-<td><code>import</code></td>
-<td>Wikilink in the <strong>Hubs</strong> line before the first heading</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Alias normalization:</strong> The `` <code><a href="note.html" class="wikilink">Display Text</a></code> `` syntax is resolved at parse time. The target is the slug before the pipe; the display text is discarded. This is the invariant implemented in <code>sync-vault-graph.ps1</code> via <code>.Split(&#39;|&#39;)[0].Trim()</code>.</p>
-<p>&gt; <strong>Current limitation:</strong> <code>sync-vault-graph.ps1</code> v1 stores all links as untyped edges — the <code>link_type</code> column is a target state for v2. Section-context awareness (which heading a link appears under) is not yet implemented.</p>
-<h2>4. Compilation Pipeline (Optimization Passes)</h2>
-<p>The compilation process should follow a series of passes, orchestrated by <code>ps-vault-maintenance.ps1</code>:</p>
+<li>
 <ol>
-<li><strong>Lexical Analysis (<code>audit-yanp.ps1</code>):</strong> Verify YANP compliance (file names, frontmatter).
+<li><strong>Raw Sources:</strong> Immutable source of truth.
 </li>
-<li><strong>Dependency Resolution (<code>check-broken-links.ps1</code>):</strong> Identify and report broken wikilinks (compilation errors).
+<li><strong>The Wiki:</strong> LLM-owned markdown layer (summaries, concepts, indices).
 </li>
-<li><strong>Orphan Analysis (<code>orphan-check.ps1</code>):</strong> Identify notes that are not linked to from anywhere else in the graph (warnings).
-</li>
-<li><strong>Code Generation (Static Site):</strong> <code>generate-wiki.ps1</code> converts Markdown to HTML.
-</li>
-<li><strong>Code Generation (Graph):</strong> <code>sync-vault-graph.ps1</code> populates the <code>Links</code> table in <code>wiki.db</code>. v1 performs a <strong>full rebuild</strong> each run: deletes all rows and re-inserts them in a single transaction. Correct for the current vault size; not incrementally scalable.
-</li>
-<li><strong>Graph Analysis (Read-Only):</strong> <code>find-thin-nodes.ps1</code> identifies notes below a minimum in/out-link threshold. <code>generate-wiki-stats.ps1</code> produces aggregate metrics (note count, link count, hub rankings). These are analysis passes — they do not mutate the database.
+<li><strong>The Schema:</strong> Instructions governing the LLM&#39;s maintenance workflows (e.g., <code>GEMINI.md</code>).
 </li>
 </ol>
-<h2>5. Target Schema (SQLite)</h2>
-<h3>5.1 Current Implementation (v1)</h3>
-<p><code>sync-vault-graph.ps1</code> creates one table:</p>
-<pre><code>CREATE TABLE IF NOT EXISTS Links (
-    Source TEXT,   -- note basename (no extension), e.g. &quot;mcp-architecture&quot;
-    Target TEXT    -- raw wikilink target after alias normalization
-);
-CREATE INDEX IF NOT EXISTS idx_links_source ON Links(Source);
-CREATE INDEX IF NOT EXISTS idx_links_target ON Links(Target);</code></pre>
-<p>Note basenames are used directly as identifiers — no numeric IDs. Human-readable but makes slug renames destructive (all <code>Source</code>/<code>Target</code> rows referencing the old slug go stale).</p>
-<h3>5.2 Target Schema (v2)</h3>
-<p>The full compilation target adds typed nodes, typed edges, and section-level granularity:</p>
-<pre><code>CREATE TABLE notes (
-    id      INTEGER PRIMARY KEY,
-    slug    TEXT UNIQUE NOT NULL,   -- basename, kebab-case (YANP invariant)
-    title   TEXT NOT NULL,
-    type    TEXT,                   -- frontmatter `type` field
-    status  TEXT,                   -- frontmatter `status` field
-    author  TEXT,
-    mtime   INTEGER                 -- Unix epoch of last file modification
-);
-
-CREATE TABLE links (
-    id          INTEGER PRIMARY KEY,
-    source_id   INTEGER REFERENCES notes(id) ON DELETE CASCADE,
-    target_id   INTEGER REFERENCES notes(id) ON DELETE SET NULL,
-    link_type   TEXT CHECK(link_type IN (&#39;ref&#39;, &#39;cite&#39;, &#39;import&#39;)),
-    section     TEXT                -- heading under which the link appears, nullable
-);
-
-CREATE TABLE sections (
-    id       INTEGER PRIMARY KEY,
-    note_id  INTEGER REFERENCES notes(id) ON DELETE CASCADE,
-    heading  TEXT NOT NULL,
-    level    INTEGER,               -- heading depth: 2 = ##, 3 = ###
-    content  TEXT                   -- raw Markdown body of the section
-);
-
-CREATE INDEX idx_links_source ON links(source_id);
-CREATE INDEX idx_links_target ON links(target_id);
-CREATE INDEX idx_links_type   ON links(link_type);
-CREATE INDEX idx_notes_slug   ON notes(slug);
-CREATE INDEX idx_notes_status ON notes(status);</code></pre>
-<p><strong>Migration path from v1:</strong> The v1 <code>Links</code> table becomes a backwards-compatible view over the new schema:</p>
-<pre><code>CREATE VIEW Links AS
-    SELECT s.slug AS Source, t.slug AS Target
-    FROM links l
-    JOIN notes s ON l.source_id = s.id
-    LEFT JOIN notes t ON l.target_id = t.id;</code></pre>
-<p><code>target_id</code> is nullable (<code>SET NULL</code>) because a wikilink may reference a note that hasn&#39;t been compiled yet — a broken link at the graph level, not a hard constraint violation.</p>
-<hr>
-<h2>References</h2>
+</li>
+</ul>
+</li>
+<li><strong>Core Operations:</strong>
 <ul>
-<li><a href="community-living-knowledge-system.html" class="wikilink">community-living-knowledge-system</a>
+<li>
+<ul>
+<li><strong>Ingest:</strong> Reading a source and updating 10-15 related wiki pages.
 </li>
-<li><a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>
+<li><strong>Query:</strong> Synthesizing answers from the wiki and filing them back as new notes.
 </li>
-<li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
+<li><strong>Lint:</strong> Health-checking the wiki for contradictions, orphans, and stale data.
 </li>
-<li><a href="graphrag-concepts.html" class="wikilink">graphrag-concepts</a>
+</ul>
 </li>
-<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>
+</ul>
 </li>
-<li><a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a>
+<li><strong>Navigation Primitives:</strong>
+<ul>
+<li>
+<ul>
+<li><code>index.md</code>: Content-oriented catalog.
+</li>
+<li><code>log.md</code>: Chronological action record.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Connections to Vault</h2>
+<ul>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a> — The permanent note synthesized from this document.
+</li>
+<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> — Metaphor: Obsidian as IDE, LLM as programmer, Wiki as codebase.
+</li>
+<li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a> — Formalization of the &quot;Schema&quot; layer for this vault.
+</li>
+<li><a href="memex.html" class="wikilink">memex</a> — Cited as the spiritual ancestor (Vannevar Bush, 1945).
+</li>
+</ul>
+<h2>Related</h2>
+<ul>
+<li><a href="the-vulture-portal.html" class="wikilink">the-vulture-portal</a>
+</li>
+<li><a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a>
 </li>
 </ul>
       </main>
@@ -598,19 +530,16 @@ CREATE INDEX idx_notes_status ON notes(status);</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="....html" class="">...</a></li>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
-<li><a href="graphrag-concepts.html" class="">graphrag-concepts</a></li>
-<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
-<li><a href="moc-a.html" class="">moc-a</a></li>
-<li><a href="note.html" class="">note</a></li>
-<li><a href="note-a.html" class="">note-a</a></li>
-<li><a href="note-b.html" class="">note-b</a></li>
-<li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
+<li><a href="memex.html" class="">memex</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
 <li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
 <li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 </ul>

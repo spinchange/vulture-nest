@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Codex Handoff — ps-automation-spec Compliance Pass</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Handoff — ps-automation-spec Compliance Pass</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-compliance-handoff, tier2-compliance-handoff</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-compliance-handoff, tier2-compliance-handoff</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex Handoff — ps-automation-spec Compliance Pass</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -555,7 +555,7 @@ Vault health 100/100.</code></pre>
 <p>Commit as a second atomic commit:</p>
 <pre><code>Feat: Add test-tier-compliance.ps1 enforcement script (ADR Option A)
 
-Implements Option A from polyglot-platform-adr: a [[powershell.md|PowerShell]] script that
+Implements Option A from polyglot-platform-adr: a [[powershell|PowerShell]] script that
 checks all 02_System/*.ps1 files for $ErrorActionPreference and try/catch
 compliance. Wired into run-maintenance.ps1 as step [7/7].
 
@@ -610,7 +610,7 @@ Vault health 100/100.</code></pre>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
 <li><a href="inter-agent-handoff-protocol.html" class="">inter-agent-handoff-protocol</a></li>
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
-<li><a href="powershell.md.html" class="">powershell.md</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
 </ul>

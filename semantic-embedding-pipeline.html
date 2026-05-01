@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Semantic Embedding Pipeline</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Semantic Embedding Pipeline</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">embedding pipeline, auto-link pipeline, neural retrieval</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Semantic Embedding Pipeline</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -517,7 +517,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</co
 <p>This adds a <code>[SEMANTIC NEIGHBORS]</code> tier to results alongside the existing symbolic graph expansion.</p>
 <h2>Design Decisions</h2>
 <p><strong>Why Gemini for embeddings, Claude for judging?</strong> The Gemini free tier provides <code>gemini-embedding-001</code> with 1500 RPD at no cost — sufficient for incremental vault maintenance. The generative quota (<code>generateContent</code>) on the same key had <code>limit: 0</code>, making it unavailable for the judge role. Claude Haiku is better at nuanced directional reasoning anyway and costs fractions of a cent per decision.</p>
-<p><strong>Why store embeddings as JSON text in SQLite rather than a vector extension?</strong> <code>sqlite-vec</code> would require loading a native extension into PoShWiKi&#39;s .NET SQLite setup. JSON text is simple, portable, and sufficient — cosine similarity over 224 notes in <a href="powershell.md.html" class="wikilink">PowerShell</a> completes in under 10 seconds.</p>
+<p><strong>Why store embeddings as JSON text in SQLite rather than a vector extension?</strong> <code>sqlite-vec</code> would require loading a native extension into PoShWiKi&#39;s .NET SQLite setup. JSON text is simple, portable, and sufficient — cosine similarity over 224 notes in <a href="powershell.html" class="wikilink">PowerShell</a> completes in under 10 seconds.</p>
 <p><strong>Why 0.80 as the floor threshold?</strong> Empirically, pairs below 0.80 tend to share vocabulary rather than concepts. The initial run showed 164 candidates above 0.80; after four passes the count stabilised around 51, suggesting that floor is approximately correct for this vault&#39;s content density.</p>
 <h2>Baseline Results (2026-04-26)</h2>
 <p>First run against the full vault:</p>
@@ -588,7 +588,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</co
 <ul>
 <li><a href="karpathy-vision-gap-analysis.html" class="">karpathy-vision-gap-analysis</a></li>
 <li><a href="poshwiki.html" class="">poshwiki</a></li>
-<li><a href="powershell.md.html" class="">powershell.md</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>

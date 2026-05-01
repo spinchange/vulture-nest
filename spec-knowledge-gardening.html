@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Spec: Knowledge Gardening &amp; Pruning</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Knowledge Gardening &amp; Pruning</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Spec: Knowledge Gardening &amp; Pruning</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -445,7 +445,7 @@
       <main class="content-zone" id="content">
         <h1>Spec: Knowledge Gardening &amp; Pruning</h1>
 <p><strong>Purpose:</strong> Define the operational protocol for keeping the vault high-signal over time. As the vault grows, three failure modes emerge: <strong>Thin Nodes</strong> (low information density), <strong>Orphaned Concepts</strong> (unreachable from the graph), and <strong>Concept Drift</strong> (content that no longer matches its declared identity). This spec defines how to detect and remediate all three.</p>
-<p>A Gardening Session is a structured audit-and-action cycle, not an ad-hoc cleanup. Each session should be logged in <a href="02_System/log.html" class="wikilink">02_System/log</a> with the date, candidates found, and actions taken.</p>
+<p>A Gardening Session is a structured audit-and-action cycle, not an ad-hoc cleanup. Each session should be logged in <a href="log.html" class="wikilink">log</a> with the date, candidates found, and actions taken.</p>
 <hr>
 <h2>1. Failure Mode Taxonomy</h2>
 <table>
@@ -636,7 +636,7 @@ ORDER BY e.similarity DESC;</code></pre>
 </li>
 <li>Do <strong>not</strong> delete the thin note file — Git history and inbound links from external sources may still reference it.
 </li>
-<li>Log the merge in <a href="02_System/log.html" class="wikilink">02_System/log</a>.
+<li>Log the merge in <a href="log.html" class="wikilink">log</a>.
 </li>
 </ol>
 <h3>3.2 Split (Concept → MOC + Children)</h3>
@@ -667,7 +667,7 @@ ORDER BY e.similarity DESC;</code></pre>
 </li>
 <li>Verify the orphan itself links back to those notes.
 </li>
-<li>Log in <a href="02_System/log.html" class="wikilink">02_System/log</a>.
+<li>Log in <a href="log.html" class="wikilink">log</a>.
 </li>
 </ol>
 <h3>3.4 Retitle / Refocus (Drift Correction)</h3>
@@ -750,7 +750,7 @@ SELECT source_id, target_ref FROM Links WHERE resolved = 0;</code></pre>
 </li>
 <li><a href="community-report-generator.html" class="wikilink">community-report-generator</a>
 </li>
-<li><a href="02_System/index.html" class="wikilink">02_System/index</a>
+<li><a href="system-index.html" class="wikilink">system-index</a>
 </li>
 <li><a href="knowledge-gardening-principles.html" class="wikilink">knowledge-gardening-principles</a>
 </li>
@@ -769,19 +769,21 @@ SELECT source_id, target_ref FROM Links WHERE resolved = 0;</code></pre>
 <ul>
 <li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="02_System/index.html" class="">02_System/index</a></li>
-<li><a href="02_System/log.html" class="">02_System/log</a></li>
 <li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
 <li><a href="child-note.html" class="">child-note</a></li>
 <li><a href="community-report-generator.html" class="">community-report-generator</a></li>
 <li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
 <li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="orphan-note.html" class="">orphan-note</a></li>
 <li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
 <li><a href="thin-note.html" class="">thin-note</a></li>
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
 </ul>

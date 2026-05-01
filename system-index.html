@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Knowledge Compiler Specification — Vulture Portal</title>
+  <title>system-index — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,15 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Knowledge Compiler Specification</span>
+      <span>system-index</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Knowledge Compiler Specification</h1>
+      <h1 class="note-title">system-index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Knowledge Compiler Specification</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli, claude-sonnet-4-6</span></span>
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
       </div>
     </header>
 
@@ -443,147 +438,140 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Knowledge Compiler Specification</h1>
-<p>This document provides the formal specification for compiling a YANP-compliant vault into a queryable, structured knowledge graph. It treats the vault not as a collection of documents, but as a codebase to be compiled.</p>
-<h2>1. Core Principles</h2>
+        <h1>Vulture Nest Index</h1>
+<h2>&#129302; Agentic Frameworks</h2>
 <ul>
-<li><strong>Source:</strong> YANP-compliant Markdown files (<code>.md</code>) in <code>01_Wiki/</code>.
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> - Central hub for agent architectures and frameworks.
 </li>
-<li><strong>Compiler:</strong> The <code>ps-vault-maintenance</code> script orchestrates the compilation process.
+<li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> - Unifying patterns for ADK, Swarm, and A2A.
 </li>
-<li><strong>Target:</strong> A structured SQLite database (<code>wiki.db</code>) and a static HTML web portal.
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> - Google&#39;s Agent Development Kit (ADK) integration.
+</li>
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a> - Experimental multi-agent orchestration.
+</li>
+<li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a> - Hugging Face Agents Course curriculum.
+</li>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a> - Deterministic orchestration patterns.
+</li>
+<li><a href="type-safety-spectrum-debate.html" class="wikilink">type-safety-spectrum-debate</a> - Codex vs Claude debate on type safety.
 </li>
 </ul>
-<h2>2. Compilation Units</h2>
-<p>The fundamental unit of compilation is a <strong>YANP Note</strong> (a single <code>.md</code> file). The compiler must parse the following components within each note:</p>
+<h2>&#128268; MCP Ecosystem</h2>
 <ul>
-<li><strong>Frontmatter:</strong> Parsed as a structured metadata block.
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a> - Model Context Protocol standards and implementations.
 </li>
-<li><strong>Headings (<code>##</code>):</strong> Demarcate distinct logical sections or &quot;sub-modules&quot;.
+<li><a href="mcp-ecosystem.html" class="wikilink">mcp-ecosystem</a> - Hierarchical synthesis of the MCP knowledge domain.
 </li>
-<li><strong>Paragraphs:</strong> Treated as text content associated with the preceding heading.
-</li>
-<li><strong>Wikilinks (``<a href="....html" class="wikilink">...</a>``):</strong> Parsed as typed dependencies between compilation units.
-</li>
-<li><strong>Code Blocks:</strong> Parsed as literal code, potentially with language identifiers.
+<li><a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a> - Bridge between MCP tools and agent capabilities.
 </li>
 </ul>
-<h2>3. Link Typing (Dependency Analysis)</h2>
-<p>Wikilinks are not uniform. The compiler must infer the type of a link based on context:</p>
+<h2>&#128187; Programming Languages</h2>
 <ul>
-<li>`` <code><a href="note-a.html" class="wikilink">note-a</a></code> `` in a paragraph:<strong> A simple </strong>reference** or association.
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> - Polyglot development hub.
 </li>
-<li>`` <code><a href="note-b.html" class="wikilink">note-b</a></code> `` under a <code>## References</code> or <code>## See Also</code> heading:<strong> A </strong>citation**.
+<li><a href="rust-moc.html" class="wikilink">rust-moc</a> - Memory safety, concurrency, and type-level programming.
 </li>
-<li>`` <code><a href="moc-a.html" class="wikilink">moc-a</a></code> `` in the <strong>Hubs</strong> line (top-level prose before the first <code>##</code>):<strong> An </strong>import** of a module or category.
+<li><a href="csharp-moc.html" class="wikilink">csharp-moc</a> / <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a> - Enterprise agent integration and .NET patterns.
+</li>
+<li><a href="python-moc.html" class="wikilink">python-moc</a> - Core agentic scripting and library ecosystem.
+</li>
+<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a> / <a href="javascript-moc.html" class="wikilink">javascript-moc</a> - Web-tier and desktop agent integration.
+</li>
+<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a> - Windows automation and vault maintenance.
 </li>
 </ul>
-<p>The formal <code>link_type</code> values for the &#167;5 schema are:</p>
-<table>
-<thead><tr>
-<th>Type</th>
-<th>Value</th>
-<th>Trigger context</th>
-</tr></thead><tbody>
-<tr>
-<td>Reference</td>
-<td><code>ref</code></td>
-<td>Wikilink in any non-References body section</td>
-</tr>
-<tr>
-<td>Citation</td>
-<td><code>cite</code></td>
-<td>Wikilink under <code>## References</code> or <code>## See Also</code></td>
-</tr>
-<tr>
-<td>Import</td>
-<td><code>import</code></td>
-<td>Wikilink in the <strong>Hubs</strong> line before the first heading</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Alias normalization:</strong> The `` <code><a href="note.html" class="wikilink">Display Text</a></code> `` syntax is resolved at parse time. The target is the slug before the pipe; the display text is discarded. This is the invariant implemented in <code>sync-vault-graph.ps1</code> via <code>.Split(&#39;|&#39;)[0].Trim()</code>.</p>
-<p>&gt; <strong>Current limitation:</strong> <code>sync-vault-graph.ps1</code> v1 stores all links as untyped edges — the <code>link_type</code> column is a target state for v2. Section-context awareness (which heading a link appears under) is not yet implemented.</p>
-<h2>4. Compilation Pipeline (Optimization Passes)</h2>
-<p>The compilation process should follow a series of passes, orchestrated by <code>ps-vault-maintenance.ps1</code>:</p>
-<ol>
-<li><strong>Lexical Analysis (<code>audit-yanp.ps1</code>):</strong> Verify YANP compliance (file names, frontmatter).
-</li>
-<li><strong>Dependency Resolution (<code>check-broken-links.ps1</code>):</strong> Identify and report broken wikilinks (compilation errors).
-</li>
-<li><strong>Orphan Analysis (<code>orphan-check.ps1</code>):</strong> Identify notes that are not linked to from anywhere else in the graph (warnings).
-</li>
-<li><strong>Code Generation (Static Site):</strong> <code>generate-wiki.ps1</code> converts Markdown to HTML.
-</li>
-<li><strong>Code Generation (Graph):</strong> <code>sync-vault-graph.ps1</code> populates the <code>Links</code> table in <code>wiki.db</code>. v1 performs a <strong>full rebuild</strong> each run: deletes all rows and re-inserts them in a single transaction. Correct for the current vault size; not incrementally scalable.
-</li>
-<li><strong>Graph Analysis (Read-Only):</strong> <code>find-thin-nodes.ps1</code> identifies notes below a minimum in/out-link threshold. <code>generate-wiki-stats.ps1</code> produces aggregate metrics (note count, link count, hub rankings). These are analysis passes — they do not mutate the database.
-</li>
-</ol>
-<h2>5. Target Schema (SQLite)</h2>
-<h3>5.1 Current Implementation (v1)</h3>
-<p><code>sync-vault-graph.ps1</code> creates one table:</p>
-<pre><code>CREATE TABLE IF NOT EXISTS Links (
-    Source TEXT,   -- note basename (no extension), e.g. &quot;mcp-architecture&quot;
-    Target TEXT    -- raw wikilink target after alias normalization
-);
-CREATE INDEX IF NOT EXISTS idx_links_source ON Links(Source);
-CREATE INDEX IF NOT EXISTS idx_links_target ON Links(Target);</code></pre>
-<p>Note basenames are used directly as identifiers — no numeric IDs. Human-readable but makes slug renames destructive (all <code>Source</code>/<code>Target</code> rows referencing the old slug go stale).</p>
-<h3>5.2 Target Schema (v2)</h3>
-<p>The full compilation target adds typed nodes, typed edges, and section-level granularity:</p>
-<pre><code>CREATE TABLE notes (
-    id      INTEGER PRIMARY KEY,
-    slug    TEXT UNIQUE NOT NULL,   -- basename, kebab-case (YANP invariant)
-    title   TEXT NOT NULL,
-    type    TEXT,                   -- frontmatter `type` field
-    status  TEXT,                   -- frontmatter `status` field
-    author  TEXT,
-    mtime   INTEGER                 -- Unix epoch of last file modification
-);
-
-CREATE TABLE links (
-    id          INTEGER PRIMARY KEY,
-    source_id   INTEGER REFERENCES notes(id) ON DELETE CASCADE,
-    target_id   INTEGER REFERENCES notes(id) ON DELETE SET NULL,
-    link_type   TEXT CHECK(link_type IN (&#39;ref&#39;, &#39;cite&#39;, &#39;import&#39;)),
-    section     TEXT                -- heading under which the link appears, nullable
-);
-
-CREATE TABLE sections (
-    id       INTEGER PRIMARY KEY,
-    note_id  INTEGER REFERENCES notes(id) ON DELETE CASCADE,
-    heading  TEXT NOT NULL,
-    level    INTEGER,               -- heading depth: 2 = ##, 3 = ###
-    content  TEXT                   -- raw Markdown body of the section
-);
-
-CREATE INDEX idx_links_source ON links(source_id);
-CREATE INDEX idx_links_target ON links(target_id);
-CREATE INDEX idx_links_type   ON links(link_type);
-CREATE INDEX idx_notes_slug   ON notes(slug);
-CREATE INDEX idx_notes_status ON notes(status);</code></pre>
-<p><strong>Migration path from v1:</strong> The v1 <code>Links</code> table becomes a backwards-compatible view over the new schema:</p>
-<pre><code>CREATE VIEW Links AS
-    SELECT s.slug AS Source, t.slug AS Target
-    FROM links l
-    JOIN notes s ON l.source_id = s.id
-    LEFT JOIN notes t ON l.target_id = t.id;</code></pre>
-<p><code>target_id</code> is nullable (<code>SET NULL</code>) because a wikilink may reference a note that hasn&#39;t been compiled yet — a broken link at the graph level, not a hard constraint violation.</p>
-<hr>
-<h2>References</h2>
+<h2>&#129504; Knowledge Management &amp; Strategy</h2>
 <ul>
-<li><a href="community-living-knowledge-system.html" class="wikilink">community-living-knowledge-system</a>
+<li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> - Methodologies for personal knowledge management.
 </li>
-<li><a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>
+<li><a href="pkm-history-moc.html" class="wikilink">pkm-history-moc</a> - Philosophical and historical roots of PKM.
 </li>
-<li><a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
+<li><a href="zettelkasten.html" class="wikilink">zettelkasten</a> - Atomic note-taking and workflow.
 </li>
-<li><a href="graphrag-concepts.html" class="wikilink">graphrag-concepts</a>
+<li><a href="hierarchical-graph-synthesis.html" class="wikilink">hierarchical-graph-synthesis</a> - Spec for automated vault synthesis.
 </li>
-<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a> - The core philosophy of the Vulture Nest.
 </li>
-<li><a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a>
+</ul>
+<h2>&#128736;️ System &amp; Infrastructure</h2>
+<ul>
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> - Reusable architectural patterns.
+</li>
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a> - YANP standards for agent-authored content.
+</li>
+<li><a href="lattice-implementation-guide.html" class="wikilink">lattice-implementation-guide</a> - Type-safe capability lattices in Rust.
+</li>
+<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> - Vault prototypes and active research.
+</li>
+</ul>
+<h2>&#128202; Community Reports</h2>
+<ul>
+<li><a href="pkm-history.html" class="wikilink">pkm-history</a> - History and methodology of PKM.
+</li>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a> - Standards for AI agent communication.
+</li>
+<li><a href="dotnet-csharp.html" class="wikilink">dotnet-csharp</a> - .NET ecosystem and C# language synthesis.
+</li>
+<li><a href="vault-systems.html" class="wikilink">vault-systems</a> - Operational logic and automation of the Nest.
+</li>
+<li><a href="frameworks-eval.html" class="wikilink">frameworks-eval</a> - Agent frameworks and evaluation benchmarking.
+</li>
+<li><a href="lattice-interop.html" class="wikilink">lattice-interop</a> - Cross-language interoperability.
+</li>
+<li><a href="rust-type-systems.html" class="wikilink">rust-type-systems</a> - Deep dive into Rust safety and types.
+</li>
+</ul>
+<h2>&#128236; Active Handoffs</h2>
+<ul>
+<li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="wikilink">gemini-orchestrator-test-handoff-2026-04-30</a> - Inaugural End-to-End Test for the Orchestrator.
+</li>
+<li><a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="wikilink">codex-orchestrator-integration-handoff-2026-04-30</a> - Integration &amp; State-Machine completion for the Orchestrator.
+</li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> - Intelligence &amp; Epistemic Gates for the Orchestrator.
+</li>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> - Infrastructure &amp; Pipeline foundation for the Orchestrator.
+</li>
+<li><a href="claude-gardening-visuals-handoff.html" class="wikilink">claude-gardening-visuals-handoff</a> - Specs for Gardening and Mermaid diagrams.
+</li>
+<li><a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> - Technical specs for Memory-MCP and Rust Tier-0.
+</li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> - Completed dated blueprint session summary.
+</li>
+<li><a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> - Synthesis for literature and agentic patterns.
+</li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="wikilink">claude-synthesis-handoff-2026-04-27</a> - Completed dated synthesis session summary.
+</li>
+<li><a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a> - Codex implementation path for the build sprint.
+</li>
+<li><a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> - Gemini graph-integration path for the build sprint.
+</li>
+<li><a href="codex-usage-loop-handoff.html" class="wikilink">codex-usage-loop-handoff</a> - Database feedback loop implementation.
+</li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="wikilink">rfc-agent-orchestration-handoff</a> - Protocol formalization proposal.
+</li>
+</ul>
+<h2>&#128220; Blueprint &amp; Specifications</h2>
+<ul>
+<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> - Unified Master Spec for the ingestion pipeline.
+</li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> - Core DB and crawling architecture.
+</li>
+<li><a href="spec-memory-mcp.html" class="wikilink">spec-memory-mcp</a> - SQLite-backed memory server specification.
+</li>
+<li><a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a> - Protocol for vault maintenance and repair.
+</li>
+<li><a href="spec-visual-vault-language.html" class="wikilink">spec-visual-vault-language</a> - Mermaid.js standards for the Nest.
+</li>
+</ul>
+<ul>
+<li><a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a>: Foundational LLM Wiki / Vulture Nest pattern.
+</li>
+<li><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a>: Verbalized Sampling for mitigating mode collapse.
+</li>
+</ul>
+<h2>Blueprint Specs</h2>
+<ul>
+<li><a href="codex-supabase-schema-ingestion.html" class="wikilink">codex-supabase-schema-ingestion</a>: Protocol for automating Supabase DDL application.
 </li>
 </ul>
       </main>
@@ -598,21 +586,70 @@ CREATE INDEX idx_notes_status ON notes(status);</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
+<li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
+<li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="....html" class="">...</a></li>
-<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
-<li><a href="graphrag-concepts.html" class="">graphrag-concepts</a></li>
-<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
-<li><a href="moc-a.html" class="">moc-a</a></li>
-<li><a href="note.html" class="">note</a></li>
-<li><a href="note-a.html" class="">note-a</a></li>
-<li><a href="note-b.html" class="">note-b</a></li>
-<li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
-<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
-<li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
+<li><a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="">codex-orchestrator-integration-handoff-2026-04-30</a></li>
+<li><a href="codex-supabase-schema-ingestion.html" class="">codex-supabase-schema-ingestion</a></li>
+<li><a href="codex-usage-loop-handoff.html" class="">codex-usage-loop-handoff</a></li>
+<li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
+<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
+<li><a href="dotnet-csharp.html" class="">dotnet-csharp</a></li>
+<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="frameworks-eval.html" class="">frameworks-eval</a></li>
+<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
+<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
+<li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="lattice-implementation-guide.html" class="">lattice-implementation-guide</a></li>
+<li><a href="lattice-interop.html" class="">lattice-interop</a></li>
+<li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
+<li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
+<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-ecosystem.html" class="">mcp-ecosystem</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="pkm-history.html" class="">pkm-history</a></li>
+<li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
+<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
+<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
+<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="vault-systems.html" class="">vault-systems</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
+<li><a href="zettelkasten.html" class="">zettelkasten</a></li>
 </ul>
           </div>
         </div>
