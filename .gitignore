@@ -35,7 +35,7 @@ handoff-*.md
 
 
 # Python & local DBs
-__pycache__/
+**/__pycache__/
 *.pyc
 02_System/memory_mcp/memory.db
 
