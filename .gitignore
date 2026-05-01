@@ -32,3 +32,15 @@ handoff-*.md
 # Generated files
 03_Web/public/
 .claude/
+
+
+# Python & local DBs
+__pycache__/
+*.pyc
+02_System/memory_mcp/memory.db
+
+# Secrets — never commit live credentials
+.env
+**/.env
+.mcp.json
+.gemini/settings.json
