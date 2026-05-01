@@ -429,17 +429,17 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: MCP Architecture Overview</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source_record_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">provenance</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">retrieved_at</span><span class="fm-val">2026-05-01T08:56:24Z</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">chunk_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">acting_agent</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">source_record_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">acting_agent</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: MCP Architecture Overview</span></span>
+<span class="fm-field"><span class="fm-key">chunk_ids</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -459,11 +459,13 @@
 </li>
 </ul>
 <h2>High-Level Summary</h2>
-<p>The Model Context Protocol (MCP) is a standard for connecting AI applications to data and tools. It defines a clear separation between the <strong>Data Layer</strong> (JSON-RPC 2.0 primitives) and the <strong>Transport Layer</strong> (how messages are moved).</p>
+<p>The <strong>Model Context Protocol (MCP)</strong> is an open standard for connecting AI applications to external data sources and tools. It defines a clear separation between the <strong>Data Layer</strong> (JSON-RPC 2.0 primitives) and the <strong>Transport Layer</strong> (how messages are moved), giving host applications a common way to discover and invoke server capabilities.</p>
+<h2>Core Philosophical Goal</h2>
+<p>MCP reduces the integration tax of connecting LLMs to the world. Instead of writing custom API integration code for every tool, developers build to the MCP standard once, allowing compatible AI clients to interact with that tool through a shared protocol surface.</p>
 <h2>Core Concepts</h2>
 <h3>Participants</h3>
 <ul>
-<li><strong>MCP Host:</strong> The AI application (like Claude Desktop or an IDE) that initiates connections.
+<li><strong>MCP Host:</strong> The AI application (like Claude Desktop or an IDE) that initiates and orchestrates connections.
 </li>
 <li><strong>MCP Client:</strong> Maintains a 1:1 connection with a server, typically embedded within the Host.
 </li>
@@ -472,9 +474,9 @@
 </ul>
 <h3>Layers</h3>
 <ul>
-<li><strong>Data Layer:</strong> Defines the semantics of the protocol. It uses JSON-RPC 2.0 to handle tools, resources, prompts, and notifications.
+<li><strong>Data Layer:</strong> Defines protocol semantics. It uses JSON-RPC 2.0 to handle tools, resources, prompts, and notifications.
 </li>
-<li><strong>Transport Layer:</strong> Handles the underlying communication. Supported transports include <strong>Stdio</strong> (local) and <strong>HTTP with SSE</strong> (remote).
+<li><strong>Transport Layer:</strong> Handles underlying communication. Supported transports include <strong>Stdio</strong> (local process communication) and <strong>HTTP with SSE</strong> (remote communication).
 </li>
 </ul>
 <h2>Lifecycle Management</h2>
@@ -483,19 +485,21 @@
 <ol>
 <li><strong>Initialize Request:</strong> The client sends its protocol version and capabilities.
 </li>
-<li><strong>Initialize Response:</strong> The server responds with its version and capabilities (e.g., whether it supports notifications).
+<li><strong>Initialize Response:</strong> The server responds with its version and capabilities, including supported protocol features.
 </li>
 <li><strong>Initialized Notification:</strong> The client confirms it is ready to proceed.
 </li>
 </ol>
+<h3>Protocol Versioning</h3>
+<p>MCP protocol versions use a date-shaped format such as <code>YYYY-MM-DD</code>. Version negotiation occurs during initialization; both parties must agree on a protocol version before normal operation.</p>
 <h2>Primitives and Operations</h2>
 <h3>Tool Discovery and Execution</h3>
 <ul>
-<li><strong>Discovery:</strong> Clients can list available tools using <code>tools/list</code>.
+<li><strong>Discovery:</strong> Clients list available tools using <code>tools/list</code>.
 </li>
 <li><strong>Execution:</strong> Clients invoke tools via <code>tools/call</code>. The server executes the logic and returns a result.
 </li>
-<li><strong>Pseudo-code Flow:</strong> Application finds the right session → calls tool → returns result to conversation.
+<li><strong>Operational flow:</strong> Application selects the right session, calls the tool, then returns the result into the conversation or agent workflow.
 </li>
 </ul>
 <h3>Real-time Updates (Notifications)</h3>
@@ -503,9 +507,9 @@
 <ul>
 <li><strong><code>notifications/tools/list_changed</code></strong>: Sent by the server when its tool roster changes.
 </li>
-<li><strong>refresh cycle</strong>: Upon receiving a notification, the client typically re-fetches the tool list via <code>tools/list</code>.
+<li><strong>Refresh cycle:</strong> Upon receiving a notification, the client typically re-fetches the tool list via <code>tools/list</code>.
 </li>
-<li><strong>Benefits</strong>: Enables dynamic environments where tools may appear or disappear based on permissions or state.
+<li><strong>Benefit:</strong> Enables dynamic environments where tools may appear or disappear based on permissions, server state, or runtime context.
 </li>
 </ul>
 <h2>Strategic Importance</h2>
@@ -516,12 +520,18 @@
 </li>
 <li><strong>Standardized Context:</strong> Provides a unified way for LLMs to interact with external systems without custom integrations for every tool.
 </li>
+<li><strong>Agent Ecosystem Leverage:</strong> Hosts, servers, and clients can evolve independently while retaining a shared interaction contract.
+</li>
 </ul>
 <h2>References</h2>
 <ul>
 <li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
 </li>
-<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> (prior version)
+<li><a href="lit-mcp-server-development.html" class="wikilink">lit-mcp-server-development</a>
+</li>
+<li><a href="lit-mcp-client-development.html" class="wikilink">lit-mcp-client-development</a>
+</li>
+<li><a href="lit-mcp-security-and-auth.html" class="wikilink">lit-mcp-security-and-auth</a>
 </li>
 <li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
@@ -541,9 +551,10 @@
 <li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
-<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="lit-mcp-advanced-patterns.html" class="">lit-mcp-advanced-patterns</a></li>
 <li><a href="lit-mcp-client-development.html" class="">lit-mcp-client-development</a></li>
 <li><a href="lit-mcp-connections-and-debugging.html" class="">lit-mcp-connections-and-debugging</a></li>
+<li><a href="lit-mcp-ecosystem-examples.html" class="">lit-mcp-ecosystem-examples</a></li>
 <li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
 <li><a href="lit-mcp-server-development.html" class="">lit-mcp-server-development</a></li>
 <li><a href="log.html" class="">log</a></li>
@@ -561,7 +572,9 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
-<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="lit-mcp-client-development.html" class="">lit-mcp-client-development</a></li>
+<li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
+<li><a href="lit-mcp-server-development.html" class="">lit-mcp-server-development</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 </ul>
           </div>
