@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Zettelkasten</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">slip-box, niklas-luhmann</span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">zettelkasten-summary</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">The Slip-Box, Zettelkasten Method, Luhmann&#39;s Method</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-zettelkasten]]</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Zettelkasten</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-23</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -445,26 +445,52 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Zettelkasten</h1>
-<p>The <strong>Zettelkasten</strong> is a decentralized &quot;slip box&quot; system for knowledge management, popularized by Niklas Luhmann.</p>
-<h2>Methodology</h2>
-<p>The system is built on specific structures and processes:</p>
+<p>The <strong>Zettelkasten</strong> (German for &quot;slip box&quot;) is a decentralized knowledge management system designed to turn research and reading into an ongoing &quot;conversation&quot; with your notes. It is the primary engine of the <strong>Vulture Nest</strong> architecture.</p>
+<h2>Core Pillars</h2>
 <ul>
-<li><strong><a href="zettelkasten-note-types.html" class="wikilink">zettelkasten-note-types</a></strong>: The distinction between Fleeting, Literature, and Permanent notes.
+<li><strong><a href="zettelkasten-note-types.html" class="wikilink">Atomicity</a></strong>: Every note must contain exactly one idea.
 </li>
-<li><strong><a href="zettelkasten-workflow.html" class="wikilink">zettelkasten-workflow</a></strong>: The Capture-Process-Link-Retrieve cycle.
+<li><strong><a href="zettelkasten-workflow.html" class="wikilink">Connectivity</a></strong>: A note&#39;s value is defined by its links. An isolated note is effectively non-existent.
+</li>
+<li><strong>Autonomy</strong>: Notes must be self-contained and understandable without the original context.
+</li>
+<li><strong>Bottom-Up Structure</strong>: Hierarchy is not imposed; it emerges through the organic growth of links and <a href="pkm-methods-moc.html" class="wikilink">Maps of Content</a>.
 </li>
 </ul>
-<h2>Principles</h2>
+<h2>Taxonomy of Notes</h2>
+<ol>
+<li><strong>Fleeting Notes</strong>: Transient captures used for processing. Status: <code>draft</code>.
+</li>
+<li><strong>Literature Notes</strong>: Summaries of external sources (e.g., <code><a href="lit-zettelkasten.html" class="wikilink">lit-zettelkasten</a></code>). Written in one&#39;s own words.
+</li>
+<li><strong>Permanent Notes</strong>: The refined, atomic concepts that form the core of the knowledge graph.
+</li>
+</ol>
+<h2>The Workflow Loop</h2>
+<ol>
+<li><strong>Ingest</strong>: Capture raw data into literature notes.
+</li>
+<li><strong>Atomize</strong>: Extract unique ideas into permanent notes.
+</li>
+<li><strong>Cross-Link</strong>: Find connections to existing notes.
+</li>
+<li><strong>Synthesize</strong>: Create high-level overviews via MOCs.
+</li>
+</ol>
+<h2>Agentic Zettelkasten</h2>
+<p>In an <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>, the Zettelkasten is the &quot;compiled&quot; representation of knowledge. The LLM acts as the <strong>Wiki Librarian</strong>, ensuring that every new piece of information is atomized, linked, and correctly categorized, preventing the vault from becoming a &quot;data swamp.&quot;</p>
+<hr>
+<h2>See Also</h2>
 <ul>
-<li><strong>Atomicity</strong>: One note, one idea.
+<li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a>
 </li>
-<li><strong>Connectivity</strong>: Notes are only as valuable as their links to other notes.
+<li><a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>
 </li>
-<li><strong>Bottom-Up</strong>: Structure emerges from links rather than a predefined hierarchy.
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
+</li>
+<li><a href="lit-zettelkasten.html" class="wikilink">lit-zettelkasten</a>
 </li>
 </ul>
-<h2>Integration with LLMs</h2>
-<p>In an <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>, the LLM can automate the process of turning fleeting notes into permanent notes and suggesting links between disparate ideas.</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -488,7 +514,11 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="lit-zettelkasten.html" class="">lit-zettelkasten</a></li>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
+<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
 <li><a href="zettelkasten-note-types.html" class="">zettelkasten-note-types</a></li>
 <li><a href="zettelkasten-workflow.html" class="">zettelkasten-workflow</a></li>
 </ul>

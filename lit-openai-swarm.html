@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: OpenAI Swarm and Agents SDK</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: OpenAI Swarm and Agents SDK</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: OpenAI Swarm and Agents SDK</span></span>
       </div>
     </header>
 
@@ -444,54 +444,62 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Literature: OpenAI Swarm and Agents SDK</h1>
-<h2>Source Metadata</h2>
-<ul>
-<li><strong>File:</strong> <code>00_Raw/openai-agents-and-swarm.md</code>
-</li>
-<li><strong>Topic:</strong> Multi-agent orchestration patterns from OpenAI.
-</li>
-<li><strong>Status:</strong> Swarm is experimental/educational; Agents SDK is production-ready.
-</li>
-</ul>
-<h2>Swarm: Key Concepts</h2>
-<p>Swarm is a lightweight, stateless framework for orchestrating multiple agents. It prioritizes simplicity and visibility of agent interactions.</p>
-<ul>
-<li><strong><a href="openai-swarm%23agent.html" class="wikilink">Agent</a>:</strong> A collection of instructions and tools.
-</li>
-<li><strong><a href="openai-swarm%23handoff.html" class="wikilink">Handoff</a>:</strong> An agent transferring control to another agent by returning it from a function.
-</li>
-<li><strong><a href="openai-swarm%23context-variables.html" class="wikilink">Context Variables</a>:</strong> Shared state passed between agents and functions.
-</li>
-</ul>
-<h2>Agents SDK: Key Concepts</h2>
-<p>A more robust, production-oriented approach to agent development.</p>
-<ul>
-<li><strong>Managed Workflows:</strong> Support for hosted paths and complex state.
-</li>
-<li><strong>Production Readiness:</strong> Focus on stability, observability, and scaling.
-</li>
-</ul>
-<h2>Initial Comparison (vs. <a href="agent-development-kit.html" class="wikilink">ADK</a>)</h2>
-<ul>
-<li><strong>Statelessness:</strong> Swarm is explicitly stateless (the caller manages state), whereas ADK has a built-in <code>SessionService</code>.
-</li>
-<li><strong>Handoffs:</strong> Swarm handoffs are &quot;return-based&quot; (a function returns an <code>Agent</code> object). ADK uses a tool-based <code>transfer_to_agent</code>.
-</li>
-</ul>
-<h2>Next Steps for Synthesis</h2>
+<p><strong>Source:</strong> <code>00_Raw/openai-agents-and-swarm.md</code></p>
+<h2>Overview</h2>
+<p>This material documents OpenAI&#39;s evolution of multi-agent orchestration, starting with the experimental <strong>Swarm</strong> framework and culminating in the production-ready <strong>OpenAI Agents SDK</strong>.</p>
+<h2>Swarm: Lightweight Orchestration (Experimental)</h2>
+<p>Swarm focuses on making agent coordination lightweight and highly controllable. It is explicitly <strong>stateless</strong> (running on the client) and relies on the Chat Completions API.</p>
+<h3>Core Primitives</h3>
 <ol>
-<li>Extract the mechanics of <a href="openai-swarm%23handoff.html" class="wikilink">Swarm handoffs</a>.
+<li><strong>Agent</strong>: Encapsulates <code>instructions</code> and <code>functions</code>. Agents are not persistent &quot;Assistants&quot; but transient configurations for a specific turn or task.
 </li>
-<li>Define the <a href="openai-swarm%23agent.html" class="wikilink">Swarm agent</a> primitive.
+<li><strong>Handoff</strong>: The process where an agent transfers a conversation to another agent. This is achieved by a function returning a new <code>Agent</code> object.
 </li>
-<li>Detail the use of <a href="openai-swarm%23context-variables.html" class="wikilink">Swarm context variables</a>.
-</li>
-<li>Map the <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> patterns.
+<li><strong>Context Variables</strong>: A shared dictionary used to pass state between agents and functions.
 </li>
 </ol>
-<h2>Related</h2>
+<h3>The Execution Loop (<code>client.run()</code>)</h3>
+<ol>
+<li>Get completion from the active agent.
+</li>
+<li>Execute tool calls and append results.
+</li>
+<li>Switch agent if a handoff is detected.
+</li>
+<li>Update context variables.
+</li>
+<li>Repeat until no more function calls occur.
+</li>
+</ol>
+<h2>OpenAI Agents SDK (Production)</h2>
+<p>The Agents SDK is the &quot;production-ready evolution&quot; of Swarm. It adds support for:</p>
 <ul>
+<li><strong>Managed Workflows</strong>: Hosted threads and persistent state management.
+</li>
+<li><strong>Observability</strong>: Built-in tracing and debugging.
+</li>
+<li><strong>Safety</strong>: Integrated guardrails and human-in-the-loop patterns.
+</li>
+<li><strong>MCP Support</strong>: Native integration with the Model Context Protocol.
+</li>
+</ul>
+<h2>Rationale for Usage</h2>
+<ul>
+<li><strong>Swarm</strong> is ideal for educational purposes and lightweight, client-side orchestration where the developer wants total control over state.
+</li>
+<li><strong>Agents SDK</strong> is the standard for building scalable, durable applications with complex multi-agent logic and enterprise-grade safety.
+</li>
+</ul>
+<hr>
+<h2>See Also</h2>
+<ul>
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>
+</li>
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>
+</li>
 <li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a>
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
 </li>
 </ul>
       </main>
@@ -521,11 +529,9 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
-<li><a href="openai-swarm%23agent.html" class="">openai-swarm#agent</a></li>
-<li><a href="openai-swarm%23context-variables.html" class="">openai-swarm#context-variables</a></li>
-<li><a href="openai-swarm%23handoff.html" class="">openai-swarm#handoff</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 </ul>
           </div>

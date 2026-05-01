@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[[mcp-moc|MCP]] SDKs — Vulture Portal</title>
+  <title>MCP SDKs — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,21 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[[mcp-moc|MCP]] SDKs</span>
+      <span>MCP SDKs</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[[mcp-moc|MCP]] SDKs</h1>
+      <h1 class="note-title">MCP SDKs</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-libraries, python-mcp-sdk, typescript-mcp-sdk</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] SDKs</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">MCP SDK Tiers, Model Context Protocol SDKs</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/mcp/SDKs.md</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP SDKs</span></span>
       </div>
     </header>
 
@@ -444,97 +445,60 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP SDKs</h1>
-<p>The Model Context Protocol (MCP) provides official SDKs to streamline the development of servers and clients. These SDKs are categorized into tiers based on their feature completeness and maintenance level.</p>
-<h2>SDK Tiering System</h2>
+<p>The <strong>Model Context Protocol (MCP)</strong> provides official SDKs across multiple languages to facilitate the development of servers and clients. SDKs are categorized into tiers based on their feature completeness and support status.</p>
+<h2>SDK Tiers</h2>
+<h3>Tier 1 (Canonical &amp; Feature-Complete)</h3>
 <ul>
-<li><strong>Tier 1 (Core)</strong>: Full feature parity, protocol compliance, and primary maintenance commitment.
+<li><strong>TypeScript</strong>: <code>modelcontextprotocol/typescript-sdk</code>
 </li>
-<li><strong>Tier 2 (Advanced)</strong>: High feature support, active maintenance.
+<li><strong>Python</strong>: <code>modelcontextprotocol/python-sdk</code>
 </li>
-<li><strong>Tier 3 (Emerging)</strong>: Essential protocol support, community or specialized maintenance.
+<li><strong>C#</strong>: <code>modelcontextprotocol/csharp-sdk</code>
+</li>
+<li><strong>Go</strong>: <code>modelcontextprotocol/go-sdk</code>
 </li>
 </ul>
-<h2>Available SDKs</h2>
-<table>
-<thead><tr>
-<th>Language</th>
-<th>Tier</th>
-<th>Repository</th>
-</tr></thead><tbody>
-<tr>
-<td>**[[typescript</td>
-<td>TypeScript]]**</td>
-<td>1</td>
-<td><a href="https://github.com/modelcontextprotocol/typescript-sdk">modelcontextprotocol/typescript-sdk</a></td>
-</tr>
-<tr>
-<td><strong><a href="python.html" class="wikilink">python</a></strong></td>
-<td>1</td>
-<td><a href="https://github.com/modelcontextprotocol/python-sdk">modelcontextprotocol/python-sdk</a></td>
-</tr>
-<tr>
-<td><strong>C#</strong></td>
-<td>1</td>
-<td><a href="https://github.com/modelcontextprotocol/csharp-sdk">modelcontextprotocol/csharp-sdk</a></td>
-</tr>
-<tr>
-<td><strong>Go</strong></td>
-<td>1</td>
-<td><a href="https://github.com/modelcontextprotocol/go-sdk">modelcontextprotocol/go-sdk</a></td>
-</tr>
-<tr>
-<td><strong>Java</strong></td>
-<td>2</td>
-<td><a href="https://github.com/modelcontextprotocol/java-sdk">modelcontextprotocol/java-sdk</a></td>
-</tr>
-<tr>
-<td><strong><a href="rust.html" class="wikilink">rust</a></strong></td>
-<td>2</td>
-<td><a href="https://github.com/modelcontextprotocol/rust-sdk">modelcontextprotocol/rust-sdk</a></td>
-</tr>
-<tr>
-<td><strong>Swift</strong></td>
-<td>3</td>
-<td><a href="https://github.com/modelcontextprotocol/swift-sdk">modelcontextprotocol/swift-sdk</a></td>
-</tr>
-<tr>
-<td><strong>Ruby</strong></td>
-<td>3</td>
-<td><a href="https://github.com/modelcontextprotocol/ruby-sdk">modelcontextprotocol/ruby-sdk</a></td>
-</tr>
-<tr>
-<td><strong>PHP</strong></td>
-<td>3</td>
-<td><a href="https://github.com/modelcontextprotocol/php-sdk">modelcontextprotocol/php-sdk</a></td>
-</tr>
-</tbody>
-</table>
-<h2>Standard Capabilities</h2>
-<p>Regardless of the language, all official MCP SDKs support:</p>
+<h3>Tier 2 (Stable &amp; Actively Maintained)</h3>
 <ul>
-<li><strong>Server Creation</strong>: Exposing <a href="mcp-primitives.html" class="wikilink">Tools, Resources, and Prompts</a>.
+<li><strong>Java</strong>: <code>modelcontextprotocol/java-sdk</code> (utilizes Spring AI auto-configuration)
 </li>
-<li><strong>Client Integration</strong>: Connecting to any valid MCP server.
+<li><strong>Rust</strong>: <code>modelcontextprotocol/rust-sdk</code>
 </li>
-<li><strong>Transport Protocols</strong>: Support for both Stdio and HTTP/SSE.
+</ul>
+<h3>Tier 3 (Community / Incubating)</h3>
+<ul>
+<li><strong>Swift</strong>, <strong>Ruby</strong>, <strong>PHP</strong>, <strong>Kotlin</strong>
 </li>
-<li><strong>Type Safety</strong>: Native language-specific typing for protocol messages.
+</ul>
+<h2>Feature Parity</h2>
+<p>All Tier 1 and Tier 2 SDKs support the core protocol primitives:</p>
+<ul>
+<li>Creating servers with <strong>Tools</strong>, <strong>Resources</strong>, and <strong>Prompts</strong>.
+</li>
+<li>Implementing both <strong>Stdio</strong> (local) and <strong>HTTP/SSE</strong> (remote) transports.
+</li>
+<li>Handling the <strong>Initialization Handshake</strong> and capability negotiation.
+</li>
+<li>Type-safe schema definition and validation.
+</li>
+</ul>
+<h2>Strategic Choice</h2>
+<ul>
+<li><strong>Fast Prototyping</strong>: Python (FastMCP) is recommended for its high-level decorators and automatic schema generation.
+</li>
+<li><strong>Enterprise Scale</strong>: C# or TypeScript are preferred for their robust typing and integration with established IDE/Web ecosystems.
+</li>
+<li><strong>Systems Engineering</strong>: Rust or Go provide high performance and low-latency execution for infrastructure-level bridges.
 </li>
 </ul>
 <hr>
-<h2>References</h2>
+<h2>See Also</h2>
 <ul>
-<li>Source: <code>00_Raw/mcp/SDKs.md</code>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
 </li>
 <li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
-</li>
-<li><a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a>
-</li>
-<li><a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a>
-</li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
 </li>
 </ul>
       </main>
@@ -560,16 +524,9 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
-<li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
-<li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
-<li><a href="python.html" class="">python</a></li>
-<li><a href="rust.html" class="">rust</a></li>
-<li><a href="typescript.html" class="">typescript</a></li>
 </ul>
           </div>
         </div>
