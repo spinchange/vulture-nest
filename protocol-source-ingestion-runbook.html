@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[[rust]] Async — Vulture Portal</title>
+  <title>Source Ingestion Runbook — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[[rust]] Async</span>
+      <span>Source Ingestion Runbook</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[[rust]] Async</h1>
+      <h1 class="note-title">Source Ingestion Runbook</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">async-await, futures, rust-async-io, tokio</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[rust]] Async</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Source Ingestion Runbook</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
       </div>
     </header>
 
@@ -443,35 +443,144 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Rust Async</h1>
-<p>Asynchronous programming in Rust allows for non-blocking I/O and concurrent execution within a single thread or across a thread pool, optimized for high-throughput tasks.</p>
-<h2>Core Concepts</h2>
+        <h1>Source Ingestion Runbook</h1>
+<p>This runbook captures the operational protocol for turning an external source into grounded vault knowledge. It is the practiced workflow behind the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> and <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>.</p>
+<h2>Role Sequence</h2>
+<p>The ingestion loop is deliberately multi-agent:</p>
+<ol>
+<li><strong>Gemini / Librarian</strong> prepares the intake packet: target URL, gap rationale, expected note, expected links, and policy/HITL assessment.
+</li>
+<li><strong>Human / HITL</strong> approves bounded crawls when policy requires approval or when the source is foundational.
+</li>
+<li><strong>Codex / Engineer</strong> runs the mechanical pipeline: dry run, live crawl, index, verify, and seam handoff. Codex does not synthesize or promote the permanent note in the same pass.
+</li>
+<li><strong>Claude / Chronicler</strong> synthesizes verified chunks into a literature or permanent note with provenance.
+</li>
+<li><strong>Gemini / Librarian</strong> performs final graph integration: MOC wiring, backlinks, index updates, log entry, and commit hygiene.
+</li>
+</ol>
+<p>This preserves the Two-Role Invariant: no single agent both ingests source material and promotes it to permanent knowledge.</p>
+<h2>Preflight</h2>
+<p>Before running an external crawl, Codex should verify the local tool surface:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\check-mcp-health.ps1</code></pre>
+<p>Use live credential checks only when needed:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\check-mcp-health.ps1 -LiveServices</code></pre>
+<p>Use <code>-LiveFirecrawl</code> only for explicit Firecrawl credential validation, because it calls the external service.</p>
+<h2>Intake Packet</h2>
+<p>The Librarian intake should include:</p>
 <ul>
-<li><strong><code>Future</code></strong>: A trait representing a value that might not be available yet. It must be polled to make progress.
+<li>exact target URL
 </li>
-<li><strong><code>async</code></strong>: A keyword used to define a block of code or a function that returns a <code>Future</code>.
+<li>reason this source closes a vault gap
 </li>
-<li><strong><code>.await</code></strong>: Pauses the execution of the current <code>async</code> function until the <code>Future</code> is resolved, yielding control back to the executor.
+<li>expected target note path and note type
+</li>
+<li>expected key wikilinks
+</li>
+<li>expected page count
+</li>
+<li>whether HITL is required or already granted
+</li>
+<li>explicit instruction not to broaden the crawl
 </li>
 </ul>
-<h2>Execution Model</h2>
-<p>Rust does <strong>not</strong> include a built-in async runtime.</p>
+<p>For single-page documentation ingestion, prefer <code>expected_pages: 1</code>.</p>
+<h2>Codex Execution Steps</h2>
+<p>Codex runs the pipeline in two phases.</p>
+<h3>1. Dry Run</h3>
+<p>Run:</p>
 <ul>
-<li><strong>Executors</strong>: Libraries (like <strong>Tokio</strong> or <strong>async-std</strong>) that poll futures until completion.
+<li><code>propose_source_intake</code>
 </li>
-<li><strong>Cooperative Multitasking</strong>: Async tasks yield control voluntarily at <code>.await</code> points.
+<li><code>orchestrate_ingestion</code> with <code>dry_run: true</code>
+</li>
+<li><code>execute_source_crawl</code> with <code>dry_run: true</code>
 </li>
 </ul>
-<h2>Pinning</h2>
-<p>Because async functions are transformed into state machines that can hold self-referential pointers, Rust uses the <strong><code>Pin</code></strong> type to ensure that futures do not move in memory while they are being polled.</p>
-<hr>
+<p>Proceed only if the dry run remains bounded: correct domain, expected page count, estimated credits, and HITL status.</p>
+<h3>2. Live Run</h3>
+<p>Run:</p>
+<ul>
+<li><code>orchestrate_ingestion</code> with <code>dry_run: false</code>
+</li>
+<li><code>execute_source_crawl</code> with <code>dry_run: false</code>
+</li>
+<li><code>index_crawled_source</code>
+</li>
+<li><code>verify_source_index</code>
+</li>
+</ul>
+<p>Stop before synthesis unless the source index verifies with no blocking findings.</p>
+<h2>Required Evidence IDs</h2>
+<p>Every successful Codex handoff must preserve:</p>
+<ul>
+<li>original requested URL
+</li>
+<li>resolved indexed URL, especially if a redirect occurred
+</li>
+<li>Firecrawl crawl job ID
+</li>
+<li>Supabase <code>source_pages.id</code>
+</li>
+<li>chunk count
+</li>
+<li>all chunk IDs used later by the synthesizing agent
+</li>
+<li>verification status and findings
+</li>
+</ul>
+<p>These IDs are the bridge between the sidecar evidence and the promoted vault note.</p>
+<h2>Redirect Handling</h2>
+<p>If a requested URL redirects, record both URLs. If Firecrawl returns zero pages for the redirecting URL, verify the resolved canonical URL in a browser or other read-only check, then repeat the dry run against the resolved URL before running the live crawl.</p>
+<p>The MCP Security Best Practices ingestion used this path: the dated specification URL redirected to the current docs/tutorials URL, and the resolved URL was the one successfully indexed.</p>
+<h2>Synthesis Handoff</h2>
+<p>After verification, Codex records a seam for Claude/Gemini with:</p>
+<ul>
+<li>source page ID
+</li>
+<li>chunk count
+</li>
+<li>crawl job ID
+</li>
+<li>source URL and resolved URL
+</li>
+<li>recommended target note path
+</li>
+<li>required links
+</li>
+<li>instruction not to crawl again
+</li>
+</ul>
+<p>Claude should retrieve evidence through <code>semantic_search_sources</code>, write the target note, preserve provenance, validate with <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>, and commit only the note plus any explicit handoff artifact.</p>
+<p>Gemini should then integrate the note into MOCs, backlinks, specs, and logs without changing the evidence provenance unless it finds a concrete mismatch.</p>
+<h2>Commit Boundaries</h2>
+<p>Prefer three small commits:</p>
+<ol>
+<li><code>feat(wiki): add &lt;source&gt; literature note</code>
+</li>
+<li><code>docs(handoff): graph integration brief for Gemini re &lt;source&gt;</code>
+</li>
+<li><code>chore(graph): wire &lt;source&gt; into &lt;cluster&gt; cross-references</code>
+</li>
+</ol>
+<p>Do not mix mechanical ingestion tooling changes with source synthesis commits.</p>
+<h2>Provenance Shape</h2>
+<p>Current synthesized notes may use <code>source_page_id</code> plus <code>chunk_ids</code>, while some older notes use nested <code>provenance:</code> frontmatter. The YANP auditor accepts both today. A future normalization pass should decide one canonical shape and migrate notes consistently.</p>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/the-rust-programming-language.md</code>
+<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>
 </li>
-<li><a href="rust-moc.html" class="wikilink">rust-moc</a>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="wikilink">spec-agentic-source-orchestrator-v2</a>
 </li>
-<li><a href="rust-concurrency.html" class="wikilink">rust-concurrency</a>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
+</li>
+<li><a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a>
+</li>
+<li><a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a>
+</li>
+<li><a href="lit-mcp-security-best-practices.html" class="wikilink">lit-mcp-security-best-practices</a>
+</li>
+<li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
 </li>
 </ul>
       </main>
@@ -484,16 +593,15 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
+            <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="rust.html" class="">rust</a></li>
-<li><a href="rust-concurrency.html" class="">rust-concurrency</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="lit-mcp-security-best-practices.html" class="">lit-mcp-security-best-practices</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
 </ul>
           </div>
         </div>
