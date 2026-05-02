@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask) — Vulture Portal</title>
+  <title>Handoff: Promote Supabase Flask Synthesis — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,21 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</span>
+      <span>Handoff: Promote Supabase Flask Synthesis</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</h1>
+      <h1 class="note-title">Handoff: Promote Supabase Flask Synthesis</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Promote Supabase Flask Synthesis</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">gemini</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">gemini-supabase-librarian-handoff</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -444,48 +444,24 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</h1>
-<p><strong>From:</strong> Claude (Chronicler) <strong>To:</strong> Gemini (Librarian) <strong>Status:</strong> Synthesis complete. Librarian cleanup required.</p>
-<hr>
-<h2>What Claude Did This Session</h2>
-<p>Executed Stages 7–8 for the Supabase Flask Quickstart source:</p>
-<ul>
-<li>Created <a href="lit-supabase-flask-quickstart.html" class="wikilink">lit-supabase-flask-quickstart</a> (literature note, T5 provenance)
-</li>
-<li>Created <a href="pattern-supabase-flask-integration.html" class="wikilink">pattern-supabase-flask-integration</a> (permanent note)
-</li>
-<li>Updated <code>01_Wiki/index.md</code>, <code>02_System/system-index.md</code>, <code>02_System/log.md</code>
-</li>
-<li>Committed and pushed — 2 commits on <code>main</code> (<code>f5b360d9</code>, <code>d589a157</code>)
-</li>
-</ul>
-<p>Also committed Gemini&#39;s staged artifacts from the previous session (mcp-moc additions, <code>lit-chatgpt-web-mcp-guidance.md</code>, <code>spec-chatgpt-web-mcp-wrapper.md</code>, <code>02_System/chatgpt_web_mcp_wrapper.py</code>).</p>
-<hr>
-<h2>Required Librarian Actions</h2>
-<h3>1. Promote the Synthesis Candidate (Supabase Source Index)</h3>
-<p>The source page must be promoted from <code>Synthesized</code> → <code>Promoted</code> in the Supabase index.</p>
+        <h1>Handoff: Promote Supabase Flask Synthesis</h1>
+<p><strong>From:</strong> Claude (Chronicler) <strong>To:</strong> Gemini (Librarian)</p>
+<p>Stages 7–8 are complete for the Supabase Flask Quickstart source. Promote it in the Supabase index.</p>
+<h2>Action Required</h2>
 <pre><code>MCP tool: promote_synthesis_candidate
 Page ID:  31f3d047-c0e1-4c19-8c33-a3efeaab355f
 Source:   https://supabase.com/docs/guides/getting-started/quickstarts/flask
 Chunks:   74973d96-0e55-496a-82e2-57a72259182d
           5b049707-c646-4acd-8980-a72feca0b220</code></pre>
-<h3>2. Register chatgpt_web_mcp_wrapper.py in Tool Registry</h3>
-<p><code>02_System/chatgpt_web_mcp_wrapper.py</code> was committed this session but is <strong>not registered</strong> in <code>02_System/tool-registry.md</code>. Add an entry describing its purpose (ChatGPT web MCP wrapper for remote vault access).</p>
-<p>Reference <code>01_Wiki/spec-chatgpt-web-mcp-wrapper.md</code> for its full spec.</p>
-<h3>3. Sync Vault Graph</h3>
-<p>Two new wikilinked notes were added. Run after promotion:</p>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
-<h3>4. Orphan Check (Optional)</h3>
-<p>New notes reference <code><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a></code> — should already exist, but worth confirming no dangling links were introduced:</p>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1</code></pre>
-<hr>
-<h2>No Action Required On</h2>
+<h2>Evidence</h2>
 <ul>
-<li>YANP compliance — both new notes passed <code>audit-yanp.ps1</code> (<code>Compliant: True</code>)
+<li><a href="lit-supabase-flask-quickstart.html" class="wikilink">lit-supabase-flask-quickstart</a> — literature note, T5 provenance embedded
 </li>
-<li>Index and log — already updated by Claude
+<li><a href="pattern-supabase-flask-integration.html" class="wikilink">pattern-supabase-flask-integration</a> — permanent note extracted
 </li>
-<li>Git — already committed and pushed
+<li><code>verify_source_index</code> passed (status: <code>passed</code>, next_state: <code>synthesized</code>)
+</li>
+<li>Committed and pushed on <code>main</code>
 </li>
 </ul>
       </main>
@@ -504,7 +480,6 @@ Chunks:   74973d96-0e55-496a-82e2-57a72259182d
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
 <li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
 <li><a href="pattern-supabase-flask-integration.html" class="">pattern-supabase-flask-integration</a></li>
 </ul>
