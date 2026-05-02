@@ -13,6 +13,7 @@
 - [[mcp-moc]] - Model Context Protocol standards and implementations.
 - [[mcp-ecosystem]] - Hierarchical synthesis of the MCP knowledge domain.
 - [[mcp-agent-skills]] - Bridge between MCP tools and agent capabilities.
+- [[spec-chatgpt-web-mcp-wrapper]] - Remote MCP wrapper for ChatGPT web access to the vault.
 
 ## 💻 Programming Languages
 - [[programming-languages-moc]] - Polyglot development hub.
@@ -84,3 +85,7 @@
 
 ## Blueprint Specs
 - [[codex-supabase-schema-ingestion]]: Protocol for automating Supabase DDL application.
+
+## Python / Supabase Integration
+- [[lit-supabase-flask-quickstart]]: Literature note — Supabase Flask Quickstart (T5 provenance, 2 chunks).
+- [[pattern-supabase-flask-integration]]: Permanent note — Flask+Supabase pattern (singleton client, RLS auth layer, method-chain API).

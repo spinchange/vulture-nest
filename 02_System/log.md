@@ -1,6 +1,13 @@
 # Wiki Log
 
 
+## [2026-05-01] Claude — Supabase Flask Quickstart Synthesis (Stage 7–8)
+* **Directive**: Executed [[claude-supabase-flask-handoff-2026-05-01]] — performed Stage 7 (Synthesis) and Stage 8 (Promotion) for the Supabase Flask Quickstart source (page ID `31f3d047`, 2 chunks).
+* **Verification**: `verify_source_index` passed — 2 chunks, status `passed`, next state `synthesized`. Provenance block built with T5 traceability.
+* **Literature Note**: Created [[lit-supabase-flask-quickstart]] — full source summary with code examples, RLS setup, environment config, and singleton client pattern.
+* **Permanent Note**: Created [[pattern-supabase-flask-integration]] — atomic pattern note covering module-level `create_client()` singleton, environment-based config, method-chain query API, and RLS-as-authorization-layer.
+* **Promoted**: Updated `01_Wiki/index.md` (Literature Notes + Multi-Agent Pattern Language sections) and `02_System/system-index.md` (new Python / Supabase Integration section).
+
 ## [2026-05-01] Claude — OpenAI Agents SDK Synthesis (Firecrawl Pipeline)
 * **Directive**: Executed [[handoff-firecrawl-openai-agents]] — synthesized Gemini's Firecrawl crawl of the OpenAI Agents SDK docs (15 pages, 168 chunks, all indexed in Supabase pgvector).
 * **Diagnosis**: Found two pipeline bugs blocking synthesis: (1) `filter_domain` parameter not handled by `match_documents` RPC — returns 0 results when passed; (2) `pipeline-policy.yaml` threshold of `0.78` exceeds all actual similarity scores for this corpus (~0.50–0.70). Used explicit `match_threshold=0.5` override to retrieve.

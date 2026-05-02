@@ -32,6 +32,7 @@ type: community
 
 ## Blueprint Specs (How to Build It)
 * [[spec-memory-mcp]] - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
+* [[spec-chatgpt-web-mcp-wrapper]] - Remote MCP wrapper for ChatGPT web access to Vulture Nest
 * [[rust-tier-0-patterns]] - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
 * [[spec-knowledge-gardening]] - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
 * [[spec-visual-vault-language]] - Mermaid.js Standards: flowcharts, state machines, lattice diagrams, sequences
@@ -53,6 +54,7 @@ type: community
 * [[adk-go-implementation]] - Native Performance Reference
 
 ## Multi-Agent Pattern Language
+* [[pattern-supabase-flask-integration]] - Flask + Supabase: module-level singleton, RLS as auth layer, method-chain query API
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)
 * [[pattern-state-transfer]] - Flat key-value working memory across agent boundaries
 * [[pattern-capability-gating]] - Lattice enforcement before every delegation edge
@@ -110,6 +112,8 @@ type: community
 * [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
 
 ## Literature Notes (Grounded Sources)
+* [[lit-supabase-flask-quickstart]] - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)
+* [[lit-chatgpt-web-mcp-guidance]] - Literature: ChatGPT Web MCP Guidance (remote only, write confirmations, plan gating)
 * [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up)
 * [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, local compromise, scope minimization)
 * [[lit-llm-wiki]] - Literature: LLM Wiki (Foundational Pattern)
@@ -168,4 +172,3 @@ type: community
 * [[github-deployment|GitHub Deployment (Cloud Daemon)]]
 * [[poshwiki-tools|PoShWiKi Tools API]]
 * [[tool-registry|Tool Registry (Machine-Readable)]]
-
