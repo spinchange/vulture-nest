@@ -8,7 +8,8 @@ aliases: [hf-agents-course, agents-course-map]
 ---
 # Hugging Face Agents Course MOC
 
-This map provides a theoretical and practical traversal of the Hugging Face Agents Course, focusing on the core mechanics of reasoning, tool-use, and production orchestration.
+This map provides a theoretical and practical traversal of the Hugging Face Agents Course, focusing on the core mechanics of reasoning, tool-use, and production orchestration for agent builders.
+It assumes baseline familiarity with LLM concepts and Python-style tooling.
 
 ## 📚 Course Literature
 - [[lit-hf-agents-fundamentals]]: Unit 1 (Fundamentals) & Unit 2 (Frameworks).
@@ -19,8 +20,8 @@ This map provides a theoretical and practical traversal of the Hugging Face Agen
 * [[agent-thought-cycle]]: Thought-Action-Observation.
 * [[react-pattern]]: Reasoning + Acting.
 * [[chat-templates]]: Bridging roles and special tokens.
-* [[agent-tools]]: Defining the "Body" of an agent.
-* [[agent-actions-unit]]: Actions, code agents, and environment engagement.
+* [[agent-tools]]: Defining the "Body" of an agent through available capabilities.
+* [[agent-actions-unit]]: Actions, code agents, and environment engagement during orchestration.
 
 ## Frameworks & Toolkits (Unit 2)
 * [[smolagents]]: Freedom and Code Agents (HF).
@@ -41,7 +42,7 @@ This map provides a theoretical and practical traversal of the Hugging Face Agen
 * [[llm-as-a-judge]]: Automated grading.
 
 ## The Benchmark (Unit 4)
-* [[gaia-benchmark]]: The industry standard for General AI Assistants.
+* [[gaia-benchmark]]: A prominent benchmark for general AI assistants.
 
 ---
 ## See Also

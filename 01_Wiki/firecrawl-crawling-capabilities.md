@@ -18,16 +18,61 @@ provenance_agent: "claude-chronicler"
 
 # Firecrawl Crawling Capabilities
 
-Firecrawl's crawling feature allows for systematic retrieval of entire websites converted into clean, LLM-ready Markdown.
+Firecrawl's crawl path is the vault's bounded multi-page ingestion mechanism: start from a root URL, traverse within configured limits, and return page content asynchronously as scrape-like results.
 
-## Core Features
-\ You can configure webhooks to receive real-time notifications as your crawl progresses. This allows you to process pages as they are scraped instead of waiting for the entire crawl to complete.\ \ cURL\ \ ```\ curl -X POST https://api.firecrawl.dev/v2/crawl \\ -H 'Content-Type: application/json' \\ -H 'Authorization: Bearer YOUR_API_KEY' \\ -d '{\ "url": "https://docs.firecrawl.dev",\ "limit": 100,\ "webhook": {\ "url": "https://your-domain.com/webhook",\ "metadata": {\ "any_key": "any_value"\ },\ "events": ["started", "page", "completed"]\ }\ }'\ ```\ \...
+## What Crawl Is For
+- Use `crawl` when one page is not enough and you need a constrained slice of a documentation site.
+- Prefer `crawl` over `scrape` when navigation depth and path filters matter.
+- Prefer `map` first when you need URL discovery without fetching page bodies.
 
-## Epistemic Status
-Verified (T5) against the official Firecrawl documentation.
+## Working Request Shape
+The pipeline spec models crawl requests like:
+
+```json
+{
+  "url": "https://docs.example.com",
+  "limit": 500,
+  "maxDiscoveryDepth": 3,
+  "includePaths": ["^/docs/", "^/api/"],
+  "excludePaths": ["^/blog/", "^/changelog/", "\\.pdf$"],
+  "scrapeOptions": {
+    "formats": ["markdown"],
+    "onlyMainContent": true
+  }
+}
+```
+
+The local ingest server uses the same structure with a smaller default limit and explicit polling against `GET /v2/crawl/{id}`.
+
+## Key Capabilities
+- **Bounded traversal:** `limit` and `maxDiscoveryDepth` keep the crawl from expanding indefinitely.
+- **Path scoping:** `includePaths` and `excludePaths` are the main cost-control and relevance-control levers.
+- **Scrape inheritance:** `scrapeOptions` lets crawl results reuse the same markdown-oriented extraction settings as single-page scrape operations.
+- **Async execution:** the initial request returns a job ID; results arrive only after polling completes.
+
+## Output Model
+- `POST /v2/crawl` returns an ID immediately.
+- `GET /v2/crawl/{id}` is polled until `status == "completed"`.
+- Completed pages are treated as an array of scrape response objects, each with extracted content and metadata.
+
+## Operational Guidance
+- Use `includePaths` aggressively for docs sites; broad crawls waste credits and increase irrelevant retrieval.
+- Treat crawl as an extraction primitive, not a synthesis primitive. Content still needs canonical storage, chunking, and embedding downstream.
+- The current vault convention is markdown-first extraction with `onlyMainContent: true`.
+
+## Distinction from Neighboring Endpoints
+- [[firecrawl-scrape-capabilities]]: single-page retrieval, synchronous.
+- [[firecrawl-map-capabilities]]: discovery of URLs without page content.
+- [[firecrawl-api-v2-reference]]: broader endpoint surface and shared request/response conventions.
+
+## Limits and Caveats
+- This note is grounded in the local spec and ingest implementation, not a full live Firecrawl reference.
+- Vendor-side limits, concurrency, and plan quotas may change; the pipeline spec currently notes page-tier limits and advises tight path filtering.
+- "LLM-ready Markdown" should be read as cleaner-than-raw HTML, not as a guarantee that every page arrives perfectly normalized.
 
 ## Related
-- [[spec-agentic-source-orchestrator]]
+- [[spec-firecrawl-pgvector-pipeline]]
+- [[protocol-source-ingestion-runbook]]
 - [[firecrawl-map-capabilities]]
 - [[firecrawl-scrape-capabilities]]
 - [[firecrawl-api-v2-reference]]

@@ -9,13 +9,13 @@ aliases: [llm-tdd, evaluation-driven-development, edd, agent-testing]
 
 # Agentic TDD Patterns
 
-Test-Driven Development (TDD) for agents shifts the focus from deterministic unit tests to **Evaluation-Driven Development (EDD)**. This protocol allows frontier models to build bespoke software with high reliability by treating tests as "Executable Intent."
+Test-Driven Development for agentic systems extends normal TDD with evaluation, rubric checks, and workflow-level verification. The core idea is still test-first discipline; the difference is that some agent behaviors require richer checks than a deterministic unit assertion.
 
 ## The Agentic Red-Green-Refactor Loop
 
 1. **RED (Intent):** The agent (or user) defines a **Scenario Note** or a failing test script.
    - For logic: A standard test file (e.g., `pytest`, `Pester`, `xUnit`).
-   - For behavior: A "Judge" rubric or a prompt-evaluator configuration.
+   - For behavior: A rubric, evaluator configuration, or judged scenario.
 2. **GREEN (Implementation):** The agent modifies the codebase or its own system prompt to satisfy the test.
 3. **REFACTOR (Optimization):** The agent optimizes the implementation for performance or token cost, ensuring the suite remains "Green."
 
@@ -28,19 +28,26 @@ Instead of testing isolated functions, define a "User Story" as a test case.
 
 ### 2. The "Judge" Evaluation
 For non-deterministic outputs (like summaries), use a second agent (The Judge) to grade the primary agent's output against a specific rubric.
-- **Pass Criteria:** A score of ≥ 85/100 or a boolean "Meets all directives."
+- **Pass Criteria:** Thresholds such as `85/100` are project choices, not universal defaults. For important flows, pair judge scores with spot human review or multiple checks to reduce score gaming and judge drift.
 
-### 3. Property-Based Invariants
-Test for things that must *always* be true, regardless of the specific text output.
+### 3. Structural Constraints and Invariants
+Test for things that must remain true regardless of the exact wording of the output.
 - Every note created must be lowercase-kebab-case.
 - Every note must have valid YAML frontmatter.
 - No PII (secrets, keys) may ever be logged to `02_System/log.md`.
 
-## Executable Specifications
-In a bespoke software context, the **Technical Design Document (TDD)** serves as the "Spec." Agents should read the TDD in `00_Raw/` and generate a test suite in `tests/` *before* writing a single line of production code.
+## Spec-First Development for Agents
+In this vault, a design note or implementation spec can act as executable intent: the agent reads the spec, derives tests or evaluation cases, and only then begins implementation. That is compatible with TDD, but it should not be confused with renaming the methodology itself.
+
+## Limits
+- Agentic TDD is an emerging practice, not a settled discipline with universal terminology.
+- Rubric-based judging is useful, but it adds its own failure modes: inconsistent scoring, shallow proxies for quality, and susceptibility to prompt framing.
+- Some checks belong in normal unit tests; others belong in scenario evaluation. Mixing them indiscriminately makes failures harder to interpret.
 
 ---
 ## References
+- [[agent-evaluation]]
+- [[llm-as-a-judge]]
 - [[executable-note-standard]]
 - [[agent-thought-cycle]]
 - [[yanp-for-agentic-workflows]]

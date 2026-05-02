@@ -10,6 +10,8 @@ aliases: [agent-theory, autonomous-systems]
 
 This map covers the mechanics of how autonomous agents reason, act, and interact with knowledge bases.
 
+Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are local organizing mnemonics for navigation inside this vault. They are not protocol-standard or vendor-endorsed classifications.
+
 ## The Knowledge Maps
 * [[hf-agents-course-moc]]: Theoretical backbone from the Hugging Face course.
 * [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
@@ -29,11 +31,11 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 
 ## Frameworks & toolkits
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
-* [[openai-swarm]]: Experimental multi-agent orchestration pattern (Handoffs).
-* [[openai-agents-sdk]]: Production-ready evolution of Swarm for scalable agent systems.
+* [[openai-swarm]]: Experimental multi-agent orchestration pattern centered on handoffs.
+* [[openai-agents-sdk]]: Production-oriented OpenAI agent SDK for scalable orchestration.
 * [[agent-development-kit]]: Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
-* [[llamaindex]]: The data-augmented agent toolkit (Retrieval).
-* [[langgraph]]: Stateful orchestration for production-ready agents (Control).
+* [[llamaindex]]: Data-oriented agent toolkit with strong retrieval and workflow support (Retrieval).
+* [[langgraph]]: Stateful orchestration framework with explicit control-flow graphs (Control).
 * [[pydantic-fastapi-agents]]: Using Pydantic for robust tool schema definition.
 * [[alternative-agent-frameworks]]: Exploring CrewAI and Microsoft AutoGen.
 
@@ -44,7 +46,7 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[graph-orchestration]]: Modelling behavior as deterministic workflows.
 * [[chromadb]]: Open-source embedding database for semantic memory.
 
-* [[community-report-generator]] — Automated synthesis of emergent communities via embedding-link hybrid weighting.
+* [[community-report-generator]]: Automated synthesis of emergent communities via embedding-link hybrid weighting.
 ## Training & Fine-Tuning
 * [[function-calling]]: Moving from prompted to learned native agency.
 * [[lora]]: Lightweight adaptation for agentic specialized tasks.
@@ -53,16 +55,15 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[agent-observability]]: Tracking internal states via Traces and Spans.
 * [[agent-evaluation]]: Offline benchmarking and online production monitoring.
 * [[llm-as-a-judge]]: Automated grading using separate LLMs.
-* [[gaia-benchmark]]: The industry standard for evaluating general AI assistants.
+* [[gaia-benchmark]]: Prominent benchmark for evaluating general AI assistants.
 
 ## Protocols & Infrastructure
 * [[agentic-protocols]]: The emerging standards ([[mcp-moc|MCP]], A2A) for interoperability.
-* [[mcp-moc]]: Comprehensive guide to the **Model Context Protocol**.
 * [[spec-agentic-source-orchestrator]]: The "Knowledge Compiler" for automated vault ingestion.
 * [[spec-firecrawl-pgvector-pipeline]]: Infrastructure for high-fidelity web scraping.
 * [[firecrawl-api-v2-reference]]: Technical specs for the Firecrawl integration.
 
-* [[synthesis-intelligence-layer]] — Epistemic risk tiers (T0–T5) and arbitration protocols for autonomous synthesis.
+* [[synthesis-intelligence-layer]]: Local vault conventions for epistemic risk tiers (T0-T5) and arbitration protocols for autonomous synthesis.
 ## Platform & Runtime SDKs
 * [[dotnet-agent-integration]]: **Bridge note** — architectural patterns for .NET in the agent loop.
 * [[dotnet-moc]]: The .NET ecosystem for high-performance agentic backends.
@@ -80,14 +81,14 @@ This map covers the mechanics of how autonomous agents reason, act, and interact
 * [[agents-in-games]]: Autonomous NPCs and emergent storytelling.
 * [[pokemon-battle-agent]]: case study in turn-based environment interaction.
 
-## Development & Operations
+## Knowledge Vault Operations
 * [[vault-audit-tool-spec]]: Formal schemas for local maintenance utilities.
 * [[wiki-pattern-operations]]: Ingest, Query, and Lint cycles.
 * [[wiki-as-codebase]]: Treating knowledge as a manageable software project.
 
-- [[lit-llm-wiki]] — Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
-- [[lit-foundry-local]] — Documentation for the Azure AI Foundry Local SDK.
-- [[lit-language-summaries]] — Core patterns for Python and Racket development.
+* [[lit-llm-wiki]]: Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
+* [[lit-foundry-local]]: Documentation for the Azure AI Foundry Local SDK.
+* [[lit-language-summaries]]: Core patterns for Python and Racket development.
 ## See Also
 * [[core-patterns-moc]]
 * [[programming-languages-moc]]

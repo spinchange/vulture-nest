@@ -13,23 +13,27 @@ aliases: ["Foundry Local Documentation", "Local AI Runtime"]
 This documentation covers the Azure AI Foundry Local SDK and runtime for hardware-optimized, on-device inference.
 
 ## Core Pillars
-- **Privacy**: No data leaves the local device.
+- **Privacy**: Runtime inference stays on the local device, though initial model download, setup, telemetry configuration, or licensing flows may still require network access.
 - **Efficiency**: Automatic optimization for NPUs, GPUs (DirectML, CUDA, Metal), and CPUs.
-- **Compatibility**: Drop-in OpenAI API replacement.
-- **Resilience**: Full offline capability.
+- **Compatibility**: OpenAI API-compatible in common local-serving scenarios, not necessarily a perfect drop-in replacement across every endpoint or behavior.
+- **Resilience**: Offline operation is a design goal after initial configuration and model download.
 
 ## Runtimes
 1. **Standalone**: Embedded in applications.
 2. **Shared Service**: Background process acting as a local OpenAI endpoint.
 
 ## Key Model Support
-Focuses on **ONNX** optimized variants:
+Supports **ONNX**-optimized model variants, including:
 - **Phi-3.5**: Efficient small language model.
 - **Qwen 2.5**: High-performance multi-lingual model.
 - **Whisper**: Local speech-to-text.
 
+## Deployment Caveats
+- **API parity**: OpenAI compatibility should be read as interface compatibility for common cases, not guaranteed parity for every streaming behavior, error shape, or model capability.
+- **Offline scope**: Offline use depends on whether the required models and runtimes have already been installed locally.
+
 ---
 ## See Also
 - [[foundry-local]] (Permanent Note)
-- [[local-agent-environments]]
-- [[mcp-local-connections]]
+- [[hardware-aware-inference]]
+- [[docker-sandbox]]

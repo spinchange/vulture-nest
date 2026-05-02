@@ -18,16 +18,43 @@ provenance_agent: "claude-chronicler"
 
 # Firecrawl Map Capabilities
 
-The Firecrawl Map endpoint is designed to discover and list all URLs on a website systematically.
+The Firecrawl `map` endpoint is the discovery-only counterpart to crawl: it enumerates candidate URLs on a site without retrieving full page bodies.
 
-## Core Features
-[Skip to main content](https://docs.firecrawl.dev/features/map#content-area) [Firecrawl Docs home page![light logo](https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo.png?fit=max&auto=format&n=iilnMwCX-8eR1yOO&q=85&s=c45b3c967c19a39190e76fe8e9c2ed5a)![dark logo](https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo-dark.png?fit=max&auto=format&n=iilnMwCX-8eR1yOO&q=85&s=3fee4abe033bd3c26e8ad92043a91c17)](https://firecrawl.dev/) v2 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg) English Search... Ctrl K Search... Navigation More Map [Documentation](https://docs.firecrawl.dev/introduction) [SDKs](https://docs.firecrawl.dev/sdks/overview) [Integrations](https://www.firecrawl.dev/app) [API Reference](https://docs.firecrawl.dev/api-reference/v2-introduction) [Build with AI](https://docs.firecrawl.dev/ai-onboarding) - [Playground](https://firecrawl.dev/playground) - [Blog](https://firecrawl.dev/blog) - [Community](https://discord.gg/firecrawl) - [Changelog](https://firecrawl.dev/changelog) ##### Get Started - [Introduction](https://docs.firecrawl.dev/introduction) - [Skill + CLI](https://docs.firecrawl.dev/sdks/cli) - [Build with AI](https://docs.firecrawl.dev/ai-onboarding) - [MCP Server](https://docs.firecrawl.dev/mcp-server) - [Advanced Scraping Guide](https://docs.firecrawl.dev/advanced-scraping-guide) - Plans & Billing ##### Core Endpoints - [Search](https://docs.firecrawl.dev/features/search) - Scrape - [Interact](https://docs.firecrawl.dev/features/interact...
+## Role in the Ingestion Pipeline
+- Use `map` to understand the URL surface of a domain before spending crawl credits.
+- Use it when you need to choose bounds, refine include/exclude patterns, or estimate the scope of a docs section.
+- It complements [[firecrawl-crawling-capabilities]] rather than replacing it.
 
-## Epistemic Status
-Verified (T5) against the official Firecrawl documentation.
+## What Map Returns
+In the vault's mental model, `map` returns URL discovery results only:
+- candidate URLs
+- enough structure to decide what to crawl next
+- no markdown body extraction
+
+That makes `map` the lowest-cost recon step in the Firecrawl family represented here.
+
+## Practical Use
+- Start with `map` when the site structure is unknown.
+- Promote promising sections into a bounded `crawl`.
+- Use `scrape` when you already know the exact page you want.
+
+## Why Keep It Separate from Crawl
+- `map` answers: "What is here?"
+- `crawl` answers: "Fetch these pages and give me content."
+- `scrape` answers: "Fetch this one page now."
+
+That distinction matters operationally because discovery, retrieval, and synthesis have different cost and risk profiles.
+
+## Known Parameters and Limits
+The local pipeline spec does not provide the same level of parameter detail for `map` that it provides for `scrape` and `crawl`. Treat this note as a conceptual reference first, not an exhaustive parameter sheet.
+
+## Caveats
+- This rewrite is based on the pipeline spec's description of `POST /v2/map` as "Discover all URLs" plus surrounding ingestion design, not a live endpoint walkthrough.
+- If the vault begins using `map` programmatically, this note should be extended with concrete request and response examples from the implementation path.
 
 ## Related
-- [[spec-agentic-source-orchestrator]]
+- [[spec-firecrawl-pgvector-pipeline]]
+- [[protocol-source-ingestion-runbook]]
 - [[firecrawl-crawling-capabilities]]
 - [[firecrawl-scrape-capabilities]]
 - [[firecrawl-api-v2-reference]]

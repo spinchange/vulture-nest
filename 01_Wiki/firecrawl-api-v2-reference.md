@@ -17,17 +17,122 @@ provenance_agent: "claude-chronicler"
 
 # Firecrawl API v2 Reference
 
-The Firecrawl API v2 introduces enhanced endpoints for scraping, crawling, and mapping web content with a focus on LLM compatibility and clean data retrieval.
+This note is a vault-local reference for the Firecrawl v2 surface used by the ingestion pipeline. It is grounded primarily in [[spec-firecrawl-pgvector-pipeline]] and the local ingest implementation, not a full live-doc mirror.
 
-## Core Technical Specs
-[Skip to main content](https://docs.firecrawl.dev/api-reference/v2-introduction#content-area) [Firecrawl Docs home page![light logo](https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo.png?fit=max&auto=format&n=iilnMwCX-8eR1yOO&q=85&s=c45b3c967c19a39190e76fe8e9c2ed5a)![dark logo](https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo-dark.png?fit=max&auto=format&n=iilnMwCX-8eR1yOO&q=85&s=3fee4abe033bd3c26e8ad92043a91c17)](https://firecrawl.dev/) v2 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg) English Search... Ctrl K Search... Navigation Using the API Introduction [Documentation](https://docs.firecrawl.dev/introduction) [SDKs](https://docs.firecrawl.dev/sdks/overview) [Integrations](https://www.firecrawl.dev/app) [API Reference](https://docs.firecrawl.dev/api-reference/v2-introduction) [Build with AI](https://docs.firecrawl.dev/ai-onboarding) - [Playground](https://firecrawl.dev/playground) - [Blog](https://firecrawl.dev/blog) - [Community](https://discord.gg/firecrawl) - [Changelog](https://firecrawl.dev/changelog) ##### Using the API - [Introduction](https://docs.firecrawl.dev/api-reference/v2-introduction) - [Errors](https://docs.firecrawl.dev/api-reference/errors) ##### Search Endpoints - [POST\\ \\ Search](https://docs.firecrawl.dev/api-reference/endpoint/search) ##### Scrape Endpoints - [POST\\ \\ Scrape](https://docs.firecrawl.dev/api-reference/endpoint/scrape) - [POST\\ \\ Batch Scrape](https://docs.firecrawl.dev/api-reference/endpoint/batch-scrape...
+## Scope
+- Focuses on the v2 endpoints already modeled in the vault.
+- Emphasizes ingestion-relevant behavior over exhaustive vendor documentation.
+- Treat parameter lists here as working references for this repo; verify against current Firecrawl docs before depending on them as exhaustive or stable.
 
-## Epistemic Status
-Verified (T5) against the official Firecrawl documentation.
+## Core Endpoints
+
+| Endpoint | Primary use | Return shape |
+|---|---|---|
+| `POST /v2/scrape` | Retrieve a single page | Synchronous content + metadata |
+| `POST /v2/crawl` | Traverse a bounded site section | Async job ID; later poll for page results |
+| `GET /v2/crawl/{id}` | Poll crawl status | Crawl status + completed pages when ready |
+| `POST /v2/map` | Discover URLs without fetching page content | URL list / discovery result |
+| `POST /v2/extract` | Schema-shaped extraction | Structured JSON |
+| `POST /v2/search` | Search plus retrieval | Top-N result payloads |
+
+## Authentication
+- The local tooling uses bearer-token authentication via `FIRECRAWL_API_KEY`.
+- The repo defaults the service base to `https://api.firecrawl.dev/v2` in [server.py](/abs/path/C:/Users/executor/Documents/vulture-nest/02_System/vulture-ingest/server.py:55).
+
+## Request Patterns Used Here
+
+### `scrape`
+The pipeline spec treats `scrape` as the single-page path.
+
+Common request fields in this vault:
+- `url`
+- `formats`
+- `onlyMainContent`
+- `excludeTags`
+- `waitFor`
+
+Representative payload from [[spec-firecrawl-pgvector-pipeline]]:
+
+```json
+{
+  "url": "https://docs.firecrawl.dev/features/crawl",
+  "formats": ["markdown", "links"],
+  "onlyMainContent": true,
+  "excludeTags": ["nav", "footer", "header", ".sidebar"],
+  "waitFor": 1000
+}
+```
+
+### `crawl`
+The pipeline uses `crawl` for bounded multi-page ingestion.
+
+Common request fields in this vault:
+- `url`
+- `limit`
+- `maxDiscoveryDepth`
+- `includePaths`
+- `excludePaths`
+- `scrapeOptions`
+
+The local ingest server currently sends:
+
+```json
+{
+  "url": "<root-url>",
+  "limit": 200,
+  "maxDiscoveryDepth": 3,
+  "includePaths": [],
+  "scrapeOptions": {
+    "formats": ["markdown"],
+    "onlyMainContent": true
+  }
+}
+```
+
+### `map`
+The pipeline spec treats `map` as the discovery-only endpoint: enumerate candidate URLs before deciding whether to crawl or scrape them.
+
+## Response Shape Conventions
+
+### `scrape` response object
+The pipeline spec models responses like:
+
+```json
+{
+  "success": true,
+  "data": {
+    "markdown": "# Page Title\n\nContent...",
+    "links": ["https://docs.example.com/page-2"],
+    "metadata": {
+      "title": "Page Title",
+      "description": "Meta description",
+      "language": "en",
+      "statusCode": 200,
+      "contentType": "text/html",
+      "sourceURL": "https://docs.example.com/page-1"
+    }
+  }
+}
+```
+
+### `crawl` job model
+- `POST /v2/crawl` returns a job ID immediately.
+- The local pipeline polls `GET /v2/crawl/{id}` until `status == "completed"`.
+- Completed results are treated as an array of scrape-like page objects.
+
+## Operational Notes
+- Firecrawl is the extraction layer, not the chunking layer. Splitting and embedding happen downstream in the Postgres/pgvector pipeline.
+- The vault consistently prefers `formats: ["markdown"]` or markdown-first retrieval to keep the ingestion path LLM-friendly.
+- `onlyMainContent: true` is treated as the default for documentation ingestion to reduce navigation noise.
+
+## Limitations
+- This note is intentionally not a complete vendor API reference.
+- Features not exercised in the pipeline may be omitted or only lightly described here.
+- The original Gemini-authored version was a failed raw scrape; this rewrite is based on local spec material and should still be cross-checked against live docs before production changes.
 
 ## Related
-- [[spec-agentic-source-orchestrator]]
+- [[spec-firecrawl-pgvector-pipeline]]
+- [[protocol-source-ingestion-runbook]]
 - [[firecrawl-crawling-capabilities]]
 - [[firecrawl-map-capabilities]]
 - [[firecrawl-scrape-capabilities]]
-

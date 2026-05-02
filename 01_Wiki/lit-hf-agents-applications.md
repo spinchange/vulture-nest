@@ -14,18 +14,19 @@ This literature note covers implementation patterns (Unit 3) and the evaluation 
 
 ## Unit 3: Implementation Patterns (Alfred the Gala Host)
 - **Modular Tool Design**: Organizing code into `tools.py` (auxiliary logic) and `retriever.py` (RAG logic) for maintainability.
-- **BM25 Retrieval**: Utilization of lexical (keyword) retrieval as a lightweight, non-embedding alternative for specific search tasks.
+- **BM25 Retrieval**: Utilization of lexical (keyword) retrieval as a lightweight alternative for keyword-driven search tasks where semantic embeddings may be unnecessary or too costly.
 - **Tool Composition**: The technique of binding multiple tool types (FunctionTool, QueryEngineTool) to a single agent for cross-domain mastery.
 
 ## Unit 4: Evaluation (GAIA Benchmark)
-- **GAIA (General AI Assistants)**: A specialized benchmark of 466 real-world tasks designed to be simple for humans but difficult for LLMs.
+- **GAIA (General AI Assistants)**: A benchmark of 466 real-world tasks in the course material, designed to be simple for humans but difficult for LLMs.
 - **Complexity Levels**:
     - **Level 1**: Basic tool use (< 5 steps).
     - **Level 2**: Complex coordination (5-10 steps).
     - **Level 3**: Long-term planning and deep multi-hop reasoning.
-- **Evaluation Philosophy**: Measures successful task completion in a non-gameable environment, focusing on multi-modal understanding and reasoning.
+- **Evaluation Philosophy**: Measures successful task completion in an environment intended to resist shortcut gaming, with emphasis on multi-modal understanding and reasoning.
 
-## Deployment & Local Runtimes (Unit 0)
+## Supplementary Deployment & Local Runtimes
+The source bundle also included setup-oriented material that complements Units 3 and 4 without being the main focus of the application/evaluation sections.
 - **Ollama**: Standard for local LLM inference.
 - **LiteLLM**: Provides a provider-agnostic bridge (`LiteLLMModel`), allowing frameworks like `smolagents` to utilize local models seamlessly.
 
