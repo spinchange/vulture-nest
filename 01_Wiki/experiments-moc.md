@@ -17,6 +17,7 @@ This map gathers practical build-and-learn threads where the vault is used as a 
 ## Research and Evaluation
 - [[karpathy-vision-gap-analysis]]: Measured the symbolic versus neural retrieval gap and turned it into a concrete implementation plan.
 - [[verbalized-sampling-ps-scripts]]: Five candidate [[powershell|PowerShell]] scripts for recovering tail-distribution knowledge from an aligned LLM using verbalized sampling.
+- [[verbalized-sample-skill]]: Operational protocol for distribution-aware reasoning.
 
 ---
 - [[verbalized-sampling]] — The core methodology for recovering "long-tail" knowledge from aligned LLMs.

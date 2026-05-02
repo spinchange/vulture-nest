@@ -4,6 +4,7 @@
 - [[agentic-frameworks-moc]] - Central hub for agent architectures and frameworks.
 - [[multi-agent-patterns-moc]] - Unifying patterns for ADK, Swarm, and A2A.
 - [[agent-development-kit]] - Google's Agent Development Kit (ADK) integration.
+- [[verbalized-sample-skill]] - Operational protocol for distribution-aware reasoning.
 - [[openai-swarm]] - Experimental multi-agent orchestration.
 - [[hf-agents-course-moc]] - Hugging Face Agents Course curriculum.
 - [[workflow-agents]] - Deterministic orchestration patterns.
