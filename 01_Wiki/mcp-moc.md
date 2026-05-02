@@ -23,6 +23,7 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[rust-mcp-patterns]]: Implementation blueprint for [[rust]]-based servers.
 * [[mcp-server-features]]: Detailed guide on server capabilities.
 * [[mcp-client-features]]: Detailed guide on client-side logic.
+* [[lit-mcp-advanced-patterns]] - Progressive discovery, programmatic tool calling, and agent skill patterns.
 
 ## Deployment & Security
 * [[mcp-local-connections]]: Connecting to local servers via stdio.
@@ -34,12 +35,14 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 
 ## Operations & Tooling
 * [[mcp-debugging]]: Tools and strategies for protocol troubleshooting.
+* [[lit-mcp-connections-and-debugging]] - Literature grounding for connection modes and debugging workflow.
 * [[mcp-inspector]]: The interactive testing tool for MCP servers.
 * [[mcp-best-practices]]: Optimization and security implementation guidelines.
 
 ## Examples & Use Cases
 * [[mcp-example-servers]]: Reference implementations of MCP servers.
 * [[mcp-example-clients]]: Reference implementations of MCP hosts.
+* [[lit-mcp-ecosystem-examples]] - Literature grounding for reference clients, servers, and ecosystem implementations.
 * [[mcp-agent-skills]]: Using MCP to power autonomous agent behaviors.
 
 ---
@@ -50,5 +53,8 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[agentic-protocols]] - Unified Communication Protocols
 * [[mcp-best-practices]] - Context Optimization & Tool Hardening
 * [[mcp-authorization]] - Security & Permission Models
+* [[lit-mcp-advanced-patterns]] - Host scaling patterns and agent skill scaffolding
+* [[lit-mcp-connections-and-debugging]] - Connection lifecycle and debugging reference
+* [[lit-mcp-ecosystem-examples]] - Reference clients and servers
 * [[lit-mcp-authorization]] - Specification-level grounding for OAuth 2.1 authorization
 * [[lit-mcp-security-best-practices]] - Threat model and mitigations (attack-vector level)

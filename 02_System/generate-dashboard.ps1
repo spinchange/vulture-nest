@@ -201,9 +201,30 @@ try {
         $normalized = $Target.Trim()
         if ($normalized -match '[{}]') { return $null }
         if ($normalized.Contains('#')) { $normalized = $normalized.Split('#', 2)[0] }
+        if ($normalized -match '[\\/]') { return $null }
+        $extension = [System.IO.Path]::GetExtension($normalized)
+        if (-not [string]::IsNullOrWhiteSpace($extension) -and $extension -ne '.md') { return $null }
         $normalized = [System.IO.Path]::GetFileNameWithoutExtension($normalized)
         if ([string]::IsNullOrWhiteSpace($normalized)) { return $null }
         return $normalized
+    }
+
+    function Get-FrontmatterValue {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Content,
+
+            [Parameter(Mandatory = $true)]
+            [string]$Key
+        )
+
+        if ($Content -notmatch '(?s)^---\s*\r?\n(.*?)\r?\n---') { return $null }
+        $frontmatter = $matches[1]
+        $pattern = "(?m)^\s*$([regex]::Escape($Key))\s*:\s*['""]?([^'""]+)['""]?\s*$"
+        if ($frontmatter -match $pattern) {
+            return $matches[1].Trim()
+        }
+        return $null
     }
 
     function Get-VaultStats {
@@ -221,6 +242,12 @@ try {
         $allContent = (($allMdFiles | Get-Content -Raw | Out-String) -replace "`0", '')
         $orphanCount = 0
         foreach ($note in $allNoteNames) {
+            $noteFile = $wikiNotes | Where-Object { $_.BaseName -eq $note } | Select-Object -First 1
+            if ($noteFile) {
+                $noteContent = Get-Content -Path $noteFile.FullName -Raw
+                $noteType = Get-FrontmatterValue -Content $noteContent -Key 'type'
+                if ($noteType -in @('fleeting', 'handoff')) { continue }
+            }
             $pattern = "\[\[(?:[^|\]]*/)?{0}(?:\.md)?(?:\]|\||#)" -f [regex]::Escape($note)
             if ($allContent -notmatch $pattern) {
                 $orphanCount++
@@ -298,8 +325,9 @@ try {
         }
 
         $linkDensity = if ($noteCount -gt 0) { [math]::Round($totalLinks / $noteCount, 2) } else { 0 }
-        # Penalty: 2 for orphan, 5 for broken, 1 for semantic orphan
-        $healthScore = [math]::Max(0, 100 - ($orphanCount * 2) - ($brokenLinkCount * 5) - ($semanticOrphanCount * 1))
+        # Structural health tracks concrete graph defects. Semantic gaps are a
+        # discovery backlog, so they stay visible without zeroing the score.
+        $healthScore = [math]::Max(0, 100 - ($orphanCount * 2) - ($brokenLinkCount * 5))
 
         return [PSCustomObject]@{
             TotalNotes   = $noteCount
