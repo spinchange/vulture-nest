@@ -714,3 +714,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Pattern Enrichment**: Linked scope minimization in [[pattern-capability-gating]] as the runtime enforcement of least-privilege gating.
 * **Spec Enrichment**: Added reference to [[lit-mcp-security-best-practices]] in [[spec-agentic-source-orchestrator-v2]] Section 4.1 for hardening HTTP-exposed tool surfaces.
 * **Verification**: Confirmed [[mcp-best-practices]] existence. All modified notes passed `audit-yanp.ps1` and `check-broken-links.ps1`. Graph integrity 100%.
+
+
+## [2026-05-02] Codex — Claude Review Normalization
+* **Directive**: Consolidated the Gemini note review trail into durable logs after the review-and-hardening pass.
+* **Review Pipeline**: `02_System/review-gemini-pages.ps1` produced one initial batch report (`claude-review.md`), a 25-note second pass (`claude-review-pass-2.md`), a 25-note third pass (`claude-review-pass-3.md`), and focused per-note follow-up reports for notes that initially required revision.
+* **Outcome**: Review findings were acted on and landed as committed wiki hardening batches covering ADK, agentic workflow, Firecrawl, HF agents, and verbalized-sample graph work. Focused Claude re-reviews returned `accept` across the revised note sets; the one pass-3 `revise` note ([[agent-skills-index]]) was corrected and committed separately.
+* **Canonical Record**: Durable summaries live here and in [[Session 2026-05-02]]. The `claude-review*.md` files in `02_System/` are working artifacts, not the authoritative long-term record.
