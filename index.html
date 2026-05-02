@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -492,6 +492,8 @@
 <ul>
 <li><a href="spec-memory-mcp.html" class="wikilink">spec-memory-mcp</a> - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
 </li>
+<li><a href="spec-chatgpt-web-mcp-wrapper.html" class="wikilink">spec-chatgpt-web-mcp-wrapper</a> - Remote MCP wrapper for ChatGPT web access to Vulture Nest
+</li>
 <li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> - Rust Safe Core: serde-validated capability gate + Tier-0→Tier-1 state transfer
 </li>
 <li><a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a> - Vault Gardening Protocol: thin nodes, orphans, drift, merge/split/wire cadence
@@ -532,6 +534,8 @@
 </ul>
 <h2>Multi-Agent Pattern Language</h2>
 <ul>
+<li><a href="pattern-supabase-flask-integration.html" class="wikilink">pattern-supabase-flask-integration</a> - Flask + Supabase: module-level singleton, RLS as auth layer, method-chain query API
+</li>
 <li><a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a> - Agent A calls Agent B, waits for result (delegation primitive)
 </li>
 <li><a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a> - Flat key-value working memory across agent boundaries
@@ -638,6 +642,10 @@
 </ul>
 <h2>Literature Notes (Grounded Sources)</h2>
 <ul>
+<li><a href="lit-supabase-flask-quickstart.html" class="wikilink">lit-supabase-flask-quickstart</a> - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)
+</li>
+<li><a href="lit-chatgpt-web-mcp-guidance.html" class="wikilink">lit-chatgpt-web-mcp-guidance</a> - Literature: ChatGPT Web MCP Guidance (remote only, write confirmations, plan gating)
+</li>
 <li><a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up)
 </li>
 <li><a href="lit-mcp-security-best-practices.html" class="wikilink">lit-mcp-security-best-practices</a> - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, local compromise, scope minimization)
@@ -828,6 +836,7 @@
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-chatgpt-web-mcp-guidance.html" class="">lit-chatgpt-web-mcp-guidance</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
@@ -836,6 +845,7 @@
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
 <li><a href="lit-skills-agent-behavior.html" class="">lit-skills-agent-behavior</a></li>
+<li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
 <li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
 <li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
 <li><a href="log.html" class="">log</a></li>
@@ -850,6 +860,7 @@
 <li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
 <li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
 <li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="pattern-supabase-flask-integration.html" class="">pattern-supabase-flask-integration</a></li>
 <li><a href="pkm-history.html" class="">pkm-history</a></li>
 <li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
 <li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
@@ -865,6 +876,7 @@
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="spec-chatgpt-web-mcp-wrapper.html" class="">spec-chatgpt-web-mcp-wrapper</a></li>
 <li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
 <li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
 <li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
