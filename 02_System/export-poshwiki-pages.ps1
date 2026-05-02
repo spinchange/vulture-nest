@@ -22,9 +22,14 @@ $ErrorActionPreference = 'Stop'
 try {
     $vaultRoot = Split-Path $PSScriptRoot -Parent
     $wikiModulePath = Join-Path $vaultRoot '00_Raw/PoShWiKi/PoShWiKi.psd1'
+    $activeDbPath = Join-Path $vaultRoot '00_Raw/PoShWiKi/wiki.db'
 
     if (-not (Test-Path $wikiModulePath)) {
         throw "PoShWiKi module not found at $wikiModulePath"
+    }
+
+    if (-not (Test-Path $activeDbPath)) {
+        throw "Active PoShWiKi database not found at $activeDbPath"
     }
 
     if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
@@ -35,6 +40,8 @@ try {
         New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
     }
 
+    # Keep export aligned with the vault's active sidecar DB instead of the module default.
+    $env:POSHWIKI_DB_PATH = $activeDbPath
     Import-Module $wikiModulePath -Force
 
     $pages = @(Get-WikiPageList)

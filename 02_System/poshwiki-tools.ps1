@@ -206,6 +206,31 @@ CREATE TABLE IF NOT EXISTS Debates (
         return "Session $(Get-Date -Format 'yyyy-MM-dd')"
     }
 
+    function Invoke-PoShWiKiSectionCommand {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Command,
+
+            [Parameter(Mandatory = $true)]
+            [string]$Title,
+
+            [Parameter(Mandatory = $true)]
+            [string]$Section,
+
+            [Parameter(Mandatory = $true)]
+            [string]$Content
+        )
+
+        $tempPath = [System.IO.Path]::GetTempFileName()
+        try {
+            $encoding = [System.Text.UTF8Encoding]::new($false)
+            [System.IO.File]::WriteAllText($tempPath, $Content, $encoding)
+            return Invoke-PoShWiKiCli -Command $Command -Arguments @($Title, $Section, '-File', $tempPath)
+        } finally {
+            Remove-Item -LiteralPath $tempPath -Force -ErrorAction SilentlyContinue
+        }
+    }
+
     function Invoke-WikiNote {
         <#
         .SYNOPSIS
@@ -235,7 +260,7 @@ CREATE TABLE IF NOT EXISTS Debates (
             Invoke-PoShWiKiCli -Command "save" -Arguments @($Title, "# $Title`n") | Out-Null
         }
 
-        return Invoke-PoShWiKiCli -Command "upsert-section" -Arguments @($Title, $Section, $Content)
+        return Invoke-PoShWiKiSectionCommand -Command "upsert-section" -Title $Title -Section $Section -Content $Content
     }
 
     function Invoke-WikiLog {
@@ -265,11 +290,11 @@ CREATE TABLE IF NOT EXISTS Debates (
         } else {
             # Ensure Actions section exists
             if ($page.Content -notmatch "(?m)^##\s+Actions") {
-                 Invoke-PoShWiKiCli -Command "upsert-section" -Arguments @($Title, "Actions", "") | Out-Null
+                 Invoke-PoShWiKiSectionCommand -Command "upsert-section" -Title $Title -Section "Actions" -Content "" | Out-Null
             }
         }
 
-        return Invoke-PoShWiKiCli -Command "append-section" -Arguments @($Title, "Actions", $Content)
+        return Invoke-PoShWiKiSectionCommand -Command "append-section" -Title $Title -Section "Actions" -Content $Content
     }
 
     function New-WikiSeam {
@@ -428,26 +453,39 @@ SELECT last_insert_rowid();
 
         # Prepare arguments for pwsh
         $cliArgs = @("-NoProfile", "-File", $WikiScript, $Command) + $Arguments + @("-JSON")
+        $dbPath = Get-PoShWiKiDatabasePath
+        $previousDbPath = $env:POSHWIKI_DB_PATH
 
-        # Execute and capture output
-        $output = & pwsh @cliArgs 2>$null
-        $exitCode = $LASTEXITCODE
+        try {
+            # Keep CLI calls aligned with the same active DB used by direct helper functions.
+            $env:POSHWIKI_DB_PATH = $dbPath
 
-        if ($exitCode -ne 0) {
-            if ($Quiet) { return $null }
-            throw "PoShWiKi CLI command '$Command' failed with exit code $exitCode."
-        }
+            # Execute and capture output
+            $output = & pwsh @cliArgs 2>$null
+            $exitCode = $LASTEXITCODE
 
-        if ($output) {
-            $jsonStr = $output | Out-String
-            try {
-                return $jsonStr | ConvertFrom-Json
-            } catch {
-                return $jsonStr
+            if ($exitCode -ne 0) {
+                if ($Quiet) { return $null }
+                throw "PoShWiKi CLI command '$Command' failed with exit code $exitCode."
+            }
+
+            if ($output) {
+                $jsonStr = $output | Out-String
+                try {
+                    return $jsonStr | ConvertFrom-Json
+                } catch {
+                    return $jsonStr
+                }
+            }
+
+            return $null
+        } finally {
+            if ($null -eq $previousDbPath) {
+                Remove-Item Env:POSHWIKI_DB_PATH -ErrorAction SilentlyContinue
+            } else {
+                $env:POSHWIKI_DB_PATH = $previousDbPath
             }
         }
-
-        return $null
     }
 } catch {
     Write-Error "poshwiki-tools.ps1 failed: $_"
