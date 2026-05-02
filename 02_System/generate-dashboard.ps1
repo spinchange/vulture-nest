@@ -220,7 +220,7 @@ try {
 
         if ($Content -notmatch '(?s)^---\s*\r?\n(.*?)\r?\n---') { return $null }
         $frontmatter = $matches[1]
-        $pattern = "(?m)^\s*$([regex]::Escape($Key))\s*:\s*['""]?([^'""]+)['""]?\s*$"
+        $pattern = "(?m)^\s*$([regex]::Escape($Key))\s*:\s*['""]?([^'""]+?)['""]?\s*$"
         if ($frontmatter -match $pattern) {
             return $matches[1].Trim()
         }
