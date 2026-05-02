@@ -65,5 +65,3 @@ The semantic content of this skill is derived from the `verbalized-sample-SKILL.
 - **Concepts:** [[verbalized-sampling]], [[verbalized-sampling-experiment]], [[agent-evaluation]]
 - **Literature:** [[lit-verbalized-sampling-paper]], [[lit-skills-agent-behavior]]
 - **Registries:** [[agent-skills-index]], [[mcp-agent-skills]]
-
-FOLLOWUP: Update [[agent-skills-index]] and [[mcp-agent-skills]] to include a reference to this skill as a core capability for distribution-aware reasoning.

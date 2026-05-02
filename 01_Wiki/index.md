@@ -111,6 +111,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 
 ## Verbalized Sampling
 * [[verbalized-sampling]] - Core concept: typicality bias, mode collapse, diversity as retrieval problem
+* [[verbalized-sample-skill]] - Operational protocol for distribution-aware reasoning
 * [[mode-anchored-departure]] - Approach B mechanism: modal anchor, P≈ stat, departure enumeration, ParseWarning taxonomy
 * [[verbalized-sampling-ps-scripts]] - Approach A/B/C comparison; script design rationale
 * [[verbalized-sampling-experiment]] - Audio series processing workflow and findings
