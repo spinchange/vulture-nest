@@ -111,6 +111,7 @@ type: community
 
 ## Literature Notes (Grounded Sources)
 * [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up)
+* [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, local compromise, scope minimization)
 * [[lit-llm-wiki]] - Literature: LLM Wiki (Foundational Pattern)
 
 * [[lit-typescript-handbook]] - TypeScript Handbook (structural types, discriminated unions)
