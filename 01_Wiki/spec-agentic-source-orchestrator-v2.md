@@ -44,6 +44,8 @@ Authority is centralized in `02_System/pipeline-policy.yaml`.
 ### 4.1 Transport Security & Authorization
 Tools exposed via HTTP transport MUST be protected per [[lit-mcp-authorization]]; the `propose_source_intake` and `promote_synthesis_candidate` gates are highest-privilege and SHOULD require scope validation before execution.
 
+See [[lit-mcp-security-best-practices]] for the full threat model applicable to HTTP-exposed MCP tool surfaces.
+
 ## 5. Handoff & Seams
 Every orchestration step must produce a **Seam Artifact** containing the current state, open risks, and next recommended action. This ensures continuity across agent sessions.
 

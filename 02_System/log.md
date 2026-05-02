@@ -698,3 +698,12 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Spec Enrichment**: Added HTTP authorization requirement to [[spec-agentic-source-orchestrator-v2]].
 - **Pattern Enrichment**: Added implementation reference to [[pattern-capability-gating]].
 - **Verification**: Index was already updated by Claude. Graph integrity confirmed.
+
+
+## [2026-05-01] gemini-cli — Graph Integration: lit-mcp-security-best-practices
+* **Directive**: Executed [[claude-mcp-security-bp-handoff-2026-05-01]] — integrated the new threat model literature into the vault graph.
+* **MOC Update**: Wired [[lit-mcp-security-best-practices]] into [[mcp-moc]] under **Deployment & Security** and **See Also**.
+* **Back-reference**: Added companion threat model reference to [[lit-mcp-authorization]]'s See Also section.
+* **Pattern Enrichment**: Linked scope minimization in [[pattern-capability-gating]] as the runtime enforcement of least-privilege gating.
+* **Spec Enrichment**: Added reference to [[lit-mcp-security-best-practices]] in [[spec-agentic-source-orchestrator-v2]] Section 4.1 for hardening HTTP-exposed tool surfaces.
+* **Verification**: Confirmed [[mcp-best-practices]] existence. All modified notes passed `audit-yanp.ps1` and `check-broken-links.ps1`. Graph integrity 100%.

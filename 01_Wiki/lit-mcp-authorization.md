@@ -304,10 +304,10 @@ a malicious client can trigger requests to private admin endpoints.
 | `400 Bad Request` | Malformed authorization request | Structural errors in OAuth requests |
 
 ---
-
 ## See Also
 
 - [[lit-mcp-security-and-auth]] — companion note covering security best practices, SSRF, session hijacking
+- [[lit-mcp-security-best-practices]] — companion threat model: confused deputy, SSRF, session hijacking attack flows and mitigations
 - [[mcp-moc]] — MCP Map of Content: full protocol reference
 - [[capability-lattice-spec]] — lattice enforcement model; authorization gates map to lattice tiers
 - [[spec-agentic-source-orchestrator-v2]] — orchestrator design; authorization constraints on agentic tool calls

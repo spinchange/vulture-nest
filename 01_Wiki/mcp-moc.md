@@ -30,6 +30,7 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[mcp-security]]: Production hardening and trust models.
 * [[mcp-authorization]]: Managing permissions and user consent (OAuth 2.1).
 * [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up flow)
+* [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, scope minimization)
 
 ## Operations & Tooling
 * [[mcp-debugging]]: Tools and strategies for protocol troubleshooting.
@@ -50,3 +51,4 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[mcp-best-practices]] - Context Optimization & Tool Hardening
 * [[mcp-authorization]] - Security & Permission Models
 * [[lit-mcp-authorization]] - Specification-level grounding for OAuth 2.1 authorization
+* [[lit-mcp-security-best-practices]] - Threat model and mitigations (attack-vector level)
