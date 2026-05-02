@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[[mcp-moc|MCP]] Remote Connections — Vulture Portal</title>
+  <title>Handoff: lit-mcp-security-best-practices Graph Integration — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,21 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[[mcp-moc|MCP]] Remote Connections</span>
+      <span>Handoff: lit-mcp-security-best-practices Graph Integration</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[[mcp-moc|MCP]] Remote Connections</h1>
+      <h1 class="note-title">Handoff: lit-mcp-security-best-practices Graph Integration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Remote Connections</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-sse, remote-mcp-server, custom-connectors</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: lit-mcp-security-best-practices Graph Integration</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">gemini</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -443,74 +444,228 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>MCP Remote Connections</h1>
-<p>Remote MCP connections use the <strong>HTTP/SSE transport</strong>, allowing AI applications to connect to internet-hosted tools and data sources that reside outside the local environment.</p>
-<h2>Architecture</h2>
-<ul>
-<li><strong>Host</strong>: The AI application (e.g., Claude.ai) acts as the client.
-</li>
-<li><strong>Server</strong>: A web-hosted service that implements the MCP protocol over HTTP.
-</li>
-<li><strong>Bridge</strong>: Custom Connectors act as the secure link between the host and the remote server.
-</li>
-</ul>
-<h2>Connection Process</h2>
+        <h1>Handoff: lit-mcp-security-best-practices Graph Integration</h1>
+<p><strong>To:</strong> Gemini (The Librarian) <strong>From:</strong> Claude (The Chronicler) <strong>Session date:</strong> 2026-05-01 <strong>Priority:</strong> Standard — graph/index integration only</p>
+<hr>
+<h2>1. Target Note Created</h2>
+<table>
+<thead><tr>
+<th>Item</th>
+<th>Value</th>
+</tr></thead><tbody>
+<tr>
+<td>Path</td>
+<td><code>01_Wiki/lit-mcp-security-best-practices.md</code></td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Literature: MCP Security Best Practices</td>
+</tr>
+<tr>
+<td>Type</td>
+<td><code>literature</code></td>
+</tr>
+<tr>
+<td>Status</td>
+<td><code>active</code></td>
+</tr>
+<tr>
+<td>Author</td>
+<td><code>claude-sonnet-4-6</code></td>
+</tr>
+<tr>
+<td>Commit</td>
+<td><code>503353ed</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>2. Source Provenance</h2>
+<table>
+<thead><tr>
+<th>Field</th>
+<th>Value</th>
+</tr></thead><tbody>
+<tr>
+<td>Originally proposed URL</td>
+<td><code>https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices</code></td>
+</tr>
+<tr>
+<td>Resolved indexed URL</td>
+<td><code>https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices</code></td>
+</tr>
+<tr>
+<td>Supabase <code>page_id</code></td>
+<td><code>eede9071-46f4-4463-a392-acea3b7000c0</code></td>
+</tr>
+<tr>
+<td>Crawl job</td>
+<td><code>019de5f7-b8d3-7580-8bed-dc7d3db35b18</code></td>
+</tr>
+<tr>
+<td>Indexed chunks</td>
+<td>13 total; 12 retrieved</td>
+</tr>
+</tbody>
+</table>
+<p>The spec URL redirected to the docs/tutorials path at crawl time. This is noted in the note&#39;s <code>source_note</code> frontmatter field. <strong>Do not alter provenance</strong> unless you find an actual mismatch between a chunk&#39;s content and the section it supports.</p>
+<p><strong>chunk_ids used (all from page_id eede9071):</strong></p>
+<pre><code>2a5a73f7-5483-466a-a7f1-bd83efa758a6   # Purpose and Scope
+49d4cae6-cb2d-46d1-9a95-faf3a18b959b   # Confused Deputy: terminology, vulnerable conditions
+c7bd1a10-95cd-48f6-ae41-7a721f0e2310   # Confused Deputy: attack steps + required mitigations
+8dfd84d9-a24b-47ba-bf21-0b954f303aa6   # Confused Deputy: state parameter validation invariant
+d6f28c8d-ffec-4bc2-b846-7aa94f01f4ff   # Token Passthrough: definition, risks, mitigation
+4b8d2f91-2025-4c88-9916-de7c65163aa0   # SSRF: attack description + primary mitigations
+c6afbfd3-cc9e-4e03-98f8-5119ab5eec95   # SSRF: egress proxies, DNS TOCTOU, OWASP references
+508b45ed-d535-4018-9822-a39e3b23488a   # Session Hijacking: attack flows + mitigations
+d5884eb8-9f29-4237-817d-35b88a01d6bb   # Session Hijacking: user-id binding continuation
+00ef3e2c-ea96-44fe-a97d-0a309afc7a4b   # Local MCP Server Compromise: intro + attack description
+cee699d5-922d-4371-b558-ba75bfa4696b   # Local MCP Server: risks + privilege escalation mitigation
+52ba0232-bf91-4ee6-9d47-6a4ea58d46a8   # Scope Minimization: risks, mitigation model, common mistakes</code></pre>
+<p>The missing 13th chunk (chunk_index: 0) was not returned by any semantic query at threshold ≥ 0.35. It is likely the page preamble/table-of-contents chunk. Coverage of all required topic areas is complete from the 12 retrieved chunks.</p>
+<hr>
+<h2>3. Summary of Main Claims</h2>
+<p>The note covers six areas of the MCP Security Best Practices document:</p>
 <ol>
-<li><strong>URL Registration</strong>: Provide the host application with the HTTPS URL of the remote MCP server.
-</li>
-<li><strong>Authentication</strong>: Remote servers typically require secure authentication, such as:
-<ul>
-<li>
-<ul>
-<li><strong>OAuth</strong>: Redirecting the user to a third-party provider.
-</li>
-<li><strong>API Keys</strong>: Provided during the setup phase.
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Capability Handshake</strong>: Once authenticated, the host and server negotiate features via the protocol.
+<li><strong>Purpose and scope</strong> — companion document to the MCP Authorization spec; focuses on
+<p>attack vectors and mitigations for developers, operators, and security reviewers; references RFC 9700 (OAuth 2.0 Security BCP).</p>
 </li>
 </ol>
-<h2>Use Cases</h2>
-<ul>
-<li><strong>SaaS Integration</strong>: Connecting to project management tools (Linear), repositories (GitHub), or communication platforms (Slack) that are not local to the machine.
+<ol>
+<li><strong>Confused deputy</strong> — requires all four conditions (static client ID + DCR + consent cookie
+<p>+ absent per-client consent gate). Attack bypasses user consent via cookie reuse across a malicious dynamically-registered client. Mitigation: per-client consent registry, <code>__Host-</code> cookie prefix, exact redirect URI matching, cryptographically random <code>state</code> set only after consent approval.</p>
 </li>
-<li><strong>Shared Infrastructure</strong>: Centralized servers that provide context or tools to an entire team or organization.
+</ol>
+<ol>
+<li><strong>Token passthrough</strong> — explicitly forbidden anti-pattern. Four risk dimensions: bypasses
+<p>downstream security controls, destroys audit trail, enables exfiltration via proxy, breaks trust boundaries. MCP servers must obtain separate tokens for every upstream API they call.</p>
 </li>
-</ul>
-<h2>Security Considerations</h2>
-<ul>
-<li><strong>Encryption</strong>: All remote traffic must be encrypted via TLS/SSL.
+</ol>
+<ol>
+<li><strong>SSRF</strong> — malicious MCP server poisons <code>resource_metadata</code>, <code>authorization_servers</code>,
+<p><code>token_endpoint</code> URLs with internal addresses. Mitigations: enforce HTTPS, block private IP ranges per RFC 9728 &#167;7.7 (including <code>169.254.0.0/16</code> cloud metadata range), validate redirect chains, use egress proxy (Smokescreen pattern), pin DNS to defeat TOCTOU rebinding.</p>
 </li>
-<li><strong>Authorization</strong>: Hosts can granularly enable or disable specific tools from the remote server.
+</ol>
+<ol>
+<li><strong>Session hijacking and event injection</strong> — two variants: prompt injection via shared queue
+<p>in multi-server deployments (exploits resumable streams + <code>notifications/tools/list_changed</code>), and direct impersonation. Mitigation: <code>&lt;user_id&gt;:&lt;session_id&gt;</code> binding where <code>user_id</code> is derived from the verified token, not supplied by the client.</p>
 </li>
-<li><strong>Trust</strong>: Only connect to remote servers from trusted sources, as they receive context from your conversations.
+</ol>
+<ol>
+<li><strong>Scope minimization</strong> — broad up-front scopes expand blast radius and enable privilege
+<p>chaining. Correct model: minimal baseline + targeted <code>WWW-Authenticate</code> step-up challenges. Six-entry antipattern table (wildcard scopes, returning full catalog in every challenge, trusting token claims without server-side authorization logic, etc.).</p>
 </li>
-</ul>
+</ol>
 <hr>
-<h2>References</h2>
+<h2>4. Wikilinks Present in the Note</h2>
+<p>All required cross-links are in the &quot;See Also&quot; section of <code>lit-mcp-security-best-practices.md</code>:</p>
+<pre><code>[[lit-mcp-authorization]]
+[[lit-mcp-security-and-auth]]
+[[mcp-moc]]
+[[capability-lattice-spec]]
+[[pattern-capability-gating]]
+[[spec-agentic-source-orchestrator-v2]]</code></pre>
+<hr>
+<h2>5. MOC/Index Integration Tasks for Gemini</h2>
+<p>Files already updated in commit <code>503353ed</code>:</p>
 <ul>
-<li>Source: <code>00_Raw/mcp/Connect to remote MCP Servers.md</code>
+<li><code>01_Wiki/index.md</code> — entry added under Literature Notes
 </li>
-<li><a href="mcp-transport.html" class="wikilink">mcp-transport</a>
-</li>
-<li><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>
-</li>
-<li><a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a>
-</li>
-<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
-</li>
-<li><a href="mcp-security.html" class="wikilink">mcp-security</a>
-</li>
-<li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
+<li><code>01_Wiki/lit-mcp-security-and-auth.md</code> — <code><a href="lit-mcp-security-best-practices.html" class="wikilink">lit-mcp-security-best-practices</a></code> back-reference added to See Also
 </li>
 </ul>
-<ul>
-<li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
+<p>Remaining integration work for you as Librarian:</p>
+<h3>5a. <code>01_Wiki/mcp-moc.md</code> — ADD entry (REQUIRED)</h3>
+<p>Add under <strong>Deployment &amp; Security</strong>:</p>
+<pre><code>* [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, scope minimization)</code></pre>
+<p>The MOC already has <code><a href="mcp-security.html" class="wikilink">mcp-security</a></code> and <code><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a></code> in that section, plus <code><a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a></code> from the previous handoff. This note completes the literature coverage for the security cluster.</p>
+<p>Also add to the <strong>See Also</strong> block at the bottom:</p>
+<pre><code>* [[lit-mcp-security-best-practices]] - Threat model and mitigations (attack-vector level)</code></pre>
+<h3>5b. <code>01_Wiki/lit-mcp-authorization.md</code> — ADD back-reference (REQUIRED)</h3>
+<p>The authorization spec note&#39;s See Also currently lists <code><a href="lit-mcp-security-and-auth.html" class="wikilink">lit-mcp-security-and-auth</a></code> but not the new threats note. Add:</p>
+<pre><code>- [[lit-mcp-security-best-practices]] — companion threat model: confused deputy, SSRF, session hijacking attack flows and mitigations</code></pre>
+<h3>5c. <code>01_Wiki/pattern-capability-gating.md</code> — OPTIONAL enrichment</h3>
+<p>Scope minimization maps directly to capability gating: the pattern&#39;s lattice rule (<code>Required ⊆ Caps(B) ∩ Scope(A)</code>) is violated when broad omnibus scopes are granted. Consider adding to References:</p>
+<pre><code>- [[lit-mcp-security-best-practices]] — scope minimization as the runtime enforcement of least-privilege gating</code></pre>
+<h3>5d. <code>01_Wiki/spec-agentic-source-orchestrator-v2.md</code> — OPTIONAL enrichment</h3>
+<p>The orchestrator exposes a tool surface over HTTP. The threats documented here (token passthrough, session hijacking, SSRF during discovery) apply directly to how the orchestrator&#39;s MCP tools should be hardened. Consider adding a reference in Section 4 (Policy Enforcement):</p>
+<pre><code>See [[lit-mcp-security-best-practices]] for the full threat model applicable to HTTP-exposed MCP tool surfaces.</code></pre>
+<hr>
+<h2>6. Validation Results</h2>
+<table>
+<thead><tr>
+<th>Check</th>
+<th>Result</th>
+</tr></thead><tbody>
+<tr>
+<td>YANP audit (<code>audit-yanp.ps1</code>)</td>
+<td><strong>PASSED</strong> — &quot;All notes are YANP compliant!&quot;</td>
+</tr>
+<tr>
+<td>Broken-link check (<code>check-broken-links.ps1</code>)</td>
+<td><strong>PASSED</strong> — &quot;No broken links found. Graph integrity is 100%.&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> An initial YANP run failed because the <code>source_note</code> frontmatter field used a YAML folded scalar (<code>&gt;</code>), which the audit script&#39;s parser rejected as &quot;Invalid frontmatter line.&quot; Fixed by converting to a single-line quoted string before the final commit.</p>
+<hr>
+<h2>7. Commit Status</h2>
+<table>
+<thead><tr>
+<th>Item</th>
+<th>Value</th>
+</tr></thead><tbody>
+<tr>
+<td>Committed</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>Commit hash</td>
+<td><code>503353ed</code></td>
+</tr>
+<tr>
+<td>Branch</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>Files in commit</td>
+<td><code>01_Wiki/lit-mcp-security-best-practices.md</code> (new), <code>01_Wiki/index.md</code> (modified), <code>01_Wiki/lit-mcp-security-and-auth.md</code> (modified)</td>
+</tr>
+<tr>
+<td>Pushed to remote</td>
+<td>No — push when your integration work is ready</td>
+</tr>
+</tbody>
+</table>
+<p>After your integration edits (&#167;5a–5d), commit with:</p>
+<pre><code>chore(graph): wire lit-mcp-security-best-practices into MCP MOC and cross-references</code></pre>
+<hr>
+<h2>8. Remaining Risks and Open Questions</h2>
+<ol>
+<li><strong>13th chunk not retrieved</strong> — chunk_index 0 (likely the page TOC/preamble) was not returned
+<p>by any query at threshold ≥ 0.35. If you identify a topic gap in the note, query <code>semantic_search_sources</code> with a targeted term to retrieve it. Do not re-crawl.</p>
 </li>
-</ul>
+</ol>
+<ol>
+<li><strong>Spec URL redirect</strong> — The canonical spec URL now redirects to the docs/tutorials path.
+<p>This may reflect a deliberate re-homing of the content from the spec to the docs site. The <code>source_note</code> field documents this. If MCP ever publishes a versioned spec-path equivalent at the original URL, the note&#39;s <code>source</code> field should be updated to point there.</p>
+</li>
+</ol>
+<ol>
+<li><strong><code>mcp-best-practices</code> note</strong> — <code>lit-mcp-security-and-auth.md</code> links <code><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a></code>
+<p>in its See Also. This note was not verified to exist during this session. Confirm it is a valid target or flag it as a broken link.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Confused deputy state param invariant</strong> — Chunk <code>8dfd84d9</code> documents a subtle but critical
+<p>invariant: the consent cookie/session storing the OAuth <code>state</code> value MUST NOT be set until after the user approves the MCP consent screen. This is an implementation trap that existing MCP proxy servers may have wrong. Consider whether this warrants a dedicated implementation warning in <code><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a></code> or a new permanent note.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Overlap with <code>lit-mcp-security-and-auth</code></strong> — The existing Gemini-authored security note
+<p>covers confused deputy, SSRF, token passthrough, and session hijacking at a summary level. The new note goes substantially deeper on each. The two notes are complementary, not redundant; the existing one is better as a quick-reference, the new one as an attack-vector reference. Consider whether the existing note should explicitly label itself as the quick-reference and link the new note as the deep-dive.</p>
+</li>
+</ol>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -524,22 +679,19 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
-<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="mcp-security.html" class="">mcp-security</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
-<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
+<li><a href="lit-mcp-security-best-practices.html" class="">lit-mcp-security-best-practices</a></li>
 <li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
-<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>
-<li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
 </ul>
           </div>
         </div>

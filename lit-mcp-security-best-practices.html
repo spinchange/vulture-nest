@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: MCP Security Best Practices — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: MCP Security Best Practices</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: MCP Security Best Practices</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: MCP Security Best Practices</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">crawl_job</span><span class="fm-val">019de5f7-b8d3-7580-8bed-dc7d3db35b18</span></span>
+<span class="fm-field"><span class="fm-key">source_page_id</span><span class="fm-val">eede9071-46f4-4463-a392-acea3b7000c0</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">chunk_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">source_note</span><span class="fm-val">Spec URL https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices redirected to the docs/tutorials path at crawl time. All chunk_ids reference the resolved URL.</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: MCP Security Best Practices</h1>
+<p>Canonical source: MCP docs/tutorials — Security Best Practices (resolved from spec 2025-11-25). This document is a companion to the MCP Authorization Specification. Where <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> covers the protocol mechanics, this document identifies attack vectors and prescribes concrete mitigations for MCP implementors across five threat categories.</p>
+<hr>
+<h2>Purpose and Scope</h2>
+<p>&gt; &quot;This document provides security considerations for the Model Context Protocol (MCP), &gt; complementing the MCP Authorization specification. This document identifies security risks, &gt; attack vectors, and best practices specific to MCP implementations.&quot;</p>
+<p>Primary audience: developers implementing MCP authorization flows, MCP server operators, and security professionals evaluating MCP-based systems. The document is intended to be read alongside the MCP Authorization specification and RFC 9700 (OAuth 2.0 Security Best Practices).</p>
+<p>The five threat categories covered:</p>
+<ol>
+<li>Confused Deputy Problem
+</li>
+<li>Token Passthrough
+</li>
+<li>Server-Side Request Forgery (SSRF)
+</li>
+<li>Session Hijacking and Event Injection
+</li>
+<li>Local MCP Server Compromise
+</li>
+</ol>
+<p>A sixth design principle — Scope Minimization — closes the document.</p>
+<hr>
+<h2>1. Confused Deputy Problem</h2>
+<h3>What It Is</h3>
+<p>An MCP proxy server that connects to a third-party API acts as a single OAuth client to that API using a <strong>static client ID</strong>. When it simultaneously allows MCP clients to <strong>dynamically register</strong> (each receiving their own <code>client_id</code>), a window opens for an attacker to steal authorization without user consent.</p>
+<p>The attack requires all four of these conditions:</p>
+<ul>
+<li>The proxy uses a static <code>client_id</code> with the third-party authorization server
+</li>
+<li>The proxy supports MCP client dynamic registration
+</li>
+<li>The third-party AS sets a <strong>consent cookie</strong> after the first legitimate authorization
+</li>
+<li>The proxy does <strong>not</strong> enforce per-client consent before forwarding to the third-party AS
+</li>
+</ul>
+<h3>Attack Flow (8 Steps)</h3>
+<ol>
+<li>Legitimate user authenticates through the proxy → third-party AS sets a consent cookie
+</li>
+<li>Attacker dynamically registers a malicious client with a crafted <code>redirect_uri: attacker.com</code>
+</li>
+<li>Attacker sends victim a malicious authorization link
+</li>
+<li>Victim&#39;s browser presents the consent cookie; third-party AS skips the consent screen
+</li>
+<li>Authorization code is redirected to <code>attacker.com</code>
+</li>
+<li>Attacker exchanges stolen code for access token
+</li>
+<li>Attacker now has API access as the compromised user — with no explicit approval
+</li>
+</ol>
+<h3>Required Mitigations</h3>
+<p><strong>Per-Client Consent Storage</strong> — MCP proxy servers <strong>MUST</strong>:</p>
+<ul>
+<li>Maintain a registry of approved <code>client_id</code> values per user
+</li>
+<li>Check this registry <strong>before</strong> initiating the third-party authorization flow
+</li>
+<li>Store consent decisions server-side (DB or server-bound cookie)
+</li>
+</ul>
+<p><strong>Consent UI</strong> — The MCP-level consent page <strong>MUST</strong>:</p>
+<ul>
+<li>Identify the requesting client by name
+</li>
+<li>Show third-party API scopes and <code>redirect_uri</code>
+</li>
+<li>Implement CSRF protection (state parameter, CSRF tokens)
+</li>
+<li>Block clickjacking via <code>frame-ancestors</code> CSP / <code>X-Frame-Options: DENY</code>
+</li>
+</ul>
+<p><strong>Consent Cookie Security</strong> — If consent is tracked via cookies, they <strong>MUST</strong>:</p>
+<ul>
+<li>Use the <code>__Host-</code> prefix
+</li>
+<li>Set <code>Secure</code>, <code>HttpOnly</code>, and <code>SameSite=Lax</code>
+</li>
+<li>Be cryptographically signed or backed by server-side sessions
+</li>
+<li>Bind to the specific <code>client_id</code>, not just &quot;user has consented&quot;
+</li>
+</ul>
+<p><strong>Redirect URI Validation</strong> — The proxy <strong>MUST</strong> use exact string matching; reject any request whose <code>redirect_uri</code> differs from the registered value.</p>
+<p><strong>OAuth State Parameter</strong> — The proxy <strong>MUST</strong>:</p>
+<ul>
+<li>Generate a cryptographically secure random <code>state</code> for each authorization request
+</li>
+<li>Store the <code>state</code> server-side <strong>only after</strong> the user approves the MCP-level consent screen
+</li>
+<li>Validate exact <code>state</code> match at the callback; reject missing or mismatched values
+</li>
+<li>Treat <code>state</code> values as single-use with a short TTL (e.g., 10 minutes)
+</li>
+</ul>
+<p>&gt; <strong>Critical invariant:</strong> The consent cookie or session storing the <code>state</code> value <strong>MUST NOT</strong> &gt; be set until after the user has approved the MCP server&#39;s consent screen. Setting it before &gt; renders the consent screen ineffective.</p>
+<hr>
+<h2>2. Token Passthrough</h2>
+<h3>What It Is</h3>
+<p>Token passthrough is an <strong>explicitly forbidden anti-pattern</strong> where an MCP server accepts a token from an MCP client without validating that the token was issued for the MCP server itself, and then forwards that token to a downstream API.</p>
+<h3>Why It Is Dangerous</h3>
+<ul>
+<li><strong>Security control circumvention</strong>: Rate limiting, request validation, and traffic monitoring
+<p>on the downstream API may depend on token audience constraints. Bypassing audience validation means bypassing those controls.</p>
+</li>
+<li><strong>Accountability loss</strong>: The MCP server cannot distinguish between MCP clients when tokens
+<p>are upstream-issued and opaque. Downstream logs show requests appearing to come from a different identity, breaking audit trails and incident investigation.</p>
+</li>
+<li><strong>Proxy for exfiltration</strong>: A stolen token carried as-is can be used to exfiltrate data
+<p>through the MCP server without the attacker needing to obtain a new token.</p>
+</li>
+<li><strong>Trust boundary violation</strong>: The downstream resource server grants trust to specific entities.
+<p>Forwarding another entity&#39;s token breaks that trust model and can enable cross-service token reuse.</p>
+</li>
+<li><strong>Future compatibility risk</strong>: A server that starts as a &quot;pure proxy&quot; accumulates a pattern
+<p>that becomes harder to evolve toward proper token audience separation.</p>
+</li>
+</ul>
+<h3>Mitigation</h3>
+<p>MCP servers <strong>MUST NOT</strong> accept any tokens not explicitly issued for the MCP server.</p>
+<p>When an MCP server needs to call upstream APIs, it <strong>MUST</strong> obtain a separate token from the upstream authorization server — using its own client credentials — for that specific resource. The client&#39;s token never leaves the MCP server.</p>
+<p>See <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> &#167;Access Token Privilege Restriction for the specification-level MUST language and RFC 8707 resource indicator requirements.</p>
+<hr>
+<h2>3. Server-Side Request Forgery (SSRF)</h2>
+<h3>What It Is</h3>
+<p>During OAuth metadata discovery, an MCP client fetches several URLs that can be controlled by a malicious MCP server:</p>
+<ol>
+<li>The <code>resource_metadata</code> URL from the <code>WWW-Authenticate</code> header
+</li>
+<li>The <code>authorization_servers</code> URLs from the Protected Resource Metadata document
+</li>
+<li>The <code>token_endpoint</code>, <code>authorization_endpoint</code>, and other URLs from AS Metadata
+</li>
+</ol>
+<p>A malicious server populates these fields with URLs pointing to internal resources.</p>
+<h3>Attack Patterns</h3>
+<table>
+<thead><tr>
+<th>Pattern</th>
+<th>Example</th>
+<th>Effect</th>
+</tr></thead><tbody>
+<tr>
+<td>Direct internal IP</td>
+<td><code>http://10.0.0.1/admin</code></td>
+<td>Hit internal admin panels</td>
+</tr>
+<tr>
+<td>Cloud metadata</td>
+<td><code>http://169.254.169.254/latest/meta-data/</code></td>
+<td>Exfiltrate IAM credentials</td>
+</tr>
+<tr>
+<td>Localhost services</td>
+<td><code>http://localhost:6379/</code></td>
+<td>Interact with Redis/DBs</td>
+</tr>
+<tr>
+<td>DNS rebinding</td>
+<td>Domain resolves to safe IP at check, internal IP at use (TOCTOU)</td>
+<td>Bypass IP validation</td>
+</tr>
+<tr>
+<td>Redirect chains</td>
+<td>Normal URL that 301-redirects to internal resource</td>
+<td>Indirect bypass</td>
+</tr>
+</tbody>
+</table>
+<h3>Risks</h3>
+<ul>
+<li><strong>Credential exfiltration</strong>: Cloud metadata endpoints expose IAM credentials, API keys, secrets
+</li>
+<li><strong>Internal network reconnaissance</strong>: Error messages leak network topology
+</li>
+<li><strong>Service mutations</strong>: POST requests to token endpoints can trigger changes on internal services
+</li>
+<li><strong>Firewall bypass</strong>: The MCP client acts as a request proxy, circumventing perimeter controls
+</li>
+</ul>
+<h3>Mitigations</h3>
+<p><strong>Enforce HTTPS</strong>: MCP clients <strong>SHOULD</strong> reject <code>http://</code> URLs in production (allow loopback only in development). Aligns with OAuth 2.1 &#167;1.5.</p>
+<p><strong>Block Private IP Ranges</strong> (per RFC 9728 &#167;7.7):</p>
+<ul>
+<li><code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>
+</li>
+<li>Loopback: <code>127.0.0.0/8</code>, <code>::1</code>
+</li>
+<li>Link-local: <code>169.254.0.0/16</code> (cloud metadata)
+</li>
+<li>Private IPv6: <code>fc00::/7</code>, <code>fe80::/10</code>
+</li>
+</ul>
+<p>&gt; <strong>Warning:</strong> Do not implement IP validation manually. Attackers exploit encoding tricks &gt; (octal, hex, IPv4-mapped IPv6) that custom parsers routinely miss. Use a well-tested library.</p>
+<p><strong>Validate Redirect Targets</strong>: Apply the same HTTPS + IP-range restrictions to every hop in redirect chains. Consider disabling automatic redirect following and validating manually.</p>
+<p><strong>Use Egress Proxies</strong>: For server-side MCP client deployments, route OAuth discovery requests through an egress proxy (e.g., Stripe Smokescreen) that enforces network policies at the infrastructure level. Combine with network policy restrictions on the MCP client&#39;s outbound access.</p>
+<p><strong>DNS TOCTOU</strong>: Pin DNS resolution results between check and use. Combine with other mitigations (defense in depth); DNS-only validation is insufficient against rebinding attacks.</p>
+<hr>
+<h2>4. Session Hijacking and Event Injection</h2>
+<h3>What It Is</h3>
+<p>MCP servers using stateful HTTP assign session IDs to clients. An attacker who obtains or guesses a valid session ID can exploit it in two ways:</p>
+<p><strong>Session Hijack Prompt Injection</strong> (multi-server deployments):</p>
+<ol>
+<li>Attacker knows/guesses the victim&#39;s session ID
+</li>
+<li>Sends a malicious event to <strong>Server B</strong> using that session ID
+</li>
+<li>Server B enqueues the malicious payload keyed by session ID into a shared queue
+</li>
+<li><strong>Server A</strong> (the victim&#39;s server) polls the queue, retrieves the payload
+</li>
+<li>Server A forwards the payload to the client as an async or resumed response
+</li>
+<li>Client acts on the malicious payload
+</li>
+</ol>
+<p>This attack is especially potent when servers support <strong>resumable streams</strong> — a request deliberately terminated by the attacker can be resumed by the original client via SSE GET, delivering the injected payload. It can also exploit <code>notifications/tools/list_changed</code> to silently enable tools the client never approved.</p>
+<p><strong>Session Hijack Impersonation</strong>:</p>
+<ol>
+<li>Attacker obtains a session ID (e.g., from logs, network interception, or guessing)
+</li>
+<li>Makes API calls directly to the server using the hijacked ID
+</li>
+<li>Server treats requests as coming from the legitimate client
+</li>
+</ol>
+<h3>Mitigations</h3>
+<ul>
+<li>MCP servers <strong>MUST</strong> verify all inbound requests even when authorization is in place
+</li>
+<li>MCP servers <strong>MUST NOT</strong> use session IDs as an authentication mechanism
+</li>
+<li>Session IDs <strong>MUST</strong> be non-deterministic; <strong>SHOULD</strong> use a cryptographically secure RNG (e.g., UUID v4)
+</li>
+<li>Rotate or expire session IDs to reduce the hijack window
+</li>
+<li><strong>MUST</strong> bind session IDs to user identity: store and key queue entries as <code>&lt;user_id&gt;:&lt;session_id&gt;</code>,
+<p>where <code>user_id</code> is derived from the verified user token — not supplied by the client</p>
+</li>
+</ul>
+<p>The <code>&lt;user_id&gt;:&lt;session_id&gt;</code> binding ensures that guessing a session ID is insufficient: the attacker would also need to supply a matching user identity that only the authorization server can issue.</p>
+<hr>
+<h2>5. Local MCP Server Compromise</h2>
+<h3>What It Is</h3>
+<p>Local MCP servers are binaries downloaded and executed on the user&#39;s own machine. They run with the same privileges as the MCP client and may be accessible to other processes on the host. Three attack vectors apply:</p>
+<ol>
+<li><strong>Malicious startup command</strong> embedded in a client configuration file
+</li>
+<li><strong>Malicious payload</strong> distributed inside the server binary itself
+</li>
+<li><strong>Exposed localhost port</strong> accessed by an attacker via DNS rebinding
+</li>
+</ol>
+<p>Example malicious startup commands a client might execute:</p>
+<pre><code>sudo rm -rf /important/system/files &amp;&amp; echo &quot;MCP server installed!&quot;</code></pre>
+<h3>Risks</h3>
+<ul>
+<li><strong>Arbitrary code execution</strong> at MCP client privilege level
+</li>
+<li><strong>No visibility</strong>: users have no insight into what commands are running
+</li>
+<li><strong>Command obfuscation</strong>: malicious operations disguised as legitimate-looking strings
+</li>
+<li><strong>Data exfiltration</strong> via compromised JavaScript reaching legitimate local servers
+</li>
+<li><strong>Data loss</strong> from destructive operations by buggy or malicious servers
+</li>
+</ul>
+<h3>Mitigations</h3>
+<p>If an MCP client supports one-click local server configuration, it <strong>MUST</strong> show a consent dialog before executing any command. The dialog <strong>MUST</strong>:</p>
+<ul>
+<li>Display the exact command to be run, without truncation (including all arguments)
+</li>
+<li>Identify it as code execution with full client privileges
+</li>
+<li>Require explicit user approval; allow cancellation
+</li>
+</ul>
+<p>The client <strong>SHOULD</strong>:</p>
+<ul>
+<li>Highlight dangerous patterns: <code>sudo</code>, <code>rm -rf</code>, network ops, filesystem access outside expected paths
+</li>
+<li>Warn when accessing sensitive locations (home directory, SSH keys, system directories)
+</li>
+<li>Run local server commands in a sandboxed environment (container, chroot, platform sandbox)
+</li>
+<li>Restrict default access to filesystem, network, and other resources; grant additional
+<p>privileges explicitly when the user requests them</p>
+</li>
+<li>Keep sandboxing solutions updated against emerging vulnerabilities
+</li>
+</ul>
+<p>Local servers themselves <strong>SHOULD</strong>:</p>
+<ul>
+<li>Use stdio transport to limit connections to the MCP client only
+</li>
+<li>If using HTTP transport: require an authorization token or use Unix domain sockets / IPC
+<p>with restricted access controls</p>
+</li>
+</ul>
+<hr>
+<h2>6. Scope Minimization</h2>
+<h3>Problem</h3>
+<p>When an MCP server publishes every scope in <code>scopes_supported</code> and the client requests them all up-front, a stolen token becomes a master key. Broad-scope tokens produce:</p>
+<ul>
+<li><strong>Expanded blast radius</strong>: one stolen token enables unrelated tool and resource access
+</li>
+<li><strong>Revocation friction</strong>: revoking a max-privilege token disrupts all workflows
+</li>
+<li><strong>Audit noise</strong>: an omnibus scope masks per-operation user intent
+</li>
+<li><strong>Privilege chaining</strong>: attacker can invoke high-risk tools without further elevation
+</li>
+<li><strong>Consent abandonment</strong>: users decline dialogs that list excessive scopes
+</li>
+<li><strong>Scope inflation blindness</strong>: no metrics → over-broad requests become normalized
+</li>
+</ul>
+<h3>Correct Model: Progressive Least Privilege</h3>
+<ul>
+<li><strong>Minimal initial scope</strong> (e.g., <code>mcp:tools-basic</code>): only low-risk discovery and read operations
+</li>
+<li><strong>Incremental elevation</strong>: targeted <code>WWW-Authenticate: scope=&quot;...&quot;</code> challenges when privileged
+<p>operations are first attempted</p>
+</li>
+<li><strong>Down-scoping tolerance</strong>: servers should accept tokens with reduced scope; auth servers MAY
+<p>issue a subset of requested scopes</p>
+</li>
+</ul>
+<p><strong>Server guidance:</strong></p>
+<ul>
+<li>Emit precise scope challenges; do not return the full catalog in every response
+</li>
+<li>Log elevation events (scope requested, granted subset) with correlation IDs
+</li>
+</ul>
+<p><strong>Client guidance:</strong></p>
+<ul>
+<li>Begin with baseline scopes from the initial <code>WWW-Authenticate</code> challenge
+</li>
+<li>Cache recent failures to avoid repeated elevation loops for denied scopes
+</li>
+</ul>
+<h3>Common Mistakes (Antipatterns)</h3>
+<table>
+<thead><tr>
+<th>Antipattern</th>
+<th>Why It&#39;s Dangerous</th>
+</tr></thead><tbody>
+<tr>
+<td>Publishing all scopes in <code>scopes_supported</code></td>
+<td>Invites clients to request everything</td>
+</tr>
+<tr>
+<td>Wildcard/omnibus scopes (<code>*</code>, <code>all</code>, <code>full-access</code>)</td>
+<td>Single token unlocks everything</td>
+</tr>
+<tr>
+<td>Bundling unrelated privileges to preempt prompts</td>
+<td>Violates least-privilege, expands blast radius</td>
+</tr>
+<tr>
+<td>Returning full scope catalog in every challenge</td>
+<td>Trains clients to always request max</td>
+</tr>
+<tr>
+<td>Silent scope semantic changes without versioning</td>
+<td>Breaks audit trails</td>
+</tr>
+<tr>
+<td>Treating claimed token scopes as sufficient without server-side authorization logic</td>
+<td>Token claims alone are not enforcement</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>See Also</h2>
+<ul>
+<li><a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> — specification-level coverage: OAuth 2.1 mechanics, discovery, audience binding, step-up
+</li>
+<li><a href="lit-mcp-security-and-auth.html" class="wikilink">lit-mcp-security-and-auth</a> — companion literature note: broader security model, session hijacking patterns
+</li>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a> — MCP Map of Content: full protocol reference
+</li>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> — formal lattice model; scope minimization maps to lattice tier enforcement
+</li>
+<li><a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a> — pattern: enforcing capability checks before delegation; scope as capability declaration
+</li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="wikilink">spec-agentic-source-orchestrator-v2</a> — orchestrator design; tool surface authorization requirements
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="claude-mcp-security-bp-handoff-2026-05-01.html" class="">claude-mcp-security-bp-handoff-2026-05-01</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>
