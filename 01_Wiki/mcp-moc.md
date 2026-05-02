@@ -30,6 +30,8 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[mcp-remote-connections]]: Connecting to remote servers via HTTP.
 * [[mcp-security]]: Production hardening and trust models.
 * [[mcp-authorization]]: Managing permissions and user consent (OAuth 2.1).
+* [[lit-chatgpt-web-mcp-guidance]] - Verified ChatGPT web MCP constraints and deployment guidance.
+* [[spec-chatgpt-web-mcp-wrapper]] - Remote wrapper design for ChatGPT web access to the vault.
 * [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up flow)
 * [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, scope minimization)
 
