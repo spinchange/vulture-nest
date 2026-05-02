@@ -1730,6 +1730,17 @@
 <li><strong>Verification</strong>: Confirmed <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> existence. All modified notes passed <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>. Graph integrity 100%.
 </li>
 </ul>
+<h2>[2026-05-02] Codex — Claude Review Normalization</h2>
+<ul>
+<li><strong>Directive</strong>: Consolidated the Gemini note review trail into durable logs after the review-and-hardening pass.
+</li>
+<li><strong>Review Pipeline</strong>: <code>02_System/review-gemini-pages.ps1</code> produced one initial batch report (<code>claude-review.md</code>), a 25-note second pass (<code>claude-review-pass-2.md</code>), a 25-note third pass (<code>claude-review-pass-3.md</code>), and focused per-note follow-up reports for notes that initially required revision.
+</li>
+<li><strong>Outcome</strong>: Review findings were acted on and landed as committed wiki hardening batches covering ADK, agentic workflow, Firecrawl, HF agents, and verbalized-sample graph work. Focused Claude re-reviews returned <code>accept</code> across the revised note sets; the one pass-3 <code>revise</code> note (<a href="agent-skills-index.html" class="wikilink">agent-skills-index</a>) was corrected and committed separately.
+</li>
+<li><strong>Canonical Record</strong>: Durable summaries live here and in <a href="Session%202026-05-02.html" class="wikilink">Session 2026-05-02</a>. The <code>claude-review*.md</code> files in <code>02_System/</code> are working artifacts, not the authoritative long-term record.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -1946,6 +1957,7 @@
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
+<li><a href="Session%202026-05-02.html" class="">Session 2026-05-02</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 <li><a href="software-design-principles.html" class="">software-design-principles</a></li>

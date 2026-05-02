@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Go Implementation</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Go Implementation</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -444,23 +444,24 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>ADK Go Implementation</h1>
-<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> Go SDK provides a high-performance, strongly-typed environment for building agents. It is designed to integrate seamlessly with the Go ecosystem (1.24.4+).</p>
+<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> Go SDK gives ADK a compiled, strongly typed implementation path. In the ADK documentation snapshot summarized in <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>, the Go quickstart targets Go <code>1.24.4+</code> and <code>google.golang.org/adk</code>, but specific APIs should still be verified against the current SDK before copying them into production code.</p>
 <h2>1. Project Initialization</h2>
 <pre><code>mkdir my_agent &amp;&amp; cd my_agent
 go mod init my-agent/main
-go get google.golang.org/adk@latest</code></pre>
+go get google.golang.org/adk</code></pre>
 <h2>2. Basic Agent Setup</h2>
-<p>A typical Go agent uses the <code>llmagent</code> package and a model provider like <code>gemini</code>.</p>
+<p>The ADK docs show a Go quickstart built around <code>llmagent</code>, Gemini model bindings, and the launcher packages. A safer reference example is:</p>
 <pre><code>func main() {
     ctx := context.Background()
 
-    // Initialize Model
-    model, _ := gemini.NewModel(ctx, &quot;gemini-1.5-flash&quot;, &amp;genai.ClientConfig{
+    model, err := gemini.NewModel(ctx, &quot;gemini-1.5-flash&quot;, &amp;genai.ClientConfig{
         APIKey: os.Getenv(&quot;GOOGLE_API_KEY&quot;),
     })
+    if err != nil {
+        log.Fatal(err)
+    }
 
-    // Define Agent
-    myAgent, _ := llmagent.New(llmagent.Config{
+    myAgent, err := llmagent.New(llmagent.Config{
         Name:        &quot;helper&quot;,
         Model:       model,
         Instruction: &quot;You are a helpful assistant.&quot;,
@@ -468,16 +469,21 @@ go get google.golang.org/adk@latest</code></pre>
             geminitool.GoogleSearch{},
         },
     })
+    if err != nil {
+        log.Fatal(err)
+    }
 
-    // Launch with default Runner
     l := full.NewLauncher()
-    l.Execute(ctx, &amp;launcher.Config{
+    if err := l.Execute(ctx, &amp;launcher.Config{
         AgentLoader: agent.NewSingleLoader(myAgent),
-    }, os.Args[1:])
+    }, os.Args[1:]); err != nil {
+        log.Fatal(err)
+    }
 }</code></pre>
+<p>This reflects the shapes described in the quickstart, but it should still be treated as documentation-aligned scaffolding rather than a guarantee that every signature is unchanged in the latest release.</p>
 <h2>3. Go-Specific Patterns</h2>
 <h3><code>Launcher</code> and <code>AgentLoader</code></h3>
-<p>Go uses a <code>Launcher</code> abstraction (from <code>google.golang.org/adk/cmd/launcher</code>) to handle command-line interaction and setup. The <code>AgentLoader</code> allows for dynamic loading of agents in multi-agent configurations.</p>
+<p>The ADK Go quickstart uses a <code>Launcher</code> abstraction from <code>google.golang.org/adk/cmd/launcher</code> and a <code>full.NewLauncher()</code> convenience entrypoint. <code>AgentLoader</code> is used to bind one or more agents into that runtime surface.</p>
 <h3>Interfaces</h3>
 <ul>
 <li><strong>Model:</strong> <code>model.Model</code>
@@ -488,18 +494,27 @@ go get google.golang.org/adk@latest</code></pre>
 </li>
 </ul>
 <h3>State Management in Go</h3>
-<p>In Go, state access is typically via the <code>context</code> object in tools or callbacks, using <code>context.State().Get(key)</code> and <code>context.State().Set(key, value)</code>.</p>
-<h2>4. Why Go for ADK?</h2>
+<p>The ADK docs also describe Go callback and session-state patterns using the runtime context, including <code>ctx.State().Set(...)</code>. When reading from state, treat lookups as fallible and handle missing keys or type assertions explicitly rather than assuming a value is always present.</p>
+<h2>4. Caveats</h2>
 <ul>
-<li><strong>Performance:</strong> Lower overhead for high-concurrency multi-agent systems.
+<li>The ADK Go surface is evolving; verify package paths, imports, and method signatures against current SDK docs or source before depending on this note as executable truth.
 </li>
-<li><strong>Concurrency:</strong> Leverages Go routines for efficient <a href="workflow-agents.html" class="wikilink">ParallelAgent</a> execution.
+<li>The quickstart examples in the literature source are useful for orientation, but they are not a substitute for production-grade error handling and configuration.
 </li>
-<li><strong>Deployment:</strong> Compiles to a single static binary, ideal for containerized or edge deployment.
+<li>Tool types such as <code>geminitool.GoogleSearch{}</code> are examples from the docs, not a claim that every environment exposes them identically.
+</li>
+</ul>
+<h2>5. Why Go for ADK?</h2>
+<ul>
+<li><strong>Compiled deployment:</strong> A single binary is operationally attractive for agent services and internal tools.
+</li>
+<li><strong>Concurrency model:</strong> Go&#39;s goroutines and channels fit well with <a href="workflow-agents.html" class="wikilink">workflow-agents</a> and other orchestration-heavy workloads.
+</li>
+<li><strong>Typed integration path:</strong> The Go SDK gives a more explicit interface surface than prompt-only orchestration, which can help when wiring tools, sessions, and launchers together.
 </li>
 </ul>
 <hr>
-<p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>*</p>
+<p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>* *Related: <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>, <a href="workflow-agents.html" class="wikilink">workflow-agents</a>, <a href="adk-session-service.html" class="wikilink">adk-session-service</a>, <a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a>*</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -517,6 +532,8 @@ go get google.golang.org/adk@latest</code></pre>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="workflow-agents.html" class="">workflow-agents</a></li>

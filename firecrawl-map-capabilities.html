@@ -429,16 +429,16 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Firecrawl Map Capabilities</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Map Capabilities</span></span>
 <span class="fm-field"><span class="fm-key">provenance_chunk_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
-<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:52:17Z</span></span>
-<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">provenance_source_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Map Capabilities</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
+<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:52:17Z</span></span>
       </div>
     </header>
 
@@ -448,14 +448,60 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Firecrawl Map Capabilities</h1>
-<p>The Firecrawl Map endpoint is designed to discover and list all URLs on a website systematically.</p>
-<h2>Core Features</h2>
-<p><a href="https://docs.firecrawl.dev/features/map#content-area">Skip to main content</a> <a href="https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo.png?fit=max&amp;auto=format&amp;n=iilnMwCX-8eR1yOO&amp;q=85&amp;s=c45b3c967c19a39190e76fe8e9c2ed5a">Firecrawl Docs home page![light logo</a>!<a href="https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo-dark.png?fit=max&amp;auto=format&amp;n=iilnMwCX-8eR1yOO&amp;q=85&amp;s=3fee4abe033bd3c26e8ad92043a91c17">dark logo</a>](https://firecrawl.dev/) v2 !<a href="https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg">US</a> English Search... Ctrl K Search... Navigation More Map <a href="https://docs.firecrawl.dev/introduction">Documentation</a> <a href="https://docs.firecrawl.dev/sdks/overview">SDKs</a> <a href="https://www.firecrawl.dev/app">Integrations</a> <a href="https://docs.firecrawl.dev/api-reference/v2-introduction">API Reference</a> <a href="https://docs.firecrawl.dev/ai-onboarding">Build with AI</a> - <a href="https://firecrawl.dev/playground">Playground</a> - <a href="https://firecrawl.dev/blog">Blog</a> - <a href="https://discord.gg/firecrawl">Community</a> - <a href="https://firecrawl.dev/changelog">Changelog</a> ##### Get Started - <a href="https://docs.firecrawl.dev/introduction">Introduction</a> - <a href="https://docs.firecrawl.dev/sdks/cli">Skill + CLI</a> - <a href="https://docs.firecrawl.dev/ai-onboarding">Build with AI</a> - <a href="https://docs.firecrawl.dev/mcp-server">MCP Server</a> - <a href="https://docs.firecrawl.dev/advanced-scraping-guide">Advanced Scraping Guide</a> - Plans &amp; Billing ##### Core Endpoints - <a href="https://docs.firecrawl.dev/features/search">Search</a> - Scrape - [Interact](https://docs.firecrawl.dev/features/interact...</p>
-<h2>Epistemic Status</h2>
-<p>Verified (T5) against the official Firecrawl documentation.</p>
+<p>The Firecrawl <code>map</code> endpoint is the discovery-only counterpart to crawl: it enumerates candidate URLs on a site without retrieving full page bodies.</p>
+<h2>Role in the Ingestion Pipeline</h2>
+<ul>
+<li>Use <code>map</code> to understand the URL surface of a domain before spending crawl credits.
+</li>
+<li>Use it when you need to choose bounds, refine include/exclude patterns, or estimate the scope of a docs section.
+</li>
+<li>It complements <a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a> rather than replacing it.
+</li>
+</ul>
+<h2>What Map Returns</h2>
+<p>In the vault&#39;s mental model, <code>map</code> returns URL discovery results only:</p>
+<ul>
+<li>candidate URLs
+</li>
+<li>enough structure to decide what to crawl next
+</li>
+<li>no markdown body extraction
+</li>
+</ul>
+<p>That makes <code>map</code> the lowest-cost recon step in the Firecrawl family represented here.</p>
+<h2>Practical Use</h2>
+<ul>
+<li>Start with <code>map</code> when the site structure is unknown.
+</li>
+<li>Promote promising sections into a bounded <code>crawl</code>.
+</li>
+<li>Use <code>scrape</code> when you already know the exact page you want.
+</li>
+</ul>
+<h2>Why Keep It Separate from Crawl</h2>
+<ul>
+<li><code>map</code> answers: &quot;What is here?&quot;
+</li>
+<li><code>crawl</code> answers: &quot;Fetch these pages and give me content.&quot;
+</li>
+<li><code>scrape</code> answers: &quot;Fetch this one page now.&quot;
+</li>
+</ul>
+<p>That distinction matters operationally because discovery, retrieval, and synthesis have different cost and risk profiles.</p>
+<h2>Known Parameters and Limits</h2>
+<p>The local pipeline spec does not provide the same level of parameter detail for <code>map</code> that it provides for <code>scrape</code> and <code>crawl</code>. Treat this note as a conceptual reference first, not an exhaustive parameter sheet.</p>
+<h2>Caveats</h2>
+<ul>
+<li>This rewrite is based on the pipeline spec&#39;s description of <code>POST /v2/map</code> as &quot;Discover all URLs&quot; plus surrounding ingestion design, not a live endpoint walkthrough.
+</li>
+<li>If the vault begins using <code>map</code> programmatically, this note should be extended with concrete request and response examples from the implementation path.
+</li>
+</ul>
 <h2>Related</h2>
 <ul>
-<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
+</li>
+<li><a href="protocol-source-ingestion-runbook.html" class="wikilink">protocol-source-ingestion-runbook</a>
 </li>
 <li><a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a>
 </li>
@@ -488,7 +534,8 @@
 <li><a href="firecrawl-api-v2-reference.html" class="">firecrawl-api-v2-reference</a></li>
 <li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
 <li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
-<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="protocol-source-ingestion-runbook.html" class="">protocol-source-ingestion-runbook</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
 </ul>
           </div>
         </div>

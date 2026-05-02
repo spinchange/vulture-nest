@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: Azure AI Foundry Local</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/foundry-local.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Azure AI Foundry Local</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">Foundry Local Documentation, Local AI Runtime</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/foundry-local.md</span></span>
       </div>
     </header>
 
@@ -448,13 +448,13 @@
 <p>This documentation covers the Azure AI Foundry Local SDK and runtime for hardware-optimized, on-device inference.</p>
 <h2>Core Pillars</h2>
 <ul>
-<li><strong>Privacy</strong>: No data leaves the local device.
+<li><strong>Privacy</strong>: Runtime inference stays on the local device, though initial model download, setup, telemetry configuration, or licensing flows may still require network access.
 </li>
 <li><strong>Efficiency</strong>: Automatic optimization for NPUs, GPUs (DirectML, CUDA, Metal), and CPUs.
 </li>
-<li><strong>Compatibility</strong>: Drop-in OpenAI API replacement.
+<li><strong>Compatibility</strong>: OpenAI API-compatible in common local-serving scenarios, not necessarily a perfect drop-in replacement across every endpoint or behavior.
 </li>
-<li><strong>Resilience</strong>: Full offline capability.
+<li><strong>Resilience</strong>: Offline operation is a design goal after initial configuration and model download.
 </li>
 </ul>
 <h2>Runtimes</h2>
@@ -465,7 +465,7 @@
 </li>
 </ol>
 <h2>Key Model Support</h2>
-<p>Focuses on <strong>ONNX</strong> optimized variants:</p>
+<p>Supports <strong>ONNX</strong>-optimized model variants, including:</p>
 <ul>
 <li><strong>Phi-3.5</strong>: Efficient small language model.
 </li>
@@ -474,14 +474,21 @@
 <li><strong>Whisper</strong>: Local speech-to-text.
 </li>
 </ul>
+<h2>Deployment Caveats</h2>
+<ul>
+<li><strong>API parity</strong>: OpenAI compatibility should be read as interface compatibility for common cases, not guaranteed parity for every streaming behavior, error shape, or model capability.
+</li>
+<li><strong>Offline scope</strong>: Offline use depends on whether the required models and runtimes have already been installed locally.
+</li>
+</ul>
 <hr>
 <h2>See Also</h2>
 <ul>
 <li><a href="foundry-local.html" class="wikilink">foundry-local</a> (Permanent Note)
 </li>
-<li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>
 </li>
-<li><a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a>
+<li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a>
 </li>
 </ul>
       </main>
@@ -500,9 +507,9 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="foundry-local.html" class="">foundry-local</a></li>
-<li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
-<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
+<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
 </ul>
           </div>
         </div>

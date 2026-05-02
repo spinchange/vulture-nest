@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: MCP Advanced Patterns &amp; Skills</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/mcp/Build with Agent Skills.md, 00_Raw/mcp/Client Best Practices.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: MCP Advanced Patterns &amp; Skills</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">MCP Host Patterns, Progressive Discovery, Programmatic Tool Calling, MCP Agent Skills</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/mcp/Build with Agent Skills.md, 00_Raw/mcp/Client Best Practices.md</span></span>
       </div>
     </header>
 
@@ -445,12 +445,28 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Literature: MCP Advanced Patterns &amp; Skills</h1>
-<p>This literature note covers advanced architectural patterns for scaling Model Context Protocol (MCP) host applications and the use of agent skills to scaffold server development.</p>
+<p>This literature note synthesizes two distinct MCP-adjacent documents from May 2026:</p>
+<ul>
+<li><code>Client Best Practices</code>, which discusses host-side runtime patterns for scaling tool-heavy MCP clients.
+</li>
+<li><code>Build with Agent Skills</code>, which describes a reference skill/plugin workflow for scaffolding MCP servers.
+</li>
+</ul>
+<p>These documents operate at different layers. Progressive discovery and programmatic tool calling are host runtime patterns. Agent skills are development-time scaffolding for coding assistants, not part of the core MCP wire protocol.</p>
+<h2>Source Context</h2>
+<ul>
+<li><strong>Runtime patterns source</strong>: <code>Client Best Practices</code>
+</li>
+<li><strong>Development workflow source</strong>: <code>Build with Agent Skills</code>
+</li>
+<li><strong>Scope caveat</strong>: The deployment recommendations and skill names below describe the <code>mcp-server-dev</code> reference plugin discussed in the source material. They should not be read as protocol-level MCP requirements.
+</li>
+</ul>
 <h2>Scaling Host Applications (Client Best Practices)</h2>
-<p>As the number of tools increases, naive loading degrades performance. Two key patterns mitigate this:</p>
+<p>As tool counts grow, naive host behavior degrades: injecting every tool definition into the model wastes context, while routing every intermediate tool result back through the model increases token cost and latency. The source presents two mitigation patterns.</p>
 <h3>1. Progressive Tool Discovery</h3>
 <ul>
-<li><strong>Pattern</strong>: Delay loading full tool definitions until needed.
+<li><strong>Pattern</strong>: Delay loading full tool definitions into model context until needed.
 </li>
 <li><strong>Layers</strong>:
 <ul>
@@ -466,45 +482,68 @@
 </li>
 </ul>
 </li>
-<li><strong>Dynamic Management</strong>: Connecting/disconnecting entire servers based on task relevance.
+<li><strong>Dynamic Management</strong>: The same idea can extend to entire servers: keep a registry of available servers, connect only when relevant, and disconnect when context should be freed.
+</li>
+<li><strong>When to use it</strong>: The source recommends switching once tool definitions consume a meaningful share of the context window rather than using progressive discovery unconditionally for every host.
+</li>
+<li><strong>Operational caveat</strong>: This pattern is not free. Search quality, schema-inspection cost, cache invalidation, and prompt-caching behavior all affect whether the host actually benefits.
 </li>
 </ul>
 <h3>2. Programmatic Tool Calling (Code Mode)</h3>
 <ul>
-<li><strong>Pattern</strong>: The model writes code that calls multiple tools; the client executes this script in a sandbox.
+<li><strong>Pattern</strong>: Instead of direct one-tool-per-turn invocation, the model writes code that calls multiple tools through host-generated stubs; the client executes that script in a sandbox.
 </li>
-<li><strong>Benefits</strong>: Reduces token round-trips for chained operations (e.g., read -&gt; transform -&gt; write). Only the final summary returns to the model.
+<li><strong>Primary benefit</strong>: Intermediate results can stay inside the sandbox rather than flowing through the model context between every step.
 </li>
-<li><strong>Infrastructure</strong>: Requires a sandboxed runtime (e.g., Deno, Monty, Wasmtime) and a host-brokered API.
+<li><strong>Tradeoff</strong>: This can reduce token churn for chained work (for example, read -&gt; transform -&gt; write), but it also introduces sandbox overhead, debugging complexity, and a larger execution-security surface.
+</li>
+<li><strong>Infrastructure</strong>: Requires a sandboxed runtime plus a host-brokered API that maps sandbox calls back to MCP <code>tools/call</code> operations.
+</li>
+<li><strong>Security implication</strong>: The source treats per-call authorization, resource limits, network isolation, and output filtering as mandatory concerns, not optional hardening.
 </li>
 </ul>
-<h2>Building with Agent Skills</h2>
-<p><a href="https://agentskills.io/home">Agent skills</a> are portable instructions that guide AI coding assistants through development.</p>
+<h2>Development Scaffolding with Agent Skills</h2>
+<p><code>Build with Agent Skills</code> is not describing a runtime MCP pattern. It is describing a skill-driven development workflow for coding assistants building MCP servers.</p>
+<p>The source defines <strong>agent skills</strong> as portable instruction sets (<code>SKILL.md</code> plus references) that provide domain-specific guidance to coding assistants. In this note, that definition should be read as the vocabulary of the source document, not as an MCP specification term.</p>
 <h3>Official MCP Skills (<code>mcp-server-dev</code>)</h3>
 <ul>
-<li><strong><code>build-mcp-server</code></strong>: Entry point for use-case discovery and scaffolding.
+<li><strong><code>build-mcp-server</code></strong>: Entry point. Interrogates the use case, selects a deployment model, and routes toward specialized follow-on skills.
 </li>
-<li><strong><code>build-mcp-app</code></strong>: For adding interactive UI widgets.
+<li><strong><code>build-mcp-app</code></strong>: Used when the server needs interactive widgets rendered in chat.
 </li>
-<li><strong><code>build-mcpb</code></strong>: For packaging servers as bundles (MCPB) for easy installation.
+<li><strong><code>build-mcpb</code></strong>: Used when packaging a local stdio server plus its runtime as an MCP bundle.
 </li>
 </ul>
 <h3>Deployment Path Selection</h3>
-<p>The skills guide the user toward one of four paths:</p>
+<p>According to the source, the <code>mcp-server-dev</code> skill recommends one of four reference paths after its discovery phase:</p>
 <ol>
-<li><strong>Remote (Streamable HTTP)</strong>: Default for cloud APIs.
+<li><strong>Remote (Streamable HTTP)</strong>: Default path for cloud APIs and hosted deployments.
 </li>
-<li><strong>MCP Apps</strong>: For rich UI/widgets.
+<li><strong>MCP Apps</strong>: Use when the server needs richer interactive widgets than flat elicitation forms.
 </li>
-<li><strong>MCP Bundles (MCPB)</strong>: For local-system access without requiring Node/Python environments.
+<li><strong>MCP Bundles (MCPB)</strong>: Use when local-machine access is required and the server should ship with its runtime.
 </li>
-<li><strong>Local (Stdio)</strong>: For initial prototyping.
+<li><strong>Local (stdio)</strong>: Keep available for prototyping, with an upgrade path to MCPB when distribution matters.
 </li>
 </ol>
+<p>These four paths come from the referenced skill workflow, not from the MCP protocol as a canonical deployment taxonomy.</p>
+<h2>Synthesis</h2>
+<p>Taken together, the two sources suggest a separation of responsibilities:</p>
+<ul>
+<li><strong>Host runtime optimization</strong>: progressive discovery and programmatic tool calling help clients scale across many tools and servers.
+</li>
+<li><strong>Developer workflow guidance</strong>: skill bundles help coding assistants choose a build path and scaffold an MCP server that fits the use case.
+</li>
+</ul>
+<p>The important boundary is that the former changes how an MCP host operates at runtime, while the latter changes how an agent is instructed during server development.</p>
 <hr>
 <h2>See Also</h2>
 <ul>
 <li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+</li>
+<li><a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a>
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
 </li>
 <li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
 </li>
@@ -534,6 +573,8 @@
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="lit-mcp-client-development.html" class="">lit-mcp-client-development</a></li>
 <li><a href="lit-mcp-server-development.html" class="">lit-mcp-server-development</a></li>
+<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
 </ul>

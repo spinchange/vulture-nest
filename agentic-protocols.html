@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agentic Protocols</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic Protocols</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp, a2a, agent-interoperability</span></span>
       </div>
     </header>
@@ -444,9 +444,18 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Agentic Protocols</h1>
-<p>As the ecosystem of AI agents matures, standardized protocols are emerging to ensure that models, tools, and agents can communicate seamlessly.</p>
+<p>This note tracks two important interoperability protocols in the current agent ecosystem: <strong><a href="mcp-moc.html" class="wikilink">MCP</a></strong> for agent-to-tool integration and <strong>A2A</strong> for agent-to-agent delegation. Both are active reference points, but they are not equally mature in adoption or tooling support.</p>
+<h2>Maturity and Scope</h2>
+<ul>
+<li><strong>MCP</strong> has broad mindshare and a growing implementation ecosystem across model hosts, IDEs, and tool adapters.
+</li>
+<li><strong>A2A</strong> is a newer protocol proposal focused on inter-agent collaboration; its conventions are useful to track, but deployment patterns and governance are still settling.
+</li>
+<li>This note focuses on MCP and A2A because they cover two distinct boundaries in multi-agent systems. It does not claim they are the only interoperability patterns in use.
+</li>
+</ul>
 <h2>Model Context Protocol (<a href="mcp-moc.html" class="wikilink">MCP</a>)</h2>
-<p>Developed by Anthropic, <strong>MCP</strong> is an open standard designed as a &quot;USB-C port for AI applications.&quot; It provides a universal interface for connecting models to external data and tools.</p>
+<p>Developed by Anthropic and adopted across a growing set of tools, <strong>MCP</strong> is an open protocol for connecting model hosts to external data sources and executable capabilities.</p>
 <ul>
 <li><strong>Host/Client/Server Model:</strong> Decouples the AI application (Host) from the capability provider (Server).
 </li>
@@ -459,16 +468,34 @@
 </ul>
 <p>For a deep dive, see <strong><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a></strong>.</p>
 <h2>Agent-to-Agent (A2A)</h2>
-<p>Developed by Google and now governed by the <code>a2aproject</code> organization, <strong>A2A</strong> is the peer-to-peer complement to MCP. Where MCP governs agent-to-tool communication, A2A governs agent-to-agent delegation and multi-turn collaboration between opaque, stateful agents.</p>
+<p><strong>A2A</strong> is an agent-to-agent protocol effort associated with Google and broader community work on inter-agent communication. In this vault, it is treated as a peer-to-peer complement to MCP: where MCP handles agent-to-tool communication, A2A models delegation and multi-turn collaboration between agents with their own internal state and control logic.</p>
 <ul>
-<li><strong>Agent Card / Skill Model:</strong> Each agent publishes an <strong>Agent Card</strong> at <code>/.well-known/agent-card.json</code> declaring its identity, endpoints, authentication requirements, and a list of <strong>Skills</strong> — discrete advertised capabilities.
+<li><strong>Agent Card / Skill Model:</strong> An agent may publish an <strong>Agent Card</strong> describing identity, endpoints, authentication requirements, and advertised <strong>Skills</strong>. In current materials, the common discovery path is <code>/.well-known/agent-card.json</code>.
 </li>
-<li><strong>Stateful Task Model:</strong> Interaction is built around a <strong>Task</strong> object with a defined lifecycle (<code>SUBMITTED → WORKING → COMPLETED / FAILED / INPUT_REQUIRED / AUTH_REQUIRED</code>).
+<li><strong>Stateful Task Model:</strong> Interaction is framed around a <strong>Task</strong> object with a lifecycle such as <code>SUBMITTED → WORKING → COMPLETED</code>, plus states for failure or additional input.
 </li>
-<li><strong>Transport Flexibility:</strong> Supports request/response, server-streaming SSE, and push notifications.
+<li><strong>Transport Flexibility:</strong> Current A2A materials describe request/response, streaming, and async notification patterns for longer-running work.
 </li>
 </ul>
 <p>For the full technical model, see <strong><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a></strong>. For the complementarity relationship with MCP, see <strong><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a></strong>.</p>
+<h2>Limitations and Context</h2>
+<ul>
+<li>These protocols address different boundaries in a system, but real deployments may still rely on vendor APIs, framework-specific adapters, or custom orchestration layers.
+</li>
+<li>MCP is farther along in practical tooling today. A2A is more useful as a design and interoperability reference than as a universally deployed default.
+</li>
+<li>If a workflow only needs tool use inside a single host, MCP may be sufficient; A2A matters when distinct agents must advertise capabilities, exchange task state, or hand work across trust boundaries.
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a> for the host/client/server and transport model
+</li>
+<li><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a> for the task lifecycle, agent card shape, and handoff model
+</li>
+<li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a> for the boundary between agent-to-tool and agent-to-agent protocols
+</li>
+</ul>
 <h2>See Also</h2>
 <ul>
 <li><a href="index.html" class="wikilink">index</a>

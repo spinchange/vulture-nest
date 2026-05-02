@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
       </div>
     </header>
 
@@ -443,6 +443,7 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Index</h1>
+<p>Master navigation hub for the vault&#39;s MOCs, specs, handoffs, literature, and system references.</p>
 <h2>Maps of Content</h2>
 <ul>
 <li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> - Philosophy &amp; YANP
@@ -489,6 +490,7 @@
 </li>
 </ul>
 <h2>Blueprint Specs (How to Build It)</h2>
+<p>Status legend: implemented references describe working artifacts; handoff references describe in-progress or historical design/build phases.</p>
 <ul>
 <li><a href="spec-memory-mcp.html" class="wikilink">spec-memory-mcp</a> - Memory MCP Server: SQLite backend, session + vault scopes, commit/search/prune tools
 </li>
@@ -577,6 +579,7 @@
 </li>
 </ul>
 <h2>Multi-Agent Handoffs (Session Seams)</h2>
+<p>Session seams are bounded resume points that capture current state, immediate next moves, and ownership transitions between agents.</p>
 <ul>
 <li><a href="gemini-post-synthesis-librarian-handoff-2026-05-01.html" class="wikilink">gemini-post-synthesis-librarian-handoff-2026-05-01</a> - Gemini: promote Supabase Flask source, register chatgpt_web_mcp_wrapper, sync graph (Active)
 </li>
@@ -588,7 +591,7 @@
 </li>
 <li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="wikilink">codex-gemini-cleanup-handoff-2026-04-27</a> - Gemini cleanup boundary (Complete)
 </li>
-<li><a href="claude-community-summary-handoff.html" class="wikilink">claude-community-summary-handoff</a> - Phase 2: Community Summarization (Pending)
+<li><a href="claude-community-summary-handoff.html" class="wikilink">claude-community-summary-handoff</a> - Phase 2: Community Summarization (Pending follow-on phase; verify freshness before resuming)
 </li>
 <li><a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> - Ingestion &amp; Clustering Path (Complete)
 </li>
@@ -633,6 +636,8 @@
 <ul>
 <li><a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a> - Core concept: typicality bias, mode collapse, diversity as retrieval problem
 </li>
+<li><a href="verbalized-sample-skill.html" class="wikilink">verbalized-sample-skill</a> - Operational protocol for distribution-aware reasoning
+</li>
 <li><a href="mode-anchored-departure.html" class="wikilink">mode-anchored-departure</a> - Approach B mechanism: modal anchor, P≈ stat, departure enumeration, ParseWarning taxonomy
 </li>
 <li><a href="verbalized-sampling-ps-scripts.html" class="wikilink">verbalized-sampling-ps-scripts</a> - Approach A/B/C comparison; script design rationale
@@ -640,6 +645,21 @@
 <li><a href="verbalized-sampling-experiment.html" class="wikilink">verbalized-sampling-experiment</a> - Audio series processing workflow and findings
 </li>
 <li><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
+</li>
+</ul>
+<h2>Anthropic API</h2>
+<ul>
+<li><a href="lit-anthropic-messages-api.html" class="wikilink">lit-anthropic-messages-api</a> - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
+</li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> - Direct Messages API request/response model
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> - Client/server tool execution loop
+</li>
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> - SSE event flow and streamed tool arguments
+</li>
+<li><a href="anthropic-error-handling.html" class="wikilink">anthropic-error-handling</a> - Errors, request-size limits, and rate-limit behavior
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> - Prompt-prefix reuse via <code>cache_control</code>
 </li>
 </ul>
 <h2>Literature Notes (Grounded Sources)</h2>
@@ -737,6 +757,8 @@
 </li>
 <li><a href="https://github.com/spinchange/vulture-nest/tree/main/00_Raw/mcp">00_Raw/mcp/</a> - Anthropic Model Context Protocol Documentation
 </li>
+<li><a href="https://github.com/spinchange/vulture-nest/tree/main/00_Raw/anthropic">00_Raw/anthropic/</a> - Anthropic direct Claude API source captures
+</li>
 <li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a> - Agent Security &amp; Isolation
 </li>
 <li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a> - Tool Schema Design
@@ -802,6 +824,11 @@
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="agentic-tdd-patterns.html" class="">agentic-tdd-patterns</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="anthropic-error-handling.html" class="">anthropic-error-handling</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
 <li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
@@ -839,6 +866,7 @@
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
 <li><a href="lit-chatgpt-web-mcp-guidance.html" class="">lit-chatgpt-web-mcp-guidance</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
@@ -889,6 +917,7 @@
 <li><a href="the-vulture-portal.html" class="">the-vulture-portal</a></li>
 <li><a href="tool-registry.html" class="">tool-registry</a></li>
 <li><a href="vault-systems.html" class="">vault-systems</a></li>
+<li><a href="verbalized-sample-skill.html" class="">verbalized-sample-skill</a></li>
 <li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
 <li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
 <li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>

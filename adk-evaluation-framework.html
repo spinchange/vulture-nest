@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Evaluation Framework</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Evaluation Framework</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -444,56 +444,60 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>ADK Evaluation Framework</h1>
-<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> provides a comprehensive, schema-driven framework for assessing agent performance. Unlike simple LLM benchmarks, ADK evaluation focuses on the <strong>Agent Trajectory</strong>—the sequence of decisions and actions taken to reach a goal.</p>
+<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> documentation presents evaluation as a first-class part of the agent lifecycle. In this vault, the key distinction is between evaluating only the final answer and evaluating the broader <strong>agent trajectory</strong> that produced it.</p>
 <h2>1. Core Evaluation Philosophy</h2>
 <ul>
-<li><strong>Final Output vs. Trajectory:</strong> An agent might get the right answer through a flawed process (e.g., inefficient tool calls). ADK evaluates both the result and the &quot;how.&quot;
+<li><strong>Final Output vs. Trajectory:</strong> An agent can arrive at a correct result through an inefficient or unsafe process. Trajectory-aware evaluation tries to inspect both the answer and the steps.
 </li>
-<li><strong>Non-Deterministic Assertions:</strong> Since agents are probabilistic, ADK moves beyond binary pass/fail to qualitative scoring using rubrics and LLM-based &quot;judges.&quot;
+<li><strong>Non-Deterministic Assertions:</strong> Because agent outputs are probabilistic, some evaluation paths use rubrics or <a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>-style scoring instead of pure binary assertions.
 </li>
 </ul>
 <h2>2. Evaluation Sets (<code>.test.json</code>)</h2>
-<p>Evaluations are defined in JSON files using standard schemas (<code>EvalSet</code> and <code>EvalCase</code>).</p>
+<p>The ADK docs describe JSON-backed evaluation artifacts such as <code>EvalSet</code> and <code>EvalCase</code>.</p>
 <ul>
-<li><strong>EvalCase:</strong> Represents a single interaction scenario. Includes the input query, the expected result (ground truth), and potentially the expected tool trajectory.
+<li><strong>EvalCase:</strong> A single scenario, typically including input, expected outcome, and sometimes expected tool behavior.
 </li>
-<li><strong>EvalSet:</strong> A collection of evaluation cases.
+<li><strong>EvalSet:</strong> A collection of cases evaluated together.
 </li>
 </ul>
+<p>These names are useful working vocabulary in the vault, but this note does not attempt to serve as a full schema reference.</p>
 <h2>3. Evaluation Criteria &amp; Metrics</h2>
-<p>ADK supports multiple built-in criteria:</p>
+<p>The literature source discusses several recurring evaluation styles:</p>
 <ul>
-<li><strong>Trajectory Matching:</strong> Compares the agent&#39;s tool calls against a known &quot;correct&quot; sequence.
+<li><strong>Trajectory Matching:</strong> Compare tool use or workflow steps against an expected pattern.
 </li>
-<li><strong>Rubric-Based Scoring:</strong> Uses an LLM to grade the response based on a specific set of rules (e.g., politeness, accuracy, conciseness).
+<li><strong>Rubric-Based Scoring:</strong> Grade the response against explicit criteria.
 </li>
-<li><strong>Ground-Truth Comparison:</strong> Directly compares the final output against a reference answer.
+<li><strong>Ground-Truth Comparison:</strong> Compare the final output against a known reference.
 </li>
 </ul>
+<p>Treat these as documented evaluation modes and patterns, not as a claim that every metric is equally mature or always available in the same workflow surface.</p>
 <h2>4. Running Evaluations</h2>
 <h3>CLI (<code>adk eval</code>)</h3>
 <p>Run batch evaluations from the terminal.</p>
 <pre><code>adk eval my_eval_set.test.json</code></pre>
 <h3>Programmatic (<code>pytest</code>)</h3>
-<p>Integrate evaluations into standard CI/CD pipelines.</p>
+<p>Programmatic execution allows evaluation suites to participate in normal CI flows alongside tests and regression checks.</p>
 <h3>Web UI (<code>adk web</code>)</h3>
-<p>An interactive mode where developers can:</p>
-<ol>
-<li>Run a live session with an agent.
-</li>
-<li>&quot;Add current session&quot; to a test set.
-</li>
-<li>Visually inspect failures and step through trajectories.
-</li>
-</ol>
-<h2>5. Ecosystem Integrations</h2>
-<p>ADK is designed to work with production observability and evaluation platforms:</p>
+<p>The ADK docs also describe a web UI workflow for interactive testing and debugging. Treat that as a developer-facing inspection surface rather than a replacement for repeatable offline evaluation.</p>
+<h2>5. Scope and Limits</h2>
 <ul>
-<li><strong>Arize Phoenix / AX:</strong> For tracing and dataset management.
+<li>This note describes the evaluation concepts surfaced in the ADK documentation snapshot, not a complete feature matrix.
 </li>
-<li><strong>Freeplay:</strong> For prompt management and team-based evaluation.
+<li>It does not claim that integrations, metrics, or UI features have identical maturity across all ADK languages.
 </li>
-<li><strong>Galileo:</strong> For online monitoring and safety scoring.
+<li>Evaluation here focuses on behavior quality and workflow correctness, not full operational concerns such as latency budgets or cost accounting.
+</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
+</li>
+<li><a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>
+</li>
+<li><a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>
+</li>
+<li><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>
 </li>
 </ul>
 <hr>
@@ -517,7 +521,9 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="llm-as-a-judge.html" class="">llm-as-a-judge</a></li>
 </ul>
           </div>
         </div>

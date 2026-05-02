@@ -429,16 +429,16 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Firecrawl Crawling Capabilities</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Crawling Capabilities</span></span>
 <span class="fm-field"><span class="fm-key">provenance_chunk_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
-<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:38:58Z</span></span>
-<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">provenance_source_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Crawling Capabilities</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
+<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:38:58Z</span></span>
       </div>
     </header>
 
@@ -448,14 +448,82 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Firecrawl Crawling Capabilities</h1>
-<p>Firecrawl&#39;s crawling feature allows for systematic retrieval of entire websites converted into clean, LLM-ready Markdown.</p>
-<h2>Core Features</h2>
-<p>\ You can configure webhooks to receive real-time notifications as your crawl progresses. This allows you to process pages as they are scraped instead of waiting for the entire crawl to complete.\ \ cURL\ \ ```\ curl -X POST https://api.firecrawl.dev/v2/crawl \\ -H &#39;Content-Type: application/json&#39; \\ -H &#39;Authorization: Bearer YOUR_API_KEY&#39; \\ -d &#39;{\ &quot;url&quot;: &quot;https://docs.firecrawl.dev&quot;,\ &quot;limit&quot;: 100,\ &quot;webhook&quot;: {\ &quot;url&quot;: &quot;https://your-domain.com/webhook&quot;,\ &quot;metadata&quot;: {\ &quot;any_key&quot;: &quot;any_value&quot;\ },\ &quot;events&quot;: [&quot;started&quot;, &quot;page&quot;, &quot;completed&quot;]\ }\ }&#39;\ ```\ \...</p>
-<h2>Epistemic Status</h2>
-<p>Verified (T5) against the official Firecrawl documentation.</p>
+<p>Firecrawl&#39;s crawl path is the vault&#39;s bounded multi-page ingestion mechanism: start from a root URL, traverse within configured limits, and return page content asynchronously as scrape-like results.</p>
+<h2>What Crawl Is For</h2>
+<ul>
+<li>Use <code>crawl</code> when one page is not enough and you need a constrained slice of a documentation site.
+</li>
+<li>Prefer <code>crawl</code> over <code>scrape</code> when navigation depth and path filters matter.
+</li>
+<li>Prefer <code>map</code> first when you need URL discovery without fetching page bodies.
+</li>
+</ul>
+<h2>Working Request Shape</h2>
+<p>The pipeline spec models crawl requests like:</p>
+<pre><code>{
+  &quot;url&quot;: &quot;https://docs.example.com&quot;,
+  &quot;limit&quot;: 500,
+  &quot;maxDiscoveryDepth&quot;: 3,
+  &quot;includePaths&quot;: [&quot;^/docs/&quot;, &quot;^/api/&quot;],
+  &quot;excludePaths&quot;: [&quot;^/blog/&quot;, &quot;^/changelog/&quot;, &quot;\\.pdf$&quot;],
+  &quot;scrapeOptions&quot;: {
+    &quot;formats&quot;: [&quot;markdown&quot;],
+    &quot;onlyMainContent&quot;: true
+  }
+}</code></pre>
+<p>The local ingest server uses the same structure with a smaller default limit and explicit polling against <code>GET /v2/crawl/{id}</code>.</p>
+<h2>Key Capabilities</h2>
+<ul>
+<li><strong>Bounded traversal:</strong> <code>limit</code> and <code>maxDiscoveryDepth</code> keep the crawl from expanding indefinitely.
+</li>
+<li><strong>Path scoping:</strong> <code>includePaths</code> and <code>excludePaths</code> are the main cost-control and relevance-control levers.
+</li>
+<li><strong>Scrape inheritance:</strong> <code>scrapeOptions</code> lets crawl results reuse the same markdown-oriented extraction settings as single-page scrape operations.
+</li>
+<li><strong>Async execution:</strong> the initial request returns a job ID; results arrive only after polling completes.
+</li>
+</ul>
+<h2>Output Model</h2>
+<ul>
+<li><code>POST /v2/crawl</code> returns an ID immediately.
+</li>
+<li><code>GET /v2/crawl/{id}</code> is polled until <code>status == &quot;completed&quot;</code>.
+</li>
+<li>Completed pages are treated as an array of scrape response objects, each with extracted content and metadata.
+</li>
+</ul>
+<h2>Operational Guidance</h2>
+<ul>
+<li>Use <code>includePaths</code> aggressively for docs sites; broad crawls waste credits and increase irrelevant retrieval.
+</li>
+<li>Treat crawl as an extraction primitive, not a synthesis primitive. Content still needs canonical storage, chunking, and embedding downstream.
+</li>
+<li>The current vault convention is markdown-first extraction with <code>onlyMainContent: true</code>.
+</li>
+</ul>
+<h2>Distinction from Neighboring Endpoints</h2>
+<ul>
+<li><a href="firecrawl-scrape-capabilities.html" class="wikilink">firecrawl-scrape-capabilities</a>: single-page retrieval, synchronous.
+</li>
+<li><a href="firecrawl-map-capabilities.html" class="wikilink">firecrawl-map-capabilities</a>: discovery of URLs without page content.
+</li>
+<li><a href="firecrawl-api-v2-reference.html" class="wikilink">firecrawl-api-v2-reference</a>: broader endpoint surface and shared request/response conventions.
+</li>
+</ul>
+<h2>Limits and Caveats</h2>
+<ul>
+<li>This note is grounded in the local spec and ingest implementation, not a full live Firecrawl reference.
+</li>
+<li>Vendor-side limits, concurrency, and plan quotas may change; the pipeline spec currently notes page-tier limits and advises tight path filtering.
+</li>
+<li>&quot;LLM-ready Markdown&quot; should be read as cleaner-than-raw HTML, not as a guarantee that every page arrives perfectly normalized.
+</li>
+</ul>
 <h2>Related</h2>
 <ul>
-<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
+</li>
+<li><a href="protocol-source-ingestion-runbook.html" class="wikilink">protocol-source-ingestion-runbook</a>
 </li>
 <li><a href="firecrawl-map-capabilities.html" class="wikilink">firecrawl-map-capabilities</a>
 </li>
@@ -488,7 +556,8 @@
 <li><a href="firecrawl-api-v2-reference.html" class="">firecrawl-api-v2-reference</a></li>
 <li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
 <li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
-<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="protocol-source-ingestion-runbook.html" class="">protocol-source-ingestion-runbook</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
 </ul>
           </div>
         </div>

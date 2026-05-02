@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: Language Summaries (Python &amp; Racket)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/python-summary.md, 00_Raw/racket-summary.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Language Summaries (Python &amp; Racket)</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">Language Overviews, Python Core Patterns, Racket LOP Overview</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/python-summary.md, 00_Raw/racket-summary.md</span></span>
       </div>
     </header>
 
@@ -445,19 +445,19 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Literature: Language Summaries (Python &amp; Racket)</h1>
-<p>This note captures foundational overviews for core development languages used and referenced within the vault.</p>
-<h2>Python Core Patterns</h2>
+<p>This note captures selected foundational overviews for two core development languages used and referenced within the vault.</p>
+<h2>Python Selected Patterns</h2>
 <ul>
 <li><strong>Decorators</strong>: Behavioral extension using closures and <code>@decorator</code> syntax. Preservation of metadata via <code>functools.wraps</code> is recommended.
 </li>
 <li><strong>Context Managers</strong>: Resource safety through the <code>with</code> statement (<code>__enter__</code> / <code>__exit__</code>), including async variants.
 </li>
-<li><strong>Type Hinting</strong>: Evolution toward static analysis (PEP 484) with built-in collection support (3.9+) and union operators (3.10+).
+<li><strong>Type Hinting</strong>: Evolution toward static analysis (PEP 484) with built-in collection support standardized in Python 3.9+ and union operators in 3.10+. Type hints remain advisory at runtime even when static tooling treats them as contracts.
 </li>
 </ul>
 <h2>Racket LOP Philosophy</h2>
 <ul>
-<li><strong>Language-Oriented Programming (LOP)</strong>: The primary philosophy of Racket, enabling the creation of custom Domain-Specific Languages (DSLs).
+<li><strong>Language-Oriented Programming (LOP)</strong>: Racket&#39;s design philosophy strongly emphasizes building custom Domain-Specific Languages (DSLs).
 </li>
 <li><strong>Hygienic Macros</strong>: Advanced syntax objects that prevent name collisions during expansion.
 </li>

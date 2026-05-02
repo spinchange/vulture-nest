@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: HF Agents Course - Unit 1 &amp; 2</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-course-unit1.md, 00_Raw/hf-agents-course-unit2.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: HF Agents Course - Unit 1 &amp; 2</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">HF Agents Fundamentals, Agentic Frameworks Comparison</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-course-unit1.md, 00_Raw/hf-agents-course-unit2.md</span></span>
       </div>
     </header>
 
@@ -458,7 +458,7 @@
 </li>
 </ul>
 <h2>Unit 2: Framework Landscape (Control vs. Freedom)</h2>
-<p>The course identifies three primary architectural approaches:</p>
+<p>The course uses three primary architectural approaches as teaching anchors. In practice, these approaches are often combined rather than treated as mutually exclusive categories.</p>
 <h3>1. smolagents (Hugging Face)</h3>
 <ul>
 <li><strong>Focus</strong>: &quot;Freedom&quot; via <strong>Code Agents</strong>.
@@ -468,7 +468,7 @@
 </ul>
 <h3>2. LlamaIndex</h3>
 <ul>
-<li><strong>Focus</strong>: &quot;Data Agency&quot; (RAG).
+<li><strong>Focus</strong>: &quot;Data Agency&quot; through retrieval and workflow-oriented data access.
 </li>
 <li><strong>Philosophy</strong>: Optimized for data ingestion and retrieval using <code>QueryEngines</code> and <code>Workflows</code> to bridge static data and action.
 </li>
@@ -477,7 +477,14 @@
 <ul>
 <li><strong>Focus</strong>: &quot;Control&quot; &amp; &quot;State Management&quot;.
 </li>
-<li><strong>Philosophy</strong>: Uses a Directed Acyclic Graph (DAG) or cyclic graph structure for deterministic, industrial-strength orchestration.
+<li><strong>Philosophy</strong>: Uses explicit graph-based control structures, including cyclic workflows, for stateful orchestration. The control flow can be deterministic even when model outputs remain probabilistic.
+</li>
+</ul>
+<h3>Framework Complementarity</h3>
+<ul>
+<li><strong>Hybrid use</strong>: These frameworks are often composed in practice, for example LangGraph for control flow plus LlamaIndex for retrieval-heavy components.
+</li>
+<li><strong>Pedagogical framing</strong>: The &quot;Control vs. Freedom&quot; contrast is useful for reasoning about tradeoffs, but it is not a hard ecosystem boundary.
 </li>
 </ul>
 <h2>Key Theoretical Concepts</h2>
@@ -485,6 +492,8 @@
 <li><strong>State Management</strong>: The distinction between transient context (LlamaIndex) and persistent, checkpointed state (LangGraph).
 </li>
 <li><strong>Agentic RAG</strong>: Moving beyond simple retrieval to autonomous query reformulation and multi-step validation.
+</li>
+<li><strong>Tool Grounding</strong>: Tool use becomes more reliable when tool descriptions, chat templates, and execution handoff semantics are aligned.
 </li>
 </ul>
 <hr>

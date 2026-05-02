@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Artifact Service</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Artifact Service</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -449,15 +449,15 @@
 <ul>
 <li><strong>Abstraction:</strong> Agents interact with artifacts via the <code>CallbackContext</code> or <code>ToolContext</code>, which abstracts the underlying storage backend.
 </li>
-<li><strong>Versioning:</strong> Artifacts are automatically versioned. Each save operation creates a new version of the file.
+<li><strong>Versioning:</strong> Artifacts are versioned by the configured service. The ADK docs describe <code>save_artifact</code> as returning an integer version number, with the first saved revision represented as version <code>0</code>, and <code>load_artifact(..., version=None)</code> as loading the latest version.
 </li>
 <li><strong>Scoping:</strong>
 <ul>
 <li>
 <ul>
-<li><strong>Session Scope:</strong> Default. Artifacts are associated with a specific <code>sessionId</code>.
+<li><strong>Session Scope:</strong> Default. Artifacts are associated with the current <code>app</code>, <code>user</code>, and <code>sessionId</code>.
 </li>
-<li><strong>User Scope:</strong> Prefixing a filename with <code>user:</code> (e.g., <code>user:settings.json</code>) scopes the artifact to the user, making it accessible across multiple sessions (supported by <code>GcsArtifactService</code>).
+<li><strong>User Scope:</strong> Prefixing a filename with <code>user:</code> (for example <code>user:settings.json</code>) is documented as a way to make the artifact accessible across sessions for the same user within the same application boundary.
 </li>
 </ul>
 </li>
@@ -472,13 +472,15 @@
 </li>
 <li><strong>Persistence:</strong> Data is lost when the process terminates.
 </li>
+<li><strong>Version model:</strong> The ADK docs describe an in-memory version list keyed by app, user, session, and filename, so repeated saves create retrievable revisions for the life of the process.
+</li>
 </ul>
 <h3>2. <code>GcsArtifactService</code></h3>
 <p>Uses Google Cloud Storage for persistent storage.</p>
 <ul>
 <li><strong>Use Case:</strong> Production environments, long-running agents, and cross-session memory.
 </li>
-<li><strong>Features:</strong> Explicit versioning as GCS objects and namespace support.
+<li><strong>Features:</strong> Persistent storage, service-managed version tracking, and better support for cross-session artifact retention. Exact storage details should be verified against the active ADK implementation and GCS configuration.
 </li>
 </ul>
 <h2>Developer Workflow</h2>
@@ -495,14 +497,29 @@ runnerConfig := &amp;launcher.Config{
 <pre><code># [[python]] Example
 async def my_tool(context: ToolContext):
     data = b&quot;Some binary content&quot;
-    await context.save_artifact(&quot;report.pdf&quot;, data)</code></pre>
+    version = await context.save_artifact(&quot;report.pdf&quot;, data)
+    latest = await context.load_artifact(&quot;report.pdf&quot;)
+    original = await context.load_artifact(&quot;report.pdf&quot;, version=version)</code></pre>
 <h2>Key Methods</h2>
 <ul>
 <li><code>save_artifact(filename, data)</code>: Persists data and creates a new version.
 </li>
 <li><code>load_artifact(filename, version=None)</code>: Retrieves a specific or latest version.
 </li>
-<li><code>list_artifacts()</code>: Returns all artifacts associated with the current scope.
+<li><code>list_artifacts()</code>: Returns artifacts associated with the current scope. Check the active ADK docs for the exact return shape and metadata fields exposed by the implementation you are using.
+</li>
+</ul>
+<h2>Caveats</h2>
+<ul>
+<li>Context artifact methods require a configured artifact service; the ADK docs note they raise errors if no service is attached to the runner.
+</li>
+<li><code>load_artifact</code> can return no result if the file or version does not exist, so callers should treat retrieval as fallible.
+</li>
+<li>User-scoped names still need deliberate naming discipline. A path like <code>user:settings.json</code> is shared across that user&#39;s sessions for the app, so teams should define conventions to avoid accidental collisions between tools or features.
+</li>
+<li><code>InMemoryArtifactService</code> is convenient for development but can lose data on process exit and consume significant memory for large files.
+</li>
+<li>Persistent services such as GCS add durability, but also bring storage cost, permissions, and cleanup concerns.
 </li>
 </ul>
 <hr>
@@ -511,9 +528,9 @@ async def my_tool(context: ToolContext):
 <ul>
 <li><a href="adk-session-service.html" class="wikilink">adk-session-service</a>
 </li>
-</ul>
-<ul>
 <li><a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a>
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
 </li>
 </ul>
       </main>
@@ -528,6 +545,7 @@ async def my_tool(context: ToolContext):
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
 <li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>

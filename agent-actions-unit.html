@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Actions Unit</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Actions Unit</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">hf-agents-unit-1-actions, code-agents-summary</span></span>
       </div>
     </header>
@@ -449,13 +449,33 @@
 <p>Actions are the concrete steps an AI agent takes to interact with its environment (web browsing, tool usage, API calls).</p>
 <h2>Key Concepts</h2>
 <ul>
-<li><strong>JSON Agent:</strong> Actions specified in JSON.
+<li><strong>JSON Agent:</strong> Emits a structured action payload that an external system parses and executes.
 </li>
-<li><strong>Code Agent:</strong> Agent generates executable code blocks (e.g., <a href="python.html" class="wikilink">python</a>).
+<li><strong>Code Agent:</strong> Generates executable code blocks (for example in <a href="python.html" class="wikilink">python</a>) instead of a narrow JSON action schema.
 </li>
-<li><strong>Function-calling Agent:</strong> Fine-tuned JSON agent for discrete tool calls.
+<li><strong>Function-calling Agent:</strong> Uses native structured tool-calling behavior exposed by the model or framework. It is adjacent to JSON-style agents, but not identical to &quot;a fine-tuned JSON agent.&quot;
 </li>
-<li><strong>Stop and Parse:</strong> The LLM must stop generating after the action tokens to allow an external parser to execute the tool and return control.
+<li><strong>Stop and Parse:</strong> In many tool-use loops, the model is configured to stop after emitting an action so the environment can parse it, execute it, and return an observation before generation resumes.
+</li>
+</ul>
+<h2>Why Stop and Parse Matters</h2>
+<p>This pattern is the control boundary between reasoning and action:</p>
+<ul>
+<li>the model emits an action
+</li>
+<li>the runtime intercepts that action
+</li>
+<li>the tool or environment executes it
+</li>
+<li>the result is returned to the model as the next observation
+</li>
+</ul>
+<p>JSON-agent loops depend on this most explicitly, while native <a href="function-calling.html" class="wikilink">function-calling</a> systems can hide more of the parsing machinery behind the model API.</p>
+<h2>Minimal Examples</h2>
+<ul>
+<li><strong>JSON-style action:</strong> <code>{&quot;tool&quot;: &quot;search&quot;, &quot;args&quot;: {&quot;query&quot;: &quot;latest MCP spec&quot;}}</code>
+</li>
+<li><strong>Code-agent action:</strong> a short script that calls an API, transforms the response, and prints a final result
 </li>
 </ul>
 <h2>Advantages of Code Agents</h2>
@@ -469,9 +489,26 @@
 <li>Direct integration with libraries.
 </li>
 </ul>
+<h2>Tradeoffs of Code Agents</h2>
+<ul>
+<li>Higher execution risk than narrow structured tool calls.
+</li>
+<li>Requires a runtime environment and stronger sandboxing.
+</li>
+<li>Can add latency and variability compared with direct function calling.
+</li>
+</ul>
 <h2>Related</h2>
 <ul>
 <li><a href="agent-actions.html" class="wikilink">agent-actions</a>
+</li>
+<li><a href="code-agents.html" class="wikilink">code-agents</a>
+</li>
+<li><a href="function-calling.html" class="wikilink">function-calling</a>
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+</li>
+<li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>
 </li>
 </ul>
       </main>
@@ -492,6 +529,10 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="function-calling.html" class="">function-calling</a></li>
+<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="python.html" class="">python</a></li>
 </ul>
           </div>

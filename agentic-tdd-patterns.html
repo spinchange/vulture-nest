@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agentic TDD Patterns</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic TDD Patterns</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">llm-tdd, evaluation-driven-development, edd, agent-testing</span></span>
       </div>
     </header>
@@ -444,14 +444,14 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Agentic TDD Patterns</h1>
-<p>Test-Driven Development (TDD) for agents shifts the focus from deterministic unit tests to <strong>Evaluation-Driven Development (EDD)</strong>. This protocol allows frontier models to build bespoke software with high reliability by treating tests as &quot;Executable Intent.&quot;</p>
+<p>Test-Driven Development for agentic systems extends normal TDD with evaluation, rubric checks, and workflow-level verification. The core idea is still test-first discipline; the difference is that some agent behaviors require richer checks than a deterministic unit assertion.</p>
 <h2>The Agentic Red-Green-Refactor Loop</h2>
 <ol>
 <li><strong>RED (Intent):</strong> The agent (or user) defines a <strong>Scenario Note</strong> or a failing test script.
 <ul>
 <li>For logic: A standard test file (e.g., <code>pytest</code>, <code>Pester</code>, <code>xUnit</code>).
 </li>
-<li>For behavior: A &quot;Judge&quot; rubric or a prompt-evaluator configuration.
+<li>For behavior: A rubric, evaluator configuration, or judged scenario.
 </li>
 </ul>
 </li>
@@ -472,11 +472,11 @@
 <h3>2. The &quot;Judge&quot; Evaluation</h3>
 <p>For non-deterministic outputs (like summaries), use a second agent (The Judge) to grade the primary agent&#39;s output against a specific rubric.</p>
 <ul>
-<li><strong>Pass Criteria:</strong> A score of ≥ 85/100 or a boolean &quot;Meets all directives.&quot;
+<li><strong>Pass Criteria:</strong> Thresholds such as <code>85/100</code> are project choices, not universal defaults. For important flows, pair judge scores with spot human review or multiple checks to reduce score gaming and judge drift.
 </li>
 </ul>
-<h3>3. Property-Based Invariants</h3>
-<p>Test for things that must *always* be true, regardless of the specific text output.</p>
+<h3>3. Structural Constraints and Invariants</h3>
+<p>Test for things that must remain true regardless of the exact wording of the output.</p>
 <ul>
 <li>Every note created must be lowercase-kebab-case.
 </li>
@@ -485,11 +485,24 @@
 <li>No PII (secrets, keys) may ever be logged to <code>02_System/log.md</code>.
 </li>
 </ul>
-<h2>Executable Specifications</h2>
-<p>In a bespoke software context, the <strong>Technical Design Document (TDD)</strong> serves as the &quot;Spec.&quot; Agents should read the TDD in <code>00_Raw/</code> and generate a test suite in <code>tests/</code> *before* writing a single line of production code.</p>
+<h2>Spec-First Development for Agents</h2>
+<p>In this vault, a design note or implementation spec can act as executable intent: the agent reads the spec, derives tests or evaluation cases, and only then begins implementation. That is compatible with TDD, but it should not be confused with renaming the methodology itself.</p>
+<h2>Limits</h2>
+<ul>
+<li>Agentic TDD is an emerging practice, not a settled discipline with universal terminology.
+</li>
+<li>Rubric-based judging is useful, but it adds its own failure modes: inconsistent scoring, shallow proxies for quality, and susceptibility to prompt framing.
+</li>
+<li>Some checks belong in normal unit tests; others belong in scenario evaluation. Mixing them indiscriminately makes failures harder to interpret.
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
+<li><a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>
+</li>
+<li><a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>
+</li>
 <li><a href="executable-note-standard.html" class="wikilink">executable-note-standard</a>
 </li>
 <li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>
@@ -523,8 +536,10 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="llm-as-a-judge.html" class="">llm-as-a-judge</a></li>
 <li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 </ul>
           </div>

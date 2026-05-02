@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Code Agents</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Code Agents</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, smolagents, programmable-agents</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, programmable-agents</span></span>
       </div>
     </header>
 
@@ -454,10 +454,27 @@
 <li><strong>Integration:</strong> Direct access to libraries and APIs.
 </li>
 </ul>
+<h2>Typical Examples</h2>
+<ul>
+<li>A data agent may generate a short <code>pandas</code> transform instead of requesting a long chain of table-filter actions.
+</li>
+<li>A research or ops agent may write a small script that calls an API, parses the response, and formats the result for a later step.
+</li>
+</ul>
 <h2>Security Considerations</h2>
-<p>Executing agent-generated code requires strict sandboxing. Tools like <code>smolagents</code> or secure execution environments are mandatory.</p>
+<p>Automatic execution of agent-generated code changes the risk profile dramatically. Unsupervised execution should be sandboxed and tightly permissioned; human-reviewed code generation has a lower risk surface, but still needs scrutiny around side effects, credentials, and filesystem access.</p>
+<p>Libraries such as <a href="smolagents.html" class="wikilink">smolagents</a> are examples of code-agent tooling, not the definition of the category.</p>
+<h2>Tradeoffs</h2>
+<ul>
+<li><strong>Latency:</strong> Generating code and then executing it can be slower than a narrow tool call.
+</li>
+<li><strong>Debugging:</strong> Failure modes move from schema validation into runtime exceptions and environment-specific bugs.
+</li>
+<li><strong>Variability:</strong> Two runs may produce different code shapes that are both valid but harder to compare or cache.
+</li>
+</ul>
 <h2>Relationship to Wiki Architecture</h2>
-<p>In a <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> model, Code Agents can treat the wiki&#39;s system layer (<code>02_System/</code>) as a library of available tools.</p>
+<p>In a <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> model, Code Agents can treat the wiki&#39;s system layer (<code>02_System/</code>) as a discoverable tool library. That makes the vault more programmable: an agent can inspect available scripts, choose one, compose it with generated glue code, and report the result back into the knowledge graph.</p>
 <h2>See Also</h2>
 <ul>
 <li><a href="index.html" class="wikilink">index</a>
@@ -484,6 +501,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>

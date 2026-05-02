@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Tools</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Tools</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">tool-definition, function-calling, mcp</span></span>
       </div>
     </header>
@@ -457,6 +457,7 @@
 <li><strong>Callable:</strong> The actual code (<a href="python.html" class="wikilink">python</a>, JS, API) that executes the task.
 </li>
 </ul>
+<p>Anthropic&#39;s direct API exposes this surface through a top-level <code>tools</code> field on the Messages API, with tool calls returned as <code>tool_use</code> content blocks rather than a separate role channel.</p>
 <h2>Auto-Documentation</h2>
 <p>Modern frameworks use Python introspection (decorators like <code>@tool</code>) to automatically generate tool descriptions from docstrings and type hints. This reduces the risk of the LLM receiving a mismatched specification.</p>
 <h2>Model Context Protocol (<a href="mcp-moc.html" class="wikilink">MCP</a>)</h2>
@@ -471,6 +472,10 @@
 </li>
 <li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
 </li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
+</li>
+<li><a href="function-calling.html" class="wikilink">function-calling</a>
+</li>
 </ul>
       </main>
 
@@ -484,13 +489,16 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="csharp-records.html" class="">csharp-records</a></li>
 <li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="gala-agent-use-case.html" class="">gala-agent-use-case</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
@@ -503,6 +511,8 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>

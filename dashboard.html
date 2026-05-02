@@ -306,26 +306,26 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-05-02 02:44</span>
+          <span>Generated 2026-05-02 20:43</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
       <div class="panel hero-score">
         <div class="kicker terminal">Vault Health</div>
-        <div class="score">95%</div>
-        <div class="health-warn terminal">orphan=0 / broken=1 / neural_gap=0</div>
+        <div class="score">91%</div>
+        <div class="health-warn terminal">orphan=2 / broken=1 / neural_gap=0</div>
       </div>
     </section>
 
     <section class="metrics">
       <article class="panel metric">
         <div class="metric-label terminal">Total Notes</div>
-        <div class="metric-value">334</div>
+        <div class="metric-value">343</div>
         <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Link Density</div>
-        <div class="metric-value">9.56</div>
+        <div class="metric-value">9.59</div>
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
@@ -335,17 +335,17 @@
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">PoShWiKi Pages</div>
-        <div class="metric-value">7</div>
+        <div class="metric-value">8</div>
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Session Actions</div>
-        <div class="metric-value">4</div>
-        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-04-26</span>. Latest session page is <span class='terminal'>Session 2026-05-01</span>.</div>
+        <div class="metric-value">7</div>
+        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-05-02</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
-        <div class="metric-value">25/25</div>
+        <div class="metric-value">26/26</div>
         <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
       </article>
     </section>
@@ -359,11 +359,11 @@
             <tr><th>Note</th><th style="text-align:right">Incoming</th></tr>
           </thead>
           <tbody>
-            <tr><td class='rank'>mcp-moc</td><td class='value'>95</td></tr>
+            <tr><td class='rank'>mcp-moc</td><td class='value'>94</td></tr>
 <tr><td class='rank'>capability-lattice-spec</td><td class='value'>73</td></tr>
 <tr><td class='rank'>rust</td><td class='value'>59</td></tr>
+<tr><td class='rank'>agent-development-kit</td><td class='value'>57</td></tr>
 <tr><td class='rank'>agentic-frameworks-moc</td><td class='value'>55</td></tr>
-<tr><td class='rank'>agent-development-kit</td><td class='value'>53</td></tr>
           </tbody>
         </table>
         <div class="callout">Centrality is computed from the <span class="terminal">Links</span> table in PoShWiKi by incoming link count.</div>
@@ -375,28 +375,28 @@
         <div class="split">
           <section>
             <h3>PoShWiKi Session</h3>
-            <div class="callout">Latest page with an <span class='terminal'>Actions</span> section: <span class='terminal'>Session 2026-04-26</span>. Latest session page: <span class='terminal'>Session 2026-05-01</span>.</div>
+            <div class="callout">Latest session page: <span class='terminal'>Session 2026-05-02</span></div>
             <ul class="feed">
-              <li><span class='feed-meta'>May 02 02:43 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>May 02 02:43 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>May 02 02:43 | action</span><span class='feed-text'>[13</span></li>
-<li><span class='feed-meta'>May 02 02:43 | action</span><span class='feed-text'>[13</span></li>
+              <li><span class='feed-meta'>May 02 20:42 | action</span><span class='feed-text'>Cleanup pass advanced: rebuilt firecrawl-api-v2-reference, firecrawl-crawling-capabilities, firecrawl-map-capabilities, and firecrawl-scrape-capabilities from local pipeline evidence after failed doc-scrape artifacts were found. Reframed them as vault-local references grounded in spec-firecrawl-pgvector-pipeline and ingest code; focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 02 20:42 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-go-implementation, adk-evaluation-framework, agent-actions-unit, and agentic-tdd-patterns to remove unsupported certainty, distinguish documented patterns from vault-local guidance, and strengthen graph links. Focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 02 20:42 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-advanced-capabilities and lightly hardened adk-artifact-service using the raw ADK documentation snapshot. Added caveats around planner/code-execution capability boundaries, versioning semantics, and artifact-service failure modes; focused Claude re-reviews returned accept for both notes.</span></li>
+<li><span class='feed-meta'>May 02 20:42 | action</span><span class='feed-text'>Review trail normalized: summarized the Claude QA pipeline in durable logs after review-gemini-pages.ps1 produced claude-review.md, claude-review-pass-2.md, claude-review-pass-3.md, and focused per-note follow-up reports. The batch findings were consumed into committed wiki hardening passes; claude-review*.md remains a working-artifact set rather than the canonical session record.</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>May 02 02:43 | Current Seam</span><span class='feed-text'>Semantic embedding pipeline fully implemented and pushed to GitHub. | New scripts: | 02_System/sync-embeddings.ps1 — incremental Gemini embedding sync (gemini-embedding-001, 768-dim) | 02_System/suggest-links.ps1 — pairwise cosine similarity orphan detector | 02_System/auto-link.ps1 — Claude Haiku judge + wikilink writer | Updated scripts: | 02_System/vulture-search.ps1 — gained -Semantic flag for neural retrieval tier | 02_System/run-maintenance.ps1 — sync-embeddings added as optional step 8/8 | 00_Raw/PoShWiKi/PoShWiKi.psm1 — Initialize-Wiki now creates Links + NoteEmbeddings tables | Results: 224 notes embedded. 4 auto-link passes. Semantic orphans 164 -&gt; ~51. Links 1478 -&gt; 1621 (+143). | New wiki notes: | 01_Wiki/karpathy-vision-gap-analysis.md — why we built this, design decisions, remaining gaps | 01_Wiki/semantic-embedding-pipeline.md — full usage reference and maintenance guide | Dashboard auto-deploying via GitHub Actions. Health at 90%.</span></li>
-<li><span class='feed-meta'>May 02 02:43 | Next Step</span><span class='feed-text'>Run sync-embeddings.ps1 after batch note ingestion to keep vectors fresh. Run auto-link.ps1 monthly or after large ingestion events. Consider surfacing semantic orphan count as a dashboard health metric. Address remaining Karpathy gaps</span></li>
+              <li><span class='feed-meta'>May 02 20:42 | Current Seam</span><span class='feed-text'>Inspected active PoShWiKi state and confirmed the live DB is 00_Raw/PoShWiKi/wiki.db, not the ignored repo-root wiki.db. Recorded the previously unmirrored Supabase Flask completion chain: ingestion handoff, synthesis/promotion handoff, literature note lit-supabase-flask-quickstart, and permanent note pattern-supabase-flask-integration.</span></li>
+<li><span class='feed-meta'>May 02 20:42 | Next Step</span><span class='feed-text'>If Supabase ingestion is still an active lane, verify index promotion coverage and graph wiring in related MOCs; otherwise continue from the latest MCP security seam.</span></li>
             </ul>
           </section>
           <section>
             <h3>log.md Major Actions</h3>
             <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
             <ul class="feed">
-              <li><span class='feed-text'>[2026-05-01] gemini-cli — Firecrawl Pipeline: MCP Architecture</span></li>
-<li><span class='feed-text'>[2026-05-01] gemini-cli — Firecrawl Pipeline: LangGraph Concepts</span></li>
+              <li><span class='feed-text'>[2026-05-01] gemini-cli — Firecrawl Pipeline: LangGraph Concepts</span></li>
 <li><span class='feed-text'>[2026-05-01] gemini-cli — Firecrawl Pipeline: OpenAI Agents SDK</span></li>
 <li><span class='feed-text'>[2026-05-01] gemini-cli — Ingestion: Software Engineering Frameworks</span></li>
 <li><span class='feed-text'>[2026-05-01] gemini-cli — Graph Integration: lit-mcp-security-best-practices</span></li>
+<li><span class='feed-text'>[2026-05-02] Codex — Claude Review Normalization</span></li>
             </ul>
           </section>
         </div>
@@ -406,14 +406,14 @@
     <section class="commit-strip">
       <h3>Recent Commits</h3>
       <div class="commit-track">
-        <span class='commit-pill'><span class='sha'>581d0bf4</span><span>docs(handoff): tighten librarian handoff to promotion only</span></span>
-<span class='commit-pill'><span class='sha'>45f23be2</span><span>docs(handoff): write librarian handoff to Gemini for post-synthesis cleanup</span></span>
-<span class='commit-pill'><span class='sha'>d589a157</span><span>chore(maintenance): stage remaining session artifacts from Gemini</span></span>
-<span class='commit-pill'><span class='sha'>f5b360d9</span><span>feat(wiki): synthesize Supabase Flask Quickstart (Stages 7-8)</span></span>
-<span class='commit-pill'><span class='sha'>d9b523a3</span><span>fix(dashboard): restore structural health scoring</span></span>
-<span class='commit-pill'><span class='sha'>132eb455</span><span>chore(maintenance): refresh registry and session export</span></span>
-<span class='commit-pill'><span class='sha'>a21bcaf3</span><span>chore(graph): wire source ingestion runbook into orchestration cluster</span></span>
-<span class='commit-pill'><span class='sha'>df83d83a</span><span>docs(protocol): capture source ingestion runbook</span></span>
+        <span class='commit-pill'><span class='sha'>6f41be97</span><span>docs(anthropic): add initial API corpus and evaluation record</span></span>
+<span class='commit-pill'><span class='sha'>c844db08</span><span>chore(handoff): add Anthropic docs ingestion prompts</span></span>
+<span class='commit-pill'><span class='sha'>4e5693a7</span><span>chore(tracking): normalize Claude review trail into durable logs</span></span>
+<span class='commit-pill'><span class='sha'>febd35ea</span><span>chore(sources): capture verbalized sample skill artifacts</span></span>
+<span class='commit-pill'><span class='sha'>05535330</span><span>chore(tracking): update session export for review and integration passes</span></span>
+<span class='commit-pill'><span class='sha'>a0a5d481</span><span>chore(tooling): add Gemini wiki review script and register it</span></span>
+<span class='commit-pill'><span class='sha'>c9752ab8</span><span>fix(wiki): finalize verbalized sample skill note and index placement</span></span>
+<span class='commit-pill'><span class='sha'>3acf9085</span><span>fix(wiki): apply reviewed cleanup batch across agent, ADK, and Firecrawl notes</span></span>
       </div>
     </section>
   </main>

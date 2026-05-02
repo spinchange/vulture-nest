@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Function Calling</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Function Calling</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">native-tool-use, json-mode-actions</span></span>
       </div>
     </header>
@@ -481,7 +481,7 @@
 </li>
 <li><strong>Detection</strong>: The model identifies when a user query requires a function and generates the JSON arguments.
 </li>
-<li><strong>Execution</strong>: The system runs the function and returns the result using the <code>tool</code> role.
+<li><strong>Execution</strong>: The system runs the function and returns the result using the provider&#39;s tool-result channel. Some APIs use a dedicated <code>tool</code> role, while Anthropic returns <code>tool_use</code> and <code>tool_result</code> as message content blocks.
 </li>
 </ol>
 <hr>
@@ -492,6 +492,8 @@
 <li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>
 </li>
 <li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
 </li>
 </ul>
       </main>
@@ -506,9 +508,14 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="chat-templates.html" class="">chat-templates</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
 <li><a href="lit-hf-agents-bonus.html" class="">lit-hf-agents-bonus</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="lora.html" class="">lora</a></li>
@@ -517,6 +524,7 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="react-pattern.html" class="">react-pattern</a></li>
 </ul>

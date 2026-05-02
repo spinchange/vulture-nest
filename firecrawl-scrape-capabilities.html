@@ -429,16 +429,16 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Firecrawl Scrape Capabilities</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Scrape Capabilities</span></span>
 <span class="fm-field"><span class="fm-key">provenance_chunk_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
-<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:54:18Z</span></span>
-<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">provenance_source_ids</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl Scrape Capabilities</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
+<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:54:18Z</span></span>
       </div>
     </header>
 
@@ -448,14 +448,76 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Firecrawl Scrape Capabilities</h1>
-<p>Firecrawl&#39;s Scrape endpoint provides atomic, high-performance retrieval of single web pages, optimized for clean Markdown conversion.</p>
-<h2>Core Features</h2>
-<p><a href="https://docs.firecrawl.dev/features/scrape#content-area">Skip to main content</a> <a href="https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo.png?fit=max&amp;auto=format&amp;n=iilnMwCX-8eR1yOO&amp;q=85&amp;s=c45b3c967c19a39190e76fe8e9c2ed5a">Firecrawl Docs home page![light logo</a>!<a href="https://mintcdn.com/firecrawl/iilnMwCX-8eR1yOO/logo/logo-dark.png?fit=max&amp;auto=format&amp;n=iilnMwCX-8eR1yOO&amp;q=85&amp;s=3fee4abe033bd3c26e8ad92043a91c17">dark logo</a>](https://firecrawl.dev/) v2 !<a href="https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg">US</a> English Search... Ctrl K Search... Navigation Scrape Scrape <a href="https://docs.firecrawl.dev/introduction">Documentation</a> <a href="https://docs.firecrawl.dev/sdks/overview">SDKs</a> <a href="https://www.firecrawl.dev/app">Integrations</a> <a href="https://docs.firecrawl.dev/api-reference/v2-introduction">API Reference</a> <a href="https://docs.firecrawl.dev/ai-onboarding">Build with AI</a> - <a href="https://firecrawl.dev/playground">Playground</a> - <a href="https://firecrawl.dev/blog">Blog</a> - <a href="https://discord.gg/firecrawl">Community</a> - <a href="https://firecrawl.dev/changelog">Changelog</a> ##### Get Started - <a href="https://docs.firecrawl.dev/introduction">Introduction</a> - <a href="https://docs.firecrawl.dev/sdks/cli">Skill + CLI</a> - <a href="https://docs.firecrawl.dev/ai-onboarding">Build with AI</a> - <a href="https://docs.firecrawl.dev/mcp-server">MCP Server</a> - <a href="https://docs.firecrawl.dev/advanced-scraping-guide">Advanced Scraping Guide</a> - Plans &amp; Billing ##### Core Endpoints - <a href="https://docs.firecrawl.dev/features/search">Search</a> - Scrape - [Scrape](https://docs.firecrawl.dev/features/sc...</p>
-<h2>Epistemic Status</h2>
-<p>Verified (T5) against the official Firecrawl documentation.</p>
+<p>Firecrawl&#39;s <code>scrape</code> endpoint is the single-page retrieval path: fetch one URL, extract cleaned content, and return it synchronously with metadata.</p>
+<h2>What Scrape Is For</h2>
+<ul>
+<li>Targeted retrieval of one known page.
+</li>
+<li>Fast validation of a source before broader crawling.
+</li>
+<li>Pulling markdown and lightweight metadata into the canonical source store.
+</li>
+</ul>
+<h2>Working Request Shape</h2>
+<p>The pipeline spec models scrape like this:</p>
+<pre><code>{
+  &quot;url&quot;: &quot;https://docs.firecrawl.dev/features/crawl&quot;,
+  &quot;formats&quot;: [&quot;markdown&quot;, &quot;links&quot;],
+  &quot;onlyMainContent&quot;: true,
+  &quot;excludeTags&quot;: [&quot;nav&quot;, &quot;footer&quot;, &quot;header&quot;, &quot;.sidebar&quot;],
+  &quot;waitFor&quot;: 1000
+}</code></pre>
+<h2>Important Options</h2>
+<ul>
+<li><code>formats</code>: determines which representations are returned. The local spec mentions <code>markdown</code>, <code>html</code>, <code>links</code>, <code>screenshot</code>, and <code>extract</code>.
+</li>
+<li><code>onlyMainContent</code>: strips navigation-heavy regions and is the default posture for documentation ingestion in this vault.
+</li>
+<li><code>excludeTags</code>: removes known noisy elements before extraction.
+</li>
+<li><code>waitFor</code>: allows JavaScript-rendered pages to settle before retrieval.
+</li>
+</ul>
+<h2>Response Shape</h2>
+<p>The pipeline spec expects a synchronous response with:</p>
+<ul>
+<li>extracted content such as <code>markdown</code>
+</li>
+<li>optional related data such as <code>links</code>
+</li>
+<li><code>metadata</code> including title, description, status code, content type, language, and source URL
+</li>
+</ul>
+<h2>Distinction from Crawl and Map</h2>
+<ul>
+<li><a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a>: multi-page traversal with async polling.
+</li>
+<li><a href="firecrawl-map-capabilities.html" class="wikilink">firecrawl-map-capabilities</a>: URL discovery without content retrieval.
+</li>
+<li><code>scrape</code> is the atomic retrieval unit underneath broader ingestion flows.
+</li>
+</ul>
+<h2>Operational Guidance</h2>
+<ul>
+<li>Use scrape first when you only need one page or want to test extraction quality on a candidate URL.
+</li>
+<li>Keep <code>onlyMainContent: true</code> for docs ingestion unless you explicitly need navigation or surrounding chrome.
+</li>
+<li>Treat &quot;clean Markdown&quot; as useful extracted text, not as a guarantee of perfect structural fidelity.
+</li>
+</ul>
+<h2>Caveats</h2>
+<ul>
+<li>This note is derived from the local pipeline spec rather than a full live Firecrawl endpoint audit.
+</li>
+<li>If the vault starts relying on less common scrape options, expand this note with concrete examples from implementation and tests.
+</li>
+</ul>
 <h2>Related</h2>
 <ul>
-<li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
+</li>
+<li><a href="protocol-source-ingestion-runbook.html" class="wikilink">protocol-source-ingestion-runbook</a>
 </li>
 <li><a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a>
 </li>
@@ -488,7 +550,8 @@
 <li><a href="firecrawl-api-v2-reference.html" class="">firecrawl-api-v2-reference</a></li>
 <li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
 <li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
-<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="protocol-source-ingestion-runbook.html" class="">protocol-source-ingestion-runbook</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
 </ul>
           </div>
         </div>

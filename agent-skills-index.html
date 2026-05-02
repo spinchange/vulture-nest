@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Skills Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Skills Index</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">skill-directory, agent-capabilities</span></span>
       </div>
     </header>
@@ -452,21 +452,31 @@
 <li><strong>Vault Maintenance</strong>: Procedural knowledge for adhering to <a href="yanp-for-agentic-workflows.html" class="wikilink">YANP</a> and managing note lifecycles.
 </li>
 </ul>
-<h2>.NET Agentic Stack (Tier-1)</h2>
+<h2>.NET Agentic Stack (Tier-1, Planned)</h2>
+<p>&gt; These five notes are planned but do not yet exist in the vault. Links are aspirational stubs pending synthesis from source material in <code>00_Raw/</code>.</p>
 <ul>
-<li><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a>: Main architectural bridge for .NET/C# in agentic loops.
+<li><code>dotnet-agent-integration</code> — Main architectural bridge for .NET/C# in agentic loops.
 </li>
-<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>: Building type-safe, performance-critical <a href="mcp-moc.html" class="wikilink">MCP</a> servers.
+<li><code>csharp-mcp-sdk</code> — Building type-safe, performance-critical MCP servers.
 </li>
-<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>: On-device inference and GGUF integration for .NET agents.
+<li><code>lm-kit-dotnet</code> — On-device inference and GGUF integration for .NET agents.
 </li>
-<li><a href="foundry-local.html" class="wikilink">foundry-local</a>: Local ONNX inference with OpenAI-compatible interfaces.
+<li><code>foundry-local</code> — Local ONNX inference with OpenAI-compatible interfaces.
 </li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a>: Lightweight, idempotent memory services.
+<li><code>microsoft-data-sqlite-agent-patterns</code> — Lightweight, idempotent memory services.
 </li>
 </ul>
 <h2>Implementation Pattern</h2>
-<p>Skills are typically implemented as configuration files or specialized scripts that are &quot;activated&quot; based on user intent. These skills allow for cross-agent consistency in how the vault is manipulated.</p>
+<p>Skills are injected into an agent&#39;s context at session start or loaded on demand. Three concrete forms in this fleet:</p>
+<ul>
+<li><strong>Slash-command skills</strong> (Claude Code): A skill file (e.g., <code>session-distillation.md</code>) loaded by the harness when the user types the corresponding slash command (e.g., <code>/distill</code>). The skill text becomes part of the active context and instructs Claude to call <code>save_memory()</code> with a structured summary.
+</li>
+<li><strong>Instruction-set skills</strong> (Gemini CLI): A named section in the system prompt or <code>GEMINI.md</code> referencing vault conventions — e.g., the YANP compliance block that instructs Gemini to call <code>write_file()</code> with correct frontmatter whenever it synthesizes a new note.
+</li>
+<li><strong>PowerShell scripts</strong> (Codex): Automation scripts in <code>02_System/</code> (e.g., <code>audit-yanp.ps1</code>) that encode vault health rules as executable checks, run by the Codex engineer on demand or in CI.
+</li>
+</ul>
+<p>All three forms encode the same conventions; they differ only in the native tool API each model exposes.</p>
 <h2>Skills vs. Knowledge</h2>
 <p>There is a critical distinction between active agent <strong>Skills</strong> and passive <strong>Vault Knowledge</strong>:</p>
 <table>
@@ -482,24 +492,26 @@
 </tr>
 <tr>
 <td><strong>Activation</strong></td>
-<td><strong>Automatic</strong>: Triggered by keywords or intent (e.g., &quot;distill&quot;).</td>
+<td><strong>System-prompt injection</strong>: Prepended to the agent&#39;s context at session start, or loaded on demand via a slash command (e.g., <code>/distill</code> loads the distillation skill, which then calls <code>save_memory()</code>).</td>
 <td><strong>Manual</strong>: The agent must find it via search or be directed to it.</td>
 </tr>
 <tr>
 <td><strong>Capabilities</strong></td>
-<td><strong>Tool-Aware</strong>: Written to use specific agent tools (e.g., <code>save_memory</code>).</td>
-<td><strong>Model-Agnostic</strong>: General text readable by any human or AI.</td>
+<td><strong>Tool-Aware</strong>: Written to use specific agent tools (e.g., <code>save_memory</code>, <code>write_file</code>).</td>
+<td><strong>Convention-aware prose</strong>: Human-readable text that requires an agent configured for this vault&#39;s YANP conventions to use correctly; not universally parseable by arbitrary models.</td>
 </tr>
 </tbody>
 </table>
 <h2>Why We Need Both</h2>
-<p>To maintain a consistent vault across different models (Gemini, Claude), we use a <strong>Native Wrapper</strong> strategy:</p>
+<p>&gt; <strong>Status: Active</strong> — This pattern is in current use across all three fleet members (Gemini, Claude, Codex).</p>
+<p>To maintain a consistent vault across different models, we use a <strong>Native Wrapper</strong> strategy:</p>
 <ol>
 <li><strong>Vault Notes</strong> define the conventions (the &quot;Instruction Manual&quot;).
 </li>
 <li><strong>Native Skills</strong> implement those conventions using model-specific tools (the &quot;Executable Code&quot;).
 </li>
 </ol>
+<p>The strategy exists because each model exposes different tool APIs (<code>save_memory</code> vs. <code>write_file</code> vs. PowerShell) — a single YANP-compliant outcome requires model-specific wiring around a shared convention.</p>
 <hr>
 <h2>References</h2>
 <ul>
@@ -532,6 +544,7 @@
 <li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
 <li><a href="lit-skills-agent-behavior.html" class="">lit-skills-agent-behavior</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="verbalized-sample-skill.html" class="">verbalized-sample-skill</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
@@ -539,13 +552,7 @@
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
 <li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
-<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
-<li><a href="foundry-local.html" class="">foundry-local</a></li>
-<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
 <li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
 </ul>
           </div>

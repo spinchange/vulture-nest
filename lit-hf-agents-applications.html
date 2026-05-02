@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: HF Agents Course - Unit 3 &amp; 4</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-unit3.md, 00_Raw/hf-agents-final-units.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: HF Agents Course - Unit 3 &amp; 4</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">Agentic RAG Implementation, GAIA Evaluation</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-unit3.md, 00_Raw/hf-agents-final-units.md</span></span>
       </div>
     </header>
 
@@ -450,14 +450,14 @@
 <ul>
 <li><strong>Modular Tool Design</strong>: Organizing code into <code>tools.py</code> (auxiliary logic) and <code>retriever.py</code> (RAG logic) for maintainability.
 </li>
-<li><strong>BM25 Retrieval</strong>: Utilization of lexical (keyword) retrieval as a lightweight, non-embedding alternative for specific search tasks.
+<li><strong>BM25 Retrieval</strong>: Utilization of lexical (keyword) retrieval as a lightweight alternative for keyword-driven search tasks where semantic embeddings may be unnecessary or too costly.
 </li>
 <li><strong>Tool Composition</strong>: The technique of binding multiple tool types (FunctionTool, QueryEngineTool) to a single agent for cross-domain mastery.
 </li>
 </ul>
 <h2>Unit 4: Evaluation (GAIA Benchmark)</h2>
 <ul>
-<li><strong>GAIA (General AI Assistants)</strong>: A specialized benchmark of 466 real-world tasks designed to be simple for humans but difficult for LLMs.
+<li><strong>GAIA (General AI Assistants)</strong>: A benchmark of 466 real-world tasks in the course material, designed to be simple for humans but difficult for LLMs.
 </li>
 <li><strong>Complexity Levels</strong>:
 <ul>
@@ -473,10 +473,11 @@
 </li>
 </ul>
 </li>
-<li><strong>Evaluation Philosophy</strong>: Measures successful task completion in a non-gameable environment, focusing on multi-modal understanding and reasoning.
+<li><strong>Evaluation Philosophy</strong>: Measures successful task completion in an environment intended to resist shortcut gaming, with emphasis on multi-modal understanding and reasoning.
 </li>
 </ul>
-<h2>Deployment &amp; Local Runtimes (Unit 0)</h2>
+<h2>Supplementary Deployment &amp; Local Runtimes</h2>
+<p>The source bundle also included setup-oriented material that complements Units 3 and 4 without being the main focus of the application/evaluation sections.</p>
 <ul>
 <li><strong>Ollama</strong>: Standard for local LLM inference.
 </li>

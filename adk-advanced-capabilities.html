@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Advanced Capabilities: Planning &amp; Code Execution</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Advanced Capabilities: Planning &amp; Code Execution</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -444,9 +444,9 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>ADK Advanced Capabilities: Planning &amp; Code Execution</h1>
-<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> provides advanced features that enable agents to perform complex reasoning, mathematical calculations, and multi-step goal decomposition.</p>
+<p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> documentation describes two higher-leverage capabilities beyond a basic <code>LlmAgent</code> loop: planner-assisted reasoning and built-in code execution. In this vault, treat them as opt-in advanced features whose behavior depends on model support, runtime configuration, and safety boundaries.</p>
 <h2>1. Planning and Thinking (<code>ThinkingConfig</code>)</h2>
-<p>ADK allows agents to use a &quot;thinking&quot; or &quot;reasoning&quot; process before generating a final response. This is essential for complex tasks that require multiple steps of internal deliberation.</p>
+<p>ADK documents a &quot;thinking&quot; or &quot;reasoning&quot; path for models that support it. This is most useful when a task benefits from extra intermediate deliberation rather than a single direct answer.</p>
 <h3><code>ThinkingConfig</code></h3>
 <p>Configures the thinking behavior of the agent.</p>
 <ul>
@@ -456,38 +456,69 @@
 </li>
 </ul>
 <h3><code>BuiltInPlanner</code></h3>
-<p>A primitive that manages the reasoning loop. When an <code>LlmAgent</code> is configured with a planner, it follows a more structured reasoning process (often similar to ReAct).</p>
+<p>A planner primitive that delegates structured reasoning support to the model/runtime combination. Practically, this means the runtime can ask a capable model to spend extra budget on intermediate planning before or during answer generation, rather than forcing a single direct completion. It can resemble <a href="react-pattern.html" class="wikilink">ReAct</a>-style loops in spirit when the system alternates between deliberation and action, but this note should not be read as claiming strict algorithmic equivalence or a guaranteed step-by-step trace.</p>
 <pre><code># Configuration Example
 thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)
 planner = BuiltInPlanner(thinking_config=thinking_config)
 
 agent = LlmAgent(
-    model=&quot;gemini-2.5-pro&quot;,
+    model=&quot;&lt;thinking-capable-model&gt;&quot;,
     planner=planner,
     # ...
 )</code></pre>
+<p>The model name here is intentionally placeholder-style. The raw ADK documentation snapshot contains concrete Gemini examples, but exact model identifiers change faster than the architectural pattern.</p>
+<h3>Discovering Support</h3>
+<p>Treat planner support as a capability lookup, not a hard-coded assumption. In practice, verify support in the current ADK and model documentation before enabling <code>ThinkingConfig</code>, because availability, limits, and naming can shift across model releases.</p>
 <h2>2. Code Execution (<code>BuiltInCodeExecutor</code>)</h2>
-<p>Agents in ADK can natively generate and execute code (typically <a href="python.html" class="wikilink">python</a>) to perform calculations, data manipulation, or other algorithmic tasks.</p>
+<p>ADK also documents a built-in code-execution path, typically using <a href="python.html" class="wikilink">python</a> snippets for calculation, transformation, or small algorithmic steps.</p>
 <h3><code>BuiltInCodeExecutor</code></h3>
 <p>Enables the agent to execute code blocks found in its own responses.</p>
 <ul>
 <li><strong>Mechanism:</strong> When the LLM generates a part containing <code>executable_code</code>, the <code>Runner</code> detects it, executes it using the configured executor, and injects the <code>code_execution_result</code> back into the conversation history.
 </li>
-<li><strong>Safety:</strong> Execution usually happens in a managed environment (e.g., Gemini&#39;s built-in sandbox).
+<li><strong>Safety:</strong> The ADK docs describe managed execution environments, but the exact sandbox properties, resource limits, and failure behavior remain runtime-specific and should be verified before treating execution as safe by default.
+</li>
+<li><strong>Compatibility:</strong> The ADK docs also note that some code-execution combinations are not supported in every tool configuration. Read &quot;combinations&quot; broadly: model support, executor availability, tool wiring, and runtime environment all have to line up for execution to work.
 </li>
 </ul>
 <pre><code># Code Execution Example
 code_agent = LlmAgent(
     name=&quot;calculator&quot;,
-    model=&quot;gemini-2.0-flash&quot;,
+    model=&quot;&lt;code-execution-capable-model&gt;&quot;,
     code_executor=BuiltInCodeExecutor(),
     instruction=&quot;Write and execute Python code to solve math problems.&quot;
 )</code></pre>
 <h2>3. Interaction Patterns</h2>
 <ul>
-<li><strong>Thoughts as Events:</strong> Thinking events are yielded by the <code>Runner</code> during the execution loop, allowing developers to visualize the agent&#39;s internal process in real-time (e.g., via the Dev UI).
+<li><strong>Thoughts as Events:</strong> The <code>Runner</code> can emit intermediate events that expose thinking-related output for inspection or tooling. For callback-oriented handling patterns, see <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>.
 </li>
-<li><strong>Multi-Part Events:</strong> Code execution involves complex <code>Event</code> objects that contain multiple <code>Part</code>s (Text, ExecutableCode, and CodeExecutionResult).
+<li><strong>Multi-Part Events:</strong> Code execution can appear as event payloads containing normal text, generated code, and execution results as separate parts.
+</li>
+<li><strong>Inspection workflow:</strong> In practice, these events are most useful for logging, debugging, and guardrails rather than as a guaranteed stable public reasoning transcript.
+</li>
+</ul>
+<h2>4. Tradeoffs and Limits</h2>
+<ul>
+<li><strong>Token cost:</strong> Planning consumes extra reasoning budget and can increase latency.
+</li>
+<li><strong>Debug surface:</strong> Exposed thoughts and execution traces can improve observability, but they also create more runtime states to inspect and sanitize.
+</li>
+<li><strong>Failure modes:</strong> Planning may exhaust its budget without improving the answer, and code execution can fail due to unsupported operations, timeouts, or sandbox limits.
+</li>
+<li><strong>Security posture:</strong> Treat code execution as an explicitly governed feature, not as a harmless extension of normal text generation.
+</li>
+</ul>
+<h2>See Also</h2>
+<ul>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
+</li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>
+</li>
+<li><a href="react-pattern.html" class="wikilink">react-pattern</a>
+</li>
+<li><a href="python.html" class="wikilink">python</a>
+</li>
+<li><a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>
 </li>
 </ul>
 <hr>
@@ -509,9 +540,11 @@ code_agent = LlmAgent(
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="python.html" class="">python</a></li>
+<li><a href="react-pattern.html" class="">react-pattern</a></li>
 </ul>
           </div>
         </div>

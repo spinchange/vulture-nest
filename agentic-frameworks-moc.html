@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agentic Frameworks MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agentic Frameworks MOC</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-theory, autonomous-systems</span></span>
       </div>
     </header>
@@ -445,6 +445,7 @@
       <main class="content-zone" id="content">
         <h1>Agentic Frameworks MOC</h1>
 <p>This map covers the mechanics of how autonomous agents reason, act, and interact with knowledge bases.</p>
+<p>Parenthetical tags such as <code>Freedom</code>, <code>Control</code>, <code>Handoffs</code>, and <code>Retrieval</code> are local organizing mnemonics for navigation inside this vault. They are not protocol-standard or vendor-endorsed classifications.</p>
 <h2>The Knowledge Maps</h2>
 <ul>
 <li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>: Theoretical backbone from the Hugging Face course.
@@ -467,6 +468,12 @@
 </li>
 <li><a href="code-agents.html" class="wikilink">code-agents</a>: The shift from JSON schemas to executable logic.
 </li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>: Direct Claude API request/response semantics.
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>: Anthropic-specific client/server tool loop behavior.
+</li>
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a>: SSE event flow and streamed tool arguments.
+</li>
 </ul>
 <h2>Communication &amp; Formatting</h2>
 <ul>
@@ -479,15 +486,15 @@
 <ul>
 <li><a href="smolagents.html" class="wikilink">smolagents</a>: Hugging Face&#39;s code-first agent library (Freedom).
 </li>
-<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>: Experimental multi-agent orchestration pattern (Handoffs).
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>: Experimental multi-agent orchestration pattern centered on handoffs.
 </li>
-<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>: Production-ready evolution of Swarm for scalable agent systems.
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>: Production-oriented OpenAI agent SDK for scalable orchestration.
 </li>
 <li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>: Google&#39;s code-first toolkit for complex agent systems (<a href="agent-development-kit.html" class="wikilink">ADK</a>).
 </li>
-<li><a href="llamaindex.html" class="wikilink">llamaindex</a>: The data-augmented agent toolkit (Retrieval).
+<li><a href="llamaindex.html" class="wikilink">llamaindex</a>: Data-oriented agent toolkit with strong retrieval and workflow support (Retrieval).
 </li>
-<li><a href="langgraph.html" class="wikilink">langgraph</a>: Stateful orchestration for production-ready agents (Control).
+<li><a href="langgraph.html" class="wikilink">langgraph</a>: Stateful orchestration framework with explicit control-flow graphs (Control).
 </li>
 <li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a>: Using Pydantic for robust tool schema definition.
 </li>
@@ -508,12 +515,14 @@
 </li>
 </ul>
 <ul>
-<li><a href="community-report-generator.html" class="wikilink">community-report-generator</a> — Automated synthesis of emergent communities via embedding-link hybrid weighting.
+<li><a href="community-report-generator.html" class="wikilink">community-report-generator</a>: Automated synthesis of emergent communities via embedding-link hybrid weighting.
 </li>
 </ul>
 <h2>Training &amp; Fine-Tuning</h2>
 <ul>
 <li><a href="function-calling.html" class="wikilink">function-calling</a>: Moving from prompted to learned native agency.
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a>: Provider-specific context reuse for repeated prompt prefixes.
 </li>
 <li><a href="lora.html" class="wikilink">lora</a>: Lightweight adaptation for agentic specialized tasks.
 </li>
@@ -526,14 +535,12 @@
 </li>
 <li><a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>: Automated grading using separate LLMs.
 </li>
-<li><a href="gaia-benchmark.html" class="wikilink">gaia-benchmark</a>: The industry standard for evaluating general AI assistants.
+<li><a href="gaia-benchmark.html" class="wikilink">gaia-benchmark</a>: Prominent benchmark for evaluating general AI assistants.
 </li>
 </ul>
 <h2>Protocols &amp; Infrastructure</h2>
 <ul>
 <li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>: The emerging standards (<a href="mcp-moc.html" class="wikilink">MCP</a>, A2A) for interoperability.
-</li>
-<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>: Comprehensive guide to the <strong>Model Context Protocol</strong>.
 </li>
 <li><a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>: The &quot;Knowledge Compiler&quot; for automated vault ingestion.
 </li>
@@ -543,7 +550,7 @@
 </li>
 </ul>
 <ul>
-<li><a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a> — Epistemic risk tiers (T0–T5) and arbitration protocols for autonomous synthesis.
+<li><a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a>: Local vault conventions for epistemic risk tiers (T0-T5) and arbitration protocols for autonomous synthesis.
 </li>
 </ul>
 <h2>Platform &amp; Runtime SDKs</h2>
@@ -577,7 +584,7 @@
 <li><a href="pokemon-battle-agent.html" class="wikilink">pokemon-battle-agent</a>: case study in turn-based environment interaction.
 </li>
 </ul>
-<h2>Development &amp; Operations</h2>
+<h2>Knowledge Vault Operations</h2>
 <ul>
 <li><a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a>: Formal schemas for local maintenance utilities.
 </li>
@@ -587,11 +594,11 @@
 </li>
 </ul>
 <ul>
-<li><a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a> — Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
+<li><a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a>: Foundational literature for the Compounding Artifact and Wiki-as-Codebase patterns.
 </li>
-<li><a href="lit-foundry-local.html" class="wikilink">lit-foundry-local</a> — Documentation for the Azure AI Foundry Local SDK.
+<li><a href="lit-foundry-local.html" class="wikilink">lit-foundry-local</a>: Documentation for the Azure AI Foundry Local SDK.
 </li>
-<li><a href="lit-language-summaries.html" class="wikilink">lit-language-summaries</a> — Core patterns for Python and Racket development.
+<li><a href="lit-language-summaries.html" class="wikilink">lit-language-summaries</a>: Core patterns for Python and Racket development.
 </li>
 </ul>
 <h2>See Also</h2>
@@ -675,6 +682,10 @@
 <li><a href="agentic-rag.html" class="">agentic-rag</a></li>
 <li><a href="agents-in-games.html" class="">agents-in-games</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="chat-templates.html" class="">chat-templates</a></li>
 <li><a href="chromadb.html" class="">chromadb</a></li>
 <li><a href="code-agents.html" class="">code-agents</a></li>

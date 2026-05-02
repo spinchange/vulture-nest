@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Literature: HF Agents Course - Bonus Units</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-bonus1.md, 00_Raw/hf-agents-bonus2.md, 00_Raw/hf-agents-bonus3.md</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: HF Agents Course - Bonus Units</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">HF Agents Bonus Material, Agent Observability and Fine-tuning</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/hf-agents-bonus1.md, 00_Raw/hf-agents-bonus2.md, 00_Raw/hf-agents-bonus3.md</span></span>
       </div>
     </header>
 
@@ -452,7 +452,7 @@
 </li>
 <li><strong>LoRA (Low-Rank Adaptation)</strong>: Efficient fine-tuning that uses small adapter layers to minimize compute costs while enabling agentic behaviors.
 </li>
-<li><strong>Conversational Structure</strong>: Introduction of the <code>tool</code> role in messages and specialized tokens (e.g., <code>[TOOL_CALLS]</code>) to delimit actions in the stream.
+<li><strong>Conversational Structure</strong>: Introduction of the <code>tool</code> role in messages and specialized tokens (e.g., <code>[TOOL_CALLS]</code>) to delimit actions in the stream, making tool-use boundaries easier for the model to parse than prompt-only conventions.
 </li>
 </ul>
 <h2>Bonus Unit 2: Observability &amp; Evaluation</h2>
@@ -476,11 +476,16 @@
 <li><strong>OpenTelemetry</strong>: The standard for instrumenting agentic codebases for telemetry collection.
 </li>
 </ul>
+<h3>Tradeoffs in Evaluation</h3>
+<ul>
+<li><strong>LLM-as-a-Judge caveat</strong>: Automated grading can reduce human review load, but it introduces cost, model bias, and the risk that evaluator quality drifts from human judgment.
+</li>
+</ul>
 <h2>Bonus Unit 3: Agents in Games</h2>
 <ul>
 <li><strong>Autonomous NPCs</strong>: Shifting from scripted logic to agents that plan and act independently, enabling emergent gameplay.
 </li>
-<li><strong>Strategy vs. Real-time</strong>: LLMs currently favor turn-based environments (e.g., Pok&#233;mon battles) due to inference latency constraints.
+<li><strong>Strategy vs. Real-time</strong>: LLMs are more commonly deployed in turn-based environments (e.g., Pok&#233;mon battles) because inference latency is easier to manage there; real-time integration is possible but less common.
 </li>
 <li><strong>Bridging Logic</strong>: Creating mapping layers (e.g., <code>LLMAgentBase</code>) to translate raw game states into semantic prompts.
 </li>
