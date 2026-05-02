@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Claude Handoff — [[rust]] Advanced Type System — Vulture Portal</title>
+  <title>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Claude Handoff — [[rust]] Advanced Type System</span>
+      <span>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Claude Handoff — [[rust]] Advanced Type System</h1>
+      <h1 class="note-title">Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-archived">archived</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Claude Handoff — [[rust]] Advanced Type System</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
-<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val">gemini</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">gemini-supabase-librarian-handoff</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
@@ -444,115 +444,48 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Claude Handoff: Rust Advanced Type System</h1>
-<h2>Goal</h2>
-<p>Extend the vault&#39;s Rust coverage from practical fundamentals into the advanced type system features that the <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> already relies on but the vault cannot currently explain. The spec uses phantom types and type-level trait intersection as its implementation mechanism — without these notes, the spec is aspirational documentation with no executable path. This handoff closes that gap.</p>
-<h2>Seam</h2>
-<p>The vault currently contains:</p>
-<ul>
-<li><strong><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a></strong>: Covers basic generics, trait bounds, <code>impl Trait</code>, <code>where</code> clauses. Stops here.
-</li>
-<li><strong><a href="rust-moc.html" class="wikilink">rust-moc</a></strong>: &quot;Advanced Abstractions&quot; section lists generics, lifetimes, iterators, smart pointers — no phantom types, no type-level programming, no GATs, no const generics.
-</li>
-<li><strong><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4</strong>: Uses <code>PhantomData</code>, <code>HasCaps&lt;SharedCaps&gt;</code> trait bounds, and type-level intersection as its primary implementation idiom. No vault note explains any of these.
-</li>
-<li><strong><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a></strong>: Claims Rust&#39;s ownership model encodes &quot;explicit, statically-verifiable permission boundaries&quot; — but does not name this as an affine type system, which is the formal characterization.
-</li>
-</ul>
-<p>The grep confirms zero vault notes mention phantom types, GATs, generic associated types, const generics, or affine/linear types by name.</p>
-<h2>Context From This Session</h2>
-<p>Identified on 2026-04-26 as a priority gap. The <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> was written this session and already depends on concepts this cluster would cover. The session types handoff (<code><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a></code>) was written in parallel — session types in Rust are implemented via phantom types, so that handoff depends on this one. Do this cluster first.</p>
-<h2>Deliverables</h2>
-<h3>1. Create <code>01_Wiki/rust-phantom-types.md</code> (<code>status: active</code>, <code>type: permanent</code>)</h3>
-<p>The most immediately useful note — referenced directly by both <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> and the session types handoff. Must cover:</p>
-<ul>
-<li><strong><code>PhantomData&lt;T&gt;</code></strong>: A zero-sized marker type that tells the compiler &quot;this struct logically contains a <code>T</code> even though it doesn&#39;t at runtime.&quot; Eliminates the dead code warning, participates in variance and drop checking.
-</li>
-<li><strong>Type-level state machines</strong>: The primary application pattern. A struct carries a phantom type parameter that encodes its current state. Methods consume <code>self</code> (not <code>&amp;self</code>) and return <code>Self&lt;NextState&gt;</code>, making invalid state transitions unrepresentable. Example: a builder that enforces required fields before <code>.build()</code> compiles.
-</li>
-<li><strong>Capability encoding</strong>: How <code>PhantomData</code> is used to encode capability sets — a struct <code>Agent&lt;Caps&gt;</code> where <code>Caps</code> is a phantom type parameter representing the agent&#39;s permission set. Connect explicitly to <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4.
-</li>
-<li><strong>Variance</strong>: <code>PhantomData&lt;T&gt;</code> is covariant in <code>T</code>; <code>PhantomData&lt;fn(T)&gt;</code> is contravariant; <code>PhantomData&lt;*mut T&gt;</code> is invariant. Briefly explain why variance matters for soundness.
-</li>
-</ul>
-<p>Source: The Rustonomicon, chapter on <code>PhantomData</code> (<code>doc.rust-lang.org/nomicon/phantom-data.html</code>). Rust Reference. &quot;Rust for Rustaceans&quot; (Gjengset), chapter on type system.</p>
-<h3>2. Create <code>01_Wiki/rust-type-level-programming.md</code> (<code>status: active</code>, <code>type: permanent</code>)</h3>
-<p>Covers the broader practice of encoding computation in Rust&#39;s type system. Must cover:</p>
-<ul>
-<li><strong>Type-level booleans and naturals</strong>: Implementing <code>True</code>/<code>False</code> and Peano numbers as types. The <code>typenum</code> crate as the production-grade alternative.
-</li>
-<li><strong>GATs (Generic Associated Types)</strong>: Associated types that can themselves have generic parameters. Stabilized in Rust 1.65. The canonical motivating example: <code>trait Container { type Item&lt;&#39;a&gt;; }</code> — impossible without GATs. Why this matters for higher-kinded type patterns.
-</li>
-<li><strong>Const generics</strong>: Generics over constant values (<code>[T; N]</code> where <code>N: const usize</code>). Stabilized progressively from Rust 1.51. Allows array-length-polymorphic functions without macros.
-</li>
-<li><strong>Type-level functions via traits</strong>: How a trait with an associated type acts as a type-level function (<code>type Output = ...</code>). Compose them to compute types at compile time.
-</li>
-<li><strong>The limits</strong>: Rust&#39;s type system is not dependently typed. You cannot generally compute an arbitrary type from a runtime value at compile time. Document where the wall is.
-</li>
-</ul>
-<p>Source: Rustonomicon; <code>typenum</code> crate docs; GAT stabilization RFC (#1598); &quot;Rust for Rustaceans&quot; (Gjengset).</p>
-<h3>3. Create <code>01_Wiki/rust-affine-types.md</code> (<code>status: active</code>, <code>type: permanent</code>)</h3>
-<p>Connects Rust&#39;s ownership model to formal type theory — completing the theoretical argument in <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>. Must cover:</p>
-<ul>
-<li><strong>The type theory taxonomy</strong>:
-<ul>
-<li><strong>Unrestricted (structural)</strong>: values may be used any number of times (most languages)
-</li>
-<li><strong>Affine</strong>: values may be used *at most once* — they can be dropped but not duplicated (<strong>Rust</strong>)
-</li>
-<li><strong>Linear</strong>: values must be used *exactly once* — cannot be dropped or duplicated (theoretical; no mainstream language enforces this natively)
-</li>
-<li><strong>Relevant</strong>: values must be used *at least once* — cannot be dropped but may be duplicated (rare)
-</li>
-</ul>
-</li>
-<li><strong>Rust as an affine type system</strong>: Rust&#39;s <code>move</code> semantics are affine — a value can be used once or dropped, but not used after move. The borrow checker is the enforcement mechanism.
-</li>
-<li><strong>Why not linear</strong>: Rust allows <code>drop(x)</code> — deliberately discarding a value. A linear system would require every value to be consumed by a meaningful operation. Note the <code>#[must_use]</code> attribute as Rust&#39;s partial gesture toward linear enforcement.
-</li>
-<li><strong>Connection to the trust substrate</strong>: The claim in <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> that &quot;you cannot grant permissions you don&#39;t possess&quot; is the affine property: moving a capability transfers it — the original holder can no longer use it. Name this explicitly.
-</li>
-<li><strong>Connection to session types</strong>: Session types require linear channels (must be fully consumed). Rust&#39;s affine system can simulate but not enforce this — see <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> for the implication.
-</li>
-</ul>
-<p>Source: &quot;Substructural Type Systems&quot; (Walker, ATTAPL chapter — freely available). &quot;Linear Types Can Change the World&quot; (Wadler 1990). Rustonomicon ownership section.</p>
-<h3>4. Update <code>01_Wiki/rust-moc.md</code></h3>
-<p>Add a new section <strong>Type System Theory</strong> between &quot;Advanced Abstractions&quot; and &quot;Concurrency &amp; Async&quot;:</p>
-<pre><code>## Type System Theory
-* [[rust-phantom-types]]: Zero-cost type-level state encoding.
-* [[rust-type-level-programming]]: GATs, const generics, and type-level computation.
-* [[rust-affine-types]]: Rust&#39;s ownership as a formal type-theoretic system.</code></pre>
-<h3>5. Update <code>01_Wiki/capability-lattice-spec.md</code></h3>
-<p>In &#167;4 (Capability Set as a Type), add backlinks from the phantom type and trait-bound code examples to <code><a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a></code> and <code><a href="rust-type-level-programming.html" class="wikilink">rust-type-level-programming</a></code> so a reader can follow the chain from spec to implementation knowledge.</p>
-<h2>Ordering Constraint</h2>
-<p>Write <code>rust-phantom-types.md</code> first — it is the prerequisite for both <code>rust-type-level-programming.md</code> (which builds on the phantom type pattern) and for the session types cluster (which uses phantom types as its implementation substrate). The other two notes in this cluster can be written in any order after that.</p>
-<h2>Constraints</h2>
-<ul>
-<li>Source from the Rustonomicon and Rust Reference for anything touching <code>unsafe</code> or compiler internals. Do not speculate about type system guarantees — the Rustonomicon is authoritative.
-</li>
-<li><code>rust-affine-types.md</code> is making a theoretical connection that is correct but not widely spelled out in Rust documentation. Ground every claim in a citable source (Walker ATTAPL, Wadler, or the Rustonomicon). Do not let it drift into unsourced editorializing.
-</li>
-<li>Do not expand scope to dependent types or proof assistants — document the wall at the end of &#167;2, don&#39;t climb over it.
-</li>
-</ul>
+        <h1>Handoff: Post-Synthesis Librarian Tasks (Supabase Flask)</h1>
+<p><strong>From:</strong> Claude (Chronicler) <strong>To:</strong> Gemini (Librarian) <strong>Status:</strong> Synthesis complete. Librarian cleanup required.</p>
 <hr>
-<h2>References</h2>
+<h2>What Claude Did This Session</h2>
+<p>Executed Stages 7–8 for the Supabase Flask Quickstart source:</p>
 <ul>
-<li><a href="rust-moc.html" class="wikilink">rust-moc</a>
+<li>Created <a href="lit-supabase-flask-quickstart.html" class="wikilink">lit-supabase-flask-quickstart</a> (literature note, T5 provenance)
 </li>
-<li><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a>
+<li>Created <a href="pattern-supabase-flask-integration.html" class="wikilink">pattern-supabase-flask-integration</a> (permanent note)
 </li>
-<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>
+<li>Updated <code>01_Wiki/index.md</code>, <code>02_System/system-index.md</code>, <code>02_System/log.md</code>
 </li>
-<li><a href="rust-lifetimes.html" class="wikilink">rust-lifetimes</a>
+<li>Committed and pushed — 2 commits on <code>main</code> (<code>f5b360d9</code>, <code>d589a157</code>)
 </li>
-<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+</ul>
+<p>Also committed Gemini&#39;s staged artifacts from the previous session (mcp-moc additions, <code>lit-chatgpt-web-mcp-guidance.md</code>, <code>spec-chatgpt-web-mcp-wrapper.md</code>, <code>02_System/chatgpt_web_mcp_wrapper.py</code>).</p>
+<hr>
+<h2>Required Librarian Actions</h2>
+<h3>1. Promote the Synthesis Candidate (Supabase Source Index)</h3>
+<p>The source page must be promoted from <code>Synthesized</code> → <code>Promoted</code> in the Supabase index.</p>
+<pre><code>MCP tool: promote_synthesis_candidate
+Page ID:  31f3d047-c0e1-4c19-8c33-a3efeaab355f
+Source:   https://supabase.com/docs/guides/getting-started/quickstarts/flask
+Chunks:   74973d96-0e55-496a-82e2-57a72259182d
+          5b049707-c646-4acd-8980-a72feca0b220</code></pre>
+<h3>2. Register chatgpt_web_mcp_wrapper.py in Tool Registry</h3>
+<p><code>02_System/chatgpt_web_mcp_wrapper.py</code> was committed this session but is <strong>not registered</strong> in <code>02_System/tool-registry.md</code>. Add an entry describing its purpose (ChatGPT web MCP wrapper for remote vault access).</p>
+<p>Reference <code>01_Wiki/spec-chatgpt-web-mcp-wrapper.md</code> for its full spec.</p>
+<h3>3. Sync Vault Graph</h3>
+<p>Two new wikilinked notes were added. Run after promotion:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
+<h3>4. Orphan Check (Optional)</h3>
+<p>New notes reference <code><a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a></code> — should already exist, but worth confirming no dangling links were introduced:</p>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/orphan-check.ps1</code></pre>
+<hr>
+<h2>No Action Required On</h2>
+<ul>
+<li>YANP compliance — both new notes passed <code>audit-yanp.ps1</code> (<code>Compliant: True</code>)
 </li>
-<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
+<li>Index and log — already updated by Claude
 </li>
-<li><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a>
-</li>
-<li><a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a>
+<li>Git — already committed and pushed
 </li>
 </ul>
       </main>
@@ -567,24 +500,13 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
-<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
-<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="rust.html" class="">rust</a></li>
-<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
-<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
-<li><a href="rust-lifetimes.html" class="">rust-lifetimes</a></li>
-<li><a href="rust-moc.html" class="">rust-moc</a></li>
-<li><a href="rust-ownership.html" class="">rust-ownership</a></li>
-<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
-<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
-<li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
+<li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
+<li><a href="pattern-supabase-flask-integration.html" class="">pattern-supabase-flask-integration</a></li>
 </ul>
           </div>
         </div>
