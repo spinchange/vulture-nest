@@ -15,6 +15,9 @@ aliases: [mcp-server-dev-skills, build-mcp-server-skill]
 *   **`build-mcp-app`**: Used when interactive UI widgets (forms, charts, dashboards) are needed within the chat interface.
 *   **`build-mcpb`**: Packages local servers with their runtimes as **MCP Bundles**, allowing users to install them without pre-existing environments (e.g., without needing Node or [[python]]).
 
+## Core Operational Skills
+*   **`verbalized-sample-skill`**: An operational protocol for counteracting mode collapse. It forces the model to surface the long tail of its response distribution through structured [[verbalized-sampling]].
+
 ## Recommended Deployment Paths
 Based on the discovery phase, skills guide agents toward one of four architectures:
 1.  **Remote (HTTP/SSE)**: Default for cloud APIs. Supports easy OAuth flows and global access.

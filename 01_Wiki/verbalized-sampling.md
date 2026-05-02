@@ -47,6 +47,7 @@ The audio series processed here repeatedly converged on the same thesis: a model
 
 ---
 ## See Also
+- [[verbalized-sample-skill]] (Operational Implementation)
 - [[agent-evaluation]]
 - [[orchestration-tradeoffs]]
 - [[verbalized-sampling-experiment]]
