@@ -139,6 +139,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-skills-agent-behavior]] - Skills vs. Vault Knowledge (active/passive split)
 * [[lit-adk-documentation]] - ADK Documentation (multi-agent toolkit)
 * [[lit-openai-swarm]] - OpenAI Swarm (handoffs, context_variables)
+* [[lit-anthropic-messages-api]] - Anthropic direct API: messages, streaming, tool use, errors, and prompt caching
 
 ## Sources (Raw Data)
 * [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)

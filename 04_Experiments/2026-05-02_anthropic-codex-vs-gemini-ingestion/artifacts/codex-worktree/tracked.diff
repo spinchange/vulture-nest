@@ -1,0 +1,94 @@
+diff --git a/01_Wiki/agent-tools.md b/01_Wiki/agent-tools.md
+index f0038e57..5e450d58 100644
+--- a/01_Wiki/agent-tools.md
++++ b/01_Wiki/agent-tools.md
+@@ -17,6 +17,8 @@ To be usable by an agent, a tool must be described precisely in the **System Mes
+ *   **Arguments:** Names and types (e.g., `location: str`).
+ *   **Callable:** The actual code ([[python]], JS, API) that executes the task.
+ 
++Anthropic's direct API exposes this surface through a top-level `tools` field on the Messages API, with tool calls returned as `tool_use` content blocks rather than a separate role channel.
++
+ ## Auto-Documentation
+ Modern frameworks use Python introspection (decorators like `@tool`) to automatically generate tool descriptions from docstrings and type hints. This reduces the risk of the LLM receiving a mismatched specification.
+ 
+@@ -28,4 +30,6 @@ MCP is an open standard designed to unify how tools are provided to LLMs, allowi
+ * [[smolagents]]
+ * [[powershell-moc]] (Local tool implementation)
+ - [[mcp-primitives]]
++- [[anthropic-tool-use]]
++- [[function-calling]]
+ 
+diff --git a/01_Wiki/agentic-frameworks-moc.md b/01_Wiki/agentic-frameworks-moc.md
+index 2b9d7f2b..0a4451c8 100644
+--- a/01_Wiki/agentic-frameworks-moc.md
++++ b/01_Wiki/agentic-frameworks-moc.md
+@@ -24,6 +24,9 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
+ * [[agent-tools]]: How to define and provide capabilities to an LLM.
+ * [[agent-actions]]: The "Stop and Parse" loop and tool usage.
+ * [[code-agents]]: The shift from JSON schemas to executable logic.
++* [[anthropic-messages-api]]: Direct Claude API request/response semantics.
++* [[anthropic-tool-use]]: Anthropic-specific client/server tool loop behavior.
++* [[anthropic-streaming-patterns]]: SSE event flow and streamed tool arguments.
+ 
+ ## Communication & Formatting
+ * [[chat-templates]]: Managing System, User, and Assistant roles.
+@@ -49,6 +52,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
+ * [[community-report-generator]]: Automated synthesis of emergent communities via embedding-link hybrid weighting.
+ ## Training & Fine-Tuning
+ * [[function-calling]]: Moving from prompted to learned native agency.
++* [[anthropic-prompt-caching]]: Provider-specific context reuse for repeated prompt prefixes.
+ * [[lora]]: Lightweight adaptation for agentic specialized tasks.
+ 
+ ## Observability & Evaluation
+diff --git a/01_Wiki/function-calling.md b/01_Wiki/function-calling.md
+index 29bc019a..2b9bb086 100644
+--- a/01_Wiki/function-calling.md
++++ b/01_Wiki/function-calling.md
+@@ -21,10 +21,11 @@ aliases: [native-tool-use, json-mode-actions]
+ ## Workflow
+ 1.  **Definitions**: The system provides a list of functions with JSON Schemas.
+ 2.  **Detection**: The model identifies when a user query requires a function and generates the JSON arguments.
+-3.  **Execution**: The system runs the function and returns the result using the `tool` role.
++3.  **Execution**: The system runs the function and returns the result using the provider's tool-result channel. Some APIs use a dedicated `tool` role, while Anthropic returns `tool_use` and `tool_result` as message content blocks.
+ 
+ ---
+ ## References
+ * Source: `00_Raw/hf-agents-bonus1.md`
+ * [[hf-agents-course-moc]]
+ * [[agent-tools]]
++* [[anthropic-tool-use]]
+diff --git a/01_Wiki/index.md b/01_Wiki/index.md
+index 910f0f99..d1bc106e 100644
+--- a/01_Wiki/index.md
++++ b/01_Wiki/index.md
+@@ -117,6 +117,14 @@ Session seams are bounded resume points that capture current state, immediate ne
+ * [[verbalized-sampling-experiment]] - Audio series processing workflow and findings
+ * [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
+ 
++## Anthropic API
++* [[lit-anthropic-messages-api]] - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
++* [[anthropic-messages-api]] - Direct Messages API request/response model
++* [[anthropic-tool-use]] - Client/server tool execution loop
++* [[anthropic-streaming-patterns]] - SSE event flow and streamed tool arguments
++* [[anthropic-error-handling]] - Errors, request-size limits, and rate-limit behavior
++* [[anthropic-prompt-caching]] - Prompt-prefix reuse via `cache_control`
++
+ ## Literature Notes (Grounded Sources)
+ * [[lit-supabase-flask-quickstart]] - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)
+ * [[lit-chatgpt-web-mcp-guidance]] - Literature: ChatGPT Web MCP Guidance (remote only, write confirmations, plan gating)
+@@ -131,6 +139,7 @@ Session seams are bounded resume points that capture current state, immediate ne
+ * [[lit-skills-agent-behavior]] - Skills vs. Vault Knowledge (active/passive split)
+ * [[lit-adk-documentation]] - ADK Documentation (multi-agent toolkit)
+ * [[lit-openai-swarm]] - OpenAI Swarm (handoffs, context_variables)
++* [[lit-anthropic-messages-api]] - Anthropic direct API: messages, streaming, tool use, errors, and prompt caching
+ 
+ ## Sources (Raw Data)
+ * [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)
+@@ -165,6 +174,7 @@ Session seams are bounded resume points that capture current state, immediate ne
+ * [00_Raw/hf-agents-bonus3.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-bonus3.md)
+ * [00_Raw/hf-agents-final-units.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/hf-agents-final-units.md)
+ * [00_Raw/mcp/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/mcp) - Anthropic Model Context Protocol Documentation
++* [00_Raw/anthropic/](https://github.com/spinchange/vulture-nest/tree/main/00_Raw/anthropic) - Anthropic direct Claude API source captures
+ * [[docker-sandbox]] - Agent Security & Isolation
+ * [[pydantic-fastapi-agents]] - Tool Schema Design
+ * [[hitl-ui-patterns]] - Human Approval Workflows
