@@ -29,6 +29,7 @@
 - [[lit-yaml-spec]] - YAML 1.2.2 specification for vault metadata.
 - [[spec-agentic-source-orchestrator-v2]] - Ingestion pipeline hardening and lifecycle control.
 - [[spec-agentic-source-orchestrator-v3]] - Synthesis intelligence and epistemic risk model.
+- [[protocol-source-ingestion-runbook]] - Operational protocol for external source ingestion.
 - [[hierarchical-graph-synthesis]] - Spec for automated vault synthesis.
 - [[the-compounding-artifact]] - The core philosophy of the Vulture Nest.
 

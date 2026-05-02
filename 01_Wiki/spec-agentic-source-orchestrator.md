@@ -117,8 +117,8 @@ provenance_agent: "claude-chronicler"
 This creates a stable link between the **Wiki (Permanent Knowledge)** and the **Sidecar (Evidence Chunks)**.
 
 ---
-
 ## References
+- [[protocol-source-ingestion-runbook]] — Operational procedures and multi-agent role sequence
 - [[spec-firecrawl-pgvector-pipeline]]
 - [[firecrawl-crawling-capabilities]]
 - [[firecrawl-map-capabilities]]

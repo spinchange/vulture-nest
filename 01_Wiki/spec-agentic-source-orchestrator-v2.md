@@ -49,6 +49,8 @@ See [[lit-mcp-security-best-practices]] for the full threat model applicable to 
 ## 5. Handoff & Seams
 Every orchestration step must produce a **Seam Artifact** containing the current state, open risks, and next recommended action. This ensures continuity across agent sessions.
 
+See [[protocol-source-ingestion-runbook]] for the step-by-step operational protocol.
+
 ---
 ## See Also
 - [[spec-agentic-source-orchestrator]]
