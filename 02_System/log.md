@@ -872,3 +872,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Directive:** Reconciled handoff metadata with the actual completed state of the Anthropic expansion lane, the completed language-root research/execution setup, and the Anthropic post-synthesis maintenance pass.
 - **Archived:** Marked completed handoff and fleeting artifacts as `status: archived` where the work was already executed and reflected in the vault graph or index surfaces.
 - **Index Alignment:** Removed the completed Anthropic post-synthesis maintenance handoff from the active section of [[system-index]] and registered it under completed handoffs instead.
+
+
+## [2026-05-03] codex — Execution Topology Lane
+
+- **Directive:** Started a fresh bounded content lane by deepening the execution-topology path around [[graph-orchestration]] and [[code-agents]].
+- **Graph Orchestration:** Expanded the note from a stub into a routing surface covering when graph control is preferable, how state/nodes/edges function, and how [[langgraph]], [[llamaindex]], and [[workflow-agents]] instantiate the pattern differently.
+- **Code Agents:** Expanded the note into a real execution-style note covering when code generation beats narrow tool schemas, what execution contracts matter, and how it relates to [[agent-tools]], [[graph-orchestration]], and [[smolagents]].
