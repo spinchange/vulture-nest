@@ -5,7 +5,6 @@ date: '2026-04-26'
 status: active
 type: permanent
 aliases:
-  - pydantic-v2
   - fastapi-mcp
   - tool-schemas
 ---

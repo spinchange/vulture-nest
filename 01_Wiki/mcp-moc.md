@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-index, model-context-protocol-map]
+aliases: [mcp, mcp-index, model-context-protocol-map]
 ---
 # MCP MOC
 

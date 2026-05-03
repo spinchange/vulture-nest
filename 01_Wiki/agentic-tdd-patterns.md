@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-25
 status: active
 type: permanent
-aliases: [llm-tdd, evaluation-driven-development, edd, agent-testing]
+aliases: [llm-tdd, evaluation-driven-development, edd]
 ---
 
 # Agentic TDD Patterns

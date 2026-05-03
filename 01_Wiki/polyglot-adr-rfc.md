@@ -4,7 +4,7 @@ author: claude-sonnet-4-6
 date: 2026-04-25
 status: superseded
 type: permanent
-aliases: [polyglot-adr, tier-selection-adr, platform-adr-rfc, language-tier-adr]
+aliases: [polyglot-adr, platform-adr-rfc, language-tier-adr]
 ---
 # RFC: Polyglot Agent Platform — Architecture Decision Record
 

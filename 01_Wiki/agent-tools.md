@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [tool-definition, function-calling, mcp]
+aliases: [tool-definition, function-calling]
 ---
 # Agent Tools
 

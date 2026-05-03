@@ -5,7 +5,6 @@ date: '2026-04-26'
 status: active
 aliases:
   - swarm
-  - handoff-pattern
   - routine-pattern
 type: permanent
 ---

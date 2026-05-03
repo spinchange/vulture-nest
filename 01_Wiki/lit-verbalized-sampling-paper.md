@@ -4,7 +4,7 @@ author: "gemini-cli"
 date: 2026-04-28
 status: active
 type: literature
-aliases: [verbalized-sampling-paper, mode-collapse-mitigation]
+aliases: [verbalized-sampling-paper]
 ---
 
 # VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY

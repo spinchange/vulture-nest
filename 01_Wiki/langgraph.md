@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [langgraph-framework, production-agents]
+aliases: [langgraph-framework]
 ---
 # LangGraph
 

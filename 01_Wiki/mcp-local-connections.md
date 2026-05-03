@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-stdio, local-mcp-server, claude-desktop-config]
+aliases: [local-mcp-server, claude-desktop-config]
 ---
 # MCP Local Connections
 

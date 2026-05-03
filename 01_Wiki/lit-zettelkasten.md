@@ -5,7 +5,7 @@ date: "2026-05-01"
 status: "active"
 type: "literature"
 source: "00_Raw/zettelkasten-summary.md"
-aliases: ["Zettelkasten Method", "Slip Box Method", "Atomic Note Taking"]
+aliases: ["Slip Box Method", "Atomic Note Taking"]
 ---
 
 # Literature: The Zettelkasten Method

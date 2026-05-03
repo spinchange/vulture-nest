@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-tools, mcp-resources, mcp-prompts, resource-templates]
+aliases: [resource-templates]
 ---
 # MCP Server Features
 

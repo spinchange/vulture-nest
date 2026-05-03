@@ -858,3 +858,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Root Cause:** `generate-wiki-stats.ps1` still used early basename-only heuristics while [[ps-broken-link-checker]] and [[ps-orphan-check]] had evolved to alias-aware, normalized wikilink resolution.
 - **Fix:** Updated `02_System/generate-wiki-stats.ps1` to use the same normalized link-target handling, code-fence stripping, recursive wiki scanning, alias-aware orphan counting, and system/root-note target recognition as the live validators.
 - **Result:** Vault stats now report `0` orphans, `0` broken links, and `100%` health in agreement with `orphan-check.ps1` and `check-broken-links.ps1`.
+
+
+## [2026-05-03] codex — Duplicate Alias Cleanup
+
+- **Directive:** Reduced alias collisions after graph integrity and vault stats returned to a clean state.
+- **Canonicalization:** Kept the short, high-ambiguity aliases on the primary active notes such as [[a2a-protocol]], [[mcp-moc]], [[mcp-primitives]], [[mcp-transport]], [[pattern-progressive-handoff]], [[openai-agents-sdk]], [[pydantic]], [[polyglot-platform-adr]], [[verbalized-sampling]], and [[zettelkasten]].
+- **Cleanup:** Removed overlapping aliases from bridge notes, narrower implementation notes, literature notes, and the superseded polyglot ADR RFC so short wikilinks resolve more predictably.

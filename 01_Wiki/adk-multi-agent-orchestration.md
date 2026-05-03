@@ -5,7 +5,7 @@ date: '2026-04-26'
 status: active
 aliases:
   - adk-multi-agent
-  - agent-transfer
+  - adk-agent-transfer
   - agent-as-a-tool
   - agent-hierarchy
 type: permanent

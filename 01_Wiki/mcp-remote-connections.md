@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-sse, remote-mcp-server, custom-connectors]
+aliases: [remote-mcp-server, custom-connectors]
 ---
 # MCP Remote Connections
 

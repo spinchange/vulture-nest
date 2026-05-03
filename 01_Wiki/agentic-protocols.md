@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp, a2a, agent-interoperability]
+aliases: [agent-interoperability]
 ---
 # Agentic Protocols
 
