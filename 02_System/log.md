@@ -850,3 +850,11 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Rust Hardening:** Added a vault-local "Core Opinion," a concrete decision rule for when Rust should own a system boundary, explicit start paths for fundamentals vs. vault applications vs. type-system study, and clearer linkage to [[python]] and [[rust-moc]].
 - **Python Hardening:** Added a "Core Opinion," a concrete decision rule for orchestration vs. boundary work, stronger route selection for async/typing/schema vs. standard-library workflows, and clearer placement of Python as the Tier-1 execution layer adjacent to [[rust]].
 - **Outcome:** The two highest-centrality language roots now act as routing surfaces for the Nest's reasoning stack instead of generic language summaries.
+
+
+## [2026-05-03] codex — Vault Stats Reconciliation
+
+- **Directive:** Reconciled [[ps-vault-stats]] behavior with the authoritative graph-health scripts after the stats surface diverged from live health checks.
+- **Root Cause:** `generate-wiki-stats.ps1` still used early basename-only heuristics while [[ps-broken-link-checker]] and [[ps-orphan-check]] had evolved to alias-aware, normalized wikilink resolution.
+- **Fix:** Updated `02_System/generate-wiki-stats.ps1` to use the same normalized link-target handling, code-fence stripping, recursive wiki scanning, alias-aware orphan counting, and system/root-note target recognition as the live validators.
+- **Result:** Vault stats now report `0` orphans, `0` broken links, and `100%` health in agreement with `orphan-check.ps1` and `check-broken-links.ps1`.
