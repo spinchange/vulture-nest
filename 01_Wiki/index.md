@@ -120,6 +120,11 @@ Session seams are bounded resume points that capture current state, immediate ne
 ## Anthropic API
 * [[lit-anthropic-messages-api]] - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
 * [[lit-anthropic-advanced-capabilities]] - Literature: adaptive thinking, batch execution, files API, tool extensions, managed agents
+* [[lit-anthropic-sdk-service-2026]] - Literature: Batch 2 sub-batch E — SDKs, model lineup, service tiers, versioning, beta headers, context editing
+* [[lit-anthropic-tool-use-depth]] - Literature: Batch 2 sub-batch A — tool-use full depth, server tools, Tool Runner SDK, MCP connector, tool search
+* [[lit-anthropic-thinking-capabilities]] - Literature: Batch 2 sub-batch B — extended thinking, adaptive thinking, effort parameter
+* [[lit-anthropic-async-data-apis]] - Literature: Batch 2 sub-batch C — batch processing, Files API, token counting, Models API
+* [[lit-anthropic-managed-agents]] - Literature: Batch 2 sub-batch D — Managed Agents quickstart, agent setup, sessions, environments, tools, events
 * [[anthropic-messages-api]] - Direct Messages API request/response model and token counting
 * [[anthropic-tool-use]] - Client/server tool execution loop
 * [[anthropic-streaming-patterns]] - SSE event flow, streamed tool arguments, and thinking block streaming
@@ -131,6 +136,9 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[anthropic-mcp-connector]] - Server-side MCP client via Messages API, allowlist/denylist toolset config
 * [[anthropic-tool-runner-sdk]] - SDK tool loop automation with compaction support
 * [[anthropic-managed-agents-model]] - Hosted agent runtime: Agent + Environment + Session model
+* [[anthropic-agentic-loop]] - Tool-use contract, client loop (tool_use→tool_result), server-side loop, pause_turn
+* [[anthropic-server-tools]] - Server-executed tools, server_tool_use block, pause_turn continuation, ZDR, domain filtering
+* [[anthropic-claude-4-model-family]] - Model lineup (Opus 4.7, Sonnet 4.6, Haiku 4.5), capabilities matrix, retirement dates, Models API
 
 ## Literature Notes (Grounded Sources)
 * [[lit-supabase-flask-quickstart]] - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)

@@ -1,6 +1,29 @@
 # Wiki Log
 
 
+## [2026-05-02] Claude — Anthropic Batch 2 Synthesis
+
+**Directive**: Executed [[codex-anthropic-batch-2-synthesis-handoff-2026-05-02]] — synthesized all 30 Batch 2 Anthropic source pages (5 sub-batches) into permanent and literature notes.
+
+**Literature Notes Created (5):**
+* [[lit-anthropic-sdk-service-2026]] — Sub-batch E: SDKs, model lineup, service tiers, versioning, beta headers, context editing
+* [[lit-anthropic-tool-use-depth]] — Sub-batch A: full tool-use depth including server tools, Tool Runner SDK, MCP connector, tool search, strict mode, parallel tools
+* [[lit-anthropic-thinking-capabilities]] — Sub-batch B: extended thinking, adaptive thinking, effort parameter, interleaved thinking, thinking block preservation
+* [[lit-anthropic-async-data-apis]] — Sub-batch C: batch processing, Files API, token counting API, Models API list
+* [[lit-anthropic-managed-agents]] — Sub-batch D: Managed Agents quickstart, agent versioning, sessions, environments, tools, event streaming
+
+**Permanent Notes Created (3):**
+* [[anthropic-agentic-loop]] — Tool-use contract; three execution buckets; client-side `while stop_reason == "tool_use"` loop; server-side loop with `pause_turn`
+* [[anthropic-server-tools]] — `server_tool_use` block (`srvtoolu_` prefix); `pause_turn` continuation; ZDR eligibility by tool version; domain filtering; dynamic filtering via `_20260209` versions
+* [[anthropic-claude-4-model-family]] — Opus 4.7, Sonnet 4.6, Haiku 4.5 capability matrix; retirement dates; thinking support matrix; Models API capabilities object
+
+**Pre-existing permanent notes validated intact** (written in advanced-capabilities batch, all sourced from [[lit-anthropic-advanced-capabilities]]): [[anthropic-adaptive-thinking]], [[anthropic-message-batches]], [[anthropic-files-api]], [[anthropic-mcp-connector]], [[anthropic-tool-runner-sdk]], [[anthropic-managed-agents-model]].
+
+**Validation**: `audit-yanp.ps1` — 2 non-compliant notes (pre-existing `type: planning` violations, not this session). `check-broken-links.ps1` — no broken links in new notes. Index updated.
+
+**Scope boundary respected**: No graph integration, no new crawling, no ingestion tooling changes.
+
+
 ## [2026-05-02] Codex — PowerShell & TypeScript Hub Hardening
 
 **Directive**: Executed [[claude-powershell-typescript-hub-handoff-2026-05-02]] — hardened `[[powershell]]` and `[[typescript]]` root notes from thin summaries into functional hub notes.
