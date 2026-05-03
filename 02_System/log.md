@@ -879,3 +879,11 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Directive:** Started a fresh bounded content lane by deepening the execution-topology path around [[graph-orchestration]] and [[code-agents]].
 - **Graph Orchestration:** Expanded the note from a stub into a routing surface covering when graph control is preferable, how state/nodes/edges function, and how [[langgraph]], [[llamaindex]], and [[workflow-agents]] instantiate the pattern differently.
 - **Code Agents:** Expanded the note into a real execution-style note covering when code generation beats narrow tool schemas, what execution contracts matter, and how it relates to [[agent-tools]], [[graph-orchestration]], and [[smolagents]].
+
+
+## [2026-05-03] codex — MCP Execution-Surface Completion
+
+- **Directive:** Executed the next bounded MCP completion lane by deepening [[mcp-primitives]], [[mcp-sdks]], and [[mcp-security]].
+- **Primitives:** Reframed tools/resources/prompts as distinct control surfaces with different owners, added decision rules for when each primitive fits, and linked the note more directly into client/server and best-practices notes.
+- **SDKs:** Turned the note from a tier list into an implementation-choice note: what really varies across SDKs, how to choose by runtime role, and how SDK selection maps to the Nest's language-tier model.
+- **Security:** Reworked the note into a trust-boundary note covering the local-vs-remote split, main MCP threat categories, the authorization boundary, and the adjacent notes that carry the deeper spec-level detail.
