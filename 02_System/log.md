@@ -833,3 +833,12 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **YANP Fix:** Corrected `type: completion` → `type: fleeting` in [[gemini-openai-symphony-completion-2026-05-03]] (invalid YANP type).
 - **Audit:** All notes YANP compliant.
 - **Status:** Literature note grounded. Graph integration already complete per gemini completion note.
+
+
+## [2026-05-03] codex — Navigational Hub Restoration
+
+- **Directive:** Executed the next high-signal follow-on from [[wiki-expansion-opportunities-2026-05-02]] after the completed ADK/MCP and language-root batches: strengthen weak MOCs as real wayfinding hubs.
+- **MOC Hardening:** Reworked [[programming-languages-moc]], [[javascript-moc]], [[pkm-history-moc]], [[wpf-moc]], and [[multi-agent-patterns-moc]] so they route by task, architectural role, and reading path instead of acting as bare link lists.
+- **Language Navigation:** Clarified when to start from [[rust]], [[python]], [[powershell]], [[typescript]], or their MOCs based on trust-boundary, orchestration, operations, and integration concerns.
+- **Pattern Navigation:** Added "where to start" guidance to the multi-agent patterns cluster so delegation, handoff, safety, and concurrency questions route to the right pattern notes immediately.
+- **Status:** Navigational restoration pass complete for the weakest MOC surfaces in this batch.
