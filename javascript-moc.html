@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">JavaScript MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">JavaScript MOC</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">js-development, desktop-js</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -444,8 +444,9 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>JavaScript MOC</h1>
-<p>Focusing on modern JavaScript runtimes and the bridge between the web and the desktop.</p>
+<p>This map covers the JavaScript-side runtime surface of the vault: browser-adjacent tooling, Node-compatible package ecosystems, and desktop/web bridges. In this repo, JavaScript matters less as a standalone language theory topic and more as the environment around <a href="typescript.html" class="wikilink">TypeScript</a>, workbench tooling, and desktop-facing prototypes.</p>
 <h2>Runtimes and Tooling</h2>
+<p>Start here if you are choosing an execution environment or trying to understand the surrounding JS runtime assumptions.</p>
 <ul>
 <li><a href="javascript-on-desktop.html" class="wikilink">javascript-on-desktop</a>: The evolution from Electron to more lightweight alternatives.
 </li>
@@ -455,10 +456,30 @@
 </li>
 </ul>
 <h2>Frameworks</h2>
+<p>This section covers the concrete UI/runtime bridge technologies most relevant to the Nest.</p>
 <ul>
 <li><a href="tauri.html" class="wikilink">tauri</a>: Building tiny, secure desktop apps with web frontends and <a href="rust.html" class="wikilink">rust</a> backends.
 </li>
 </ul>
+<h2>How This Cluster Relates To The Nest</h2>
+<ul>
+<li>Use <a href="typescript-moc.html" class="wikilink">typescript-moc</a> when the question is language shape, typing, or SDK ergonomics.
+</li>
+<li>Use <a href="javascript-on-desktop.html" class="wikilink">javascript-on-desktop</a> and <a href="tauri.html" class="wikilink">tauri</a> when the question is desktop delivery or human-facing local tools.
+</li>
+<li>Use <a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a> when runtime selection matters more than framework choice.
+</li>
+</ul>
+<h2>Where To Start</h2>
+<p>If your goal is:</p>
+<ol>
+<li>desktop app architecture -&gt; <a href="javascript-on-desktop.html" class="wikilink">javascript-on-desktop</a>, then <a href="tauri.html" class="wikilink">tauri</a>
+</li>
+<li>typed JS development -&gt; <a href="typescript-moc.html" class="wikilink">typescript-moc</a>
+</li>
+<li>runtime tradeoffs -&gt; <a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a>
+</li>
+</ol>
 <hr>
 <h2>See Also</h2>
 <ul>

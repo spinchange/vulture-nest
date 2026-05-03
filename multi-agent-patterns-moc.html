@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Multi-Agent Patterns MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Multi-Agent Patterns MOC</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -445,7 +445,9 @@
       <main class="content-zone" id="content">
         <h1>Multi-Agent Patterns MOC</h1>
 <p>Map of Content for recurring architectural patterns in multi-agent orchestration. This MOC unifies patterns from <a href="agent-development-kit.html" class="wikilink">ADK</a>, <a href="openai-swarm.html" class="wikilink">OpenAI Swarm</a>, and <a href="a2a-protocol.html" class="wikilink">A2A</a>.</p>
+<p>Use this map when the question is &quot;what coordination pattern am I looking at?&quot; rather than &quot;which framework do I use?&quot; The notes here are the reusable shapes that sit underneath specific SDKs and protocols.</p>
 <h2>&#127959;️ Structural Patterns</h2>
+<p>These patterns define the stable topology of a multi-agent system.</p>
 <ul>
 <li><a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a> - Treating a peer agent as a callable function/tool.
 </li>
@@ -455,6 +457,7 @@
 </li>
 </ul>
 <h2>&#129309; Collaboration &amp; Handoff</h2>
+<p>These patterns define how work moves across agent boundaries.</p>
 <ul>
 <li><a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a> - LLM-driven runtime decision to delegate to a peer.
 </li>
@@ -464,12 +467,24 @@
 </li>
 </ul>
 <h2>&#128737;️ Control &amp; Safety</h2>
+<p>These patterns define how orchestration stays bounded, auditable, and interruptible.</p>
 <ul>
 <li><a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a> - Restricting agent access based on validated tokens or lattices.
 </li>
 <li><a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a> - Inserting manual approval steps into automated flows.
 </li>
 <li><a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a> - Scaling request processing across multiple concurrent workers.
+</li>
+</ul>
+<h2>Where To Start</h2>
+<ul>
+<li>If your system has a lead agent calling specialists, start with <a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a> and <a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a>.
+</li>
+<li>If your question is routing or ownership transfer, start with <a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a> and <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a>.
+</li>
+<li>If your concern is trust or approvals, start with <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a> and <a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a>.
+</li>
+<li>If your concern is concurrency, start with <a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a> and <a href="workflow-agents.html" class="wikilink">workflow-agents</a>.
 </li>
 </ul>
 <h2>&#128218; Related Maps</h2>

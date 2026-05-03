@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">WPF MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">WPF MOC</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">windows-presentation-foundation, xaml-hub</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -444,34 +444,38 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>WPF MOC</h1>
-<p>Focusing on building rich, Windows-native desktop applications using XAML and the .NET framework.</p>
+<p>This map covers the WPF/XAML path for Windows-native desktop interfaces. In the vault, WPF is not a primary implementation lane, but it is a relevant option when a local human-facing control surface is more important than web portability.</p>
 <h2>Core Concepts</h2>
+<p>Start here if you need the language of the framework itself.</p>
 <ul>
 <li><a href="wpf-xaml-and-data-binding.html" class="wikilink">wpf-xaml-and-data-binding</a>: XAML syntax, Data Binding engine, and Dependency Properties.
 </li>
 </ul>
 <h2>Architecture</h2>
+<p>This section covers the application-structure layer that makes WPF maintainable.</p>
 <ul>
 <li><a href="mvvm-pattern-dotnet.html" class="wikilink">mvvm-pattern-dotnet</a>: The canonical pattern for WPF apps.
-<ul>
-<li>
-<ul>
-<li><strong>Data Binding</strong>: Connecting the View to the ViewModel.
-</li>
-<li><strong>Commands</strong>: Handling user intent (perfect for <a href="hitl-ui-patterns.html" class="wikilink">hitl-ui-patterns</a>).
-</li>
-</ul>
-</li>
-</ul>
 </li>
 </ul>
 <h2>Agentic Use Cases</h2>
+<p>This is where WPF intersects with the Nest directly.</p>
 <ul>
-<li><strong>Desktop Bridges</strong>: Building UIs that allow humans to approve or monitor agent actions.
+<li><strong>Desktop Bridges</strong>: building UIs that allow humans to approve or monitor agent actions
 </li>
-<li><strong>Custom Widgets</strong>: Using XAML to render complex data visualizations for agents.
+<li><strong>Custom Widgets</strong>: rendering dense local views of agent state or structured data
+</li>
+<li><strong>HITL Surfaces</strong>: pairing <a href="hitl-ui-patterns.html" class="wikilink">hitl-ui-patterns</a> with a Windows-native control plane
 </li>
 </ul>
+<h2>Where To Start</h2>
+<ol>
+<li>Read <a href="wpf-xaml-and-data-binding.html" class="wikilink">wpf-xaml-and-data-binding</a> for the framework model.
+</li>
+<li>Then read <a href="mvvm-pattern-dotnet.html" class="wikilink">mvvm-pattern-dotnet</a> for the application architecture.
+</li>
+<li>Then connect WPF back to <a href="hitl-ui-patterns.html" class="wikilink">hitl-ui-patterns</a> if the goal is an approval or monitoring surface.
+</li>
+</ol>
 <hr>
 <h2>See Also</h2>
 <ul>
@@ -501,6 +505,7 @@
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mvvm-pattern-dotnet.html" class="">mvvm-pattern-dotnet</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
 <li><a href="wpf-xaml-and-data-binding.html" class="">wpf-xaml-and-data-binding</a></li>
 </ul>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Programming Languages MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Programming Languages MOC</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">languages-hub, dev-environments</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -444,8 +444,20 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Programming Languages MOC</h1>
-<p>This map organizes the various programming environments and paradigms captured within the vault.</p>
+<p>This map organizes the programming environments used across the vault by architectural role, not just by language family. The high-value question here is usually not &quot;which language exists?&quot; but &quot;which layer of the Nest am I working in?&quot;</p>
+<p>Use this map as a routing surface:</p>
+<ul>
+<li>If you are working near the trust boundary, start in <a href="rust.html" class="wikilink">rust</a> and <a href="rust-moc.html" class="wikilink">rust-moc</a>.
+</li>
+<li>If you are wiring SDKs, MCP servers, or ingestion logic, start in <a href="python.html" class="wikilink">python</a> and <a href="python-moc.html" class="wikilink">python-moc</a>.
+</li>
+<li>If you are operating the vault itself, start in <a href="powershell.html" class="wikilink">powershell</a> and <a href="powershell-moc.html" class="wikilink">powershell-moc</a>.
+</li>
+<li>If you need browser, Node, or SDK-adjacent integration work, start in <a href="typescript.html" class="wikilink">typescript</a> and <a href="javascript-moc.html" class="wikilink">javascript-moc</a>.
+</li>
+</ul>
 <h2>Object-Oriented &amp; Enterprise</h2>
+<p>This lane covers languages and runtimes used for large application structure, typed service design, and desktop or enterprise-facing integration.</p>
 <ul>
 <li><a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>: The Microsoft ecosystem and cross-platform runtimes.
 </li>
@@ -455,25 +467,33 @@
 </li>
 </ul>
 <h2>Web &amp; Desktop Runtimes</h2>
+<p>This lane is for environments where package-ecosystem reach, browser compatibility, or desktop-web hybrids matter more than strict trust-boundary guarantees.</p>
 <ul>
 <li><a href="javascript-moc.html" class="wikilink">javascript-moc</a>: JS/TS ecosystems, Bun, Deno, and Tauri.
 </li>
+<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>: Type-safe development in the JavaScript ecosystem.
+</li>
+<li><a href="wpf-moc.html" class="wikilink">wpf-moc</a>: Windows-native desktop UI patterns when the Nest needs a .NET front end.
+</li>
 </ul>
 <h2>Functional &amp; Meta-Programming</h2>
+<p>This lane holds languages that matter more as conceptual or design influences than as day-to-day implementation defaults.</p>
 <ul>
 <li><a href="racket.html" class="wikilink">racket</a>: Language-oriented programming and the Lisp heritage.
 </li>
 </ul>
 <h2>Systems &amp; Safety</h2>
+<p>This is the strongest route when the concern is memory safety, protocol invariants, concurrency, or type-level enforcement.</p>
 <ul>
 <li><a href="rust.html" class="wikilink">rust</a>: Performance, safety, and modern systems programming.
 </li>
 <li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>: The core memory management model.
 </li>
-<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>: Type safety for the JavaScript ecosystem.
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>: Applied Rust for MCP server design.
 </li>
 </ul>
 <h2>Automation &amp; Shell</h2>
+<p>This lane is for operational glue: vault maintenance, scriptable workflows, and terminal-native execution.</p>
 <ul>
 <li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>: Automation, objects, and vault maintenance.
 </li>
@@ -481,15 +501,27 @@
 </li>
 </ul>
 <h2>Comparative PKM</h2>
+<p>This lane is for knowledge-work environments that matter as reference points for how the vault is designed.</p>
 <ul>
 <li><a href="org-mode.html" class="wikilink">org-mode</a>: Plain-text logic and Emacs Lisp.
 </li>
 </ul>
 <h2>Debates &amp; Paradigms</h2>
+<p>These notes are for choosing tradeoffs rather than learning one language in isolation.</p>
 <ul>
 <li><a href="type-safety-spectrum-debate.html" class="wikilink">type-safety-spectrum-debate</a>: The trade-offs between static and dynamic typing.
 </li>
 </ul>
+<h2>Where To Start</h2>
+<p>If you are arriving cold:</p>
+<ol>
+<li>Start with <a href="rust.html" class="wikilink">rust</a>, <a href="python.html" class="wikilink">python</a>, <a href="powershell.html" class="wikilink">powershell</a>, and <a href="typescript.html" class="wikilink">typescript</a> for the vault-local role of each language.
+</li>
+<li>Then drop into the relevant MOC for cluster navigation.
+</li>
+<li>Use <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> if the question is architectural rather than language-specific.
+</li>
+</ol>
 <hr>
 <h2>See Also</h2>
 <ul>
@@ -545,16 +577,21 @@
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
 <li><a href="org-mode.html" class="">org-mode</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="racket.html" class="">racket</a></li>
 <li><a href="rust.html" class="">rust</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
 <li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 <li><a href="typescript-moc.html" class="">typescript-moc</a></li>
 <li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
+<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
 </ul>
           </div>
         </div>
