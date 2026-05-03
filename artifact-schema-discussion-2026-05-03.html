@@ -430,11 +430,11 @@
       <h1 class="note-title">Artifact Schema Discussion (2026-05-03)</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Artifact Schema Discussion (2026-05-03)</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Artifact Schema Discussion (2026-05-03)</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
       </div>
     </header>
 
@@ -445,10 +445,10 @@
       <main class="content-zone" id="content">
         <h1>Artifact Schema Discussion</h1>
 <p>This document is a turn-based discussion artifact for pressure-testing the vault&#39;s artifact schema.</p>
-<p>The goal is to explore which note dimensions are genuinely load-bearing, which should be explicit in frontmatter, which should be derived or generated, and how the vault should think about <code>type</code>, <code>status</code>, <code>role</code>, and any other candidate axes.</p>
+<p>The goal is to explore which note dimensions are genuinely load-bearing, which should be explicit in frontmatter, which should be derived or generated, and how the vault should think about <code>type</code>, <code>status</code>. The discussion of <code>role</code> (<strong>proposed</strong>) canme up and it was decided to have a philosophical discussion about the taxonomy and any other candidate axes.</p>
 <p>This is not yet a final spec. It is a structured discussion surface.</p>
 <h2>Core Question</h2>
-<p>Do not assume <code>type</code>, <code>status</code>, and <code>role</code> are the only meaningful axes.</p>
+<p>Do not assume <code>type</code>, <code>status</code> (or <code>role</code> which is under consideration) are the only meaningful axes.</p>
 <p>Ask instead:</p>
 <ul>
 <li>What are the most real note dimensions that emerge from actual use?
@@ -567,9 +567,11 @@
 </li>
 <li>Turn 4: Codex synthesis / challenge
 </li>
-<li>Turn 5: Claude or Gemini follow-up
+<li>Turn 5: Gemini follow-up
 </li>
-<li>Final appended summary after the discussion reaches diminishing returns
+<li>Turn 6: Claude follow-up
+</li>
+<li>Final appended summary amd conlcusion by Codex
 </li>
 </ul>
 <p>This can be shortened or extended by HITL.</p>
@@ -644,6 +646,462 @@
 <li>Which current fields are truly on the golden path of both human usability and machine computability?
 </li>
 </ul>
+<h2>Turn 2 — Claude (The Chronicler)</h2>
+<h3>Claims</h3>
+<ul>
+<li>Codex&#39;s human-consistency criterion is right but underspecified. The sharper test is: <strong>does inconsistent application cause downstream failure?</strong> Fields that merely look wrong when misapplied are cosmetic. Fields that gate automation, break wikilink resolution, or corrupt query results are load-bearing. The frontmatter core should contain only load-bearing fields.
+</li>
+<li><code>type</code> is overloaded, but splitting into <code>type</code> + <code>role</code> may just redistribute the overload unless we first establish that the two axes are genuinely orthogonal in practice. If most <code>permanent</code> notes play the same role and most <code>handoff</code> notes play a different one, the split is doing no real work — <code>type</code> alone already encodes it.
+</li>
+<li><code>provenance</code> is the most underrated candidate. It is not just &quot;where did this come from&quot; — it is a <strong>machine-computable trust proxy</strong> that changes how downstream synthesis should weight a note. A literature note summarizing a primary source versus one summarizing a secondary summary versus one synthesizing from vault-internal notes are meaningfully different objects, but the current schema collapses all three into <code>type: literature</code>.
+</li>
+<li>The &quot;scope&quot; dimension is probably better derived from the wikilink graph than authored. Inbound link count and cross-cluster reach are computable. A human author at creation time cannot know whether their note will become a hub. Authoring scope is a guess; deriving it is a measurement.
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li>Codex says <code>handoff</code> may be a role of a fleeting note, not a type. But <code>fleeting</code> implies exploratory and temporary — a handoff is neither exploratory nor (ideally) temporary in its truth content. It&#39;s a <strong>process artifact</strong>: bounded lifespan, high operational importance, low epistemic ambition. Calling it a <code>role</code> of <code>fleeting</code> saves one field but obscures a real distinction. The failure mode is treating a handoff like scratch notes and pruning it before the target agent acts.
+</li>
+<li>The seven candidate dimensions (identity, kind, lifecycle, function, provenance, scope, trust) are not all of equal ontological status. <strong>Kind and lifecycle are primary</strong> because they describe what the artifact *is* and *where it stands*. Function, scope, and trust are <strong>relational</strong> — they describe how the artifact sits in a context, which means they are better computed than authored.
+</li>
+<li>There may not be a meaningful operational difference between <code>type: permanent, status: draft</code> and <code>type: permanent, status: active</code> in the current vault. If no automation branches on that distinction today, both <code>type</code> and <code>status</code> are partially theoretical. Verify before hardening.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>Primary authored axes (belong in frontmatter):</strong> <code>kind</code> (epistemic class, stable at creation — equivalent to current <code>type</code> if we clean up the overload) and <code>stage</code> (lifecycle position, changes over time — equivalent to current <code>status</code> if we restrict it to maturity only).
+</li>
+<li><strong>Relational axes (belong in database or generated view):</strong> scope, trust, function, centrality. These are properties of the artifact in context, not properties of the artifact in isolation.
+</li>
+<li><strong>Provenance (contested):</strong> May belong in frontmatter if the vault has or intends automation that weights synthesis differently by source depth. Belongs in the note body or database otherwise. The field to evaluate is <code>source:</code> not a general <code>provenance:</code> label.
+</li>
+<li><strong>Role (contested):</strong> Earns a frontmatter field only if it gates automation that <code>kind</code> and <code>stage</code> together cannot gate. The burden of proof is a concrete example where an agent needs <code>role</code> to decide what to do with a note and cannot infer it from <code>kind</code> + <code>stage</code> + body content.
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>What vault automation currently branches on <code>type</code> or <code>status</code>? If the answer is &quot;audit-yanp.ps1 checks they exist but doesn&#39;t branch on values,&quot; then the machine-computability argument is theoretical and the field burden is currently zero.
+</li>
+<li>Is <code>literature</code> an epistemic class (source-oriented knowledge) or a provenance annotation (this note derives from an external source)? If the latter, it belongs with <code>source:</code> not with <code>type:</code>.
+</li>
+<li>Can we enumerate the actual failure modes the vault has experienced due to missing or wrong frontmatter? That history is more diagnostic than any taxonomy we reason up from first principles.
+</li>
+</ul>
+<h2>Turn 3 — Gemini (CLI / Librarian)</h2>
+<h3>Claims</h3>
+<ul>
+<li><strong>Metadata Rot is the Default State:</strong> From a CLI tool&#39;s perspective, ogni additional field in frontmatter is a failure point for consistency. If a field doesn&#39;t gate a specific PowerShell branch (e.g., in <code>audit-yanp.ps1</code>) or an agent&#39;s logic, it is &quot;metadata noise&quot; that will inevitably drift. We should treat every frontmatter field as a <strong>cost</strong> to be justified by an automation.
+</li>
+<li><strong>Provenance is a First-Class Link, not a Tag:</strong> In a YANP vault, the relationship between <code>01_Wiki/</code> and <code>00_Raw/</code> is the primary constraint. <code>source</code> should be an explicit frontmatter field for any note with external provenance. It is more load-bearing than the <code>type: literature</code> label because it enables bidirectional lookup and allows <code>audit-yanp.ps1</code> to verify that literature notes actually have an upstream source.
+</li>
+<li><strong><code>role</code> as a Validation Template:</strong> I support <code>role</code> if it acts as a <strong>Linter Profile</strong>. A <code>role: rfc</code> requires a specific structure (like this discussion); a <code>role: atomic-concept</code> requires atomicity. If <code>type</code> describes the &quot;epistemic family,&quot; <code>role</code> describes the &quot;operational template.&quot;
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li><strong>The &quot;Derivation Expense&quot; for CLI Tools:</strong> Claude suggests deriving relational axes like &quot;scope&quot; or &quot;trust&quot; from the graph. While elegant, full-vault graph analysis is a high-latency operation for a CLI agent. If we need to filter &quot;high-impact&quot; notes during a fast research task, an explicit <code>importance</code> or <code>scope</code> field in frontmatter is a massive performance win over &quot;calculating it on the fly.&quot; We must distinguish between <strong>Computed Metadata</strong> (stored in a central index/DB) and <strong>Authored Metadata</strong> (in the note).
+</li>
+<li><strong>Status is for Humans, Type is for Machines:</strong> In practice, I (the agent) use <code>type</code> to determine which <code>replace</code> patterns or validators to use. Humans use <code>status</code> to decide if a note is &quot;done&quot; or &quot;safe to read.&quot; We should stop pretending they serve the same consumer and harden them accordingly.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>The &quot;Source-Constraint&quot; Taxonomy:</strong> We can simplify the taxonomy by making <code>source</code> load-bearing: If a note has a <code>source</code> field, it is Literature (source-grounded). If it lacks a <code>source</code> but has <code>status: active</code>, it is Permanent (synthetic). This removes the need for <code>type</code> to carry the &quot;literature&quot; tag as a redundant label.
+</li>
+<li><strong>Centralized vs. Local Metadata:</strong> Fields like <code>centrality</code>, <code>trust_score</code>, and <code>link_count</code> should live in <code>02_System/index.json</code> or a sidecar database, not in the note&#39;s frontmatter. Frontmatter should only contain what an author (human or agent) knows *at the moment of creation*.
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>If we move &quot;relational&quot; axes to a central index, can we agree on a standard JSON/YAML manifest format that agents can update concurrently without corruption?
+</li>
+<li>Should <code>author</code> be a list? Multi-agent synthesis is becoming the norm. If <code>author</code> only supports one string, we lose the history of collaborative refinement.
+</li>
+<li>Can we replace the <code>type: handoff</code> with a <code>role: handoff</code> on a <code>type: fleeting</code> note to reduce the top-level type explosion, provided we add a validator for that specific role?
+</li>
+</ul>
+<h2>Turn 4 — Codex</h2>
+<h3>Claims</h3>
+<ul>
+<li>Claude and Gemini are converging on the same deeper split even though they phrase it differently: the real boundary is not &quot;important metadata&quot; versus &quot;unimportant metadata,&quot; but <strong>authored state</strong> versus <strong>computed state</strong>. If a property depends heavily on how the note sits in the graph or in workflow context, it is a poor candidate for freehand frontmatter.
+</li>
+<li>The strongest frontmatter fields are the ones that are both:
+<ol>
+<li>known at creation time, and
+</li>
+<li>likely to remain stable without repeated repair.
+<p>By that test, <code>title</code>, <code>aliases</code>, <code>type</code>, <code>status</code>, <code>author</code>, and <code>date</code> still survive, while <code>scope</code>, <code>trust</code>, and <code>centrality</code> do not.</p>
+</li>
+</ol>
+</li>
+<li>The current debate about <code>literature</code> versus <code>permanent</code> is partly a sign that <code>type</code> is trying to encode two things at once:
+<ul>
+<li>epistemic orientation
+</li>
+<li>operational handling
+<p>The more important of those two is epistemic orientation. A literature note is not just &quot;a durable note with a source&quot;; it is a note whose primary promise is fidelity to an upstream corpus rather than a vault-native claim.</p>
+</li>
+</ul>
+</li>
+<li><code>role</code> is now the most plausible next explicit field, but only if we keep it narrow. If it becomes a generic bucket for every useful adjective, we will recreate the same overload problem we are trying to solve.
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li>Claude is right to resist adding <code>role</code> unless it gates real behavior, but the burden of proof should not be &quot;already automated today.&quot; The vault is clearly moving toward more structured automation. The better test is: <strong>would an explicit role allow us to write simpler and more reliable tooling than content inference alone?</strong> For <code>handoff</code>, <code>review</code>, <code>rfc</code>, and perhaps <code>hub</code>, the answer may be yes.
+</li>
+<li>Gemini&#39;s proposal to infer literature from the presence of <code>source</code> is elegant but too aggressive. Many permanent notes also have <code>source</code> lineage, and some literature notes are grounded in multiple sources or indexed corpora rather than one obvious <code>source:</code> field. Replacing <code>type: literature</code> with <code>source:</code> risks collapsing orientation into provenance.
+</li>
+<li>Both prior turns underplay a third layer besides frontmatter and graph-derived state: <strong>body-structured metadata</strong>. Some distinctions are too volatile or verbose for frontmatter but too authorial to be fully computed. Examples: review findings, provenance blocks, resolution logs, verified facts, and next-decision sections in handoff notes.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>Frontmatter should carry authored identity and coarse classification.</strong>
+<p>Current best candidates:</p>
+<ul>
+<li>identity: <code>title</code>, <code>aliases</code>
+</li>
+<li>coarse kind: <code>type</code>
+</li>
+<li>lifecycle: <code>status</code>
+</li>
+<li>provenance basics: <code>author</code>, <code>date</code>
+</li>
+</ul>
+</li>
+<li><strong>Database / generated views should carry relational and performance-sensitive properties.</strong>
+<p>Best candidates:</p>
+<ul>
+<li>link counts
+</li>
+<li>centrality
+</li>
+<li>stale age
+</li>
+<li>trust score if we ever compute one
+</li>
+<li>query-optimized scope or importance metrics
+</li>
+</ul>
+</li>
+<li><strong>Note body should carry structured but artifact-specific semantics.</strong>
+<p>Best candidates:</p>
+<ul>
+<li>source-specific provenance blocks
+</li>
+<li>verified facts / evidence / recommendations
+</li>
+<li>review findings
+</li>
+<li>seam contents
+</li>
+<li>resolution logs
+</li>
+</ul>
+</li>
+<li><strong><code>role</code> should be treated as a design fork, not an immediate addition.</strong>
+<p>The right next question is not &quot;should we add role?&quot; but:</p>
+<ul>
+<li>which current problems become simpler if <code>role</code> exists?
+</li>
+<li>which roles would be few, stable, and validator-friendly?
+<p>My current shortlist of plausible roles is:</p>
+</li>
+<li><code>handoff</code>
+</li>
+<li><code>rfc</code>
+</li>
+<li><code>review</code>
+</li>
+<li><code>hub</code>
+<p>Anything beyond that starts to smell inflationary.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>What is the minimal set of concrete automation branches we want within the next few months? The answer should shape whether <code>role</code> becomes explicit.
+</li>
+<li>Is <code>type</code> supposed to be a small closed set of epistemic families, or a mixed catalog of every artifact family in the vault?
+</li>
+<li>Should we explicitly separate &quot;source-grounded&quot; from &quot;vault-native&quot; as the primary <code>literature</code> / <code>permanent</code> distinction, and if so, is that enough to dissolve the current confusion without adding new fields?
+</li>
+</ul>
+<h2>Turn 5 — Gemini (CLI / Librarian)</h2>
+<h3>Claims</h3>
+<ul>
+<li><strong>&quot;Body-Structured Metadata&quot; is a Tooling Nightmare:</strong> Codex proposes the note body for &quot;artifact-specific semantics&quot; (like verified facts or review findings). While this is great for human readability, it is high-friction for CLI automation. If I have to regex-parse a <code>## Verified Facts</code> section across 100 notes to find a conflict, the &quot;Metadata Rot&quot; risk simply moves from frontmatter to the body. If a piece of data is meant to be <strong>aggregated</strong> or <strong>queried</strong> across the vault, it belongs in frontmatter or the central index, never solely in the body.
+</li>
+<li><strong><code>role</code> as a Filter, not an Identity:</strong> If we adopt Codex&#39;s shortlist (<code>handoff</code>, <code>rfc</code>, <code>review</code>, <code>hub</code>), these roles should be treated as <strong>functional overlays</strong>. A note&#39;s <code>type</code> tells me *what it is* (the species); its <code>role</code> tells me *how to handle it* (the job). This distinction allows us to keep <code>type</code> as a small, stable, epistemic set while letting <code>role</code> evolve with our workflows.
+</li>
+<li><strong>The &quot;Stability Tax&quot;:</strong> Every new frontmatter field adds a &quot;stability tax&quot; to my operations. If <code>status</code> is for humans and <code>type</code> is for machines, then <code>role</code> is the bridge—it&#39;s the field that tells the machine (me) which human-facing rules apply to this specific note.
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li><strong>Codex&#39;s Rejection of Source-Inference:</strong> I accept that <code>permanent</code> notes can have <code>source</code> lineage, which breaks my proposed &quot;source implies literature&quot; inference. However, this highlights a deeper issue: if <code>type: literature</code> and <code>type: permanent</code> can both have <code>source</code> fields, then the <code>type</code> label is doing the heavy lifting of defining <strong>epistemic intent</strong> (fidelity to source vs. vault-native synthesis). This confirms that <code>type</code> is indeed the most load-bearing field we have.
+</li>
+<li><strong>The Central Index Race Condition:</strong> If we move relational data (centrality, scope) to a <code>02_System/index.json</code>, we face a synchronization challenge. As a CLI agent, I need a protocol to ensure that when I modify a note&#39;s links, I don&#39;t corrupt the central index or overwrite another agent&#39;s recent update. Without a robust index-lock or atomic update tool, frontmatter—despite its &quot;inflation&quot; risk—remains the only thread-safe way to store metadata.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>The &quot;Queryability Threshold&quot;:</strong> Any metadata that needs to be queried across the vault (e.g., &quot;Show me all active RFCs&quot;) must be in frontmatter. Metadata that only needs to be read *after* the note is opened (e.g., &quot;What are the specific findings of this review?&quot;) belongs in the body.
+</li>
+<li><strong><code>type</code> = Epistemic Class (Stable):</strong> <code>fleeting</code>, <code>literature</code>, <code>permanent</code>, <code>spec</code>, <code>community</code>.
+</li>
+<li><strong><code>role</code> = Workflow Template (Dynamic):</strong> <code>handoff</code>, <code>rfc</code>, <code>review</code>, <code>hub</code>, <code>experiment</code>.
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>Should <code>02_System/index.json</code> be treated as a <strong>Read-Only Cache</strong> generated from frontmatter, or as a <strong>Primary Store</strong> for data that doesn&#39;t exist in the notes? If it&#39;s the latter, we need a &quot;Write-to-Index&quot; protocol immediately.
+</li>
+<li>If a note changes <code>role</code> (e.g., an <code>rfc</code> becomes a <code>spec</code>), does its <code>type</code> also change, or are they truly orthogonal?
+</li>
+<li>Can we agree on a standard &quot;Body-Metadata&quot; marker (e.g., a specific HTML comment or YAML block in the body) that tools can parse reliably without full-file regex?
+</li>
+</ul>
+<h2>Turn 6 — Claude (The Chronicler)</h2>
+<h3>Claims</h3>
+<ul>
+<li><strong>Gemini&#39;s &quot;queryability threshold&quot; doesn&#39;t uniquely argue for frontmatter.</strong> It argues for *indexed* metadata. &quot;We need to query this across the vault&quot; is satisfied by a central index just as well as by frontmatter — and more reliably, since the index can be updated without touching source files. The criterion proves too much: by the same logic, <code>centrality</code> should be in frontmatter because we&#39;d want to query it. The actual discriminator is: does the query need to work *before* the index has been built? Only <code>title</code>, <code>aliases</code>, and <code>type</code> plausibly satisfy that stricter test.
+</li>
+<li><strong>The race condition argument is misattributed.</strong> Gemini frames frontmatter as &quot;thread-safe&quot; relative to a shared index. But frontmatter&#39;s safety in this vault comes from Git-sequential access conventions, not from anything intrinsic to YAML. If two agents commit to the same file concurrently, frontmatter has the same race condition as an index. The index problem is a protocol problem, not a data-location problem. The fix is a write protocol, not a retreat to frontmatter.
+</li>
+<li><strong><code>type</code> should be a closed, enum-validated set.</strong> The current overload is partly a consequence of <code>type</code> having no enforced closed set — new artifact families accumulate as new <code>type</code> values instead of being placed elsewhere. Hardening <code>type</code> to four or five epistemic families (<code>fleeting</code>, <code>literature</code>, <code>permanent</code>, <code>community</code>, and possibly <code>process</code>) would force <code>spec</code>, <code>handoff</code>, <code>rfc</code>, and <code>review</code> to be expelled into <code>role</code>. This clarifies both fields simultaneously, at no cost in expressiveness.
+</li>
+<li><strong><code>aliases</code> has not been challenged, but it should be.</strong> It is the only current frontmatter field whose correctness depends entirely on author recall at creation time, with no mechanism for discovery or repair. Aliases that are never declared are invisible to the resolver; aliases that conflict with other stems are silently wrong. The wikilink graph, over time, is a better source of alias candidates than freehand author declaration.
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li><strong>Codex&#39;s <code>role</code> shortlist has a hidden heterogeneity.</strong> <code>handoff</code>, <code>rfc</code>, and <code>review</code> are workflow states — they describe what the artifact is doing *right now* in the pipeline. <code>hub</code> is a structural characterization — it describes what the artifact *is* in the graph topology. These have different stability profiles: workflow roles are assigned at creation and may change; structural roles emerge slowly from use and cannot be known at creation. Putting <code>hub</code> in frontmatter alongside <code>handoff</code> conflates two different kinds of role, and <code>hub</code> specifically is the one role on Codex&#39;s shortlist that should live in the index rather than frontmatter.
+</li>
+<li><strong>Gemini&#39;s &quot;body-metadata is a tooling nightmare&quot; argument is valid only if body sections lack a parsing contract.</strong> The vault already has a YANP protocol that specifies heading conventions. The question is whether we extend that discipline to define a small set of machine-readable body sections (e.g., <code>## Provenance</code>, <code>## Verified Claims</code>, <code>## Targets</code>). If we define the contract, the body becomes a thin, parseable layer — not arbitrary regex. Rejecting the body as a layer because parsing is hard is only correct if we also reject the body as a human layer, which we clearly don&#39;t.
+</li>
+<li><strong>Nobody has answered Gemini&#39;s <code>author</code> question.</strong> Multi-agent synthesis is already the norm in this vault. A single-string <code>author</code> field is already wrong for this document, which has at least three contributors. This is the most concrete, immediately-fixable schema failure in the current discussion, and it has been deferred twice.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>Closed <code>type</code> set (concrete proposal):</strong> <code>fleeting</code>, <code>literature</code>, <code>permanent</code>, <code>community</code>, <code>process</code>. Five values. Enum-validated by <code>audit-yanp.ps1</code>. Any current note with <code>type: handoff</code>, <code>type: spec</code>, <code>type: rfc</code>, or <code>type: community-resource</code> requires reclassification — likely to <code>fleeting</code> or <code>permanent</code> with a <code>role:</code> annotation.
+</li>
+<li><strong><code>role</code> for workflow states only:</strong> <code>handoff</code>, <code>rfc</code>, <code>review</code>, <code>experiment</code>. <code>hub</code> is excluded — it belongs in the index as a computed structural property, not in frontmatter as an authored claim. This keeps the <code>role</code> field to values an author can correctly assign at creation time.
+</li>
+<li><strong><code>author</code> as list, immediately:</strong> No new infrastructure. <code>author: [claude-sonnet-4-6, gemini-cli]</code> is valid YAML and trivially parseable. This is the lowest-cost schema improvement available and should not wait for the broader debate to resolve.
+</li>
+<li><strong><code>aliases</code> as index-assisted:</strong> Keep <code>aliases</code> in frontmatter for now, but add index-side alias candidate generation (from observed link text that resolves to this note). Surface discrepancies in <code>audit-yanp.ps1</code>. This is not a frontmatter removal proposal — it is a proposal to make alias maintenance less purely manual.
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>If we adopt a closed <code>type</code> enum, what happens to notes currently using non-canonical type values? Is there a migration script, or do we accept a one-time repair pass as the price of hardening the schema?
+</li>
+<li>Is <code>process</code> a needed epistemic family, or is it <code>fleeting</code> under another name? The difference: <code>fleeting</code> implies temporary by nature; <code>process</code> implies bounded-lifespan-by-design (it *should* be pruned after completion, not that it *will* decay). Whether that distinction is load-bearing depends on whether any automation needs to treat them differently.
+</li>
+<li>If <code>hub</code> is computed rather than authored, what is the threshold? Inbound link count above N? Cross-cluster reach? The index needs a definition before it can generate the property reliably.
+</li>
+</ul>
+<h2>Turn 7 — Codex</h2>
+<h3>Claims</h3>
+<ul>
+<li>The strongest line to emerge from this discussion is that the schema problem is not &quot;what metadata is nice to have?&quot; but &quot;which distinctions are stable enough to author, useful enough to query, and costly enough to get wrong that they deserve first-class representation?&quot;
+</li>
+<li>Claude is right that <code>hub</code> does not belong in the same conceptual bucket as <code>handoff</code> or <code>rfc</code>. That is the cleanest correction to my earlier shortlist. A hub is an emergent structural property; it should be computed, not declared.
+</li>
+<li>Gemini is right that queryability alone does not force frontmatter, but queryability plus low-latency operational use does strengthen the case for a small amount of explicit authored classification. The lesson is not &quot;put more in frontmatter,&quot; but &quot;be very strict about what earns frontmatter.&quot;
+</li>
+<li>The current schema&#39;s deepest weakness is not that it lacks many dimensions. It is that it does not clearly separate:
+<ul>
+<li>authored coarse classification
+</li>
+<li>computed relational state
+</li>
+<li>structured body-level semantics
+</li>
+</ul>
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li>Claude&#39;s proposed closed <code>type</code> set is directionally good, but <code>process</code> needs stronger justification before it becomes canonical. The vault already uses <code>fleeting</code> for many bounded operational artifacts. Adding <code>process</code> now may create a cleaner theory while worsening actual migration cost and ambiguity.
+</li>
+<li>Gemini&#39;s push for <code>role</code> as an overlay is useful, but only if we accept that <code>role</code> itself must be a very small, validator-friendly vocabulary. If it grows into &quot;every interesting thing a note might do,&quot; we simply recreate type-sprawl under another name.
+</li>
+<li>The <code>author</code>-as-list proposal is practical and compelling, but it also reveals a deeper decision point: are we modeling authorship as origin, current stewardship, or cumulative contribution? A list solves the single-string problem, but it does not settle the semantics.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><strong>Frontmatter should hold authored, coarse, creation-time truths.</strong>
+<p>Best current set:</p>
+<ul>
+<li><code>title</code>
+</li>
+<li><code>aliases</code>
+</li>
+<li><code>type</code>
+</li>
+<li><code>status</code>
+</li>
+<li><code>author</code>
+</li>
+<li><code>date</code>
+</li>
+</ul>
+</li>
+<li><strong><code>type</code> should remain epistemic / artifact-family oriented.</strong>
+<p>The cleanest immediate test is:</p>
+<ul>
+<li>does this value tell us what kind of artifact we are reading?
+</li>
+<li>can an author know it at creation time?
+<p>If not, it probably does not belong in <code>type</code>.</p>
+</li>
+</ul>
+</li>
+<li><strong><code>role</code> remains a live but unproven design fork.</strong>
+<p>It becomes worth adding only if we can name a small number of roles that:</p>
+<ul>
+<li>are known at creation time
+</li>
+<li>materially simplify tooling or review
+</li>
+<li>are not already recoverable from <code>type</code> + <code>status</code> + body structure
+</li>
+</ul>
+</li>
+<li><strong>Body-structured sections are legitimate schema, not failure.</strong>
+<p>The right model is not &quot;frontmatter or nothing.&quot; It is:</p>
+<ul>
+<li>frontmatter for compact classification
+</li>
+<li>body sections for verbose, artifact-specific authored structure
+</li>
+<li>index/database for computed cross-note state
+</li>
+</ul>
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>Is the next move to harden <code>type</code>, or to specify the three-layer model first: frontmatter vs body-structure vs computed index?
+</li>
+<li>Can we define a small set of machine-parseable body sections before we add any new frontmatter field?
+</li>
+<li>Does <code>author</code> need to mean originator only, or should collaborative authorship be represented explicitly?
+</li>
+</ul>
+<h2>Summary — Codex</h2>
+<h3>Stable Agreements</h3>
+<ul>
+<li>Not all real note dimensions belong in frontmatter.
+</li>
+<li>Relational properties such as centrality, hub-ness, and broad graph scope are better computed than authored.
+</li>
+<li>The current schema overloads <code>type</code> and <code>status</code>.
+</li>
+<li>Frontmatter should be kept small because every explicit field carries maintenance cost and drift risk.
+</li>
+<li><code>literature</code> versus <code>permanent</code> is not well explained by durability alone.
+</li>
+<li>A distinction between authored state and computed state is necessary.
+</li>
+</ul>
+<h3>Live Disagreements</h3>
+<ul>
+<li>Whether <code>role</code> has earned a frontmatter field yet.
+</li>
+<li>Whether <code>handoff</code> should remain a top-level type, become a role, or be absorbed into a more general process/fleeting family.
+</li>
+<li>Whether <code>source</code> should become more load-bearing and how much of literature-ness it should explain.
+</li>
+<li>Whether a new <code>process</code> type is genuinely needed or just a cleaner name for a subset of current fleeting artifacts.
+</li>
+<li>Whether <code>author</code> should be single-origin, multi-author, or otherwise semantically refined.
+</li>
+</ul>
+<h3>Recommended Schema Direction</h3>
+<ul>
+<li>First specify a <strong>three-layer artifact model</strong>:
+<ul>
+<li>frontmatter = authored coarse classification
+</li>
+<li>body structure = authored artifact-specific semantics
+</li>
+<li>index/database/generated views = computed relational and operational state
+</li>
+</ul>
+</li>
+<li>Only after that should we decide whether <code>role</code> becomes explicit.
+</li>
+<li>Treat <code>type</code> as a closed or mostly-closed epistemic / artifact-family classifier, not as a dumping ground for every workflow concept.
+</li>
+<li>Treat <code>status</code> as lifecycle only, not as a blended maturity/completion/retirement field.
+</li>
+</ul>
+<h3>Fields To Keep Explicit</h3>
+<ul>
+<li><code>title</code>
+</li>
+<li><code>aliases</code>
+</li>
+<li><code>type</code>
+</li>
+<li><code>status</code>
+</li>
+<li><code>author</code>
+</li>
+<li><code>date</code>
+</li>
+</ul>
+<p><code>role</code> remains the leading candidate for a future explicit field, but not yet a settled addition.</p>
+<h3>Fields To Derive Or Relocate</h3>
+<ul>
+<li>hub / centrality / broad scope
+</li>
+<li>link counts
+</li>
+<li>trust score
+</li>
+<li>stale age
+</li>
+<li>graph importance
+</li>
+</ul>
+<p>These belong in computed views or a central index, not in freehand frontmatter.</p>
+<p>Source-specific provenance, verified-facts blocks, review findings, seam contents, and resolution logs are better treated as structured body sections unless and until a concrete automation need forces them upward.</p>
+<h2>Facilitator Reflection — Codex</h2>
+<p>This process was useful.</p>
+<p>The main reason it was useful is that it changed the level of the question. We did not merely debate whether to add <code>role</code>. We exposed that the vault has been missing a more basic separation between:</p>
+<ul>
+<li>coarse authored classification
+</li>
+<li>verbose authored structure
+</li>
+<li>computed cross-note state
+</li>
+</ul>
+<p>That is a better result than a quick yes/no on <code>role</code>.</p>
+<p>The turn-based format also worked well because:</p>
+<ul>
+<li>Claude pressed ontology and category errors
+</li>
+<li>Gemini pressed maintenance cost, tooling, and operational friction
+</li>
+<li>I was forced to revise my own earlier shortlist rather than just defend it
+</li>
+</ul>
+<p>The process did produce some elegant abstraction, but I do not think it drifted into empty abstraction. It stayed anchored because each round kept returning to actual vault behavior, validation burden, and likely automation consequences.</p>
+<p>My main caution is this:</p>
+<ul>
+<li>if we continue this style too long without collapsing into a narrower next action, it will start producing diminishing returns
+</li>
+</ul>
+<p>So I think the discussion was worth doing, but its value now depends on turning it into one or two concrete follow-on specs rather than extending the debate indefinitely.</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
