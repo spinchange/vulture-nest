@@ -887,3 +887,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Primitives:** Reframed tools/resources/prompts as distinct control surfaces with different owners, added decision rules for when each primitive fits, and linked the note more directly into client/server and best-practices notes.
 - **SDKs:** Turned the note from a tier list into an implementation-choice note: what really varies across SDKs, how to choose by runtime role, and how SDK selection maps to the Nest's language-tier model.
 - **Security:** Reworked the note into a trust-boundary note covering the local-vs-remote split, main MCP threat categories, the authorization boundary, and the adjacent notes that carry the deeper spec-level detail.
+
+
+## [2026-05-03] codex — Language Root Hardening Batch B
+
+- **Directive:** Continued [[language-root-hardening-plan-2026-05-02]] by hardening [[powershell]] and [[typescript]] as durable root hubs rather than thinner language summaries.
+- **PowerShell Hardening:** Added a vault-local "Core Opinion," a concrete decision rule for when operational work should stay in PowerShell instead of moving into Python or Rust, a direct start-path by maintenance vs. scripting vs. memory tooling, and clearer placement against [[programming-languages-moc]] and [[powershell-moc]].
+- **TypeScript Hardening:** Added a "Core Opinion," a concrete decision rule for Node/browser/schema-shaped integration work, explicit route selection for handbook study vs. MCP/SDK work, and clearer placement against [[powershell]], [[python]], [[rust]], and the JavaScript runtime lane.

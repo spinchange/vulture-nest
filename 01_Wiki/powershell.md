@@ -15,6 +15,27 @@ aliases:
 
 The important distinction in this vault is that PowerShell is not just a shell. It is a programmable object pipeline and the default execution environment for many Tier-2 automation tasks. Commands pass structured .NET objects rather than plain text, which is why patterns like `Select-Object`, calculated properties, and custom objects appear throughout the vault's maintenance scripts. That makes PowerShell the bridge between the knowledge graph and executable maintenance.
 
+## Core Opinion
+
+PowerShell is the Nest's default language for repo-local operations, maintenance orchestration, and system-facing glue. Its value here is not merely convenience on Windows; it is that the object pipeline lets operational scripts stay structured all the way from filesystem inspection to JSON, SQLite, and dashboard generation without collapsing into brittle text parsing.
+
+The practical split is:
+
+- use **PowerShell** when the work is operational, repo-local, or terminal-native and benefits from object-shaped shell automation
+- use **[[python]]** when the same workflow becomes SDK-heavy, async-first, or provider-integration-centric
+- use **[[rust]]** when the concern moves from automation convenience to hard trust-boundary enforcement
+
+## Decision Rule
+
+Start from `[[powershell]]` when your question sounds like one of these:
+
+- "Which language should own vault maintenance or graph health checks?"
+- "How should this shell-visible workflow stay structured instead of text-scraped?"
+- "Which PowerShell note explains the object or pipeline pattern used in this script?"
+- "Where do I start to modify the Nest's operational tooling safely?"
+
+If the question is instead about agent loops, MCP SDK design, or long-running service logic, route to [[python]] or [[typescript]] first. If the question is about capability gates or compile-time safety, route to [[rust]].
+
 ## PowerShell in the Nest
 
 PowerShell appears here in two closely related roles:
@@ -48,6 +69,21 @@ Start here if your goal is to run, extend, or debug the Nest's maintenance and m
 - **[[ps-note-creator]]** — scaffolding path for adding new notes without drifting from conventions.
 - **[[ps-vulture-search]]** — retrieval tooling that connects note content to operational search.
 - **[[poshwiki]]** and **[[poshwiki-tools]]** — the SQLite-backed memory layer and the higher-level script interface agents actually use.
+
+## Start Here
+
+Choose the shortest path based on the job in front of you:
+
+1. If you are changing vault maintenance behavior, start with [[ps-vault-maintenance]], then route into [[ps-yanp-audit]], [[ps-orphan-check]], or [[ps-broken-link-checker]].
+2. If you are writing a new script, start with [[ps-automation-spec]], then [[powershell-objects]], then [[ps-custom-objects]].
+3. If you are confused by existing pipeline-heavy code, read [[powershell-objects]] first and then [[ps-calculated-properties]].
+4. If you are working on memory or retrieval tooling, route from [[poshwiki]] into [[poshwiki-tools]] and [[ps-vulture-search]].
+
+## Relationship to the Rest of the Vault
+
+- [[programming-languages-moc]] explains when PowerShell is the right operational surface instead of Python, Rust, or TypeScript.
+- [[powershell-moc]] is the broader cluster map once you know whether your question is about language mechanics, maintenance, or memory tooling.
+- [[python]] is the adjacent language when a maintenance task graduates into richer SDK or async integration work.
 
 ## Where to Start
 

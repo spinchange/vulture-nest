@@ -17,6 +17,28 @@ Within the Vulture Nest, TypeScript sits closest to web-tier, CLI, and scaffoldi
 
 The reason it matters beyond "typed JavaScript" is the type system's structural model. Tool schemas, client contracts, and MCP-facing helpers often care more about the shape of data than about nominal class hierarchies, and TypeScript is built around describing and refining those shapes. That makes it a good fit for SDK-driven integration work and a weaker fit for trust-boundary enforcement.
 
+## Core Opinion
+
+TypeScript is the Nest's default language when the work needs JavaScript ecosystem reach but should not stay untyped. Its real role is not "frontend language"; it is the typed integration layer for Node, browser, CLI, and MCP-adjacent tooling where structural contracts matter more than ownership or nominal class design.
+
+The practical split is:
+
+- use **TypeScript** when you need browser or Node reach, package-ecosystem leverage, or schema-shaped integration work with better guarantees than plain JavaScript
+- use **[[powershell]]** when the same task is primarily repo-local operations and shell automation
+- use **[[python]]** when the work is mostly agent orchestration, provider SDK integration, or async application glue
+- use **[[rust]]** when the concern is trust-boundary hardening rather than ergonomic integration
+
+## Decision Rule
+
+Start from `[[typescript]]` when your question sounds like one of these:
+
+- "Which language should own this Node or browser-facing integration?"
+- "How do I model API or tool contracts by data shape?"
+- "Which TypeScript note explains the type-system feature behind this SDK pattern?"
+- "Where do I start for MCP examples, client code, or JS-runtime-adjacent tooling?"
+
+If the question is instead about repo maintenance, route to [[powershell]]. If it is about agent loops or Python-first SDKs, route to [[python]]. If it is about enforcing invariants at the boundary itself, route to [[rust]].
+
 ## TypeScript in the Nest
 
 TypeScript appears here in two main roles:
@@ -50,6 +72,21 @@ Start here if you are using TypeScript to build or understand integrations rathe
 - **[[mcp-client-development]]** — how the TypeScript client model is structured in practice.
 - **[[mcp-example-servers]]** and **[[mcp-example-clients]]** — concrete entry points for protocol-shaped code.
 - **[[javascript-moc]]** and **[[bun-vs-deno]]** — runtime context when choosing the surrounding JavaScript environment.
+
+## Start Here
+
+Choose the shortest path based on the work:
+
+1. If you need general language fluency, start with [[typescript-basics]], then [[typescript-everyday-types]], then [[typescript-narrowing]].
+2. If you are trying to understand SDK or MCP code, start with [[mcp-sdks]] and [[mcp-client-development]], then backfill [[typescript-generics]] and [[typescript-type-operators]].
+3. If you are coming from Rust or Python, read [[typescript-objects]], [[typescript-narrowing]], and [[typescript-generics]] before worrying about advanced type metaprogramming.
+4. If the runtime decision itself is unclear, route through [[javascript-moc]] and [[bun-vs-deno]] before picking the surrounding stack.
+
+## Relationship to the Rest of the Vault
+
+- [[programming-languages-moc]] places TypeScript in the integration and web-tier lane beside PowerShell's operations role, Python's orchestration role, and Rust's trust-boundary role.
+- [[typescript-moc]] is the broader handbook-oriented map once you know whether you need fundamentals, type manipulation, or applied integration context.
+- [[javascript-moc]] is the next stop when the question is more about runtime choice or the wider JS ecosystem than about TypeScript itself.
 
 ## Where to Start
 
