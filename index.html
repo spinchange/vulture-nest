@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
       </div>
     </header>
 
@@ -651,15 +651,29 @@
 <ul>
 <li><a href="lit-anthropic-messages-api.html" class="wikilink">lit-anthropic-messages-api</a> - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
 </li>
-<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> - Direct Messages API request/response model
+<li><a href="lit-anthropic-advanced-capabilities.html" class="wikilink">lit-anthropic-advanced-capabilities</a> - Literature: adaptive thinking, batch execution, files API, tool extensions, managed agents
+</li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> - Direct Messages API request/response model and token counting
 </li>
 <li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> - Client/server tool execution loop
 </li>
-<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> - SSE event flow and streamed tool arguments
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> - SSE event flow, streamed tool arguments, and thinking block streaming
 </li>
 <li><a href="anthropic-error-handling.html" class="wikilink">anthropic-error-handling</a> - Errors, request-size limits, and rate-limit behavior
 </li>
-<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> - Prompt-prefix reuse via <code>cache_control</code>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> - Prompt-prefix reuse, 1-hour TTL, thinking and batch interactions
+</li>
+<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a> - Adaptive thinking mode, effort parameter, interleaved thinking, thinking display
+</li>
+<li><a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a> - Async batch execution, 50% discount, extended output beta
+</li>
+<li><a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a> - Upload-once file storage for reuse across API calls
+</li>
+<li><a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a> - Server-side MCP client via Messages API, allowlist/denylist toolset config
+</li>
+<li><a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a> - SDK tool loop automation with compaction support
+</li>
+<li><a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a> - Hosted agent runtime: Agent + Environment + Session model
 </li>
 </ul>
 <h2>Literature Notes (Grounded Sources)</h2>
@@ -806,8 +820,6 @@
 <li><a href="community-report-generator.html" class="">community-report-generator</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
-<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
@@ -824,10 +836,16 @@
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="agentic-tdd-patterns.html" class="">agentic-tdd-patterns</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
 <li><a href="anthropic-error-handling.html" class="">anthropic-error-handling</a></li>
+<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
@@ -866,6 +884,7 @@
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-anthropic-advanced-capabilities.html" class="">lit-anthropic-advanced-capabilities</a></li>
 <li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
 <li><a href="lit-chatgpt-web-mcp-guidance.html" class="">lit-chatgpt-web-mcp-guidance</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>

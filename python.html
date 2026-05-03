@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[python] — Vulture Portal</title>
+  <title>Python — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[python]</span>
+      <span>Python</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[python]</h1>
+      <h1 class="note-title">Python</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[python]</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python</span></span>
       </div>
     </header>
 
@@ -444,53 +444,65 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Python</h1>
-<p><strong>Python</strong> is a high-level, object-oriented language whose runtime model, standard library, and tooling make it the default environment for modern LLM and agent frameworks.</p>
-<h2>Significance for Agents</h2>
-<p>Python is where most agent stacks land first because it combines:</p>
+<p><strong>Python</strong> is a high-level, dynamically typed language whose runtime model, async primitives, and ecosystem make it the default orchestration language for LLM and agent workflows. In the Nest it is the Tier-1 layer: the language where agent loops run, tools are called, and MCP clients and servers are written.</p>
+<h2>Python in the Nest</h2>
+<p>Python&#39;s role here is specific:</p>
+<p><strong>Orchestration layer (Tier-1).</strong> In the <a href="rust-tier-0-patterns.html" class="wikilink">tiered architecture</a>, Python sits above Rust&#39;s trust boundary and receives validated state from the Tier-0 binary via <code>serde</code>-serialized JSON. Agent SDKs — ADK, OpenAI Agents SDK, Swarm — all ship their primary APIs in Python. The ingestion pipeline (<code>vulture-ingest</code>) is a Python MCP server.</p>
+<p><strong>SDK and integration surface.</strong> Every major LLM provider (Anthropic, OpenAI, Google) ships Python SDKs first. The Anthropic SDK, FastMCP, Pydantic, and <code>asyncio</code> are the core toolchain for the Nest&#39;s agentic workflows. When a new tool contract needs to be defined, a new MCP server built, or a new ingestion step wired up, Python is where that work lands.</p>
+<p><strong>Practical glue.</strong> Python&#39;s standard library covers the operational needs of the vault — file access (<code>pathlib</code>), serialization (<code>json</code>), and local storage (<code>sqlite3</code>) — without requiring external dependencies for prototyping.</p>
+<h2>Language Foundation</h2>
+<p>These are the highest-leverage things to understand about Python for work in the Nest:</p>
 <ul>
-<li><a href="python-data-model.html" class="wikilink">A flexible object model</a> for protocols, adapters, and &quot;dunder&quot;-driven customization.
+<li><strong><a href="python-data-model.html" class="wikilink">python-data-model</a></strong> — everything is an object; <code>__dunder__</code> methods define behavior for built-in operations. Understanding this makes Python&#39;s flexibility predictable rather than surprising.
 </li>
-<li><a href="python-asyncio.html" class="wikilink">Async I/O primitives</a> for concurrent tool calls, network clients, and orchestration loops.
+<li><strong><a href="python-asyncio.html" class="wikilink">python-asyncio</a></strong> — coroutines, event loops, tasks, and cancellation. All MCP clients and most agent orchestrators are async; this is not optional knowledge.
 </li>
-<li><a href="python-typing.html" class="wikilink">A modern typing system</a> for editor support and schema-oriented development.
+<li><strong><a href="python-typing.html" class="wikilink">python-typing</a></strong> — type hints, protocols, <code>TypedDict</code>, <code>Annotated</code>. Essential for defining tool schemas and understanding how Pydantic generates JSON Schema from Python types.
 </li>
-<li><a href="pydantic.html" class="wikilink">Pydantic</a> for validating tool inputs and generating JSON Schema.
+<li><strong><a href="python-decorators.html" class="wikilink">python-decorators</a></strong> — the behavioral extension pattern. FastMCP registers tools as decorated functions; many agent frameworks use this pattern for tool and handler registration.
 </li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">A strong standard library</a> for file access, serialization, and embedded storage.
+<li><strong><a href="python-context-managers.html" class="wikilink">python-context-managers</a></strong> — <code>with</code> blocks for resource safety. MCP client connections, database handles, and file handles all follow this pattern.
 </li>
 </ul>
-<h2>Core Ideas</h2>
+<h2>Tool and Schema Layer</h2>
 <ul>
-<li>Python treats code, classes, functions, modules, and instances as objects with discoverable behavior.
+<li><strong><a href="pydantic.html" class="wikilink">pydantic</a></strong> — runtime validation and JSON Schema generation for tool inputs. The standard for defining and enforcing tool contracts in Python.
 </li>
-<li>The language favors readable syntax, dynamic dispatch, and gradual typing rather than compile-time enforcement.
+<li><strong><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a></strong> — why <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> belong together as a practical building block set.
+<ul>
+<li><a href="python-pathlib.html" class="wikilink">python-pathlib</a> — filesystem navigation, path construction, file operations.
 </li>
-<li>The standard library is broad enough that many agent prototypes can start without third-party dependencies.
+<li><a href="python-json.html" class="wikilink">python-json</a> — deterministic serialization boundaries.
+</li>
+<li><a href="python-sqlite.html" class="wikilink">python-sqlite</a> — embedded persistence for local memory stores and caches.
 </li>
 </ul>
-<h2>Technical Hubs</h2>
-<ul>
-<li><a href="python-moc.html" class="wikilink">python-moc</a>: Structured traversal of the Python foundation.
-</li>
-<li><a href="python-data-model.html" class="wikilink">python-data-model</a>: Objects, values, types, and special methods.
-</li>
-<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a>: Coroutines, tasks, cancellation, and event-loop behavior.
-</li>
-<li><a href="python-typing.html" class="wikilink">python-typing</a>: Type hints, protocols, <code>TypedDict</code>, and <code>Annotated</code>.
-</li>
-<li><a href="pydantic.html" class="wikilink">pydantic</a>: Validation and schema generation for tool contracts.
-</li>
-<li><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>: <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> as practical building blocks.
 </li>
 </ul>
-<hr>
-<h2>References</h2>
+<h2>Where to Start</h2>
+<p>If you are new to the Python layer of the Nest:</p>
+<ol>
+<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a> — async fluency is required almost immediately.
+</li>
+<li><a href="python-data-model.html" class="wikilink">python-data-model</a> — understanding the object model pays off quickly.
+</li>
+<li><a href="python-typing.html" class="wikilink">python-typing</a> — type annotations are everywhere in tool and schema work.
+</li>
+<li><a href="python-decorators.html" class="wikilink">python-decorators</a> — clarifies the FastMCP registration pattern.
+</li>
+</ol>
+<p>If you are working on the ingestion pipeline or MCP server code specifically, read <a href="python-asyncio.html" class="wikilink">python-asyncio</a> and <a href="python-context-managers.html" class="wikilink">python-context-managers</a> first, then <a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>.</p>
+<h2>See Also</h2>
 <ul>
+<li><a href="python-moc.html" class="wikilink">python-moc</a> — full structured traversal of the cluster
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — where Python connects to agent frameworks
+</li>
+<li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> — Tier-0/Tier-1 architecture; Python is Tier-1
+</li>
 <li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
-<li><a href="python-moc.html" class="wikilink">python-moc</a>
-</li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+<li><a href="lit-python-standard-library.html" class="wikilink">lit-python-standard-library</a>
 </li>
 </ul>
       </main>
@@ -522,6 +534,7 @@
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
 <li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
@@ -536,7 +549,6 @@
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
 <li><a href="python-context-managers.html" class="">python-context-managers</a></li>
 <li><a href="python-data-model.html" class="">python-data-model</a></li>
@@ -553,14 +565,20 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
-<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
+<li><a href="python-context-managers.html" class="">python-context-managers</a></li>
 <li><a href="python-data-model.html" class="">python-data-model</a></li>
+<li><a href="python-decorators.html" class="">python-decorators</a></li>
+<li><a href="python-json.html" class="">python-json</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
+<li><a href="python-pathlib.html" class="">python-pathlib</a></li>
+<li><a href="python-sqlite.html" class="">python-sqlite</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
 <li><a href="python-typing.html" class="">python-typing</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 </ul>
           </div>
         </div>

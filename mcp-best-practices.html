@@ -430,10 +430,10 @@
       <h1 class="note-title">[[mcp-moc|MCP]] Best Practices</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-patterns, mcp-optimization, mcp-security-hardening</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-patterns, mcp-optimization, mcp-security-hardening</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Best Practices</span></span>
       </div>
     </header>
@@ -444,17 +444,47 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Best Practices</h1>
-<p>To build robust, scalable, and secure MCP implementations, follow these established patterns.</p>
-<h2>1. Context Optimization</h2>
-<p>Use progressive tool discovery to keep the context window focused and reduce token waste.</p>
-<h2>2. Programmatic Tool Calling</h2>
-<p>For complex tasks, have the model write a script instead of making individual round trips.</p>
-<h2>3. Security Hardening</h2>
-<p>Implement per-client consent and validate that tokens were issued specifically for the MCP server.</p>
+<p>Operational patterns for scaling MCP host applications across numerous servers and tools.</p>
+<h2>Progressive Tool Discovery</h2>
+<p>When a host has access to hundreds of tools, loading all definitions upfront wastes tokens and degrades performance. <strong>Progressive Discovery</strong> defers injecting tool definitions into the context until needed.</p>
+<h3>The Three-Layer Pattern</h3>
+<ol>
+<li><strong>Catalog</strong>: The host exposes a <code>search_tools</code> meta-tool. The model queries it with natural language to find relevant tool names and brief descriptions.
+</li>
+<li><strong>Inspect</strong>: The model calls <code>get_tool_details</code> for specific candidate tools to fetch their full input/output schemas.
+</li>
+<li><strong>Execute</strong>: The model invokes the tool with full knowledge of its interface.
+</li>
+</ol>
+<p><strong>Implementation Tip</strong>: Use a threshold (e.g., 1%-5% of context window) to decide when to switch from upfront loading to progressive discovery.</p>
+<h2>Programmatic Tool Calling (Code Mode)</h2>
+<p>Standard tool calling requires a round trip for every invocation. In <strong>Code Mode</strong>, the model writes a script that chains multiple tool calls. The script executes in a sandboxed environment, and only the final summary returns to the model.</p>
+<h3>Benefits</h3>
+<ul>
+<li><strong>Reduced Latency</strong>: Minimizes round trips between the model and the client.
+</li>
+<li><strong>Token Efficiency</strong>: Intermediate data stays in the sandbox and never enters the model&#39;s context.
+</li>
+<li><strong>Isolation</strong>: Sandbox execution should have no direct network access; calls are brokered by the host.
+</li>
+</ul>
+<h2>Security &amp; Scoping</h2>
+<ul>
+<li><strong>Scope Minimization</strong>: Use a least-privilege model. Begin with baseline scopes and use incremental elevation via <code>WWW-Authenticate</code> challenges only when needed.
+</li>
+<li><strong>Token Validation</strong>: Never implement token validation from scratch. Use well-tested OAuth 2.1 libraries.
+</li>
+<li><strong>Egress Control</strong>: Run MCP servers in sandboxed environments with restricted network and filesystem access.
+</li>
+</ul>
+<h2>Caching Considerations</h2>
+<ul>
+<li>Adding/removing tool definitions mid-conversation invalidates prompt caches. To preserve caching, append new definitions after the cache breakpoint or route calls through a stable <code>call_tool</code> meta-tool.
+</li>
+</ul>
+<hr>
 <h2>See Also</h2>
 <ul>
-<li><a href="index.html" class="wikilink">index</a>
-</li>
 <li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
 </li>
 <li><a href="mcp-security.html" class="wikilink">mcp-security</a>
@@ -462,6 +492,8 @@
 <li><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>
 </li>
 <li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+</li>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
 </ul>
       </main>
@@ -484,6 +516,7 @@
 <li><a href="lit-mcp-server-development.html" class="">lit-mcp-server-development</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
 <li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
@@ -493,7 +526,7 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="index.html" class="">index</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>

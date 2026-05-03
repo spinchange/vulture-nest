@@ -439,6 +439,59 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-02] Claude — Core Reasoning Roots Hardening (Rust &amp; Python)</h2>
+<p><strong>Directive</strong>: Executed <a href="claude-core-reasoning-roots-handoff-2026-05-02.html" class="wikilink">claude-core-reasoning-roots-handoff-2026-05-02</a> — hardened <code><a href="rust.html" class="wikilink">rust</a></code> and <code><a href="python.html" class="wikilink">python</a></code> root notes from thin language summaries into functional hub notes.</p>
+<p><strong>Notes Hardened:</strong></p>
+<ul>
+<li><a href="rust.html" class="wikilink">rust</a> — Rewrote with vault-local framing: Tier-0 Safe Core role, MCP server implementation context. Three-track navigation: Language Fundamentals → Vault Applications (Tier-0 patterns, MCP patterns, sqlx) → Type System Theory (phantom types, type-level programming, affine types). Replaced generic &quot;References&quot; section with high-signal See Also.
+</li>
+<li><a href="python.html" class="wikilink">python</a> — Rewrote with &quot;Python in the Nest&quot; section: Tier-1 orchestration layer, SDK/integration surface, practical glue. Added explicit &quot;Where to Start&quot; guidance with two paths (general vs. ingestion/MCP work). Deepened routing to decorators, context managers, asyncio, typing as first-class navigation targets.
+</li>
+</ul>
+<p><strong>Supporting Updates:</strong></p>
+<ul>
+<li><a href="rust-moc.html" class="wikilink">rust-moc</a> — Added missing &quot;Vault Applications&quot; section registering <code>rust-tier-0-patterns</code>, <code>rust-mcp-patterns</code>, <code>rust-sqlx-migrations</code> (all existed but were absent from MOC).
+</li>
+</ul>
+<p><strong>Stop condition met</strong>: Both hubs materially stronger; did not extend into PowerShell or TypeScript lane.</p>
+<h2>[2026-05-02] Claude — Anthropic Advanced Capabilities Synthesis</h2>
+<p><strong>Directive</strong>: Executed <a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="wikilink">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a> — extended the Anthropic cluster beyond first-batch fundamentals using the local <code>00_Raw/anthropic/</code> corpus.</p>
+<p><strong>New Notes Created:</strong></p>
+<ul>
+<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a> — Adaptive thinking mode, effort parameter, interleaved thinking, display modes (summarized/omitted), thinking encryption, cache interaction, cost model
+</li>
+<li><a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a> — Async batch execution (50% discount), limits, polling, custom_id tracking, extended output beta (300k tokens), prompt caching interaction
+</li>
+<li><a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a> — Upload-once file storage, file_id reference pattern, content type/block mapping, storage limits, download restriction
+</li>
+<li><a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a> — Server-side MCP client, mcp_servers + mcp_toolset, allowlist/denylist patterns, OAuth auth, TypeScript helpers
+</li>
+<li><a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a> — SDK tool loop automation, @beta_tool decorator, compaction, error interception, result modification
+</li>
+<li><a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a> — Agent/Environment/Session architecture, event-driven interaction, session state machine, vault IDs
+</li>
+<li><a href="lit-anthropic-advanced-capabilities.html" class="wikilink">lit-anthropic-advanced-capabilities</a> — Literature note summarizing all advanced corpus sources with durable patterns vs. drifting operational details
+</li>
+</ul>
+<p><strong>Notes Deepened:</strong></p>
+<ul>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> — Added content block type list, token counting endpoint
+</li>
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> — Added thinking_delta/signature_delta events, omitted display behavior, redacted_thinking handling
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> — Added 1-hour TTL, thinking mode invalidation rules, batch stacking guidance
+</li>
+</ul>
+<p><strong>Graph Updated:</strong></p>
+<ul>
+<li><a href="index.html" class="wikilink">index</a> — Expanded Anthropic API section (7 notes added)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — Added 4 Anthropic advanced notes to Mechanics of Agency
+</li>
+<li><code>02_System/system-index.md</code> — Moved handoff to Completed Handoffs
+</li>
+</ul>
+<p><strong>Stop condition met:</strong> Literature note exists, 3 required new notes exist, 3 existing notes deepened, graph updated. Did not continue into language-root lane.</p>
 <h2>[2026-05-01] Claude — Supabase Flask Quickstart Synthesis (Stage 7–8)</h2>
 <ul>
 <li><strong>Directive</strong>: Executed <a href="claude-supabase-flask-handoff-2026-05-01.html" class="wikilink">claude-supabase-flask-handoff-2026-05-01</a> — performed Stage 7 (Synthesis) and Stage 8 (Promotion) for the Supabase Flask Quickstart source (page ID <code>31f3d047</code>, 2 chunks).
@@ -1741,6 +1794,45 @@
 <li><strong>Canonical Record</strong>: Durable summaries live here and in <a href="Session%202026-05-02.html" class="wikilink">Session 2026-05-02</a>. The <code>claude-review*.md</code> files in <code>02_System/</code> are working artifacts, not the authoritative long-term record.
 </li>
 </ul>
+<h2>[2026-05-02] gemini-cli — Wiki Expansion Research &amp; Planning</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="wikilink">gemini-wiki-expansion-research-handoff-2026-05-02</a> — researched vault gaps and prioritized expansion lanes.
+</li>
+<li><strong>Findings</strong>: Identified several &quot;thin&quot; high-centrality hubs: <a href="rust.html" class="wikilink">rust</a> (61 links), <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> (59), and <a href="python.html" class="wikilink">python</a> (55). Found extensive un-synthesized source material in <code>00_Raw/adk-documentation.md</code> (2.7MB) and <code>00_Raw/mcp/</code>.
+</li>
+<li><strong>Planning Note</strong>: Created <a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a> — a prioritized roadmap with 5 expansion lanes (ADK Depth, MCP Synthesis, Language Hardening, Anthropic Patterns, and MOC Restoration).
+</li>
+<li><strong>Recommendation</strong>: Recommended &quot;Core Protocol &amp; Framework Depth&quot; as the immediate next batch (ADK and MCP focus).
+</li>
+<li><strong>Status</strong>: Research phase complete; planning note active.
+</li>
+</ul>
+<h2>[2026-05-02] gemini-cli — Execution: Core Protocol &amp; Framework Depth</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="wikilink">gemini-core-protocol-framework-depth-handoff-2026-05-02</a> — hardened ADK and MCP core notes.
+</li>
+<li><strong>ADK Hardening</strong>: Deepened <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> with architectural details on the Runner, Event-Driven Orchestration, Persistent Services (Session, Artifact, Memory), and Multi-Agent patterns. Synthesized from <code>00_Raw/adk-documentation.md</code>.
+</li>
+<li><strong>MCP Synthesis</strong>: Expanded <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> with Progressive Discovery (3-layer pattern) and Programmatic Tool Calling (Code Mode). Deepened <a href="mcp-authorization.html" class="wikilink">mcp-authorization</a> with OAuth 2.1 flow details, DCR, and critical security mitigations (Confused Deputy, SSRF, Token Passthrough). Synthesized from <code>00_Raw/mcp/</code> guides.
+</li>
+<li><strong>Graph Integration</strong>: Verified navigation paths in <a href="index.html" class="wikilink">index</a>, <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>, and <a href="mcp-moc.html" class="wikilink">mcp-moc</a>. Cleaned up redundant links in <a href="mcp-moc.html" class="wikilink">mcp-moc</a>.
+</li>
+<li><strong>Status</strong>: Execution batch complete.
+</li>
+</ul>
+<h2>[2026-05-02] gemini-cli — Language Root Hardening Research &amp; Planning</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="wikilink">gemini-language-root-hardening-research-handoff-2026-05-02</a> — researched gaps in the language-root clusters.
+</li>
+<li><strong>Findings</strong>: Confirmed that all four primary roots (<a href="rust.html" class="wikilink">rust</a>, <a href="python.html" class="wikilink">python</a>, <a href="powershell.html" class="wikilink">powershell</a>, <a href="typescript.html" class="wikilink">typescript</a>) are structurally &quot;thin&quot; relative to their centrality and the depth of their sub-clusters.
+</li>
+<li><strong>Planning Note</strong>: Created <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a> — defines missing hub functions (Vault-Local Framing, Cluster Wayfinding) and recommends a two-batch execution strategy.
+</li>
+<li><strong>Recommendation</strong>: Recommended &quot;The Core Reasoning Roots&quot; (Rust &amp; Python) as the immediate next batch for hardening.
+</li>
+<li><strong>Status</strong>: Research phase complete; implementation plan active.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -1786,16 +1878,27 @@
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="agentic-rag.html" class="">agentic-rag</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="anti-ai-aesthetic.html" class="">anti-ai-aesthetic</a></li>
 <li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
 <li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="chromadb.html" class="">chromadb</a></li>
 <li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a></li>
 <li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
 <li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-core-reasoning-roots-handoff-2026-05-02.html" class="">claude-core-reasoning-roots-handoff-2026-05-02</a></li>
 <li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
 <li><a href="claude-mcp-security-bp-handoff-2026-05-01.html" class="">claude-mcp-security-bp-handoff-2026-05-01</a></li>
 <li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
@@ -1843,8 +1946,11 @@
 <li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="gaia-benchmark.html" class="">gaia-benchmark</a></li>
 <li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
+<li><a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="">gemini-language-root-hardening-research-handoff-2026-05-02</a></li>
 <li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
+<li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="gtd.html" class="">gtd</a></li>
 <li><a href="handoff-firecrawl-openai-agents.html" class="">handoff-firecrawl-openai-agents</a></li>
@@ -1857,8 +1963,10 @@
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
 <li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
 <li><a href="langgraph.html" class="">langgraph</a></li>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="">language-root-hardening-plan-2026-05-02</a></li>
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-anthropic-advanced-capabilities.html" class="">lit-anthropic-advanced-capabilities</a></li>
 <li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
@@ -1943,6 +2051,7 @@
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
@@ -1986,6 +2095,7 @@
 <li><a href="vault-systems.html" class="">vault-systems</a></li>
 <li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
 <li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
+<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
 <li><a href="wiki-pattern-architecture.html" class="">wiki-pattern-architecture</a></li>
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
 <li><a href="wiki-pattern-tooling.html" class="">wiki-pattern-tooling</a></li>

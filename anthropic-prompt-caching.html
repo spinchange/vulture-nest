@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Anthropic Prompt Caching</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-messages-api]]</span></span>
+        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-messages-api]]</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic Prompt Caching</span></span>
       </div>
     </header>
@@ -470,7 +470,7 @@
 <li>Conflicting cache-control configurations can produce <code>400</code> errors.
 </li>
 </ul>
-<h2>When to use it</h2>
+<h2>When to Use It</h2>
 <ul>
 <li>Large system prompts
 </li>
@@ -481,11 +481,46 @@
 <li>Long-context requests where repeated prefix cost would otherwise dominate
 </li>
 </ul>
-<h2>Caveat</h2>
+<h2>1-Hour Cache Duration</h2>
+<p>The default 5-minute TTL is too short for extended thinking sessions (which can exceed 5 minutes) and batch jobs (which typically take 30–60 minutes). Use the 1-hour TTL when:</p>
 <ul>
-<li>Prompt caching is useful for both latency and cost, but rate-limit accounting can still depend on model-specific behavior documented elsewhere. Treat current rate-limit tables as operational docs to verify at integration time.
+<li>Prompt caching is combined with thinking (<code>budget_tokens</code> &gt; ~32k or long adaptive thinking sessions)
+</li>
+<li>Using the Message Batches API with shared context across requests
+</li>
+</ul>
+<pre><code>{&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;...&quot;, &quot;cache_control&quot;: {&quot;type&quot;: &quot;ephemeral&quot;, &quot;ttl&quot;: &quot;1h&quot;}}</code></pre>
+<p>The 1-hour TTL is priced higher than the 5-minute TTL — verify current pricing before deploying.</p>
+<h2>Thinking Mode Interaction</h2>
+<p>Prompt caching and thinking modes interact with specific invalidation rules:</p>
+<ul>
+<li><strong>Within the same mode:</strong> Consecutive requests in the same thinking mode (<code>adaptive</code>, <code>enabled</code>, or <code>disabled</code>) preserve message cache breakpoints.
+</li>
+<li><strong>Across modes:</strong> Switching between <code>adaptive</code>, <code>enabled</code>, and <code>disabled</code> invalidates message cache breakpoints.
+</li>
+<li><strong>System prompts and tool definitions:</strong> Remain cached regardless of thinking mode changes.
+</li>
+</ul>
+<p>This means a system prompt cache investment is stable even when you change thinking configuration. Message history cache is not.</p>
+<p><strong>Thinking blocks as cached input tokens:</strong> On Opus 4.5+ and Sonnet 4.6+, thinking blocks from previous turns are preserved in context by default. When these thinking blocks are passed back with tool results, they count as cached input tokens. In long tool-use chains, this can create non-trivial input token costs even when &quot;the prompt hasn&#39;t changed.&quot;</p>
+<h2>Batch Processing Interaction</h2>
+<p>Batch processing and prompt caching discounts stack. Cache hits are best-effort in batches (concurrent async processing means requests may not share a warm cache). Expected cache hit rates range from 30% to 98% depending on traffic pattern.</p>
+<p>To maximize batch cache hits:</p>
+<ol>
+<li>Use identical <code>cache_control</code> blocks in every request.
+</li>
+<li>Use the 1-hour TTL (batch processing typically exceeds 5 minutes).
+</li>
+<li>Structure requests to maximize shared prefix length.
+</li>
+</ol>
+<h2>Caveats</h2>
+<ul>
+<li>Rate-limit accounting can still depend on model-specific behavior documented elsewhere. Treat current rate-limit tables as operational docs to verify at integration time.
 </li>
 <li>Anthropic documents substantial savings for eligible cached prefixes, with pricing reductions reported as high as about <code>90%</code> for cached reads. Treat the current pricing page as the authoritative source for exact numbers.
+</li>
+<li><code>max_tokens: 0</code> (cache pre-warming) is incompatible with extended thinking (requires <code>budget_tokens &lt; max_tokens</code>) and with the Batches API.
 </li>
 </ul>
 <h2>See also</h2>
@@ -493,6 +528,10 @@
 <li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>
 </li>
 <li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
+</li>
+<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>
+</li>
+<li><a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a>
 </li>
 <li><a href="anthropic-error-handling.html" class="wikilink">anthropic-error-handling</a>
 </li>
@@ -510,14 +549,20 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
 <li><a href="anthropic-error-handling.html" class="">anthropic-error-handling</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
 <li><a href="anthropic-error-handling.html" class="">anthropic-error-handling</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>

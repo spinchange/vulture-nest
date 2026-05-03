@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Anthropic Messages API</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-messages-api]]</span></span>
+        <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-messages-api]]</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic Messages API</span></span>
       </div>
     </header>
@@ -473,13 +473,42 @@
 <li>Usage accounting is returned with the response and should be treated as the billing and observability source of truth for the request.
 </li>
 </ul>
-<h2>Implementation implications</h2>
+<h2>Content Block Types</h2>
+<p>The API supports multiple content block types beyond text:</p>
+<ul>
+<li><code>text</code> — standard text content
+</li>
+<li><code>image</code> — inline or file-referenced images
+</li>
+<li><code>document</code> — PDF, plain text, or file-referenced documents
+</li>
+<li><code>tool_use</code> — Claude&#39;s tool call (in assistant turns)
+</li>
+<li><code>tool_result</code> — tool execution result (in user turns)
+</li>
+<li><code>thinking</code> — extended thinking summary or signature (in assistant turns when thinking is enabled)
+</li>
+<li><code>redacted_thinking</code> — safety-redacted thinking block (opaque; must be round-tripped unchanged)
+</li>
+</ul>
+<h2>Token Counting</h2>
+<p>The <code>POST /v1/messages/count_tokens</code> endpoint counts tokens for a planned request without executing it. It accepts the same parameters as the Messages endpoint and supports tools, images, documents, and system prompts. Use it before long or expensive calls to verify you are within context limits.</p>
+<pre><code>count = client.messages.count_tokens(
+    model=&quot;claude-opus-4-7&quot;,
+    system=&quot;You are a helpful assistant.&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}],
+)
+print(count.input_tokens)</code></pre>
+<p>Token counting is especially valuable when building multi-turn conversations with thinking blocks, since thinking tokens from previous turns count as input tokens on Opus 4.5+ and Sonnet 4.6+.</p>
+<h2>Implementation Implications</h2>
 <ul>
 <li>Anthropic&#39;s API shape makes conversation state an application concern.
 </li>
-<li>Message construction should be treated as an explicit serialization step, especially when mixing text, images, and tool content blocks.
+<li>Message construction should be treated as an explicit serialization step, especially when mixing text, images, tool content blocks, and thinking blocks.
 </li>
-<li>Provider-specific model behaviors such as prefill support can vary by model family, so integrations should verify feature support against current docs before depending on them in production.
+<li>Provider-specific model behaviors such as prefill support can vary by model family; verify feature support against current docs before depending on them in production.
+</li>
+<li>When using extended thinking or large documents, use the token counting endpoint before calls to avoid context overflow errors.
 </li>
 </ul>
 <h2>See also</h2>
@@ -489,6 +518,10 @@
 <li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a>
 </li>
 <li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a>
+</li>
+<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>
+</li>
+<li><a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a>
 </li>
 <li><a href="chat-templates.html" class="wikilink">chat-templates</a>
 </li>
@@ -508,14 +541,23 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>

@@ -430,10 +430,10 @@
       <h1 class="note-title">[[mcp-moc|MCP]] Authorization</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-oauth, mcp-permissions, user-consent</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-oauth, mcp-permissions, user-consent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Authorization</span></span>
       </div>
     </header>
@@ -444,34 +444,62 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>MCP Authorization</h1>
-<p>Authorization in MCP secures access to sensitive resources and operations. It primarily follows the <strong>OAuth 2.1</strong> standard for remote connections.</p>
-<h2>Core Flow</h2>
+<p>Authorization in MCP secures access to sensitive resources and operations, particularly for remote HTTP-based servers. It strictly follows the <strong>OAuth 2.1</strong> standard.</p>
+<h2>The OAuth 2.1 Flow</h2>
 <ol>
-<li><strong>Handshake</strong>: Client connects; Server responds with <code>401 Unauthorized</code>.
+<li><strong>Handshake</strong>: Client receives a <code>401 Unauthorized</code> response with a <code>resource_metadata</code> pointer to a <strong>Protected Resource Metadata (PRM)</strong> document.
 </li>
-<li><strong>Discovery</strong>: Client fetches PRM to identify the authorization server.
+<li><strong>Metadata Discovery</strong>: Client fetches the PRM (from <code>.well-known/oauth-protected-resource</code>) to identify the authorization server and supported scopes.
 </li>
-<li><strong>Authorization</strong>: User grants permission.
+<li><strong>Client Registration</strong>: Client registers with the authorization server, often using <strong>Dynamic Client Registration (DCR)</strong>.
 </li>
-<li><strong>Access</strong>: Client receives a Bearer token.
+<li><strong>User Consent</strong>: User logs in via a browser and grants permissions.
+</li>
+<li><strong>Token Exchange</strong>: Client exchanges the authorization code for an <code>access_token</code> and <code>refresh_token</code>.
+</li>
+<li><strong>Authenticated Access</strong>: Client includes the <code>Bearer</code> token in the <code>Authorization</code> header of MCP requests.
 </li>
 </ol>
-<h2>Best Practices</h2>
+<h2>Critical Security Mitigations</h2>
+<h3>Confused Deputy Prevention</h3>
+<p>In proxy scenarios, a malicious client could trick a user into granting consent for an attacker-controlled redirect URI.</p>
 <ul>
-<li><strong>Encrypted Storage</strong>: Cache tokens in secure, encrypted local storage.
-</li>
-<li><strong>No Credential Logging</strong>: Ensure that tokens and secrets are redacted from logs.
+<li><strong>Mitigation</strong>: MCP proxy servers <strong>must</strong> implement a per-client consent page *before* forwarding to the third-party authorization server.
 </li>
 </ul>
+<h3>Token Passthrough</h3>
+<p>Servers must not accept tokens that weren&#39;t explicitly issued for them.</p>
+<ul>
+<li><strong>Mitigation</strong>: Validate the <code>aud</code> (audience) claim in the token to ensure it matches the MCP server&#39;s resource URL.
+</li>
+</ul>
+<h3>SSRF Protection</h3>
+<p>Malicious servers can use discovery URLs to probe internal networks.</p>
+<ul>
+<li><strong>Mitigation</strong>: Clients must enforce HTTPS, block private IP ranges (10.0.0.0/8, etc.), and validate redirect targets.
+</li>
+</ul>
+<h2>Implementation Guidelines</h2>
+<ul>
+<li><strong>Local Servers</strong>: Servers using the <strong>STDIO transport</strong> do not require OAuth; they should use environment-based credentials or embedded libraries.
+</li>
+<li><strong>Scope Minimization</strong>: Avoid &quot;catch-all&quot; scopes. Use precise, capability-based scopes to reduce the blast radius of a compromised token.
+</li>
+<li><strong>State Validation</strong>: Always use and validate the OAuth <code>state</code> parameter to prevent CSRF and code interception.
+</li>
+</ul>
+<hr>
 <h2>See Also</h2>
 <ul>
-<li><a href="index.html" class="wikilink">index</a>
-</li>
 <li><a href="mcp-security.html" class="wikilink">mcp-security</a>
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
 </li>
 <li><a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a>
 </li>
 <li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+</li>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
 </ul>
       </main>
@@ -496,7 +524,8 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="index.html" class="">index</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>

@@ -430,10 +430,10 @@
       <h1 class="note-title">Agent Development Kit ([[agent-development-kit|ADK]])</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Development Kit ([[agent-development-kit|ADK]])</span></span>
       </div>
     </header>
@@ -445,45 +445,75 @@
       <main class="content-zone" id="content">
         <h1>Agent Development Kit (ADK)</h1>
 <p>The <strong>Agent Development Kit (ADK)</strong> is an open-source, code-first toolkit for building, evaluating, and deploying sophisticated AI agents with high flexibility and control. It is particularly optimized for Google&#39;s Gemini models but designed for broad LLM support.</p>
-<h2>Core Concepts</h2>
-<ul>
-<li><strong>Agent</strong>: The fundamental worker unit. Can be an <code>LlmAgent</code> (reasoning) or a <a href="workflow-agents.html" class="wikilink">Workflow Agent</a> (deterministic control like <code>SequentialAgent</code>, <code>ParallelAgent</code>, <code>LoopAgent</code>).
-</li>
-<li><strong>Tool</strong>: Capabilities beyond conversation (APIs, code execution, search). See <a href="agent-tools.html" class="wikilink">agent-tools</a>.
-</li>
-<li><strong><a href="adk-session-service.html" class="wikilink">Session &amp;amp; State</a></strong>: Manages conversational context (<code>Session</code>) and short-term working memory (<code>State</code>).
-</li>
-<li><strong>Memory</strong>: Long-term recall across multiple sessions.
-</li>
-<li><strong><a href="adk-artifact-service.html" class="wikilink">Artifacts</a></strong>: Management of files and binary data (images, PDFs) associated with a session.
-</li>
-<li><strong>Runner</strong>: The engine that orchestrates the execution flow and agent interactions.
-</li>
-</ul>
-<h2>Key Capabilities</h2>
+<h2>Architectural Blueprint</h2>
+<p>ADK operates on an <strong>Event-Driven Orchestration</strong> model managed by the <strong>Runner</strong>.</p>
+<h3>The Runner (Orchestrator)</h3>
+<p>The <a href="adk-callbacks-and-lifecycle.html" class="wikilink">Runner</a> acts as the central coordinator for a single user invocation. It:</p>
 <ol>
-<li><strong>Multi-Agent Design</strong>: Support for hierarchical and coordinated agent teams.
+<li><strong>Initiates</strong>: Appends the user&#39;s <code>new_message</code> to the <a href="adk-session-service.html" class="wikilink">Session</a>.
 </li>
-<li><strong>Flexible Orchestration</strong>: Combines LLM-driven reasoning with predictable workflow pipelines.
+<li><strong>Orchestrates</strong>: Kicks off the agent&#39;s execution loop by calling the main agent&#39;s <code>run_async</code> method.
 </li>
-<li><strong>Native Streaming</strong>: Bidirectional streaming support (text/audio), integrating with Gemini Live APIs.
+<li><strong>Processes Events</strong>: Intercepts every <code>Event</code> (tool call, state change, message) and commits changes via specialized services.
 </li>
-<li><strong>Integrated Evaluation</strong>: Built-in tools for systematic performance assessment.
-</li>
-<li><strong>Artifact Management</strong>: Versioned handling of files and data.
+<li><strong>Yields</strong>: Forwards processed events to the calling application/UI.
 </li>
 </ol>
-<h2>Workflow Agents</h2>
-<p>Unlike reasoning agents, workflow agents provide deterministic control:</p>
+<h3>Core Primitives</h3>
 <ul>
-<li><code>SequentialAgent</code>: Executes sub-agents or tools in a fixed order.
+<li><strong><a href="agent-actions.html" class="wikilink">Agent</a></strong>: The fundamental worker unit.
+<ul>
+<li>
+<ul>
+<li><code>LlmAgent</code>: Reasoning-based, uses an LLM.
 </li>
-<li><code>ParallelAgent</code>: Executes multiple tasks concurrently.
+<li><a href="workflow-agents.html" class="wikilink">Workflow Agent</a>: Deterministic control (<code>SequentialAgent</code>, <code>ParallelAgent</code>, <code>LoopAgent</code>).
 </li>
-<li><code>LoopAgent</code>: Repeats tasks until a condition is met.
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><a href="agent-tools.html" class="wikilink">Tool</a></strong>: Capabilities beyond conversation (APIs, search, code execution).
+</li>
+<li><strong>Events</strong>: The immutable message format for communication and control. Every interaction is an <code>Event</code>.
+</li>
+</ul>
+<h3>Persistent Services</h3>
+<ul>
+<li><strong><a href="adk-session-service.html" class="wikilink">Session Service</a></strong>: Manages conversational context, history (<code>Events</code>), and short-term working memory (<code>State</code>).
+</li>
+<li><strong><a href="adk-artifact-service.html" class="wikilink">Artifact Service</a></strong>: Handles named, versioned binary data (files, images) associated with a session.
+</li>
+<li><strong><a href="adk-long-term-memory.html" class="wikilink">Memory Service</a></strong>: Enables agents to recall information across *multiple* sessions (Long-Term Knowledge).
+</li>
+</ul>
+<h2>Multi-Agent Design</h2>
+<p>ADK is designed for modular, scalable multi-agent systems:</p>
+<ul>
+<li><strong>Hierarchical Coordination</strong>: Build teams where specialized agents delegate sub-tasks.
+</li>
+<li><strong>Handoff Mechanisms</strong>: Agents can coordinate via LLM-driven transfer or explicit <code>AgentTool</code> invocation.
+</li>
+<li><strong><a href="adk-advanced-capabilities.html" class="wikilink">Advanced Capabilities</a></strong>: Support for multimodal streaming, ReAct planning, and native Gemini Live API integration.
+</li>
+</ul>
+<h2>Extension &amp; Control</h2>
+<ul>
+<li><strong><a href="adk-callbacks-and-lifecycle.html" class="wikilink">Callbacks</a></strong>: Standard functions to hook into the execution process (Before/After Agent, Model, or Tool).
+</li>
+<li><strong>Plugins</strong>: Modular security guardrails and policies that offer more flexibility than basic callbacks.
+</li>
+<li><strong><a href="adk-evaluation-framework.html" class="wikilink">Evaluation</a></strong>: Built-in tools for multi-turn dataset creation and systematic performance assessment.
 </li>
 </ul>
 <hr>
+<h2>Implementations</h2>
+<ul>
+<li><a href="adk-go-implementation.html" class="wikilink">adk-go-implementation</a>
+</li>
+<li>Python, Java, and TypeScript SDKs.
+</li>
+</ul>
 <h2>References</h2>
 <ul>
 <li>Source: <code>00_Raw/adk-documentation.md</code>
@@ -545,8 +575,14 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-advanced-capabilities.html" class="">adk-advanced-capabilities</a></li>
 <li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="adk-evaluation-framework.html" class="">adk-evaluation-framework</a></li>
+<li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-actions.html" class="">agent-actions</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>[rust] — Vulture Portal</title>
+  <title>Rust — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>[rust]</span>
+      <span>Rust</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">[rust]</h1>
+      <h1 class="note-title">Rust</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-lang, rust-programming-language</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[rust]</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-lang, rust-programming-language</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Rust</span></span>
       </div>
     </header>
 
@@ -444,52 +444,65 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Rust</h1>
-<p><strong>Rust</strong> is a multi-paradigm, high-level, general-purpose programming language designed for performance and safety, especially safe concurrency. It is syntactically similar to C++, but provides memory safety without using a garbage collector.</p>
-<h2>Core Philosophy</h2>
+<p><strong>Rust</strong> is a systems programming language built around a compile-time ownership model that eliminates memory errors and data races without a garbage collector. It is the Nest&#39;s language for trust-boundary enforcement, high-performance MCP servers, and type-level safety guarantees that Python cannot express.</p>
+<h2>Why Rust in the Nest</h2>
+<p>Rust appears in two distinct roles here:</p>
+<p><strong>Tier-0 Safe Core.</strong> The <a href="rust-tier-0-patterns.html" class="wikilink">Tier-0 architecture</a> places Rust at the trust boundary of the multi-agent stack. Rust validates and gates capability claims — using <code>serde</code> for schema enforcement at the protocol boundary — before handing verified state to Python orchestrators. The choice of Rust here is deliberate: the ownership system makes the boundary *provably* safe at compile time rather than relying on runtime checks.</p>
+<p><strong>MCP Server Implementation.</strong> <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> describes the pattern for building MCP servers in Rust — trading Python&#39;s development speed for predictable latency, memory efficiency, and the ability to use the type system to encode protocol invariants. Rust MCP servers are appropriate when a tool must be fast, long-running, or exposed to untrusted callers.</p>
+<p>The type system also provides formal tools — affine types, phantom types, const generics — that are studied in the vault for their theoretical properties and their influence on how to think about capability lattices.</p>
+<h2>Reading the Cluster</h2>
+<p>The Rust cluster is large. Navigate it in three tracks depending on your goal.</p>
+<h3>Track 1 — Language Fundamentals</h3>
+<p>Start here if you are building Rust fluency or returning after a gap.</p>
 <ul>
-<li><strong>Performance</strong>: Rust is as fast as C and C++ because it has minimal runtime and no garbage collector.
+<li><strong><a href="rust-ownership.html" class="wikilink">rust-ownership</a></strong> is the essential prerequisite. Read this before anything else — it governs the rest of the language.
 </li>
-<li><strong>Safety</strong>: The compiler rigorously enforces memory safety and thread safety at compile time.
+<li><strong><a href="rust-variables-and-types.html" class="wikilink">rust-variables-and-types</a></strong>, <strong><a href="rust-structs.html" class="wikilink">rust-structs</a></strong>, <strong><a href="rust-enums.html" class="wikilink">rust-enums</a></strong> — the data vocabulary.
 </li>
-<li><strong>Productivity</strong>: Excellent tooling (Cargo), documentation, and a helpful compiler with clear error messages.
+<li><strong><a href="rust-functions-and-control-flow.html" class="wikilink">rust-functions-and-control-flow</a></strong>, <strong><a href="rust-modules-and-packages.html" class="wikilink">rust-modules-and-packages</a></strong> — program structure.
+</li>
+<li><strong><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a></strong> — how behavior is defined and shared. The second most important concept after ownership.
+</li>
+<li><strong><a href="rust-error-handling.html" class="wikilink">rust-error-handling</a></strong> — <code>Result</code>-first style; essential for writing idiomatic Rust.
+</li>
+<li><strong><a href="rust-lifetimes.html" class="wikilink">rust-lifetimes</a></strong> — tackle after ownership and traits are solid; the compiler will tell you when you need this.
 </li>
 </ul>
-<h2>Key Features</h2>
+<p>Supporting: <a href="rust-collections.html" class="wikilink">rust-collections</a>, <a href="rust-iterators-and-closures.html" class="wikilink">rust-iterators-and-closures</a>, <a href="rust-macros.html" class="wikilink">rust-macros</a>, <a href="rust-cargo.html" class="wikilink">rust-cargo</a>, <a href="rust-testing.html" class="wikilink">rust-testing</a>.</p>
+<h3>Track 2 — Vault Applications</h3>
+<p>Start here if you are working on the Tier-0 binary, an MCP server, or the ingestion pipeline.</p>
 <ul>
-<li><strong><a href="rust-ownership.html" class="wikilink">Ownership and Borrowing</a></strong>: A unique system for managing memory that eliminates data races and memory leaks.
+<li><strong><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a></strong> — capability gating, serde boundary, Tier-0 → Tier-1 handoff.
 </li>
-<li><strong>Zero-Cost Abstractions</strong>: High-level features (like iterators and closures) that compile down to efficient machine code.
+<li><strong><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a></strong> — MCP server design in Rust: routing, resource handlers, tool registration.
 </li>
-<li><strong>Pattern Matching</strong>: Powerful <code>match</code> and <code>if let</code> constructs for handling complex data structures.
+<li><strong><a href="rust-concurrency.html" class="wikilink">rust-concurrency</a></strong> + <strong><a href="rust-async.html" class="wikilink">rust-async</a></strong> — needed for any server or long-running agent worker.
 </li>
-<li><strong>Trait-Based Generics</strong>: A flexible way to define shared behavior across types.
+<li><strong><a href="rust-smart-pointers.html" class="wikilink">rust-smart-pointers</a></strong> — <code>Arc&lt;Mutex&lt;T&gt;&gt;</code> is common in shared-state async code.
 </li>
-<li><strong>Fearless Concurrency</strong>: The ownership system makes it easy to write concurrent code that is guaranteed to be free of data races.
+<li><strong><a href="rust-sqlx-migrations.html" class="wikilink">rust-sqlx-migrations</a></strong> — database tooling for the Rust service layer.
 </li>
 </ul>
-<h2>Ecosystem</h2>
+<h3>Track 3 — Type System Theory</h3>
+<p>Start here if you are studying formal safety properties or the capability lattice design.</p>
 <ul>
-<li><strong>Cargo</strong>: The official build system and package manager.
+<li><strong><a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a></strong> — zero-cost type-level state encoding (marker structs, state machines).
 </li>
-<li><strong>Crates.io</strong>: The central repository for Rust libraries (crates).
+<li><strong><a href="rust-type-level-programming.html" class="wikilink">rust-type-level-programming</a></strong> — GATs, const generics, type-level computation.
 </li>
-<li><strong>Rustup</strong>: The tool for installing and managing Rust versions.
+<li><strong><a href="rust-affine-types.html" class="wikilink">rust-affine-types</a></strong> — the formal type-theoretic reading of Rust&#39;s ownership model.
 </li>
 </ul>
-<hr>
-<h2>References</h2>
+<p>The community report <a href="rust-type-systems.html" class="wikilink">rust-type-systems</a> synthesizes this track across multiple sources.</p>
+<h2>See Also</h2>
 <ul>
-<li>Source: <code>00_Raw/the-rust-programming-language.md</code>
+<li><a href="rust-moc.html" class="wikilink">rust-moc</a> — full structured traversal of the cluster
 </li>
 <li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
-<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>
+<li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> — the vault-specific application layer
 </li>
-<li><a href="rust-concurrency.html" class="wikilink">rust-concurrency</a>
-</li>
-</ul>
-<ul>
-<li><a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a>
+<li><a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a> — literature note for the Rust Book
 </li>
 </ul>
       </main>
@@ -527,7 +540,6 @@
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
-<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-async.html" class="">rust-async</a></li>
 <li><a href="rust-cargo.html" class="">rust-cargo</a></li>
@@ -563,9 +575,31 @@
 <ul>
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="rust.html" class="">rust</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="rust-async.html" class="">rust-async</a></li>
+<li><a href="rust-cargo.html" class="">rust-cargo</a></li>
+<li><a href="rust-collections.html" class="">rust-collections</a></li>
 <li><a href="rust-concurrency.html" class="">rust-concurrency</a></li>
+<li><a href="rust-enums.html" class="">rust-enums</a></li>
+<li><a href="rust-error-handling.html" class="">rust-error-handling</a></li>
+<li><a href="rust-functions-and-control-flow.html" class="">rust-functions-and-control-flow</a></li>
+<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
+<li><a href="rust-iterators-and-closures.html" class="">rust-iterators-and-closures</a></li>
+<li><a href="rust-lifetimes.html" class="">rust-lifetimes</a></li>
+<li><a href="rust-macros.html" class="">rust-macros</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="rust-modules-and-packages.html" class="">rust-modules-and-packages</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
+<li><a href="rust-smart-pointers.html" class="">rust-smart-pointers</a></li>
+<li><a href="rust-sqlx-migrations.html" class="">rust-sqlx-migrations</a></li>
+<li><a href="rust-structs.html" class="">rust-structs</a></li>
+<li><a href="rust-testing.html" class="">rust-testing</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="rust-type-level-programming.html" class="">rust-type-level-programming</a></li>
+<li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
+<li><a href="rust-variables-and-types.html" class="">rust-variables-and-types</a></li>
 </ul>
           </div>
         </div>
