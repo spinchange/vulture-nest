@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">PowerShell</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PowerShell</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PowerShell</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
@@ -446,6 +446,30 @@
         <h1>PowerShell</h1>
 <p><strong>PowerShell</strong> is the vault&#39;s primary shell and automation substrate for system-facing work. In the Vulture Nest it occupies the practical operations layer: maintenance scripts, graph sync, dashboard generation, deployment glue, and terminal-native workflows are all written to run under <code>pwsh</code>, not legacy Windows PowerShell.</p>
 <p>The important distinction in this vault is that PowerShell is not just a shell. It is a programmable object pipeline and the default execution environment for many Tier-2 automation tasks. Commands pass structured .NET objects rather than plain text, which is why patterns like <code>Select-Object</code>, calculated properties, and custom objects appear throughout the vault&#39;s maintenance scripts. That makes PowerShell the bridge between the knowledge graph and executable maintenance.</p>
+<h2>Core Opinion</h2>
+<p>PowerShell is the Nest&#39;s default language for repo-local operations, maintenance orchestration, and system-facing glue. Its value here is not merely convenience on Windows; it is that the object pipeline lets operational scripts stay structured all the way from filesystem inspection to JSON, SQLite, and dashboard generation without collapsing into brittle text parsing.</p>
+<p>The practical split is:</p>
+<ul>
+<li>use <strong>PowerShell</strong> when the work is operational, repo-local, or terminal-native and benefits from object-shaped shell automation
+</li>
+<li>use <strong><a href="python.html" class="wikilink">python</a></strong> when the same workflow becomes SDK-heavy, async-first, or provider-integration-centric
+</li>
+<li>use <strong><a href="rust.html" class="wikilink">rust</a></strong> when the concern moves from automation convenience to hard trust-boundary enforcement
+</li>
+</ul>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="powershell.html" class="wikilink">powershell</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Which language should own vault maintenance or graph health checks?&quot;
+</li>
+<li>&quot;How should this shell-visible workflow stay structured instead of text-scraped?&quot;
+</li>
+<li>&quot;Which PowerShell note explains the object or pipeline pattern used in this script?&quot;
+</li>
+<li>&quot;Where do I start to modify the Nest&#39;s operational tooling safely?&quot;
+</li>
+</ul>
+<p>If the question is instead about agent loops, MCP SDK design, or long-running service logic, route to <a href="python.html" class="wikilink">python</a> or <a href="typescript.html" class="wikilink">typescript</a> first. If the question is about capability gates or compile-time safety, route to <a href="rust.html" class="wikilink">rust</a>.</p>
 <h2>PowerShell in the Nest</h2>
 <p>PowerShell appears here in two closely related roles:</p>
 <p><strong>Operational runtime.</strong> The vault&#39;s maintenance lane is defined in PowerShell: audits, orphan checks, broken-link scans, dashboard and registry generation, note scaffolding, and search tooling all run through <code>pwsh</code>. For the executable standards that govern scripts in this repo, start with <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> and <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>.</p>
@@ -482,6 +506,27 @@
 <li><strong><a href="ps-vulture-search.html" class="wikilink">ps-vulture-search</a></strong> — retrieval tooling that connects note content to operational search.
 </li>
 <li><strong><a href="poshwiki.html" class="wikilink">poshwiki</a></strong> and <strong><a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a></strong> — the SQLite-backed memory layer and the higher-level script interface agents actually use.
+</li>
+</ul>
+<h2>Start Here</h2>
+<p>Choose the shortest path based on the job in front of you:</p>
+<ol>
+<li>If you are changing vault maintenance behavior, start with <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>, then route into <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a>, <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a>, or <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a>.
+</li>
+<li>If you are writing a new script, start with <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a>, then <a href="powershell-objects.html" class="wikilink">powershell-objects</a>, then <a href="ps-custom-objects.html" class="wikilink">ps-custom-objects</a>.
+</li>
+<li>If you are confused by existing pipeline-heavy code, read <a href="powershell-objects.html" class="wikilink">powershell-objects</a> first and then <a href="ps-calculated-properties.html" class="wikilink">ps-calculated-properties</a>.
+</li>
+<li>If you are working on memory or retrieval tooling, route from <a href="poshwiki.html" class="wikilink">poshwiki</a> into <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> and <a href="ps-vulture-search.html" class="wikilink">ps-vulture-search</a>.
+</li>
+</ol>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> explains when PowerShell is the right operational surface instead of Python, Rust, or TypeScript.
+</li>
+<li><a href="powershell-moc.html" class="wikilink">powershell-moc</a> is the broader cluster map once you know whether your question is about language mechanics, maintenance, or memory tooling.
+</li>
+<li><a href="python.html" class="wikilink">python</a> is the adjacent language when a maintenance task graduates into richer SDK or async integration work.
 </li>
 </ul>
 <h2>Where to Start</h2>
@@ -544,6 +589,7 @@
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 <li><a href="poshwiki.html" class="">poshwiki</a></li>
 <li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
 <li><a href="powershell-objects.html" class="">powershell-objects</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
@@ -553,6 +599,7 @@
 <li><a href="ps-custom-objects.html" class="">ps-custom-objects</a></li>
 <li><a href="python-moc.html" class="">python-moc</a></li>
 <li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 <li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
 <li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
 <li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
@@ -561,6 +608,7 @@
 <ul>
 <li><a href="poshwiki.html" class="">poshwiki</a></li>
 <li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
 <li><a href="powershell-objects.html" class="">powershell-objects</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
@@ -576,6 +624,9 @@
 <li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust.html" class="">rust</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 </ul>
           </div>
         </div>

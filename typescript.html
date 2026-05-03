@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">TypeScript</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
@@ -447,6 +447,32 @@
 <p><strong>TypeScript</strong> is the typed JavaScript layer in the vault&#39;s toolchain. It matters here because several repo-adjacent tools, especially the local workbench and Node-based MCP examples, depend on a language that preserves JavaScript&#39;s runtime reach while adding stronger structural guarantees for developer tooling.</p>
 <p>Within the Vulture Nest, TypeScript sits closest to web-tier, CLI, and scaffolding work rather than the trusted core. It is useful when fast iteration, package-ecosystem access, and browser or Node interoperability matter more than the stricter guarantees expected from Rust or the operational convenience of PowerShell.</p>
 <p>The reason it matters beyond &quot;typed JavaScript&quot; is the type system&#39;s structural model. Tool schemas, client contracts, and MCP-facing helpers often care more about the shape of data than about nominal class hierarchies, and TypeScript is built around describing and refining those shapes. That makes it a good fit for SDK-driven integration work and a weaker fit for trust-boundary enforcement.</p>
+<h2>Core Opinion</h2>
+<p>TypeScript is the Nest&#39;s default language when the work needs JavaScript ecosystem reach but should not stay untyped. Its real role is not &quot;frontend language&quot;; it is the typed integration layer for Node, browser, CLI, and MCP-adjacent tooling where structural contracts matter more than ownership or nominal class design.</p>
+<p>The practical split is:</p>
+<ul>
+<li>use <strong>TypeScript</strong> when you need browser or Node reach, package-ecosystem leverage, or schema-shaped integration work with better guarantees than plain JavaScript
+</li>
+<li>use <strong><a href="powershell.html" class="wikilink">powershell</a></strong> when the same task is primarily repo-local operations and shell automation
+</li>
+<li>use <strong><a href="python.html" class="wikilink">python</a></strong> when the work is mostly agent orchestration, provider SDK integration, or async application glue
+</li>
+<li>use <strong><a href="rust.html" class="wikilink">rust</a></strong> when the concern is trust-boundary hardening rather than ergonomic integration
+</li>
+</ul>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="typescript.html" class="wikilink">typescript</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Which language should own this Node or browser-facing integration?&quot;
+</li>
+<li>&quot;How do I model API or tool contracts by data shape?&quot;
+</li>
+<li>&quot;Which TypeScript note explains the type-system feature behind this SDK pattern?&quot;
+</li>
+<li>&quot;Where do I start for MCP examples, client code, or JS-runtime-adjacent tooling?&quot;
+</li>
+</ul>
+<p>If the question is instead about repo maintenance, route to <a href="powershell.html" class="wikilink">powershell</a>. If it is about agent loops or Python-first SDKs, route to <a href="python.html" class="wikilink">python</a>. If it is about enforcing invariants at the boundary itself, route to <a href="rust.html" class="wikilink">rust</a>.</p>
 <h2>TypeScript in the Nest</h2>
 <p>TypeScript appears here in two main roles:</p>
 <p><strong>Typed integration layer.</strong> When the Nest needs browser or Node reach, package-ecosystem access, or SDK examples that live in the JavaScript world, TypeScript is the safest default. The MCP ecosystem especially treats TypeScript as a first-class language, with the official SDK and many examples assuming its type-driven workflow.</p>
@@ -483,6 +509,27 @@
 <li><strong><a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a></strong> and <strong><a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a></strong> — concrete entry points for protocol-shaped code.
 </li>
 <li><strong><a href="javascript-moc.html" class="wikilink">javascript-moc</a></strong> and <strong><a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a></strong> — runtime context when choosing the surrounding JavaScript environment.
+</li>
+</ul>
+<h2>Start Here</h2>
+<p>Choose the shortest path based on the work:</p>
+<ol>
+<li>If you need general language fluency, start with <a href="typescript-basics.html" class="wikilink">typescript-basics</a>, then <a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a>, then <a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a>.
+</li>
+<li>If you are trying to understand SDK or MCP code, start with <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> and <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>, then backfill <a href="typescript-generics.html" class="wikilink">typescript-generics</a> and <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a>.
+</li>
+<li>If you are coming from Rust or Python, read <a href="typescript-objects.html" class="wikilink">typescript-objects</a>, <a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a>, and <a href="typescript-generics.html" class="wikilink">typescript-generics</a> before worrying about advanced type metaprogramming.
+</li>
+<li>If the runtime decision itself is unclear, route through <a href="javascript-moc.html" class="wikilink">javascript-moc</a> and <a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a> before picking the surrounding stack.
+</li>
+</ol>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> places TypeScript in the integration and web-tier lane beside PowerShell&#39;s operations role, Python&#39;s orchestration role, and Rust&#39;s trust-boundary role.
+</li>
+<li><a href="typescript-moc.html" class="wikilink">typescript-moc</a> is the broader handbook-oriented map once you know whether you need fundamentals, type manipulation, or applied integration context.
+</li>
+<li><a href="javascript-moc.html" class="wikilink">javascript-moc</a> is the next stop when the question is more about runtime choice or the wider JS ecosystem than about TypeScript itself.
 </li>
 </ul>
 <h2>Where to Start</h2>
@@ -541,7 +588,9 @@
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="polyglot-adr-rfc.html" class="">polyglot-adr-rfc</a></li>
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 <li><a href="typescript-basics.html" class="">typescript-basics</a></li>
 <li><a href="typescript-classes.html" class="">typescript-classes</a></li>
 <li><a href="typescript-compiler-options.html" class="">typescript-compiler-options</a></li>
@@ -567,7 +616,11 @@
 <li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
 <li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust.html" class="">rust</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 <li><a href="typescript-basics.html" class="">typescript-basics</a></li>
 <li><a href="typescript-classes.html" class="">typescript-classes</a></li>
 <li><a href="typescript-compiler-options.html" class="">typescript-compiler-options</a></li>
