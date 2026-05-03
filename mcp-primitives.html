@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[mcp-moc|MCP]] Primitives</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-tools, mcp-resources, mcp-prompts</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Primitives</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Primitives</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-tools, mcp-resources, mcp-prompts</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
@@ -445,34 +445,114 @@
       <main class="content-zone" id="content">
         <h1>MCP Primitives</h1>
 <p>Primitives are the core building blocks of the <strong><a href="mcp-architecture.html" class="wikilink">Model Context Protocol</a></strong>. They define the specific types of context and capabilities that a Server can expose to a Client.</p>
+<h2>Core Opinion</h2>
+<p>The three MCP primitives are not interchangeable ways to expose &quot;stuff.&quot; They are different control surfaces with different owners:</p>
+<ul>
+<li><strong>Tools</strong> are for actions the model may request.
+</li>
+<li><strong>Resources</strong> are for context the host/application may read and inject.
+</li>
+<li><strong>Prompts</strong> are for reusable interaction scaffolds a user or client may invoke intentionally.
+</li>
+</ul>
+<p>Most MCP design mistakes come from flattening these distinctions and exposing everything as tools.</p>
 <h2>1. Tools (Actionable)</h2>
 <p>Functions that an AI model can actively call based on user requests.</p>
 <ul>
-<li><strong>Control:</strong> Model-controlled.
+<li><strong>Control:</strong> Model-controlled after discovery; the host still mediates execution and approval.
 </li>
-<li><strong>Mechanism:</strong> Defined via JSON Schema; executed via <code>tools/call</code>.
+<li><strong>Mechanism:</strong> Listed via <code>tools/list</code>, described by schemas, executed via <code>tools/call</code>.
 </li>
-<li><strong>Example:</strong> <code>send_email</code>, <code>query_database</code>.
+<li><strong>Best for:</strong> Actions with clear side effects or explicit computation boundaries.
+</li>
+<li><strong>Example:</strong> <code>send_email</code>, <code>query_database</code>, <code>create_issue</code>.
+</li>
+</ul>
+<h3>Design Guidance</h3>
+<ul>
+<li>Use tools when the model should be able to *decide to act*.
+</li>
+<li>Keep schemas clear and flat so invocation is reliable.
+</li>
+<li>Treat tool inputs as untrusted; the server owns validation and enforcement.
+</li>
+<li>If a capability is really passive reference material, do not force it into a tool.
 </li>
 </ul>
 <h2>2. Resources (Contextual)</h2>
 <p>Passive data sources that provide read-only information to the application.</p>
 <ul>
-<li><strong>Control:</strong> Application-controlled (the Host decides how to use the data).
+<li><strong>Control:</strong> Application- or host-controlled. The host decides whether and when the model sees the content.
 </li>
-<li><strong>Mechanism:</strong> Identified by URIs (e.g., <code>file://</code>, <code>postgres://</code>). Supports templates for dynamic queries.
+<li><strong>Mechanism:</strong> Identified by URIs (for example <code>file://</code>, <code>postgres://</code>, or app-defined schemes) and read through the resource surface.
 </li>
-<li><strong>Example:</strong> File contents, database schemas, API logs.
+<li><strong>Best for:</strong> Data that should be retrieved or inspected rather than &quot;called.&quot;
+</li>
+<li><strong>Example:</strong> File contents, database schemas, logs, reference documents.
+</li>
+</ul>
+<h3>Design Guidance</h3>
+<ul>
+<li>Use resources when the main job is *providing context*, not triggering behavior.
+</li>
+<li>Prefer stable URI design so clients can reason about what they are reading.
+</li>
+<li>Resource templates are useful when the namespace is dynamic but still structurally predictable.
+</li>
+<li>If the model should not autonomously decide when to use the content, resources are usually the right fit.
 </li>
 </ul>
 <h2>3. Prompts (Instructional)</h2>
 <p>Reusable instruction templates that guide the model&#39;s interaction.</p>
 <ul>
-<li><strong>Control:</strong> User-controlled (explicitly invoked via slash commands or UI buttons).
+<li><strong>Control:</strong> User- or client-invoked. Prompts are usually selected explicitly rather than chosen autonomously by the model.
 </li>
-<li><strong>Mechanism:</strong> Parameterized templates (e.g., &quot;Plan a vacation for {destination}&quot;).
+<li><strong>Mechanism:</strong> Listed and fetched as parameterized templates.
 </li>
-<li><strong>Example:</strong> Code review templates, meeting summarizers.
+<li><strong>Best for:</strong> Reusable workflows, review templates, guided interactions, and consistent task framing.
+</li>
+<li><strong>Example:</strong> Code review templates, meeting summarizers, project intake scaffolds.
+</li>
+</ul>
+<h3>Design Guidance</h3>
+<ul>
+<li>Use prompts when you want to standardize *how* a task is framed.
+</li>
+<li>Prompts are especially useful for UI affordances such as slash commands or canned workflows.
+</li>
+<li>Do not use prompts as a substitute for tool contracts; they shape interaction, not side-effect boundaries.
+</li>
+</ul>
+<h2>How to Choose</h2>
+<p>Ask which party should own the decision:</p>
+<ol>
+<li>If the <strong>model</strong> should decide whether to invoke a capability, use a <strong>tool</strong>.
+</li>
+<li>If the <strong>host/application</strong> should decide what context to fetch or expose, use a <strong>resource</strong>.
+</li>
+<li>If the <strong>user/client</strong> should intentionally start from a reusable instruction scaffold, use a <strong>prompt</strong>.
+</li>
+</ol>
+<h2>Common Failure Modes</h2>
+<ul>
+<li>Exposing read-only reference data as tools, forcing the model to &quot;call&quot; what should be retrieved.
+</li>
+<li>Exposing side-effecting operations as resources, hiding action boundaries from the host.
+</li>
+<li>Using prompts to smuggle operational parameters that really belong in tool schemas.
+</li>
+<li>Treating discovery as equivalent across primitives when the control model is different for each.
+</li>
+</ul>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a> is the broader agent-design note; <code>mcp-primitives</code> is the protocol-specific breakdown.
+</li>
+<li><a href="mcp-client-features.html" class="wikilink">mcp-client-features</a> explains the client-side surfaces around these primitives, such as sampling and elicitation.
+</li>
+<li><a href="mcp-server-features.html" class="wikilink">mcp-server-features</a> covers what servers actually advertise and implement around the primitive surface.
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> explains how these primitives are discovered and staged in larger tool ecosystems.
 </li>
 </ul>
 <hr>
@@ -482,8 +562,12 @@
 </li>
 <li><a href="mcp-client-features.html" class="wikilink">mcp-client-features</a>
 </li>
-</ul>
-<ul>
+<li><a href="mcp-server-features.html" class="wikilink">mcp-server-features</a>
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+</li>
 <li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
 </li>
 </ul>
@@ -510,16 +594,20 @@
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
 <li><a href="mcp-security.html" class="">mcp-security</a></li>
 <li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 <li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 </ul>
           </div>
         </div>

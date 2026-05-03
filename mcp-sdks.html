@@ -429,13 +429,13 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">MCP SDKs</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">MCP SDK Tiers, Model Context Protocol SDKs</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP SDKs</span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/mcp/SDKs.md</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">MCP SDKs</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">MCP SDK Tiers, Model Context Protocol SDKs</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/mcp/SDKs.md</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
@@ -446,6 +446,14 @@
       <main class="content-zone" id="content">
         <h1>MCP SDKs</h1>
 <p>The <strong>Model Context Protocol (MCP)</strong> provides official SDKs across multiple languages to facilitate the development of servers and clients. SDKs are categorized into tiers based on their feature completeness and support status.</p>
+<h2>Core Opinion</h2>
+<p>The important SDK question is usually not &quot;which language is supported?&quot; but &quot;which runtime should own this MCP boundary?&quot; SDK choice follows the same tier logic as the rest of the vault:</p>
+<ul>
+<li>choose a high-level SDK for speed of integration and tool ergonomics
+</li>
+<li>choose a systems-level SDK when the MCP surface is performance-sensitive, operationally critical, or part of a hardened trust boundary
+</li>
+</ul>
 <h2>SDK Tiers</h2>
 <h3>Tier 1 (Canonical &amp; Feature-Complete)</h3>
 <ul>
@@ -482,13 +490,51 @@
 <li>Type-safe schema definition and validation.
 </li>
 </ul>
+<h2>What Actually Varies</h2>
+<p>Even when two SDKs support the same protocol surface, they differ materially in:</p>
+<ul>
+<li><strong>Ergonomics:</strong> decorator-heavy vs. builder-style APIs
+</li>
+<li><strong>Schema expression:</strong> how naturally the language maps to MCP tool/resource definitions
+</li>
+<li><strong>Operational fit:</strong> local scripting, web service deployment, background daemon, IDE integration
+</li>
+<li><strong>Host vs. server emphasis:</strong> some ecosystems are stronger on client/host integration, others on server construction
+</li>
+<li><strong>Type discipline:</strong> whether the runtime encourages fast prototyping or stricter interface design
+</li>
+</ul>
 <h2>Strategic Choice</h2>
 <ul>
-<li><strong>Fast Prototyping</strong>: Python (FastMCP) is recommended for its high-level decorators and automatic schema generation.
+<li><strong><a href="python.html" class="wikilink">python</a></strong>: best for fast prototyping, ingestion pipelines, and agent-side glue. FastMCP-style ergonomics make tool definition cheap.
 </li>
-<li><strong>Enterprise Scale</strong>: C# or TypeScript are preferred for their robust typing and integration with established IDE/Web ecosystems.
+<li><strong><a href="typescript.html" class="wikilink">typescript</a></strong>: strong for editor integrations, web-adjacent hosts, and applications already living in Node/browser-adjacent ecosystems.
 </li>
-<li><strong>Systems Engineering</strong>: Rust or Go provide high performance and low-latency execution for infrastructure-level bridges.
+<li><strong><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> / C#</strong>: strong for enterprise integration, long-lived services, and typed application environments.
+</li>
+<li><strong><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> / Rust</strong>: strongest when MCP is part of a hardened infrastructure or performance-sensitive service boundary.
+</li>
+<li><strong>Go</strong>: good fit for compact operational services and simple deployment stories when low overhead matters more than rich framework ergonomics.
+</li>
+</ul>
+<h2>Start Here</h2>
+<ol>
+<li>If you are building quickly inside the vault, start with <a href="python.html" class="wikilink">python</a> and <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>.
+</li>
+<li>If you are wiring MCP into an IDE, desktop shell, or web-facing host, inspect <a href="typescript.html" class="wikilink">typescript</a> and the TypeScript SDK first.
+</li>
+<li>If the MCP surface is part of a durable backend or trust boundary, compare <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> and <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>.
+</li>
+<li>If the real question is protocol semantics rather than language choice, go back to <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a> and <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>.
+</li>
+</ol>
+<h2>Relationship to Other MCP Notes</h2>
+<ul>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> and <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> explain how SDK choice changes implementation shape.
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> explains how larger tool surfaces should be staged regardless of SDK.
+</li>
+<li><a href="mcp-security.html" class="wikilink">mcp-security</a> matters more as SDKs become part of remote or production-facing deployments.
 </li>
 </ul>
 <hr>
@@ -499,6 +545,14 @@
 <li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>
+</li>
+<li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>
+</li>
+<li><a href="mcp-security.html" class="wikilink">mcp-security</a>
+</li>
+<li><a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>
+</li>
+<li><a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a>
 </li>
 </ul>
       </main>
@@ -527,9 +581,17 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
+<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
 <li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+<li><a href="mcp-security.html" class="">mcp-security</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 </ul>
           </div>
         </div>
