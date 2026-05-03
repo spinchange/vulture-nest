@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Firecrawl API v2 Reference — Vulture Portal</title>
+  <title>RFC — Note Hardening Pattern — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,24 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Firecrawl API v2 Reference</span>
+      <span>RFC — Note Hardening Pattern</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Firecrawl API v2 Reference</h1>
+      <h1 class="note-title">RFC — Note Hardening Pattern</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Firecrawl API v2 Reference</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">provenance_retrieved</span><span class="fm-val">2026-05-01T03:55:52Z</span></span>
-<span class="fm-field"><span class="fm-key">provenance_source_ids</span><span class="fm-val"></span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">provenance_agent</span><span class="fm-val">claude-chronicler</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">provenance_chunk_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">RFC — Note Hardening Pattern</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
       </div>
     </header>
 
@@ -447,173 +443,251 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Firecrawl API v2 Reference</h1>
-<p>This note is a vault-local reference for the Firecrawl v2 surface used by the ingestion pipeline. It is grounded primarily in <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> and the local ingest implementation, not a full live-doc mirror.</p>
-<h2>Scope</h2>
+        <h1>RFC — Note Hardening Pattern</h1>
+<p>This RFC is a seed document for formalizing the pattern the vault has been using to turn thin but central notes into durable routing surfaces. It is not the final spec. Its job is to expose the current house style, the open questions around it, and the merge discipline for collaborative review.</p>
+<h2>Objective</h2>
+<p>Produce a vault-representative spec for note hardening that captures how thin but important notes should be strengthened without losing graph shape, overwriting useful existing content, or drifting into generic essay-writing.</p>
+<p>The target is a durable pattern that explains:</p>
 <ul>
-<li>Focuses on the v2 endpoints already modeled in the vault.
+<li>what kind of note should be hardened
 </li>
-<li>Emphasizes ingestion-relevant behavior over exhaustive vendor documentation.
+<li>what the hardened note must do
 </li>
-<li>Treat parameter lists here as working references for this repo; verify against current Firecrawl docs before depending on them as exhaustive or stable.
+<li>what kinds of edits are in-bounds vs. out-of-bounds
+</li>
+<li>how collaborative review on the pattern should be mediated
 </li>
 </ul>
-<h2>Core Endpoints</h2>
-<table>
-<thead><tr>
-<th>Endpoint</th>
-<th>Primary use</th>
-<th>Return shape</th>
-</tr></thead><tbody>
-<tr>
-<td><code>POST /v2/scrape</code></td>
-<td>Retrieve a single page</td>
-<td>Synchronous content + metadata</td>
-</tr>
-<tr>
-<td><code>POST /v2/crawl</code></td>
-<td>Traverse a bounded site section</td>
-<td>Async job ID; later poll for page results</td>
-</tr>
-<tr>
-<td><code>GET /v2/crawl/{id}</code></td>
-<td>Poll crawl status</td>
-<td>Crawl status + completed pages when ready</td>
-</tr>
-<tr>
-<td><code>POST /v2/map</code></td>
-<td>Discover URLs without fetching page content</td>
-<td>URL list / discovery result</td>
-</tr>
-<tr>
-<td><code>POST /v2/extract</code></td>
-<td>Schema-shaped extraction</td>
-<td>Structured JSON</td>
-</tr>
-<tr>
-<td><code>POST /v2/search</code></td>
-<td>Search plus retrieval</td>
-<td>Top-N result payloads</td>
-</tr>
-</tbody>
-</table>
-<h2>Authentication</h2>
-<ul>
-<li>The local tooling uses bearer-token authentication via <code>FIRECRAWL_API_KEY</code>.
+<h2>Why This RFC Exists</h2>
+<p>The vault now has a visible house style across notes like <a href="rust.html" class="wikilink">rust</a>, <a href="python.html" class="wikilink">python</a>, <a href="powershell.html" class="wikilink">powershell</a>, <a href="typescript.html" class="wikilink">typescript</a>, <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>, <a href="code-agents.html" class="wikilink">code-agents</a>, and <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>. Those notes were not merely expanded. They were turned into routing surfaces.</p>
+<p>That pattern is real and repeatable, but it is not yet explicitly specified.</p>
+<h2>Working Thesis</h2>
+<p>The note-hardening pattern is not &quot;add more text.&quot; It is:</p>
+<ol>
+<li>preserve useful existing framing
 </li>
-<li>The repo defaults the service base to <code>https://api.firecrawl.dev/v2</code> in <a href="/abs/path/C:/Users/executor/Documents/vulture-nest/02_System/vulture-ingest/server.py:55">server.py</a>.
+<li>add vault-local role and decision logic
+</li>
+<li>make the note route readers into the right nearby notes
+</li>
+<li>clarify relationship to adjacent clusters and architectural layers
+</li>
+<li>avoid turning the note into a bloated survey
+</li>
+</ol>
+<h2>Proposed Scope</h2>
+<p>This pattern applies primarily to:</p>
+<ul>
+<li>root notes with high centrality but low routing value
+</li>
+<li>MOCs that act like link lists instead of navigational hubs
+</li>
+<li>execution or protocol notes that are conceptually important but operationally thin
 </li>
 </ul>
-<h2>Request Patterns Used Here</h2>
-<h3><code>scrape</code></h3>
-<p>The pipeline spec treats <code>scrape</code> as the single-page path.</p>
-<p>Common request fields in this vault:</p>
+<p>This pattern does not automatically apply to:</p>
 <ul>
-<li><code>url</code>
+<li>literature notes whose main job is source-grounded summarization
 </li>
-<li><code>formats</code>
+<li>narrow leaf notes that do not need to route readers elsewhere
 </li>
-<li><code>onlyMainContent</code>
-</li>
-<li><code>excludeTags</code>
-</li>
-<li><code>waitFor</code>
+<li>archival or fleeting handoff artifacts
 </li>
 </ul>
-<p>Representative payload from <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>:</p>
-<pre><code>{
-  &quot;url&quot;: &quot;https://docs.firecrawl.dev/features/crawl&quot;,
-  &quot;formats&quot;: [&quot;markdown&quot;, &quot;links&quot;],
-  &quot;onlyMainContent&quot;: true,
-  &quot;excludeTags&quot;: [&quot;nav&quot;, &quot;footer&quot;, &quot;header&quot;, &quot;.sidebar&quot;],
-  &quot;waitFor&quot;: 1000
-}</code></pre>
-<h3><code>crawl</code></h3>
-<p>The pipeline uses <code>crawl</code> for bounded multi-page ingestion.</p>
-<p>Common request fields in this vault:</p>
+<h2>Draft Pattern</h2>
+<h3>1. Preserve What Already Works</h3>
+<p>Do not rewrite a note from scratch unless the existing frame is actively wrong. Keep valid framing, links, and useful language where possible.</p>
+<h3>2. Add Vault-Local Framing</h3>
+<p>A hardened note should answer: why does this concept matter in the Vulture Nest specifically?</p>
+<p>This usually means adding a section such as:</p>
 <ul>
-<li><code>url</code>
+<li><code>## Core Opinion</code>
 </li>
-<li><code>limit</code>
+<li>vault-local role
 </li>
-<li><code>maxDiscoveryDepth</code>
+<li>architectural placement
 </li>
-<li><code>includePaths</code>
-</li>
-<li><code>excludePaths</code>
-</li>
-<li><code>scrapeOptions</code>
+<li>practical split against adjacent concepts
 </li>
 </ul>
-<p>The local ingest server currently sends:</p>
-<pre><code>{
-  &quot;url&quot;: &quot;&lt;root-url&gt;&quot;,
-  &quot;limit&quot;: 200,
-  &quot;maxDiscoveryDepth&quot;: 3,
-  &quot;includePaths&quot;: [],
-  &quot;scrapeOptions&quot;: {
-    &quot;formats&quot;: [&quot;markdown&quot;],
-    &quot;onlyMainContent&quot;: true
-  }
-}</code></pre>
-<h3><code>map</code></h3>
-<p>The pipeline spec treats <code>map</code> as the discovery-only endpoint: enumerate candidate URLs before deciding whether to crawl or scrape them.</p>
-<h2>Response Shape Conventions</h2>
-<h3><code>scrape</code> response object</h3>
-<p>The pipeline spec models responses like:</p>
-<pre><code>{
-  &quot;success&quot;: true,
-  &quot;data&quot;: {
-    &quot;markdown&quot;: &quot;# Page Title\n\nContent...&quot;,
-    &quot;links&quot;: [&quot;https://docs.example.com/page-2&quot;],
-    &quot;metadata&quot;: {
-      &quot;title&quot;: &quot;Page Title&quot;,
-      &quot;description&quot;: &quot;Meta description&quot;,
-      &quot;language&quot;: &quot;en&quot;,
-      &quot;statusCode&quot;: 200,
-      &quot;contentType&quot;: &quot;text/html&quot;,
-      &quot;sourceURL&quot;: &quot;https://docs.example.com/page-1&quot;
-    }
-  }
-}</code></pre>
-<h3><code>crawl</code> job model</h3>
+<h3>3. Add a Decision Rule</h3>
+<p>A hardened note should help the reader decide when to start there versus somewhere nearby.</p>
+<p>This usually means adding:</p>
 <ul>
-<li><code>POST /v2/crawl</code> returns a job ID immediately.
+<li><code>## Decision Rule</code>
 </li>
-<li>The local pipeline polls <code>GET /v2/crawl/{id}</code> until <code>status == &quot;completed&quot;</code>.
+<li>&quot;start here when your question sounds like...&quot;
 </li>
-<li>Completed results are treated as an array of scrape-like page objects.
+<li>explicit redirection to adjacent notes when the question belongs elsewhere
 </li>
 </ul>
-<h2>Operational Notes</h2>
+<h3>4. Add Route Selection</h3>
+<p>A hardened note should guide movement through its cluster rather than merely listing links.</p>
+<p>This usually means adding:</p>
 <ul>
-<li>Firecrawl is the extraction layer, not the chunking layer. Splitting and embedding happen downstream in the Postgres/pgvector pipeline.
+<li>grouped reading paths
 </li>
-<li>The vault consistently prefers <code>formats: [&quot;markdown&quot;]</code> or markdown-first retrieval to keep the ingestion path LLM-friendly.
+<li><code>## Start Here</code>
 </li>
-<li><code>onlyMainContent: true</code> is treated as the default for documentation ingestion to reduce navigation noise.
+<li>track-based navigation such as fundamentals / applications / theory / operations
 </li>
 </ul>
-<h2>Limitations</h2>
+<h3>5. Clarify Relationships</h3>
+<p>A hardened note should name its relationship to neighboring layers rather than assuming the graph will make that obvious.</p>
+<p>This usually means adding:</p>
 <ul>
-<li>This note is intentionally not a complete vendor API reference.
+<li><code>## Relationship to the Rest of the Vault</code>
 </li>
-<li>Features not exercised in the pipeline may be omitted or only lightly described here.
-</li>
-<li>The original Gemini-authored version was a failed raw scrape; this rewrite is based on local spec material and should still be cross-checked against live docs before production changes.
+<li>explicit contrast with nearby frameworks, languages, or protocol layers
 </li>
 </ul>
+<h3>6. Stay Bounded</h3>
+<p>Hardening is not full-cluster synthesis.</p>
+<p>Out of bounds unless explicitly requested:</p>
+<ul>
+<li>spawning many new notes
+</li>
+<li>broad research or ingestion
+</li>
+<li>replacing several nearby notes instead of strengthening one hub
+</li>
+<li>writing a mini-book inside the root note
+</li>
+</ul>
+<h2>Draft Structural Expectations</h2>
+<p>A hardened note does not require identical section names every time, but it should usually end up with most of these functions:</p>
+<ul>
+<li>vault-local framing
+</li>
+<li>decision rule
+</li>
+<li>route selection / start-here guidance
+</li>
+<li>relationship mapping
+</li>
+<li>concise references or see-also closure
+</li>
+</ul>
+<h2>Candidate Review Questions</h2>
+<p>These are the questions I recommend sending to Claude and Gemini:</p>
+<ol>
+<li>Does this RFC accurately describe the pattern already visible in the vault, or is it overfitting to a few recent passes?
+</li>
+<li>Which required function is missing, overstated, or incorrectly scoped?
+</li>
+<li>Should this pattern treat permanent root notes, MOCs, and execution-pattern notes as one family or as separate hardening modes?
+</li>
+<li>What is the clearest stop condition for a hardening pass so it does not sprawl into general expansion?
+</li>
+<li>Which existing note is the best positive example, and which existing note would be a counterexample where this pattern should not be applied?
+</li>
+</ol>
+<h2>Suggested Collaboration Model</h2>
+<p>This RFC assumes a HITL-mediated review flow.</p>
+<p>Acceptable model:</p>
+<ol>
+<li>Codex authors the seed RFC.
+</li>
+<li>Claude and Gemini read the seed.
+</li>
+<li>They append bounded feedback to a shared review surface or separate review artifacts.
+</li>
+<li>HITL and Codex mediate the merge into a revised draft.
+</li>
+<li>Only after mediation does a new draft overwrite or supersede the seed.
+</li>
+</ol>
+<p>Not recommended:</p>
+<ul>
+<li>multiple agents editing the spec text concurrently without review boundaries
+</li>
+<li>free-form rewrites that mix review, resolution, and authorship in one pass
+</li>
+<li>using comments that do not distinguish findings from proposed text
+</li>
+</ul>
+<h2>Suggested Merge Protocol</h2>
+<h3>Rule 1: Separate Draft From Review</h3>
+<p>The RFC seed should remain the current draft. Reviewers should append feedback into a review lane, not rewrite the draft directly.</p>
+<h3>Rule 2: Require Section-Scoped Feedback</h3>
+<p>Each reviewer comment should identify:</p>
+<ul>
+<li>target section
+</li>
+<li>finding type: <code>gap</code>, <code>overreach</code>, <code>ambiguity</code>, <code>missing-example</code>, <code>scope-risk</code>, or <code>wording</code>
+</li>
+<li>proposed change
+</li>
+<li>optional example note from the vault
+</li>
+</ul>
+<h3>Rule 3: Merge By Resolution Pass</h3>
+<p>Codex performs a synthesis pass after reviews land:</p>
+<ul>
+<li>accept
+</li>
+<li>reject
+</li>
+<li>partially accept
+</li>
+</ul>
+<p>Each decision should be justified briefly in a resolution log or revision note.</p>
+<h3>Rule 4: Preserve Disagreement Until Resolved</h3>
+<p>If Claude and Gemini disagree materially, do not flatten the disagreement silently. Carry it into a short <code>Open Questions</code> or <code>Resolution Log</code> section until mediated.</p>
+<h3>Rule 5: Promote Only After Convergence</h3>
+<p>Do not promote the RFC into a permanent spec until:</p>
+<ul>
+<li>reviewers agree on scope
+</li>
+<li>the stop condition is clear
+</li>
+<li>at least 2-3 example notes in the vault fit the pattern cleanly
+</li>
+</ul>
+<h2>Proposed Review Surface</h2>
+<p>My default recommendation:</p>
+<ul>
+<li>draft note: this RFC
+</li>
+<li>review lane: a separate fleeting note such as <code>note-hardening-pattern-review-2026-05-03</code>
+</li>
+<li>merge output: either update this note in place or create <code>spec-note-hardening-pattern</code>
+</li>
+</ul>
+<p>That keeps authorship, review, and promotion distinct.</p>
+<h2>Open Questions</h2>
+<ul>
+<li>Is &quot;note hardening&quot; the right durable name, or should this be framed as a hub-note or routing-surface pattern?
+</li>
+<li>Should MOCs have their own variant of the pattern instead of sharing one with root permanents?
+</li>
+<li>Should this become a permanent note under <code>01_Wiki/</code>, or a system standard under a more explicitly operational name?
+</li>
+</ul>
+<h2>Stop Condition</h2>
+<p>This RFC is ready for external review when:</p>
+<ul>
+<li>the draft pattern is explicit enough to critique
+</li>
+<li>the review questions are stable
+</li>
+<li>the merge protocol is clear enough to keep collaboration disciplined
+</li>
+</ul>
+<hr>
 <h2>Related</h2>
 <ul>
-<li><a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a>
 </li>
-<li><a href="protocol-source-ingestion-runbook.html" class="wikilink">protocol-source-ingestion-runbook</a>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
-<li><a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
 </li>
-<li><a href="firecrawl-map-capabilities.html" class="wikilink">firecrawl-map-capabilities</a>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
 </li>
-<li><a href="firecrawl-scrape-capabilities.html" class="wikilink">firecrawl-scrape-capabilities</a>
+<li><a href="rust.html" class="wikilink">rust</a>
+</li>
+<li><a href="python.html" class="wikilink">python</a>
 </li>
 </ul>
       </main>
@@ -626,23 +700,17 @@
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
+            <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
-<li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
-<li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
-<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
-<li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
-<li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
-<li><a href="protocol-source-ingestion-runbook.html" class="">protocol-source-ingestion-runbook</a></li>
-<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="">language-root-hardening-plan-2026-05-02</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust.html" class="">rust</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
 </ul>
           </div>
         </div>
