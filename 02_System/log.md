@@ -894,3 +894,11 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Directive:** Continued [[language-root-hardening-plan-2026-05-02]] by hardening [[powershell]] and [[typescript]] as durable root hubs rather than thinner language summaries.
 - **PowerShell Hardening:** Added a vault-local "Core Opinion," a concrete decision rule for when operational work should stay in PowerShell instead of moving into Python or Rust, a direct start-path by maintenance vs. scripting vs. memory tooling, and clearer placement against [[programming-languages-moc]] and [[powershell-moc]].
 - **TypeScript Hardening:** Added a "Core Opinion," a concrete decision rule for Node/browser/schema-shaped integration work, explicit route selection for handbook study vs. MCP/SDK work, and clearer placement against [[powershell]], [[python]], [[rust]], and the JavaScript runtime lane.
+
+
+## [2026-05-03] codex — ADK Adjacency Follow-Through
+
+- **Directive:** Deepened the ADK-adjacent execution notes after the framework and execution-topology passes so the cluster routes more cleanly from root framework note to runtime mechanics.
+- **ADK Root:** Strengthened [[agent-development-kit]] with a vault-local "Core Opinion," a decision rule for when ADK is the right framework, explicit start paths by runtime/orchestration/persistence/evaluation concern, and clearer placement against [[openai-agents-sdk]], [[openai-swarm]], and [[graph-orchestration]].
+- **Mechanics:** Reworked [[agent-thought-cycle]] and [[agent-tools]] from short glossary notes into execution-mechanics notes covering the minimal agent loop, common failure modes, tool-contract quality, and when tools differ from broader code execution or MCP primitives.
+- **Orchestration:** Strengthened [[workflow-agents]] and [[adk-multi-agent-orchestration]] so ADK's deterministic controllers, transfer patterns, shared state, and agent-as-tool composition route more directly into the newer execution-topology lane.

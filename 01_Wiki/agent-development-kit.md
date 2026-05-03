@@ -10,6 +10,27 @@ aliases: [adk, google-adk]
 
 The **Agent Development Kit (ADK)** is an open-source, code-first toolkit for building, evaluating, and deploying sophisticated AI agents with high flexibility and control. It is particularly optimized for Google's Gemini models but designed for broad LLM support.
 
+## Core Opinion
+
+ADK matters in this vault because it is one of the clearest frameworks for separating LLM-driven agent behavior from explicit orchestration structure. It is strongest when you want a code-first agent system with durable session state, first-class workflow controllers, and a runner that treats execution as an event stream rather than a chat transcript.
+
+The practical reading of ADK in the Nest is:
+
+- use **ADK** when you want explicit control over agent runtime structure, persistent services, and the boundary between deterministic flow and model-driven reasoning
+- compare it to **[[openai-agents-sdk]]** when the question is orchestration ergonomics or handoff style
+- compare it to **[[openai-swarm]]** when the question is lightweight interactive multi-agent chat rather than structured runtime services
+
+## Decision Rule
+
+Start from `[[agent-development-kit]]` when your question sounds like one of these:
+
+- "Which framework gives me workflow controllers instead of only free-form agent loops?"
+- "How do sessions, artifacts, and long-term memory fit into an agent runtime?"
+- "Where do I look in ADK for multi-agent routing, callbacks, or evaluation?"
+- "How does ADK split deterministic orchestration from LLM-driven behavior?"
+
+If the question is instead about general execution topology, route to [[graph-orchestration]] or [[workflow-agents]]. If it is about generic tool contracts rather than the framework runtime, route to [[agent-tools]].
+
 ## Architectural Blueprint
 ADK operates on an **Event-Driven Orchestration** model managed by the **Runner**.
 
@@ -42,6 +63,22 @@ ADK is designed for modular, scalable multi-agent systems:
 -   **[[adk-callbacks-and-lifecycle|Callbacks]]**: Standard functions to hook into the execution process (Before/After Agent, Model, or Tool).
 -   **Plugins**: Modular security guardrails and policies that offer more flexibility than basic callbacks.
 -   **[[adk-evaluation-framework|Evaluation]]**: Built-in tools for multi-turn dataset creation and systematic performance assessment.
+
+## Start Here
+
+Choose the shortest path based on the work:
+
+1. If you need the runtime model, start with [[adk-callbacks-and-lifecycle]] and then return here.
+2. If you need deterministic orchestration, go straight to [[workflow-agents]] and [[adk-multi-agent-orchestration]].
+3. If you need memory or persistence behavior, route through [[adk-session-service]], [[adk-artifact-service]], and [[adk-long-term-memory]].
+4. If you need evaluation or productionization concerns, go to [[adk-evaluation-framework]] after the runner model is clear.
+
+## Relationship to the Rest of the Vault
+
+- [[graph-orchestration]] is the higher-level execution pattern; ADK is one concrete implementation family.
+- [[workflow-agents]] is the clearest entry point when the question is deterministic control flow rather than the whole framework.
+- [[agent-thought-cycle]] and [[agent-tools]] explain the lower-level mechanics that ADK packages into a framework runtime.
+- [[agentic-frameworks-moc]] is the broader comparison surface once you know which ADK subsystem matters.
 
 ---
 ## Implementations
