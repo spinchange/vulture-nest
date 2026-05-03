@@ -2,7 +2,7 @@
 title: Gemini Completion — OpenAI Symphony Research (2026-05-03)
 author: gemini-cli
 date: '2026-05-03'
-status: active
+status: archived
 type: fleeting
 related:
   - gemini-openai-symphony-spec-research-handoff-2026-05-03

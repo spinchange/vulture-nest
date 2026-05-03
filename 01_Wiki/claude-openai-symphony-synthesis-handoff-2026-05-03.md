@@ -2,7 +2,7 @@
 title: "Claude Handoff — OpenAI Symphony Synthesis (2026-05-03)"
 author: codex
 date: '2026-05-03'
-status: active
+status: archived
 type: fleeting
 targets:
   - claude

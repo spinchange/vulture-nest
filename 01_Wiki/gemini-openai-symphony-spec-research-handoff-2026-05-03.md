@@ -2,7 +2,7 @@
 title: Gemini Handoff — OpenAI Symphony Spec Research (2026-05-03)
 author: codex
 date: '2026-05-03'
-status: active
+status: archived
 type: handoff
 targets:
   - gemini

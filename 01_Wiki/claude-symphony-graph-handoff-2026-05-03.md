@@ -2,7 +2,7 @@
 title: "Claude Handoff — Symphony Graph Verification (2026-05-03)"
 author: claude-sonnet-4-6
 date: '2026-05-03'
-status: active
+status: archived
 type: fleeting
 aliases:
   - claude-symphony-graph-handoff
