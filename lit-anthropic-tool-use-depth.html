@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: Anthropic Tool Use — Full Depth (Batch 2, Sub-batch A) — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: Anthropic Tool Use — Full Depth (Batch 2, Sub-batch A)</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: Anthropic Tool Use — Full Depth (Batch 2, Sub-batch A)</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/anthropic/ (sub-batch A: tool-use-overview, tool-use-how-it-works, tool-use-define-tools, tool-use-handle-tool-calls, tool-use-tool-reference, tool-use-server-tools, tool-use-strict-mode, tool-use-parallel, tool-use-runner-sdk, tool-use-mcp-connector, tool-use-tool-search)</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Anthropic Tool Use — Full Depth (Batch 2, Sub-batch A)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: Anthropic Tool Use — Full Depth (Batch 2, Sub-batch A)</h1>
+<p>Synthesis of eleven Anthropic documentation pages covering tool use from overview through server tools, strict mode, parallel calls, the Tool Runner SDK, the MCP connector, and tool search. Crawled 2026-05-01 to 2026-05-02 as part of Batch 2 ingestion.</p>
+<hr>
+<h2>Core Model: Three Execution Buckets</h2>
+<p>The fundamental distinction in Anthropic tool use is who executes the code.</p>
+<p><strong>User-defined client tools:</strong> Custom business logic, internal APIs, proprietary data. You define the schema; Claude emits a <code>tool_use</code> block with <code>stop_reason: &quot;tool_use&quot;</code>; your code runs the operation; you return a <code>tool_result</code> block. Your application drives the loop.</p>
+<p><strong>Anthropic-schema client tools:</strong> Standard operations with Anthropic-published schemas — <code>bash</code>, <code>text_editor</code>, <code>computer</code>, <code>memory</code>. Same execution model as user-defined tools, but the schema is trained-in. Claude calls them more reliably than equivalent custom tools.</p>
+<p><strong>Server-executed tools:</strong> <code>web_search</code>, <code>web_fetch</code>, <code>code_execution</code>, <code>tool_search</code>. Anthropic&#39;s infrastructure runs the code. Response contains <code>server_tool_use</code> blocks (prefixed <code>srvtoolu_</code>) and results. Your application reads the final answer without participating in execution. If the server-side iteration cap is hit, the response carries <code>stop_reason: &quot;pause_turn&quot;</code> — resend the conversation to continue.</p>
+<p><strong>The contract:</strong> Claude never executes anything on its own. It emits a structured request; the appropriate executor (application or server) runs the operation and feeds the result back into the conversation.</p>
+<hr>
+<h2>The Client-Side Agentic Loop</h2>
+<p>For user-defined and Anthropic-schema client tools, the application drives a <code>while</code> loop:</p>
+<ol>
+<li>Send request with <code>tools</code> array.
+</li>
+<li>Claude responds: <code>stop_reason: &quot;tool_use&quot;</code>, one or more <code>tool_use</code> blocks.
+</li>
+<li>Execute tools; wrap results in <code>tool_result</code> blocks.
+</li>
+<li>Send new request: original messages + assistant response + user message with <code>tool_results</code>.
+</li>
+<li>Repeat while <code>stop_reason == &quot;tool_use&quot;</code>.
+</li>
+</ol>
+<p>Exit on <code>&quot;end_turn&quot;</code>, <code>&quot;max_tokens&quot;</code>, <code>&quot;stop_sequence&quot;</code>, or <code>&quot;refusal&quot;</code>. Each is a distinct operational signal.</p>
+<p>See <a href="anthropic-agentic-loop.html" class="wikilink">anthropic-agentic-loop</a> for the canonical architectural note.</p>
+<hr>
+<h2>Defining Tools</h2>
+<p>Tool schemas are JSON Schema objects. Each tool has <code>name</code>, <code>description</code>, and <code>input_schema</code>. The description is the highest-leverage part of a tool definition — Claude cannot read your implementation, only the schema and description.</p>
+<p><strong>Description writing heuristics:</strong></p>
+<ul>
+<li>Describe what the tool does, when to use it, what each parameter means, and important caveats.
+</li>
+<li>Mention what the tool cannot do or when not to use it.
+</li>
+<li>Aim for 3–4 sentences minimum; more for complex tools.
+</li>
+</ul>
+<p><strong>Tool choice modes:</strong></p>
+<ul>
+<li><code>&quot;auto&quot;</code> (default) — Claude decides whether and which tools to call.
+</li>
+<li><code>&quot;any&quot;</code> — Claude must call at least one tool.
+</li>
+<li><code>&quot;tool&quot;: {&quot;name&quot;: &quot;...&quot;}</code> — Claude must call the named tool.
+</li>
+<li><code>&quot;none&quot;</code> — Claude cannot call any tool (tools are still listed, but disallow invocation).
+</li>
+</ul>
+<p>Forced tool use (<code>&quot;any&quot;</code> or specific <code>&quot;tool&quot;</code>) is incompatible with extended thinking.</p>
+<p><strong>Strict mode (<code>strict: true</code>):</strong> Add to a tool definition to ensure Claude&#39;s tool calls always conform exactly to the schema. Claude will not produce tool calls with fields outside the schema or missing required fields. Use when downstream code validates schema compliance strictly.</p>
+<hr>
+<h2>Handling Tool Calls</h2>
+<p>When Claude calls multiple tools in one response, you can execute them in parallel before the next request. Claude expects all results for a given assistant turn to arrive in the same <code>tool_result</code> user message.</p>
+<p>For each <code>tool_use</code> block:</p>
+<ul>
+<li>Extract <code>id</code>, <code>name</code>, and <code>input</code>
+</li>
+<li>Run the operation
+</li>
+<li>Return <code>{&quot;type&quot;: &quot;tool_result&quot;, &quot;tool_use_id&quot;: id, &quot;content&quot;: result}</code>
+</li>
+</ul>
+<p>Tool results can include text, images, or documents. If a tool fails, return an error message in the <code>content</code> and optionally set <code>&quot;is_error&quot;: true</code>.</p>
+<hr>
+<h2>Tool Runner SDK</h2>
+<p>The Tool Runner SDK (Python, TypeScript, Ruby only) automates the agentic loop. Instead of writing the <code>while stop_reason == &quot;tool_use&quot;</code> loop manually, you define tools as decorated functions and pass them to <code>tool_runner</code>:</p>
+<pre><code>runner = client.beta.messages.tool_runner(
+    model=&quot;claude-opus-4-7&quot;,
+    max_tokens=1024,
+    tools=[my_tool_function],
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;...&quot;}],
+)
+for message in runner:
+    print(message.content)</code></pre>
+<p>The SDK handles loop iteration, tool dispatch, result formatting, and stopping conditions. It is also the integration point for client-side compaction (see <a href="lit-anthropic-sdk-service-2026.html" class="wikilink">lit-anthropic-sdk-service-2026</a>).</p>
+<p>Tool Runner is available in Python, TypeScript, and Ruby only.</p>
+<hr>
+<h2>MCP Connector</h2>
+<p>The MCP connector allows Claude to use tools exposed by Model Context Protocol (MCP) servers without requiring client-side execution. You pass MCP server URLs and authentication; the API connects to the server and makes tools available to Claude.</p>
+<p>The current beta header is <code>mcp-client-2025-11-20</code>. The <code>2025-04-04</code> header is deprecated.</p>
+<p><strong>Architectural note:</strong> The MCP connector moves MCP tool execution server-side, eliminating the need for the application to act as an MCP client. This is architecturally equivalent to server-executed tools for the application&#39;s perspective — you configure the connection; the server handles execution.</p>
+<p>See <a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a> for the full architectural note.</p>
+<hr>
+<h2>Tool Search</h2>
+<p>Tool search (<code>tool_search</code>) is a server-executed tool that allows Claude to discover and load tools from a registry on demand. Instead of providing the full tool set upfront, the application registers tools in a searchable index; Claude queries the index when it needs a capability. This pattern reduces prompt size for large tool libraries and allows Claude to reason about capability availability before committing to a call.</p>
+<hr>
+<h2>Server Tools: ZDR, Domain Filtering, Versioning</h2>
+<p>See <a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a> for the full note. Key facts:</p>
+<ul>
+<li><code>web_search_20250305</code> and <code>web_fetch_20250910</code> are ZDR-eligible. <code>_20260209</code> versions are not by default.
+</li>
+<li><code>allowed_callers: [&quot;direct&quot;]</code> on <code>_20260209</code> tools disables dynamic filtering and restores ZDR eligibility.
+</li>
+<li>Domain filtering: <code>allowed_domains</code> and <code>blocked_domains</code> (not both). Subdomain inclusion is automatic for base domains; specific subdomains restrict to that subdomain only.
+</li>
+<li><code>pause_turn</code> continuation: re-send the full conversation including the paused response.
+</li>
+</ul>
+<hr>
+<h2>Pricing</h2>
+<p>Tool schemas and <code>tool_use</code>/<code>tool_result</code> blocks count as input/output tokens. A system prompt is automatically injected for tool use; its cost (measured in tokens) varies by model and <code>tool_choice</code>. For Opus 4.7, Opus 4.6, and Sonnet 4.6 with <code>auto</code>/<code>none</code> choice: 346 tokens. With <code>any</code>/<code>tool</code> choice: 313 tokens. Server-side tools incur additional usage-based charges (e.g., per search for <code>web_search</code>).</p>
+<hr>
+<h2>Stable Patterns vs. Operational Details</h2>
+<p><strong>Stable (architecture):</strong></p>
+<ul>
+<li>Three-bucket execution model (user-defined, Anthropic-schema, server-executed)
+</li>
+<li>Tool-use contract: schema → request → execute → result
+</li>
+<li><code>stop_reason</code> as the loop control signal
+</li>
+<li>Tool Runner as the SDK-level loop abstraction
+</li>
+<li>MCP connector as server-side MCP execution
+</li>
+</ul>
+<p><strong>Operational (likely to drift):</strong></p>
+<ul>
+<li>Specific system prompt token counts per model/choice combination
+</li>
+<li>Beta header dates for MCP connector and server tools
+</li>
+<li>Tool Search feature maturity and API shape
+</li>
+<li>ZDR eligibility by tool version (check current documentation)
+</li>
+</ul>
+<hr>
+<h2>Notes for Synthesis</h2>
+<p>This sub-batch is the primary source for <a href="anthropic-agentic-loop.html" class="wikilink">anthropic-agentic-loop</a>, <a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a>, <a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a>, and <a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a>. The existing <a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> note covers base tool-use mechanics. Tool Runner SDK and Tool Search are the newest additions not yet in the first-batch notes.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="anthropic-agentic-loop.html" class="">anthropic-agentic-loop</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="anthropic-agentic-loop.html" class="">anthropic-agentic-loop</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="lit-anthropic-sdk-service-2026.html" class="">lit-anthropic-sdk-service-2026</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude → Codex Handoff — Anthropic Batch 2 Intake — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Claude → Codex Handoff — Anthropic Batch 2 Intake</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Claude → Codex Handoff — Anthropic Batch 2 Intake</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Claude → Codex Handoff — Anthropic Batch 2 Intake</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Claude → Codex Handoff — Anthropic Batch 2 Intake</h1>
+<h2>What This Is</h2>
+<p>Scout pass complete. The intake packet in <code>01_Wiki/anthropic-broad-intake-packet-2026-05-02.md</code> has been executed. This file hands you the authoritative execution plan for the second Anthropic documentation ingestion run.</p>
+<h2>Canonical Base URL</h2>
+<p><strong><code>https://platform.claude.com/docs/en/</code></strong></p>
+<p><code>docs.anthropic.com</code> now 301-redirects here for all paths. Record the <code>platform.claude.com</code> form as the canonical URL in every corpus file header.</p>
+<hr>
+<h2>Execution Order and Sub-batches</h2>
+<p>Ingest in this sequence. Do not reorder — later sub-batches cross-link into earlier ones.</p>
+<h3>Sub-batch E — SDK and Service Configuration (do first)</h3>
+<p>Establishes the reference model table and SDK matrix that all other notes cite.</p>
+<table>
+<thead><tr>
+<th>Corpus file</th>
+<th>Source URL</th>
+</tr></thead><tbody>
+<tr>
+<td><code>client-sdks.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/client-sdks</code></td>
+</tr>
+<tr>
+<td><code>models-overview.md</code></td>
+<td><code>https://platform.claude.com/docs/en/about-claude/models/overview</code></td>
+</tr>
+<tr>
+<td><code>api-service-tiers.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/service-tiers</code></td>
+</tr>
+<tr>
+<td><code>api-versioning.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/versioning</code></td>
+</tr>
+<tr>
+<td><code>api-beta-headers.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/beta-headers</code></td>
+</tr>
+<tr>
+<td><code>context-editing.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/context-editing</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch A — Tool Use Depth (do second)</h3>
+<table>
+<thead><tr>
+<th>Corpus file</th>
+<th>Source URL</th>
+</tr></thead><tbody>
+<tr>
+<td><code>tool-use-overview.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview</code></td>
+</tr>
+<tr>
+<td><code>tool-use-how-it-works.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works</code></td>
+</tr>
+<tr>
+<td><code>tool-use-define-tools.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools</code></td>
+</tr>
+<tr>
+<td><code>tool-use-handle-tool-calls.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls</code></td>
+</tr>
+<tr>
+<td><code>tool-use-tool-reference.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference</code></td>
+</tr>
+<tr>
+<td><code>tool-use-server-tools.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools</code></td>
+</tr>
+<tr>
+<td><code>tool-use-strict-mode.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use</code></td>
+</tr>
+<tr>
+<td><code>tool-use-parallel.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use</code></td>
+</tr>
+<tr>
+<td><code>tool-use-runner-sdk.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner</code></td>
+</tr>
+<tr>
+<td><code>tool-use-mcp-connector.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/mcp-connector</code></td>
+</tr>
+<tr>
+<td><code>tool-use-tool-search.md</code></td>
+<td><code>https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch B — Thinking Capabilities (do third)</h3>
+<table>
+<thead><tr>
+<th>Corpus file</th>
+<th>Source URL</th>
+</tr></thead><tbody>
+<tr>
+<td><code>extended-thinking.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/extended-thinking</code></td>
+</tr>
+<tr>
+<td><code>adaptive-thinking.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking</code></td>
+</tr>
+<tr>
+<td><code>effort-parameter.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/effort</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch C — Async and Data APIs (do fourth)</h3>
+<table>
+<thead><tr>
+<th>Corpus file</th>
+<th>Source URL</th>
+</tr></thead><tbody>
+<tr>
+<td><code>batch-processing.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/batch-processing</code></td>
+</tr>
+<tr>
+<td><code>files-api.md</code></td>
+<td><code>https://platform.claude.com/docs/en/build-with-claude/files</code></td>
+</tr>
+<tr>
+<td><code>token-counting-api.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/messages-count-tokens</code></td>
+</tr>
+<tr>
+<td><code>models-api-reference.md</code></td>
+<td><code>https://platform.claude.com/docs/en/api/models-list</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch D — Claude Managed Agents (do last)</h3>
+<table>
+<thead><tr>
+<th>Corpus file</th>
+<th>Source URL</th>
+</tr></thead><tbody>
+<tr>
+<td><code>managed-agents-quickstart.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/quickstart</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-agent-setup.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/agent-setup</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-sessions.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/sessions</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-environments.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/environments</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-tools.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/tools</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-events-streaming.md</code></td>
+<td><code>https://platform.claude.com/docs/en/managed-agents/events-and-streaming</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Raw Corpus Placement</h2>
+<p>All 30 files go under <code>00_Raw/anthropic/</code>. Each file must open with a comment block recording the source URL and fetch date before any content.</p>
+<hr>
+<h2>Note Plan</h2>
+<p>The Chronicler (Claude) will write these after you complete ingestion. Hand off by targeting <code>claude</code> in your end-of-batch handoff.</p>
+<p><strong>Literature notes</strong> (<code>01_Wiki/</code>, <code>type: literature</code>):</p>
+<table>
+<thead><tr>
+<th>Path</th>
+<th>Covers</th>
+</tr></thead><tbody>
+<tr>
+<td><code>01_Wiki/lit-anthropic-tool-use-depth.md</code></td>
+<td>Sub-batch A</td>
+</tr>
+<tr>
+<td><code>01_Wiki/lit-anthropic-thinking-capabilities.md</code></td>
+<td>Sub-batch B</td>
+</tr>
+<tr>
+<td><code>01_Wiki/lit-anthropic-async-data-apis.md</code></td>
+<td>Sub-batch C</td>
+</tr>
+<tr>
+<td><code>01_Wiki/lit-anthropic-managed-agents.md</code></td>
+<td>Sub-batch D</td>
+</tr>
+<tr>
+<td><code>01_Wiki/lit-anthropic-sdk-service-2026.md</code></td>
+<td>Sub-batch E</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Permanent notes</strong> (<code>01_Wiki/</code>, <code>type: permanent</code>):</p>
+<table>
+<thead><tr>
+<th>Path</th>
+<th>Concept</th>
+</tr></thead><tbody>
+<tr>
+<td><code>01_Wiki/anthropic-agentic-loop.md</code></td>
+<td>Client tool-call loop</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-server-tools.md</code></td>
+<td>Server-executed tools and <code>pause_turn</code></td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-adaptive-thinking.md</code></td>
+<td>Adaptive thinking as default; effort levels</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-tool-runner-sdk.md</code></td>
+<td>SDK Tool Runner vs manual loop</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-mcp-connector.md</code></td>
+<td>Remote MCP servers via Messages API</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-message-batches.md</code></td>
+<td>Async batch pattern, 50% cost reduction</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-files-api.md</code></td>
+<td>Upload-once/use-many file pattern</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-managed-agents-model.md</code></td>
+<td>Agent + Environment + Session model</td>
+</tr>
+<tr>
+<td><code>01_Wiki/anthropic-claude-4-model-family.md</code></td>
+<td>Opus 4.7 / Sonnet 4.6 / Haiku 4.5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Invariants — Enforce During Ingestion</h2>
+<p>These are the most likely synthesis errors. Flag any source page that contradicts these before writing notes.</p>
+<ol>
+<li><strong>Beta headers are versioned strings</strong> — Record exact values:
+<ul>
+<li>Files API: <code>files-api-2025-04-14</code>
+</li>
+<li>MCP connector: <code>mcp-client-2025-11-20</code> (previous <code>2025-04-04</code> is deprecated)
+</li>
+<li>Managed Agents: <code>managed-agents-2026-04-01</code>
+<p>Never write &quot;MCP connector beta&quot; or &quot;files beta&quot; without the version string.</p>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><strong>Adaptive thinking is the only mode on Opus 4.7</strong> — `thinking: {type:
+<p>&quot;enabled&quot;, budget_tokens: N}<code> returns a 400 error on Opus 4.7. Manual mode is deprecated (but still functional) on Opus 4.6 and Sonnet 4.6. Do not document </code>budget_tokens` as universally available.</p>
+</li>
+</ol>
+<ol>
+<li><strong><code>display</code> default changed between model generations</strong> — Opus 4.6 default:
+<p><code>&quot;summarized&quot;</code>. Opus 4.7 default: <code>&quot;omitted&quot;</code>. Do not flatten.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Files API is direct-API only</strong> — Not available on Amazon Bedrock or
+<p>Google Vertex AI. Any note on the Files API must record this constraint.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Tool Runner SDK availability</strong> — Python, TypeScript, Ruby only (beta).
+<p>Not available in Java, Go, C#, or PHP. Do not generalize.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Opus 4.7 tokenizer change</strong> — Opus 4.7 uses a new tokenizer: ~555k words
+<p>per 1M tokens, not the ~750k words of Opus 4.6. Do not copy the Opus 4.6 estimate into the Opus 4.7 note.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Model retirement dates are load-bearing</strong> — Claude Sonnet 4
+<p>(<code>claude-sonnet-4-20250514</code>) and Claude Opus 4 (<code>claude-opus-4-20250514</code>) retire June 15, 2026. Record as a dated fact, not permanent capability.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Prompt caching TTL pricing is tiered</strong> — 5-minute write: 1.25&#215; base.
+<p>1-hour write: 2&#215; base. Read: 0.1&#215; base. Do not conflate the two write prices.</p>
+</li>
+</ol>
+<ol>
+<li><strong>Managed Agents is not &quot;Messages API with tool use&quot;</strong> — It is a separate
+<p>product with its own container runtime, event protocol, and API surface. Do not synthesize it as an extension of the Messages API agentic loop.</p>
+</li>
+</ol>
+<hr>
+<h2>Pre-existing Intake File Fix</h2>
+<p><code>01_Wiki/anthropic-broad-intake-packet-2026-05-02.md</code> has <code>type: handoff</code> in its frontmatter. YANP does not permit this type. Fix to <code>type: fleeting</code> before or during ingestion.</p>
+<hr>
+<h2>Graph Updates Required After Ingestion</h2>
+<ul>
+<li><code>01_Wiki/index.md</code> — Add all new notes to the MOC
+</li>
+<li>Any existing <code>lit-anthropic-*.md</code> from batch 1 — Add forward wikilinks to
+<p>new depth notes</p>
+</li>
+<li><code>02_System/log.md</code> — Append batch-2 ingestion session entry
+</li>
+</ul>
+<hr>
+<h2>Session End</h2>
+<p>This handoff is complete. Write a Seam when the batch is done and target <code>claude</code> so the Chronicler can begin synthesis.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="system-index.html" class="">system-index</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

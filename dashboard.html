@@ -306,26 +306,26 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-05-03 04:45</span>
+          <span>Generated 2026-05-03 05:04</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
       <div class="panel hero-score">
         <div class="kicker terminal">Vault Health</div>
         <div class="score">0%</div>
-        <div class="health-warn terminal">orphan=0 / broken=23 / neural_gap=0</div>
+        <div class="health-warn terminal">orphan=0 / broken=25 / neural_gap=0</div>
       </div>
     </section>
 
     <section class="metrics">
       <article class="panel metric">
         <div class="metric-label terminal">Total Notes</div>
-        <div class="metric-value">352</div>
+        <div class="metric-value">364</div>
         <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Link Density</div>
-        <div class="metric-value">9.99</div>
+        <div class="metric-value">9.88</div>
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
@@ -377,15 +377,15 @@
             <h3>PoShWiKi Session</h3>
             <div class="callout">Latest session page: <span class='terminal'>Session 2026-05-02</span></div>
             <ul class="feed">
-              <li><span class='feed-meta'>May 03 04:45 | action</span><span class='feed-text'>Cleanup pass advanced: rebuilt firecrawl-api-v2-reference, firecrawl-crawling-capabilities, firecrawl-map-capabilities, and firecrawl-scrape-capabilities from local pipeline evidence after failed doc-scrape artifacts were found. Reframed them as vault-local references grounded in spec-firecrawl-pgvector-pipeline and ingest code; focused Claude re-reviews returned accept across the batch.</span></li>
-<li><span class='feed-meta'>May 03 04:45 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-go-implementation, adk-evaluation-framework, agent-actions-unit, and agentic-tdd-patterns to remove unsupported certainty, distinguish documented patterns from vault-local guidance, and strengthen graph links. Focused Claude re-reviews returned accept across the batch.</span></li>
-<li><span class='feed-meta'>May 03 04:45 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-advanced-capabilities and lightly hardened adk-artifact-service using the raw ADK documentation snapshot. Added caveats around planner/code-execution capability boundaries, versioning semantics, and artifact-service failure modes; focused Claude re-reviews returned accept for both notes.</span></li>
-<li><span class='feed-meta'>May 03 04:45 | action</span><span class='feed-text'>Review trail normalized: summarized the Claude QA pipeline in durable logs after review-gemini-pages.ps1 produced claude-review.md, claude-review-pass-2.md, claude-review-pass-3.md, and focused per-note follow-up reports. The batch findings were consumed into committed wiki hardening passes; claude-review*.md remains a working-artifact set rather than the canonical session record.</span></li>
+              <li><span class='feed-meta'>May 03 05:03 | action</span><span class='feed-text'>Cleanup pass advanced: rebuilt firecrawl-api-v2-reference, firecrawl-crawling-capabilities, firecrawl-map-capabilities, and firecrawl-scrape-capabilities from local pipeline evidence after failed doc-scrape artifacts were found. Reframed them as vault-local references grounded in spec-firecrawl-pgvector-pipeline and ingest code; focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 03 05:03 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-go-implementation, adk-evaluation-framework, agent-actions-unit, and agentic-tdd-patterns to remove unsupported certainty, distinguish documented patterns from vault-local guidance, and strengthen graph links. Focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 03 05:03 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-advanced-capabilities and lightly hardened adk-artifact-service using the raw ADK documentation snapshot. Added caveats around planner/code-execution capability boundaries, versioning semantics, and artifact-service failure modes; focused Claude re-reviews returned accept for both notes.</span></li>
+<li><span class='feed-meta'>May 03 05:03 | action</span><span class='feed-text'>Review trail normalized: summarized the Claude QA pipeline in durable logs after review-gemini-pages.ps1 produced claude-review.md, claude-review-pass-2.md, claude-review-pass-3.md, and focused per-note follow-up reports. The batch findings were consumed into committed wiki hardening passes; claude-review*.md remains a working-artifact set rather than the canonical session record.</span></li>
             </ul>
             <div class="callout">Current seam and immediate handoff state.</div>
             <ul class="feed">
-              <li><span class='feed-meta'>May 03 04:45 | Current Seam</span><span class='feed-text'>Inspected active PoShWiKi state and confirmed the live DB is 00_Raw/PoShWiKi/wiki.db, not the ignored repo-root wiki.db. Recorded the previously unmirrored Supabase Flask completion chain: ingestion handoff, synthesis/promotion handoff, literature note lit-supabase-flask-quickstart, and permanent note pattern-supabase-flask-integration.</span></li>
-<li><span class='feed-meta'>May 03 04:45 | Next Step</span><span class='feed-text'>If Supabase ingestion is still an active lane, verify index promotion coverage and graph wiring in related MOCs; otherwise continue from the latest MCP security seam.</span></li>
+              <li><span class='feed-meta'>May 03 05:03 | Current Seam</span><span class='feed-text'>Inspected active PoShWiKi state and confirmed the live DB is 00_Raw/PoShWiKi/wiki.db, not the ignored repo-root wiki.db. Recorded the previously unmirrored Supabase Flask completion chain: ingestion handoff, synthesis/promotion handoff, literature note lit-supabase-flask-quickstart, and permanent note pattern-supabase-flask-integration.</span></li>
+<li><span class='feed-meta'>May 03 05:03 | Next Step</span><span class='feed-text'>If Supabase ingestion is still an active lane, verify index promotion coverage and graph wiring in related MOCs; otherwise continue from the latest MCP security seam.</span></li>
             </ul>
           </section>
           <section>
@@ -406,14 +406,14 @@
     <section class="commit-strip">
       <h3>Recent Commits</h3>
       <div class="commit-track">
-        <span class='commit-pill'><span class='sha'>1c9f0dc9</span><span>docs(wiki): harden PowerShell and TypeScript hub notes</span></span>
+        <span class='commit-pill'><span class='sha'>752459df</span><span>docs(anthropic): publish batch 2 corpus and routing</span></span>
+<span class='commit-pill'><span class='sha'>4e5dfd25</span><span>feat(wiki): Anthropic Batch 2 synthesis — 5 lit notes + 3 permanent notes</span></span>
+<span class='commit-pill'><span class='sha'>1c9f0dc9</span><span>docs(wiki): harden PowerShell and TypeScript hub notes</span></span>
 <span class='commit-pill'><span class='sha'>31bdeb99</span><span>docs(handoff): add Batch B language-root hardening handoff (PowerShell + TypeScript)</span></span>
 <span class='commit-pill'><span class='sha'>e48f34aa</span><span>feat(wiki): harden Rust and Python root notes into hub notes</span></span>
 <span class='commit-pill'><span class='sha'>a0d0fc12</span><span>docs(wiki): deepen language and MCP foundation notes</span></span>
 <span class='commit-pill'><span class='sha'>ae63afd9</span><span>chore(vault): post-synthesis maintenance — Anthropic advanced capabilities batch</span></span>
 <span class='commit-pill'><span class='sha'>159b2e25</span><span>docs(handoff): add Codex post-synthesis maintenance handoff</span></span>
-<span class='commit-pill'><span class='sha'>d5caeb63</span><span>feat(wiki): add Anthropic advanced capabilities cluster</span></span>
-<span class='commit-pill'><span class='sha'>2645da12</span><span>fix(dashboard): parse frontmatter types without false orphans</span></span>
       </div>
     </section>
   </main>

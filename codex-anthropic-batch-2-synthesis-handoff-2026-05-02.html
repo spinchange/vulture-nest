@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex → Claude Handoff — Anthropic Batch 2 Synthesis — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Codex → Claude Handoff — Anthropic Batch 2 Synthesis</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Codex → Claude Handoff — Anthropic Batch 2 Synthesis</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex → Claude Handoff — Anthropic Batch 2 Synthesis</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Codex → Claude Handoff — Anthropic Batch 2 Synthesis</h1>
+<p><strong>To:</strong> Claude (The Chronicler) <strong>From:</strong> Codex (The Engineer) <strong>Session date:</strong> 2026-05-02 <strong>Priority:</strong> Standard — synthesis only, no new crawl</p>
+<hr>
+<h2>1. Status</h2>
+<p>Anthropic batch 2 ingestion is complete. All 30 batch-2 source pages were crawled, indexed, verified, and staged under <code>00_Raw/anthropic/</code> with provenance headers.</p>
+<p>Do <strong>not</strong> re-run Firecrawl. Retrieve evidence from the indexed sidecar with <code>semantic_search_sources</code>, using the page IDs and chunk IDs recorded in the raw-file headers.</p>
+<p>Two API-reference URLs had to be normalized to current canonical paths during ingestion:</p>
+<ul>
+<li><code>https://platform.claude.com/docs/en/api/messages-count-tokens</code> → <code>https://platform.claude.com/docs/en/api/messages/count_tokens</code>
+</li>
+<li><code>https://platform.claude.com/docs/en/api/models-list</code> → <code>https://platform.claude.com/docs/en/api/models/list</code>
+</li>
+</ul>
+<hr>
+<h2>2. Target Notes</h2>
+<p>Write these literature notes:</p>
+<ul>
+<li><code>01_Wiki/lit-anthropic-sdk-service-2026.md</code> — sub-batch E
+</li>
+<li><code>01_Wiki/lit-anthropic-tool-use-depth.md</code> — sub-batch A
+</li>
+<li><code>01_Wiki/lit-anthropic-thinking-capabilities.md</code> — sub-batch B
+</li>
+<li><code>01_Wiki/lit-anthropic-async-data-apis.md</code> — sub-batch C
+</li>
+<li><code>01_Wiki/lit-anthropic-managed-agents.md</code> — sub-batch D
+</li>
+</ul>
+<p>Write these permanent notes if the retrieved evidence supports them cleanly:</p>
+<ul>
+<li><code>01_Wiki/anthropic-agentic-loop.md</code>
+</li>
+<li><code>01_Wiki/anthropic-server-tools.md</code>
+</li>
+<li><code>01_Wiki/anthropic-adaptive-thinking.md</code>
+</li>
+<li><code>01_Wiki/anthropic-tool-runner-sdk.md</code>
+</li>
+<li><code>01_Wiki/anthropic-mcp-connector.md</code>
+</li>
+<li><code>01_Wiki/anthropic-message-batches.md</code>
+</li>
+<li><code>01_Wiki/anthropic-files-api.md</code>
+</li>
+<li><code>01_Wiki/anthropic-managed-agents-model.md</code>
+</li>
+<li><code>01_Wiki/anthropic-claude-4-model-family.md</code>
+</li>
+</ul>
+<p>Do not perform graph integration in this pass.</p>
+<hr>
+<h2>3. Invariants</h2>
+<p>These synthesis constraints were validated against the ingested corpus and remain binding:</p>
+<ol>
+<li>Files API beta header is <code>files-api-2025-04-14</code>.
+</li>
+<li>MCP connector beta header is <code>mcp-client-2025-11-20</code>; <code>2025-04-04</code> is deprecated.
+</li>
+<li>Managed Agents beta header is <code>managed-agents-2026-04-01</code>.
+</li>
+<li>On Opus 4.7, manual thinking <code>thinking: {type: &quot;enabled&quot;, budget_tokens: N}</code> is unsupported and returns <code>400</code>; adaptive thinking is the valid path.
+</li>
+<li><code>display</code> defaults differ by model generation: Opus 4.6 defaults to <code>&quot;summarized&quot;</code>, Opus 4.7 defaults to <code>&quot;omitted&quot;</code>.
+</li>
+<li>Files API is direct Anthropic API only, not Bedrock or Vertex AI.
+</li>
+<li>Tool Runner SDK availability is Python, TypeScript, and Ruby only.
+</li>
+<li>Claude Sonnet 4 (<code>claude-sonnet-4-20250514</code>) and Claude Opus 4 (<code>claude-opus-4-20250514</code>) retire on 2026-06-15.
+</li>
+<li>Prompt caching write pricing differs by TTL: 5-minute write <code>1.25x</code>, 1-hour write <code>2x</code>, read <code>0.1x</code>.
+</li>
+<li>Managed Agents is a separate product surface, not the Messages API tool loop.
+</li>
+</ol>
+<hr>
+<h2>4. Indexed Evidence</h2>
+<h3>Sub-batch E — SDK and Service Configuration</h3>
+<table>
+<thead><tr>
+<th>File</th>
+<th>Page ID</th>
+<th>Crawl Job</th>
+</tr></thead><tbody>
+<tr>
+<td><code>client-sdks.md</code></td>
+<td><code>0094ed90-e205-4a81-857d-dbc93e860aa4</code></td>
+<td><code>019deabe-27ae-7404-afb8-696a89cfc0e1</code></td>
+</tr>
+<tr>
+<td><code>models-overview.md</code></td>
+<td><code>72efde04-e63d-4073-b4ba-24c70da42b13</code></td>
+<td><code>019deabe-4c24-70ae-ae75-aa37e2b1f53c</code></td>
+</tr>
+<tr>
+<td><code>api-service-tiers.md</code></td>
+<td><code>e2468d86-2278-4b08-befe-87c8a8de63fb</code></td>
+<td><code>019deabf-1cef-75f9-94e2-28e6fcdf3702</code></td>
+</tr>
+<tr>
+<td><code>api-versioning.md</code></td>
+<td><code>f81e2d8d-02bc-454f-a827-8281cc7bb9f4</code></td>
+<td><code>019deabf-3d56-759a-9c74-20d987a9df51</code></td>
+</tr>
+<tr>
+<td><code>api-beta-headers.md</code></td>
+<td><code>234f0178-d816-436b-9d87-569f53b558b0</code></td>
+<td><code>019deac0-168d-723c-a061-c1ee313f8a91</code></td>
+</tr>
+<tr>
+<td><code>context-editing.md</code></td>
+<td><code>bcee99e2-db07-400e-ab53-0bf66b1ad47e</code></td>
+<td><code>019deac0-620d-778e-9ec8-7daaa2775d33</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch A — Tool Use Depth</h3>
+<table>
+<thead><tr>
+<th>File</th>
+<th>Page ID</th>
+<th>Crawl Job</th>
+</tr></thead><tbody>
+<tr>
+<td><code>tool-use-overview.md</code></td>
+<td><code>6a36fedf-9a53-4bf7-bd1a-c919fde3fab6</code></td>
+<td><code>019deac1-71c6-7329-82ba-f7740c58e6e4</code></td>
+</tr>
+<tr>
+<td><code>tool-use-how-it-works.md</code></td>
+<td><code>3c71e73d-a345-4ac1-a187-2b41c778fcfe</code></td>
+<td><code>019deac1-d719-7475-8fc3-02c23912c047</code></td>
+</tr>
+<tr>
+<td><code>tool-use-define-tools.md</code></td>
+<td><code>519546a8-3692-4398-9ce1-8a1f1a3f357f</code></td>
+<td><code>019deac2-6a44-73fb-be8f-60d58a15d4a8</code></td>
+</tr>
+<tr>
+<td><code>tool-use-handle-tool-calls.md</code></td>
+<td><code>73627ce7-47ae-433b-ae28-4e6b22703fea</code></td>
+<td><code>019deac2-b760-7112-9b06-5e0da6c28c2b</code></td>
+</tr>
+<tr>
+<td><code>tool-use-tool-reference.md</code></td>
+<td><code>c4987c00-0dc7-4d3d-baf3-6131aa53518b</code></td>
+<td><code>019deac3-6325-723b-95b2-64d44db0e751</code></td>
+</tr>
+<tr>
+<td><code>tool-use-server-tools.md</code></td>
+<td><code>4b439d67-b1e0-4c94-a6bb-93aa49662140</code></td>
+<td><code>019deac3-a814-708c-b642-2b673985c5d7</code></td>
+</tr>
+<tr>
+<td><code>tool-use-strict-mode.md</code></td>
+<td><code>72e8d5d4-68f1-4403-9c39-774b051bb60c</code></td>
+<td><code>019deac4-5d5f-712e-8d1d-6086cbde05eb</code></td>
+</tr>
+<tr>
+<td><code>tool-use-parallel.md</code></td>
+<td><code>2295f704-fff7-48ee-bd41-9035b0e16c85</code></td>
+<td><code>019deac4-8fc1-755e-9b17-128c12dca8fe</code></td>
+</tr>
+<tr>
+<td><code>tool-use-runner-sdk.md</code></td>
+<td><code>d71df651-ba99-4e21-a268-7ab216860e86</code></td>
+<td><code>019deac5-53d6-75b4-8ed7-799163246897</code></td>
+</tr>
+<tr>
+<td><code>tool-use-mcp-connector.md</code></td>
+<td><code>63879e20-e7b4-4188-af1d-091a0a2bb1aa</code></td>
+<td><code>019deac5-a684-74df-a794-e04a837b4478</code></td>
+</tr>
+<tr>
+<td><code>tool-use-tool-search.md</code></td>
+<td><code>f05652f7-40e2-43b1-a54f-6edeed870853</code></td>
+<td><code>019deac6-4d27-7271-8a81-945746e6f061</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch B — Thinking Capabilities</h3>
+<table>
+<thead><tr>
+<th>File</th>
+<th>Page ID</th>
+<th>Crawl Job</th>
+</tr></thead><tbody>
+<tr>
+<td><code>extended-thinking.md</code></td>
+<td><code>00985292-8a72-4559-b037-224df0c86c60</code></td>
+<td><code>019debfe-470b-7238-af68-1d737db4b8d5</code></td>
+</tr>
+<tr>
+<td><code>adaptive-thinking.md</code></td>
+<td><code>0e3bacdf-ed3e-49a1-8503-dd1c9b6ac1fa</code></td>
+<td><code>019debfe-b0d6-73d9-bd8b-ab2083078f79</code></td>
+</tr>
+<tr>
+<td><code>effort-parameter.md</code></td>
+<td><code>ec8b6aeb-e233-487d-a13f-547d8beb2a4f</code></td>
+<td><code>019debff-458b-7304-90fe-9ab6550b4064</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch C — Async and Data APIs</h3>
+<table>
+<thead><tr>
+<th>File</th>
+<th>Page ID</th>
+<th>Crawl Job</th>
+</tr></thead><tbody>
+<tr>
+<td><code>batch-processing.md</code></td>
+<td><code>f78b4f6c-3318-40bc-ace5-1dbe3ad8e984</code></td>
+<td><code>019dec03-26e0-7743-aaa7-79c52738e9fd</code></td>
+</tr>
+<tr>
+<td><code>files-api.md</code></td>
+<td><code>09991a5a-90c3-4b05-96f6-962ac1506d24</code></td>
+<td><code>019dec03-61e1-770e-b4e7-b627a29a1de8</code></td>
+</tr>
+<tr>
+<td><code>token-counting-api.md</code></td>
+<td><code>6331913c-5980-40b0-82c9-3ffe1f655c43</code></td>
+<td><code>019dec04-1f38-7079-95c8-368b15c15794</code></td>
+</tr>
+<tr>
+<td><code>models-api-reference.md</code></td>
+<td><code>b66c288c-b333-4752-9236-521527de7cfc</code></td>
+<td><code>019dec04-6491-7719-a3af-34b2df56a20e</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Sub-batch D — Managed Agents</h3>
+<table>
+<thead><tr>
+<th>File</th>
+<th>Page ID</th>
+<th>Crawl Job</th>
+</tr></thead><tbody>
+<tr>
+<td><code>managed-agents-quickstart.md</code></td>
+<td><code>c917f805-271a-439c-b880-a32b618b4dc1</code></td>
+<td><code>019dec05-1672-7252-bc30-22646ae22e64</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-agent-setup.md</code></td>
+<td><code>099c39d9-67a0-4c3f-ac54-38e55f89ef97</code></td>
+<td><code>019dec05-38fc-759f-bbcc-8a04afff1460</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-sessions.md</code></td>
+<td><code>a84c9043-de30-4082-807b-0f1c14ddc883</code></td>
+<td><code>019dec06-0e1d-75a4-90b0-b37006f58a66</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-environments.md</code></td>
+<td><code>6c3121af-585b-452a-9af1-574b81d1fb1e</code></td>
+<td><code>019dec06-6383-7607-94cf-8606fcb85d14</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-tools.md</code></td>
+<td><code>e2f7a678-6e5a-43e9-872c-9f19f455e7a0</code></td>
+<td><code>019dec07-04da-77fe-9f1b-6ef055012dd1</code></td>
+</tr>
+<tr>
+<td><code>managed-agents-events-streaming.md</code></td>
+<td><code>241397b4-9dd7-4345-8b55-b05951bf0bce</code></td>
+<td><code>019dec07-58fe-721c-a708-2fe5a6ce7df9</code></td>
+</tr>
+</tbody>
+</table>
+<p>For exact <code>chunk_ids</code>, use the provenance headers at the top of each raw file in <code>00_Raw/anthropic/</code>.</p>
+<hr>
+<h2>5. Retrieval and Write Rules</h2>
+<ol>
+<li>Retrieve evidence through <code>semantic_search_sources</code>; do not fetch the web again.
+</li>
+<li>Preserve the canonical <code>platform.claude.com</code> URLs in note provenance.
+</li>
+<li>When you cite a page, use the <code>source_page_id</code> and the concrete <code>chunk_ids</code> from the raw-file header.
+</li>
+<li>If a note needs multiple pages, keep all chunk IDs grouped to their originating <code>page_id</code>.
+</li>
+<li>Do not flatten model-conditional behavior into universal claims.
+</li>
+<li>Validate your written notes with <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>.
+</li>
+<li>Keep this pass scoped to synthesis only. No MOC wiring, index updates, or general graph cleanup.
+</li>
+</ol>
+<hr>
+<h2>6. Scope Boundary</h2>
+<p>Other work is active in the repo. This handoff is the safe boundary:</p>
+<ul>
+<li>safe to proceed: literature/permanent note synthesis from the already-indexed Anthropic batch-2 evidence
+</li>
+<li>not part of this pass: new crawling, ingestion tooling changes, graph integration, unrelated repo cleanup
+</li>
+</ul>
+<p>When synthesis is complete, hand off separately for graph integration rather than folding it into the same pass.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

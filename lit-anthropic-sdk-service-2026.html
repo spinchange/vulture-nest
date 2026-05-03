@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: Anthropic SDK and Service Configuration (Batch 2, Sub-batch E) — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: Anthropic SDK and Service Configuration (Batch 2, Sub-batch E)</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: Anthropic SDK and Service Configuration (Batch 2, Sub-batch E)</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/anthropic/ (sub-batch E: client-sdks, models-overview, api-service-tiers, api-versioning, api-beta-headers, context-editing)</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Anthropic SDK and Service Configuration (Batch 2, Sub-batch E)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: Anthropic SDK and Service Configuration (Batch 2, Sub-batch E)</h1>
+<p>Synthesis of six Anthropic documentation pages covering client SDKs, model lineup, service tiers, API versioning, beta headers, and context editing. Crawled 2026-05-02 as part of Batch 2 ingestion. See the source provenance headers for page and chunk IDs.</p>
+<hr>
+<h2>Client SDKs</h2>
+<p>Anthropic provides official SDKs for Python, TypeScript, Java, Go, Ruby, C#, and PHP. All SDKs provide idiomatic interfaces, type safety, streaming, retry handling, and error management. Platform support covers the Claude API, Amazon Bedrock, Google Vertex AI, and Microsoft Foundry.</p>
+<p><strong>Version requirements (current as of crawl date):</strong></p>
+<table>
+<thead><tr>
+<th>SDK</th>
+<th>Minimum version</th>
+</tr></thead><tbody>
+<tr>
+<td>Python</td>
+<td>3.9+</td>
+</tr>
+<tr>
+<td>TypeScript</td>
+<td>4.9+ (Node.js 20+)</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>8+</td>
+</tr>
+<tr>
+<td>Go</td>
+<td>1.23+</td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>3.2.0+</td>
+</tr>
+<tr>
+<td>C#</td>
+<td>.NET Standard 2.0</td>
+</tr>
+<tr>
+<td>PHP</td>
+<td>8.1.0+</td>
+</tr>
+</tbody>
+</table>
+<p>Beta features are accessed via the <code>beta</code> namespace in any SDK, passing <code>betas=[&quot;feature-name&quot;]</code> alongside the request.</p>
+<p><strong>Architectural note:</strong> The SDK beta namespace is the stable integration point for accessing pre-release API surfaces. Beta headers flow through the SDK to the API; application code does not need to set raw HTTP headers when using an SDK.</p>
+<hr>
+<h2>Model Lineup (Claude 4 Family)</h2>
+<p>Current generally available Claude 4 models as of crawl date. See <a href="anthropic-claude-4-model-family.html" class="wikilink">anthropic-claude-4-model-family</a> for the full capability matrix.</p>
+<table>
+<thead><tr>
+<th>Model</th>
+<th>Context</th>
+<th>Max output (sync)</th>
+<th>Starting price (input/output per MTok)</th>
+</tr></thead><tbody>
+<tr>
+<td>Claude Opus 4.7</td>
+<td>1M</td>
+<td>128k</td>
+<td>$5 / $25</td>
+</tr>
+<tr>
+<td>Claude Sonnet 4.6</td>
+<td>1M</td>
+<td>64k</td>
+<td>$3 / $15</td>
+</tr>
+<tr>
+<td>Claude Haiku 4.5</td>
+<td>200k</td>
+<td>64k</td>
+<td>$1 / $5</td>
+</tr>
+</tbody>
+</table>
+<p>Claude Mythos Preview is a separate, invitation-only research preview for defensive cybersecurity (Project Glasswing).</p>
+<p><strong>Durable pattern:</strong> Model IDs with snapshot dates (e.g., <code>claude-haiku-4-5-20251001</code>) are frozen — the same snapshot is identical across all platforms. Aliases without dates (<code>claude-haiku-4-5</code>) route to the latest snapshot. Use snapshot IDs in production for stability; use aliases in development for easy upgrades.</p>
+<p><strong>Operational detail (likely to drift):</strong> Pricing is subject to change. The 300k batch output ceiling requires the <code>output-300k-2026-03-24</code> beta header and applies only to the Message Batches API for Opus 4.7, Opus 4.6, and Sonnet 4.6.</p>
+<hr>
+<h2>Service Tiers</h2>
+<p>Three tiers are available:</p>
+<ul>
+<li><strong>Standard:</strong> Default for all API requests; best-effort prioritization.
+</li>
+<li><strong>Priority Tier:</strong> Prioritized over all standard requests; targets 99.5% uptime; purchased as committed input/output token-per-minute capacity for 1, 3, 6, or 12 months. Requires contacting sales.
+</li>
+<li><strong>Batch:</strong> Asynchronous processing via the Message Batches API; 50% cost discount.
+</li>
+</ul>
+<p>Tier selection per request: <code>service_tier: &quot;auto&quot;</code> (default) uses Priority Tier capacity when available and falls back to Standard; <code>&quot;standard_only&quot;</code> forces Standard.</p>
+<p>The response <code>usage</code> object includes <code>service_tier: &quot;priority&quot;</code> or <code>&quot;standard&quot;</code> to indicate which tier served the request. Response headers expose Priority Tier remaining capacity when applicable.</p>
+<p><strong>Token accounting for Priority Tier capacity burndown:</strong></p>
+<ul>
+<li>Cache reads: 0.1 tokens per token read
+</li>
+<li>Cache writes (5-min TTL): 1.25 tokens per token written
+</li>
+<li>Cache writes (1-hr TTL): 2.0 tokens per token written
+</li>
+<li>US-only inference (<code>inference_geo: &quot;us&quot;</code>) on Opus 4.7, Opus 4.6, and newer: 1.1 tokens per input/output token
+</li>
+<li>All other: 1 token per token
+</li>
+</ul>
+<p><strong>Architectural note:</strong> The burndown coefficients mirror the relative pricing of each token type. This is a resource-accounting mechanism, not separate billing.</p>
+<hr>
+<h2>API Versioning</h2>
+<p>The stable API version is <code>2023-06-01</code>. The contract is additive-only: Anthropic may add optional input parameters, add fields to outputs, change error conditions, and add enum variants to streaming event types. Breaking changes do not occur within a version.</p>
+<p><strong>Operational detail:</strong> Previous versions are deprecated and may be unavailable for new users. Always use <code>anthropic-version: 2023-06-01</code> in raw HTTP requests.</p>
+<hr>
+<h2>Beta Headers</h2>
+<p>Beta features are accessed by sending <code>anthropic-beta: feature-name</code> (or a comma-separated list) in the API request, or passing <code>betas=[...]</code> in an SDK call. Beta features may have breaking changes with notice, rate limit differences, and limited regional availability.</p>
+<p><strong>Current beta headers of note (as of crawl date):</strong></p>
+<table>
+<thead><tr>
+<th>Header</th>
+<th>Feature</th>
+</tr></thead><tbody>
+<tr>
+<td><code>files-api-2025-04-14</code></td>
+<td>Files API</td>
+</tr>
+<tr>
+<td><code>mcp-client-2025-11-20</code></td>
+<td>MCP connector (current; <code>2025-04-04</code> deprecated)</td>
+</tr>
+<tr>
+<td><code>managed-agents-2026-04-01</code></td>
+<td>Managed Agents (all endpoints)</td>
+</tr>
+<tr>
+<td><code>context-management-2025-06-27</code></td>
+<td>Context editing (tool result + thinking block clearing)</td>
+</tr>
+<tr>
+<td><code>output-300k-2026-03-24</code></td>
+<td>300k max output on batch API</td>
+</tr>
+<tr>
+<td><code>extended-cache-ttl-2025-04-11</code></td>
+<td>1-hour prompt cache TTL</td>
+</tr>
+<tr>
+<td><code>output-128k-2025-02-19</code></td>
+<td>128k max output</td>
+</tr>
+<tr>
+<td><code>token-counting-2024-11-01</code></td>
+<td>Token counting API</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Architectural note:</strong> Beta headers with a <code>feature-YYYY-MM-DD</code> format are versioned independently of the API version. Treating them as opaque identifiers rather than semantic versions is the correct approach — their semantics are defined by the documentation at the given date, not derivable from the date alone.</p>
+<hr>
+<h2>Context Editing</h2>
+<p>Context editing gives applications fine-grained runtime control over what content is cleared from conversation history as context grows. It is in beta (<code>context-management-2025-06-27</code>). The primary strategies:</p>
+<p><strong>Tool result clearing (<code>clear_tool_uses_20250919</code>):</strong> Removes old tool results in chronological order when a configured token threshold is exceeded. The application continues maintaining its full unmodified conversation history locally; clearing is server-side only. Configuration parameters: <code>trigger</code> (when to activate; default 100k input tokens), <code>keep</code> (how many recent tool pairs to preserve; default 3), <code>clear_at_least</code> (minimum token clearing per activation), <code>exclude_tools</code>, <code>clear_tool_inputs</code>.</p>
+<p><strong>Thinking block clearing (<code>clear_thinking_20251015</code>):</strong> Manages thinking blocks in conversations using extended thinking. Per-model defaults differ: Opus 4.5+ and Sonnet 4.6+ keep all prior thinking blocks; earlier Opus/Sonnet and all Haiku keep only the last turn. The <code>keep</code> parameter overrides the per-model default.</p>
+<p><strong>Client-side SDK compaction:</strong> An alternative where the SDK generates a summary of the conversation and replaces the full history with it, using the <code>tool_runner</code> method. Server-side compaction is generally preferred. Client-side compaction interacts poorly with server-side tools (overestimates token usage from accumulated cache reads).</p>
+<p><strong>Architectural note:</strong> Context editing does not modify client state. The server applies edits before the prompt reaches Claude; the application always works from the full, unmodified history. The <code>context_management.applied_edits</code> field in the response reports what was cleared and how many tokens were saved.</p>
+<p><strong>Interaction with prompt caching:</strong> Tool result clearing invalidates cache breakpoints at the point of clearing (write cost incurred; subsequent requests reuse the new prefix). Thinking block clearing preserves the cache when blocks are kept; invalidates when they are cleared.</p>
+<hr>
+<h2>Stable Patterns vs. Operational Details</h2>
+<p><strong>Stable (architecture):</strong></p>
+<ul>
+<li>SDK beta namespace pattern for pre-release features
+</li>
+<li>Snapshot-date model IDs for stability; alias IDs for upgrade convenience
+</li>
+<li>Additive-only API versioning contract
+</li>
+<li>Context editing as server-side-only; client history unchanged
+</li>
+<li>Priority Tier burndown coefficients mirror pricing ratios
+</li>
+</ul>
+<p><strong>Operational (likely to change):</strong></p>
+<ul>
+<li>Specific model prices and context window sizes
+</li>
+<li>Beta header dates (superseded by newer versions)
+</li>
+<li><code>mcp-client-2025-04-04</code> is deprecated; use <code>mcp-client-2025-11-20</code>
+</li>
+<li>Specific default values for context editing parameters
+</li>
+</ul>
+<hr>
+<h2>Notes for Synthesis</h2>
+<p>This sub-batch covers infrastructure and configuration rather than model capabilities. The most synthesis-ready permanent note surfaces are the model lineup (→ <a href="anthropic-claude-4-model-family.html" class="wikilink">anthropic-claude-4-model-family</a>) and the service tier/priority capacity model. Context editing is closely related to <a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> and <a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

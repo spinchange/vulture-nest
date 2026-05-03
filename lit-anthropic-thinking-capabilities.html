@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: Anthropic Thinking Capabilities (Batch 2, Sub-batch B) — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: Anthropic Thinking Capabilities (Batch 2, Sub-batch B)</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: Anthropic Thinking Capabilities (Batch 2, Sub-batch B)</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/anthropic/ (sub-batch B: extended-thinking, adaptive-thinking, effort-parameter)</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Anthropic Thinking Capabilities (Batch 2, Sub-batch B)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: Anthropic Thinking Capabilities (Batch 2, Sub-batch B)</h1>
+<p>Synthesis of three Anthropic documentation pages covering extended thinking, adaptive thinking, and the effort parameter. Crawled 2026-05-02 to 2026-05-03 as part of Batch 2 ingestion.</p>
+<hr>
+<h2>The Thinking Mode Landscape</h2>
+<p>Anthropic&#39;s thinking capabilities let Claude reason step-by-step before producing a final response. There are three modes:</p>
+<table>
+<thead><tr>
+<th>Mode</th>
+<th>Config</th>
+<th>Model support</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Adaptive</strong></td>
+<td><code>thinking: {type: &quot;adaptive&quot;}</code></td>
+<td>Mythos Preview (default/only), Opus 4.7 (only), Opus 4.6, Sonnet 4.6</td>
+</tr>
+<tr>
+<td><strong>Manual</strong></td>
+<td><code>thinking: {type: &quot;enabled&quot;, budget_tokens: N}</code></td>
+<td>All models *except* Opus 4.7 (rejected with 400). Deprecated on Opus 4.6, Sonnet 4.6.</td>
+</tr>
+<tr>
+<td><strong>Disabled</strong></td>
+<td>Omit <code>thinking</code> or <code>{type: &quot;disabled&quot;}</code></td>
+<td>All models except Mythos Preview</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Invariant (critical):</strong> Manual thinking (<code>type: &quot;enabled&quot;</code>, <code>budget_tokens</code>) on Claude Opus 4.7 is not deprecated — it is removed. Sending it returns a <code>400</code> error. This is not the same as a deprecation with a grace period.</p>
+<hr>
+<h2>Extended Thinking (Manual Mode)</h2>
+<p>When extended thinking is on, Claude produces <code>thinking</code> content blocks containing its internal reasoning, followed by <code>text</code> content blocks with the final answer. Applications see both.</p>
+<p><code>budget_tokens</code> sets the maximum thinking token budget. On Claude 4 models, this applies to the full thinking tokens (not the summarized output). Claude may use less than the budget. Diminishing returns above 32k tokens; use batch processing for thinking budgets that push above 32k to avoid timeout exposure.</p>
+<p><code>budget_tokens</code> must be less than <code>max_tokens</code>. This makes extended thinking incompatible with <code>max_tokens: 0</code> (cache pre-warming).</p>
+<hr>
+<h2>Adaptive Thinking</h2>
+<p>Adaptive thinking removes manual budget management. Claude evaluates request complexity and determines when and how much to think. Set <code>thinking.type: &quot;adaptive&quot;</code>:</p>
+<pre><code>response = client.messages.create(
+    model=&quot;claude-opus-4-7&quot;,
+    max_tokens=16000,
+    thinking={&quot;type&quot;: &quot;adaptive&quot;},
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;...&quot;}],
+)</code></pre>
+<p>No beta header is required for adaptive thinking on any model.</p>
+<p>Adaptive mode automatically enables <strong>interleaved thinking</strong> — Claude can reason between tool calls, not just before the first one. On Opus 4.7 and Mythos Preview, inter-tool reasoning always moves into thinking blocks. On Opus 4.6 and Sonnet 4.6 with adaptive mode, interleaved thinking is also automatic.</p>
+<hr>
+<h2>The Effort Parameter</h2>
+<p><code>effort</code> is the replacement for <code>budget_tokens</code> as a thinking-depth control. It passes as <code>output_config: {effort: &quot;&lt;level&gt;&quot;}</code> alongside adaptive thinking. The effort level is soft guidance — it affects all token spend (text, tool calls, and thinking), not just thinking depth.</p>
+<table>
+<thead><tr>
+<th>Level</th>
+<th>Behavior</th>
+<th>Availability</th>
+</tr></thead><tbody>
+<tr>
+<td><code>max</code></td>
+<td>Always thinks, no depth constraint</td>
+<td>Mythos Preview, Opus 4.7, Opus 4.6, Sonnet 4.6</td>
+</tr>
+<tr>
+<td><code>xhigh</code></td>
+<td>Extended, long-horizon work</td>
+<td>Opus 4.7 only</td>
+</tr>
+<tr>
+<td><code>high</code></td>
+<td>Always thinks deeply (API default)</td>
+<td>All supported models</td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td>Moderate thinking; may skip simple queries</td>
+<td>All supported models</td>
+</tr>
+<tr>
+<td><code>low</code></td>
+<td>Minimizes thinking; fastest</td>
+<td>All supported models</td>
+</tr>
+</tbody>
+</table>
+<p>At <code>low</code> effort, Claude also makes fewer tool calls and proceeds more directly to action.</p>
+<p><strong>Guidance by model:</strong></p>
+<ul>
+<li>Opus 4.7: Start at <code>xhigh</code> for coding/agentic; <code>high</code> minimum for intelligence-sensitive tasks; <code>max</code> for frontier problems.
+</li>
+<li>Sonnet 4.6: <code>medium</code> for most; <code>high</code> when maximum intelligence required; <code>low</code> for high-volume/latency-sensitive.
+</li>
+</ul>
+<hr>
+<h2>Summarized vs. Omitted Thinking Display</h2>
+<p>The <code>display</code> field controls what appears in API responses — it does not affect cost.</p>
+<ul>
+<li><strong><code>&quot;summarized&quot;</code> (default on Opus 4.6, Sonnet 4.6):</strong> Thinking blocks contain a summary of Claude&#39;s reasoning. Billed for full thinking tokens; only summary visible.
+</li>
+<li><strong><code>&quot;omitted&quot;</code> (default on Opus 4.7, Mythos Preview):</strong> Thinking blocks have an empty <code>thinking</code> field. Reduces time-to-first-text-token during streaming because thinking tokens are not streamed. Same cost as summarized.
+</li>
+</ul>
+<p>The <code>signature</code> field is always present and identical regardless of <code>display</code>. It carries encrypted full thinking content for multi-turn continuity.</p>
+<p><strong>Warning:</strong> On Opus 4.7, <code>display</code> silently changed default from <code>&quot;summarized&quot;</code> (Opus 4.6 behavior) to <code>&quot;omitted&quot;</code>. Code that processed thinking blocks from Opus 4.6 may need <code>display: &quot;summarized&quot;</code> set explicitly when migrating to Opus 4.7.</p>
+<hr>
+<h2>Thinking Encryption and Round-Tripping</h2>
+<p>Full thinking content is encrypted and stored in the opaque <code>signature</code> field. Rules:</p>
+<ul>
+<li>Must pass thinking blocks back unchanged when using tools with thinking (tool-use continuity).
+</li>
+<li>On Opus 4.5+ and Sonnet 4.6+, thinking blocks from previous turns are preserved by default. On earlier Opus/Sonnet and all Haiku, only the last turn&#39;s thinking is preserved by default.
+</li>
+<li><code>redacted_thinking</code> blocks are a distinct type returned when portions of thinking are safety-redacted. They must also be passed back unchanged in multi-turn tool-use conversations. Filter code using <code>block.type == &quot;thinking&quot;</code> alone will silently drop <code>redacted_thinking</code> blocks — include <code>&quot;redacted_thinking&quot;</code> in the filter.
+</li>
+<li><code>signature</code> values are cross-platform (Claude API, Bedrock, Vertex AI).
+</li>
+</ul>
+<hr>
+<h2>Interleaved Thinking Model Support</h2>
+<table>
+<thead><tr>
+<th>Model</th>
+<th>Interleaved thinking</th>
+</tr></thead><tbody>
+<tr>
+<td>Mythos Preview</td>
+<td>Automatic (no header needed)</td>
+</tr>
+<tr>
+<td>Opus 4.7 (adaptive only)</td>
+<td>Automatic (no header needed)</td>
+</tr>
+<tr>
+<td>Opus 4.6 (adaptive)</td>
+<td>Automatic (no header needed); <code>interleaved-thinking-2025-05-14</code> deprecated, safely ignored</td>
+</tr>
+<tr>
+<td>Sonnet 4.6 (adaptive)</td>
+<td>Automatic</td>
+</tr>
+<tr>
+<td>Sonnet 4.6 (manual)</td>
+<td>Via <code>interleaved-thinking-2025-05-14</code> beta header (deprecated)</td>
+</tr>
+<tr>
+<td>Opus 4.5, Sonnet 4.5, Opus 4.1</td>
+<td>Via <code>interleaved-thinking-2025-05-14</code> beta header</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Thinking Block Preservation by Model</h2>
+<table>
+<thead><tr>
+<th>Model class</th>
+<th>Default thinking block preservation</th>
+</tr></thead><tbody>
+<tr>
+<td>Opus 4.5+, Sonnet 4.6+, Mythos Preview</td>
+<td>All prior thinking blocks kept</td>
+</tr>
+<tr>
+<td>Earlier Opus/Sonnet</td>
+<td>Last turn only</td>
+</tr>
+<tr>
+<td>All Haiku through Haiku 4.5</td>
+<td>Last turn only</td>
+</tr>
+</tbody>
+</table>
+<p>Override with the <code>clear_thinking_20251015</code> context-editing strategy.</p>
+<hr>
+<h2>Prompt Caching Interactions</h2>
+<ul>
+<li>Consecutive requests using the same thinking mode (<code>adaptive</code> or <code>enabled</code>) preserve cache breakpoints.
+</li>
+<li>Switching between <code>adaptive</code>, <code>enabled</code>, and <code>disabled</code> breaks message cache breakpoints.
+</li>
+<li>System prompts and tool definitions remain cached regardless of thinking mode changes.
+</li>
+<li>Extended thinking tasks may run &gt; 5 minutes; use the 1-hour cache TTL (<code>extended-cache-ttl-2025-04-11</code>).
+</li>
+<li>Thinking block preservation on Opus 4.5+ and Sonnet 4.6+ enables cache hits when thinking blocks are passed back with tool results.
+</li>
+</ul>
+<hr>
+<h2>Cost Model</h2>
+<p>You are charged for the <strong>full thinking tokens generated</strong>, not the summarized tokens visible in the response. The billed output token count will not match the visible token count when <code>display: &quot;omitted&quot;</code> or <code>&quot;summarized&quot;</code>. Use <code>max_tokens</code> as a hard ceiling on total output (thinking + text). At <code>high</code> or <code>max</code> effort, monitor for <code>stop_reason: &quot;max_tokens&quot;</code>.</p>
+<hr>
+<h2>Context Window Behavior</h2>
+<p>With extended thinking, <code>max_tokens</code> is enforced as a strict limit. Claude 3.7+ and Claude 4 models return a validation error if <code>prompt_tokens + max_tokens</code> exceeds the context window. (Earlier models silently adjusted <code>max_tokens</code>.)</p>
+<hr>
+<h2>Stable Patterns vs. Operational Details</h2>
+<p><strong>Stable (architecture):</strong></p>
+<ul>
+<li>Three-mode landscape (adaptive, manual, disabled) with hard model constraints
+</li>
+<li>Adaptive thinking is the trajectory; manual is deprecated on current flagship models
+</li>
+<li><code>signature</code> field as opaque round-trip token for thinking continuity
+</li>
+<li>Interleaved thinking as the key capability advantage for agentic workflows
+</li>
+<li><code>display</code> field as latency/visibility control, not cost control
+</li>
+</ul>
+<p><strong>Operational (likely to drift):</strong></p>
+<ul>
+<li>Per-model default for <code>display</code> (watch for future model changes)
+</li>
+<li>Specific effort level availability by model
+</li>
+<li><code>redacted_thinking</code> occurrence patterns
+</li>
+<li><code>interleaved-thinking-2025-05-14</code> beta header deprecation timeline
+</li>
+</ul>
+<hr>
+<h2>Notes for Synthesis</h2>
+<p>This sub-batch is the primary source for <a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>. The existing permanent note from the advanced-capabilities batch (2026-05-02) is high quality and covers this material well. The batch-2 crawl provides more granular provenance (page IDs) but no significant new content over what was already synthesized.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

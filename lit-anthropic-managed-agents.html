@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: Anthropic Managed Agents (Batch 2, Sub-batch D) — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: Anthropic Managed Agents (Batch 2, Sub-batch D)</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: Anthropic Managed Agents (Batch 2, Sub-batch D)</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/anthropic/ (sub-batch D: managed-agents-quickstart, managed-agents-agent-setup, managed-agents-sessions, managed-agents-environments, managed-agents-tools, managed-agents-events-streaming)</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Anthropic Managed Agents (Batch 2, Sub-batch D)</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: Anthropic Managed Agents (Batch 2, Sub-batch D)</h1>
+<p>Synthesis of six Anthropic documentation pages covering the Managed Agents product: quickstart, agent setup, sessions, environments, tools, and events/streaming. Crawled 2026-05-01 to 2026-05-02 as part of Batch 2 ingestion.</p>
+<hr>
+<h2>What Managed Agents Is</h2>
+<p>Claude Managed Agents is a separate product surface from the Messages API. It is not a Messages API tool loop. It provides managed execution infrastructure — containers, persistent sessions, event streaming, and versioned agent configurations — for running Claude as a long-horizon autonomous agent.</p>
+<p><strong>Beta header:</strong> <code>managed-agents-2026-04-01</code> (required for all Managed Agents endpoints: <code>/v1/agents</code>, <code>/v1/sessions</code>, <code>/v1/environments</code>). The SDK sets this header automatically.</p>
+<p><strong>Invariant:</strong> Managed Agents is a distinct product from the Messages API tool loop. Do not conflate the two. The Messages API tool loop requires the application to drive the agentic loop; Managed Agents provides server-managed execution and container infrastructure.</p>
+<hr>
+<h2>Core Concepts</h2>
+<table>
+<thead><tr>
+<th>Concept</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Versioned configuration: model, system prompt, tools, MCP servers, skills, callable agents</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>Container template: packages, networking. Created once; referenced by multiple sessions</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>A running agent instance within an environment; maintains conversation history</td>
+</tr>
+<tr>
+<td><strong>Events</strong></td>
+<td>Bidirectional: user messages sent in; agent messages, tool-use notifications, status updates streamed out</td>
+</tr>
+</tbody>
+</table>
+<p>The lifecycle: create an agent → create an environment → create a session (combining agent + environment) → send events → stream results.</p>
+<hr>
+<h2>Agents</h2>
+<p>Agents are reusable, versioned configurations. Create once; reference by ID across many sessions.</p>
+<p><strong>Configuration fields:</strong></p>
+<ul>
+<li><code>name</code> (required), <code>model</code> (required; Claude 4.5+ supported), <code>system</code> (system prompt), <code>tools</code>, <code>mcp_servers</code>, <code>skills</code>, <code>callable_agents</code>, <code>description</code>, <code>metadata</code>
+</li>
+</ul>
+<p><strong><code>agent_toolset_20260401</code></strong> is the shorthand to enable the full built-in tool set. Individual tools within it can be disabled via <code>configs</code>:</p>
+<pre><code>{
+  &quot;type&quot;: &quot;agent_toolset_20260401&quot;,
+  &quot;configs&quot;: [
+    { &quot;name&quot;: &quot;web_fetch&quot;, &quot;enabled&quot;: false }
+  ]
+}</code></pre>
+<p>To enable only specific tools, set <code>default_config.enabled: false</code> and selectively enable by name.</p>
+<p><strong>Versioning semantics:</strong></p>
+<ul>
+<li>Every update generates a new version (<code>version</code> starts at 1, increments with each update).
+</li>
+<li>Passing the current <code>version</code> in an update call ensures you&#39;re updating from a known state.
+</li>
+<li>Scalar fields are replaced; array fields are fully replaced; metadata is merged at key level.
+</li>
+<li>No-op updates do not create a new version.
+</li>
+<li>Archived agents are read-only; new sessions cannot reference them; existing sessions continue.
+</li>
+</ul>
+<p><strong>Fast mode:</strong> On Claude Opus 4.6, pass <code>{&quot;id&quot;: &quot;claude-opus-4-6&quot;, &quot;speed&quot;: &quot;fast&quot;}</code> as the <code>model</code> object.</p>
+<hr>
+<h2>Environments</h2>
+<p>Environments define the container configuration where agents run. Create once; reference by ID in sessions. Multiple sessions can share an environment but each session gets its own isolated container instance.</p>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li><code>packages</code>: Pre-installs packages (apt, cargo, gem, go, npm, pip). Packages are cached across sessions sharing the same environment.
+</li>
+<li><code>networking</code>: Controls outbound access.
+<ul>
+<li><code>unrestricted</code>: Full outbound (minus safety blocklist). Default.
+</li>
+<li><code>limited</code>: Restricts to <code>allowed_hosts</code> list, with opt-in flags for <code>allow_package_managers</code> and <code>allow_mcp_servers</code>.
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Security guidance:</strong> Use <code>limited</code> networking in production with an explicit <code>allowed_hosts</code> allowlist. Follow least privilege. The <code>web_search</code> and <code>web_fetch</code> tools&#39; domain filtering is separate from the container networking policy.</p>
+<p>Environments are not versioned. If you need to track environment state, log changes externally.</p>
+<hr>
+<h2>Sessions</h2>
+<p>A session is a running agent instance. Creating a session provisions the container but does not start execution — work begins when you send a user event.</p>
+<p><strong>Creating a session:</strong></p>
+<pre><code>session = client.beta.sessions.create(
+    agent=agent.id,           # latest version
+    environment_id=environment.id,
+)</code></pre>
+<p>To pin to a specific agent version: pass an object <code>{&quot;type&quot;: &quot;agent&quot;, &quot;id&quot;: agent_id, &quot;version&quot;: 1}</code>.</p>
+<p><strong>Session statuses:</strong></p>
+<ul>
+<li><code>idle</code> — waiting for input (sessions start here)
+</li>
+<li><code>running</code> — actively executing
+</li>
+<li><code>rescheduling</code> — transient error, retrying automatically
+</li>
+<li><code>terminated</code> — unrecoverable error
+</li>
+</ul>
+<p><strong>MCP authentication:</strong> Pass <code>vault_ids</code> at session creation to provide OAuth credentials for MCP tools. Anthropic manages token refresh.</p>
+<p><strong>Session lifecycle:</strong></p>
+<ul>
+<li>Archive: makes session read-only; prevents new events; history preserved.
+</li>
+<li>Delete: permanently removes record, events, and container. Cannot delete a <code>running</code> session (send interrupt event first). Files, memory stores, environments, and agents are independent resources and are not deleted.
+</li>
+</ul>
+<hr>
+<h2>Tools</h2>
+<p>Built-in agent tools (enabled via <code>agent_toolset_20260401</code>):</p>
+<table>
+<thead><tr>
+<th>Tool</th>
+<th>Name</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td>Bash</td>
+<td><code>bash</code></td>
+<td>Execute bash commands</td>
+</tr>
+<tr>
+<td>Read</td>
+<td><code>read</code></td>
+<td>Read file from filesystem</td>
+</tr>
+<tr>
+<td>Write</td>
+<td><code>write</code></td>
+<td>Write file to filesystem</td>
+</tr>
+<tr>
+<td>Edit</td>
+<td><code>edit</code></td>
+<td>String replacement in file</td>
+</tr>
+<tr>
+<td>Glob</td>
+<td><code>glob</code></td>
+<td>File pattern matching</td>
+</tr>
+<tr>
+<td>Grep</td>
+<td><code>grep</code></td>
+<td>Text search with regex</td>
+</tr>
+<tr>
+<td>Web fetch</td>
+<td><code>web_fetch</code></td>
+<td>Fetch URL content</td>
+</tr>
+<tr>
+<td>Web search</td>
+<td><code>web_search</code></td>
+<td>Search the web</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Custom tools:</strong> Define via <code>type: &quot;custom&quot;</code> with <code>name</code>, <code>description</code>, and <code>input_schema</code>. Claude emits a tool-call request; the application executes the tool and sends results back as an event. Custom tools in Managed Agents are analogous to user-defined client tools in the Messages API.</p>
+<p><strong>Custom tool best practices:</strong></p>
+<ul>
+<li>Provide extremely detailed descriptions (3–4+ sentences, including when not to use the tool).
+</li>
+<li>Consolidate related operations into fewer tools with an <code>action</code> parameter.
+</li>
+<li>Use meaningful namespacing in tool names (<code>db_query</code>, <code>storage_read</code>).
+</li>
+<li>Return high-signal responses: semantic identifiers, not opaque references; only the fields Claude needs.
+</li>
+</ul>
+<hr>
+<h2>Events and Streaming</h2>
+<p>Sessions are event-driven. The application opens a stream, sends user events, and receives agent events.</p>
+<p><strong>Opening the stream:</strong></p>
+<pre><code>with client.beta.sessions.events.stream(session.id) as stream:
+    client.beta.sessions.events.send(
+        session.id,
+        events=[{&quot;type&quot;: &quot;user.message&quot;, &quot;content&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;...&quot;}]}],
+    )
+    for event in stream:
+        match event.type:
+            case &quot;agent.message&quot;:
+                print(event.content[0].text, end=&quot;&quot;)
+            case &quot;agent.tool_use&quot;:
+                print(f&quot;\n[Using tool: {event.name}]&quot;)
+            case &quot;session.status_idle&quot;:
+                print(&quot;\nAgent finished.&quot;)
+                break</code></pre>
+<p><strong>Key event types:</strong></p>
+<ul>
+<li><code>user.message</code> — send user input
+</li>
+<li><code>agent.message</code> — agent text response
+</li>
+<li><code>agent.tool_use</code> — agent invoked a tool (informational)
+</li>
+<li><code>session.status_idle</code> — agent has finished current task; ready for more input
+</li>
+<li><code>session.status_terminated</code> — unrecoverable error
+</li>
+</ul>
+<p><strong>What happens on <code>user.message</code>:</strong></p>
+<ol>
+<li>Container is provisioned (if not already running).
+</li>
+<li>Agent loop runs: Claude decides tool usage → tools execute in container → results flow back.
+</li>
+<li>Events stream in real-time as the agent works.
+</li>
+<li><code>session.status_idle</code> emitted when the agent has nothing more to do.
+</li>
+</ol>
+<p><strong>Handling custom tool calls:</strong> When the agent invokes a custom tool, the application receives an event with the tool name and inputs. The application executes the tool and sends a <code>tool_result</code> event back. Claude continues the task from the result.</p>
+<hr>
+<h2>Relationship to the Messages API</h2>
+<table>
+<thead><tr>
+<th>Dimension</th>
+<th>Messages API (tool loop)</th>
+<th>Managed Agents</th>
+</tr></thead><tbody>
+<tr>
+<td>Who drives the loop</td>
+<td>Application</td>
+<td>Anthropic infrastructure</td>
+</tr>
+<tr>
+<td>Execution environment</td>
+<td>Application&#39;s infrastructure</td>
+<td>Managed containers</td>
+</tr>
+<tr>
+<td>State persistence</td>
+<td>Application manages conversation history</td>
+<td>Session maintains conversation history</td>
+</tr>
+<tr>
+<td>Tool execution</td>
+<td>Application executes client tools</td>
+<td>Built-in tools execute in container; custom tools sent back to application</td>
+</tr>
+<tr>
+<td>Versioning</td>
+<td>None (per-request)</td>
+<td>Versioned agents</td>
+</tr>
+<tr>
+<td>Beta header</td>
+<td>None required for base API</td>
+<td><code>managed-agents-2026-04-01</code> always required</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Stable Patterns vs. Operational Details</h2>
+<p><strong>Stable (architecture):</strong></p>
+<ul>
+<li>Agent/Environment/Session as the three-resource model
+</li>
+<li>Events as the bidirectional communication primitive
+</li>
+<li>Custom tools as application-executed extension points
+</li>
+<li><code>agent_toolset_20260401</code> as the managed tool surface identifier
+</li>
+<li>Session as a state machine progressing through idle/running/rescheduling/terminated
+</li>
+<li>Managed Agents ≠ Messages API tool loop
+</li>
+</ul>
+<p><strong>Operational (likely to drift):</strong></p>
+<ul>
+<li>Beta header date (<code>managed-agents-2026-04-01</code>)
+</li>
+<li>Specific toolset version (<code>agent_toolset_20260401</code>)
+</li>
+<li>Available built-in tools (web_search, web_fetch etc. may be updated)
+</li>
+<li>Multi-agent orchestration (<code>callable_agents</code>) is a research preview; API shape may change
+</li>
+<li>Skills feature maturity
+</li>
+</ul>
+<hr>
+<h2>Notes for Synthesis</h2>
+<p>This sub-batch is the primary source for <a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a>. The existing permanent note from the advanced-capabilities batch covers the architectural model. This sub-batch provides detailed coverage of sessions, environments, and events that weren&#39;t available in the first batch. Key additions: environment networking configuration, session status machine, <code>session.status_idle</code> event, vault-based MCP authentication, and the multi-agent <code>callable_agents</code> research preview.</p>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

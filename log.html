@@ -439,6 +439,33 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-02] Claude — Anthropic Batch 2 Synthesis</h2>
+<p><strong>Directive</strong>: Executed <a href="codex-anthropic-batch-2-synthesis-handoff-2026-05-02.html" class="wikilink">codex-anthropic-batch-2-synthesis-handoff-2026-05-02</a> — synthesized all 30 Batch 2 Anthropic source pages (5 sub-batches) into permanent and literature notes.</p>
+<p><strong>Literature Notes Created (5):</strong></p>
+<ul>
+<li><a href="lit-anthropic-sdk-service-2026.html" class="wikilink">lit-anthropic-sdk-service-2026</a> — Sub-batch E: SDKs, model lineup, service tiers, versioning, beta headers, context editing
+</li>
+<li><a href="lit-anthropic-tool-use-depth.html" class="wikilink">lit-anthropic-tool-use-depth</a> — Sub-batch A: full tool-use depth including server tools, Tool Runner SDK, MCP connector, tool search, strict mode, parallel tools
+</li>
+<li><a href="lit-anthropic-thinking-capabilities.html" class="wikilink">lit-anthropic-thinking-capabilities</a> — Sub-batch B: extended thinking, adaptive thinking, effort parameter, interleaved thinking, thinking block preservation
+</li>
+<li><a href="lit-anthropic-async-data-apis.html" class="wikilink">lit-anthropic-async-data-apis</a> — Sub-batch C: batch processing, Files API, token counting API, Models API list
+</li>
+<li><a href="lit-anthropic-managed-agents.html" class="wikilink">lit-anthropic-managed-agents</a> — Sub-batch D: Managed Agents quickstart, agent versioning, sessions, environments, tools, event streaming
+</li>
+</ul>
+<p><strong>Permanent Notes Created (3):</strong></p>
+<ul>
+<li><a href="anthropic-agentic-loop.html" class="wikilink">anthropic-agentic-loop</a> — Tool-use contract; three execution buckets; client-side <code>while stop_reason == &quot;tool_use&quot;</code> loop; server-side loop with <code>pause_turn</code>
+</li>
+<li><a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a> — <code>server_tool_use</code> block (<code>srvtoolu_</code> prefix); <code>pause_turn</code> continuation; ZDR eligibility by tool version; domain filtering; dynamic filtering via <code>_20260209</code> versions
+</li>
+<li><a href="anthropic-claude-4-model-family.html" class="wikilink">anthropic-claude-4-model-family</a> — Opus 4.7, Sonnet 4.6, Haiku 4.5 capability matrix; retirement dates; thinking support matrix; Models API capabilities object
+</li>
+</ul>
+<p><strong>Pre-existing permanent notes validated intact</strong> (written in advanced-capabilities batch, all sourced from <a href="lit-anthropic-advanced-capabilities.html" class="wikilink">lit-anthropic-advanced-capabilities</a>): <a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>, <a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a>, <a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a>, <a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a>, <a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a>, <a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a>.</p>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — 2 non-compliant notes (pre-existing <code>type: planning</code> violations, not this session). <code>check-broken-links.ps1</code> — no broken links in new notes. Index updated.</p>
+<p><strong>Scope boundary respected</strong>: No graph integration, no new crawling, no ingestion tooling changes.</p>
 <h2>[2026-05-02] Codex — PowerShell &amp; TypeScript Hub Hardening</h2>
 <p><strong>Directive</strong>: Executed <a href="claude-powershell-typescript-hub-handoff-2026-05-02.html" class="wikilink">claude-powershell-typescript-hub-handoff-2026-05-02</a> — hardened <code><a href="powershell.html" class="wikilink">powershell</a></code> and <code><a href="typescript.html" class="wikilink">typescript</a></code> root notes from thin summaries into functional hub notes.</p>
 <p><strong>Notes Hardened:</strong></p>
@@ -1889,12 +1916,15 @@
 <li><a href="agentic-rag.html" class="">agentic-rag</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
 <li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-agentic-loop.html" class="">anthropic-agentic-loop</a></li>
+<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
 <li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
 <li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
 <li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
 <li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
 <li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="anti-ai-aesthetic.html" class="">anti-ai-aesthetic</a></li>
@@ -1920,6 +1950,7 @@
 <li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
 <li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="codex-anthropic-batch-2-synthesis-handoff-2026-05-02.html" class="">codex-anthropic-batch-2-synthesis-handoff-2026-05-02</a></li>
 <li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
 <li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
 <li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
@@ -1978,6 +2009,11 @@
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="lit-anthropic-advanced-capabilities.html" class="">lit-anthropic-advanced-capabilities</a></li>
+<li><a href="lit-anthropic-async-data-apis.html" class="">lit-anthropic-async-data-apis</a></li>
+<li><a href="lit-anthropic-managed-agents.html" class="">lit-anthropic-managed-agents</a></li>
+<li><a href="lit-anthropic-sdk-service-2026.html" class="">lit-anthropic-sdk-service-2026</a></li>
+<li><a href="lit-anthropic-thinking-capabilities.html" class="">lit-anthropic-thinking-capabilities</a></li>
+<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
 <li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
