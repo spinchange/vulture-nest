@@ -53,10 +53,6 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[hybrid-retrieval-spec]]
 - [[community-protocol-trust-substrate]]
 * [[agentic-protocols]] - Unified Communication Protocols
-* [[mcp-best-practices]] - Context Optimization & Tool Hardening
-* [[mcp-authorization]] - Security & Permission Models
-* [[lit-mcp-advanced-patterns]] - Host scaling patterns and agent skill scaffolding
 * [[lit-mcp-connections-and-debugging]] - Connection lifecycle and debugging reference
-* [[lit-mcp-ecosystem-examples]] - Reference clients and servers
 * [[lit-mcp-authorization]] - Specification-level grounding for OAuth 2.1 authorization
 * [[lit-mcp-security-best-practices]] - Threat model and mitigations (attack-vector level)

@@ -31,7 +31,11 @@ This map provides a structured traversal of the Rust Programming Language, optim
 * [[rust-lifetimes]]: Ensuring reference validity.
 * [[rust-iterators-and-closures]]: Functional features in Rust.
 * [[rust-smart-pointers]]: `Box`, `Rc`, `RefCell`, and memory management.
+
+## Vault Applications
+* [[rust-tier-0-patterns]]: Safe Core — capability gating, serde boundary, Tier-0 → Tier-1 handoff.
 * [[rust-mcp-patterns]]: Building secure, high-performance [[mcp-moc|MCP]] servers.
+* [[rust-sqlx-migrations]]: Database tooling for the Rust service layer.
 
 ## Type System Theory
 * [[rust-phantom-types]]: Zero-cost type-level state encoding.
