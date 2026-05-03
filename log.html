@@ -1929,6 +1929,15 @@
 <li><strong>Result:</strong> Vault stats now report <code>0</code> orphans, <code>0</code> broken links, and <code>100%</code> health in agreement with <code>orphan-check.ps1</code> and <code>check-broken-links.ps1</code>.
 </li>
 </ul>
+<h2>[2026-05-03] codex — Duplicate Alias Cleanup</h2>
+<ul>
+<li><strong>Directive:</strong> Reduced alias collisions after graph integrity and vault stats returned to a clean state.
+</li>
+<li><strong>Canonicalization:</strong> Kept the short, high-ambiguity aliases on the primary active notes such as <a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>, <a href="mcp-moc.html" class="wikilink">mcp-moc</a>, <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>, <a href="mcp-transport.html" class="wikilink">mcp-transport</a>, <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a>, <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, <a href="pydantic.html" class="wikilink">pydantic</a>, <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>, <a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a>, and <a href="zettelkasten.html" class="wikilink">zettelkasten</a>.
+</li>
+<li><strong>Cleanup:</strong> Removed overlapping aliases from bridge notes, narrower implementation notes, literature notes, and the superseded polyglot ADR RFC so short wikilinks resolve more predictably.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -2161,6 +2170,7 @@
 <li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
+<li><a href="pydantic.html" class="">pydantic</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
