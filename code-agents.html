@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Code Agents</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, programmable-agents</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Code Agents</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">executable-actions, programmable-agents</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -445,6 +445,9 @@
       <main class="content-zone" id="content">
         <h1>Code Agents</h1>
 <p><strong>Code Agents</strong> are a sophisticated class of agents that interact with their environment by generating and executing high-level code (typically <a href="python.html" class="wikilink">python</a>) rather than simple JSON schemas.</p>
+<h2>Core Opinion</h2>
+<p>Code agents trade narrow interface safety for expressive execution. They matter when the work naturally wants loops, temporary variables, helper functions, lightweight parsing, or multi-step tool composition that would be awkward to express as one JSON-shaped function call at a time.</p>
+<p>In the Nest, this is not the default execution style for everything. It is the style to choose when tool calling would become an artificial bottleneck and when the runtime boundary is strong enough to tolerate generated code.</p>
 <h2>Advantages over JSON Agents</h2>
 <ul>
 <li><strong>Expressiveness:</strong> Code naturally handles complex logic, loops, and conditional branching.
@@ -454,11 +457,35 @@
 <li><strong>Integration:</strong> Direct access to libraries and APIs.
 </li>
 </ul>
+<h2>When They Fit</h2>
+<p>Choose a code agent when the task sounds like:</p>
+<ul>
+<li>&quot;Take these intermediate results and transform them a few times before returning anything.&quot;
+</li>
+<li>&quot;Call several tools in sequence without paying a model round trip for each step.&quot;
+</li>
+<li>&quot;Write a small piece of glue logic around existing libraries or scripts.&quot;
+</li>
+<li>&quot;Inspect the local environment and compose a solution from available components.&quot;
+</li>
+</ul>
+<p>If the task can be expressed as one narrow, well-described tool contract, ordinary <a href="agent-tools.html" class="wikilink">agent-tools</a> are usually safer and easier to observe.</p>
 <h2>Typical Examples</h2>
 <ul>
 <li>A data agent may generate a short <code>pandas</code> transform instead of requesting a long chain of table-filter actions.
 </li>
 <li>A research or ops agent may write a small script that calls an API, parses the response, and formats the result for a later step.
+</li>
+</ul>
+<h2>Execution Contract</h2>
+<p>The important boundary is not &quot;did the model write code?&quot; but &quot;who is allowed to run it, with what permissions, and under what review path?&quot;</p>
+<p>Useful execution contracts include:</p>
+<ul>
+<li><strong>Sandboxed autonomous execution:</strong> The strongest form of code-agent autonomy, appropriate only when filesystem, network, and credential access are tightly constrained.
+</li>
+<li><strong>Brokered tool execution:</strong> The generated code can call approved tools, but the host mediates those calls rather than granting arbitrary ambient authority.
+</li>
+<li><strong>Human-reviewed execution:</strong> The model writes code, but a human decides whether it actually runs.
 </li>
 </ul>
 <h2>Security Considerations</h2>
@@ -473,13 +500,37 @@
 <li><strong>Variability:</strong> Two runs may produce different code shapes that are both valid but harder to compare or cache.
 </li>
 </ul>
+<h2>Relationship to Other Patterns</h2>
+<ul>
+<li><a href="agent-actions.html" class="wikilink">agent-actions</a> and <a href="agent-tools.html" class="wikilink">agent-tools</a> cover the narrower tool-calling execution model that code agents often replace or wrap.
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> is complementary: a graph may route between phases while individual nodes use code-agent execution internally.
+</li>
+<li><a href="smolagents.html" class="wikilink">smolagents</a> is the clearest framework example in this vault of the code-first style.
+</li>
+<li><a href="python.html" class="wikilink">python</a> is the default implementation language for most code-agent examples here because it has the strongest local tooling and SDK surface.
+</li>
+</ul>
 <h2>Relationship to Wiki Architecture</h2>
 <p>In a <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a> model, Code Agents can treat the wiki&#39;s system layer (<code>02_System/</code>) as a discoverable tool library. That makes the vault more programmable: an agent can inspect available scripts, choose one, compose it with generated glue code, and report the result back into the knowledge graph.</p>
+<h2>Start Here</h2>
+<ol>
+<li>Read <a href="smolagents.html" class="wikilink">smolagents</a> for the code-first framework model.
+</li>
+<li>Read <a href="agent-tools.html" class="wikilink">agent-tools</a> if you need the contrast against schema-first tool calling.
+</li>
+<li>Read <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> if the question is really about workflow topology rather than execution style.
+</li>
+</ol>
 <h2>See Also</h2>
 <ul>
 <li><a href="index.html" class="wikilink">index</a>
 </li>
 <li><a href="agent-actions.html" class="wikilink">agent-actions</a>
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
 </li>
 <li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
@@ -503,6 +554,7 @@
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
 <li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
@@ -511,6 +563,8 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="python.html" class="">python</a></li>

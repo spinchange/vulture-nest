@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Graph Orchestration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">stateful-orchestration, event-driven-agents, workflow-design</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Graph Orchestration</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">stateful-orchestration, event-driven-agents, workflow-design</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -445,22 +445,73 @@
       <main class="content-zone" id="content">
         <h1>Graph Orchestration</h1>
 <p><strong>Graph Orchestration</strong> is a design pattern where agentic behavior is modeled as a directed graph, ensuring state persistence and deterministic control over LLM workflows.</p>
+<h2>Core Opinion</h2>
+<p>Graph orchestration is what you use when an agentic system should behave like a managed process instead of a free-form conversation. The key move is to make transitions explicit: the system does not merely &quot;decide what to do next&quot; in an unstructured loop, it advances through named steps with known routing rules and durable state.</p>
+<p>In the Nest, this pattern matters whenever reproducibility, resumability, or human approval boundaries matter more than raw conversational freedom.</p>
 <h2>Structural Components</h2>
 <ul>
-<li><strong>State:</strong> The &quot;living document&quot; that moves between steps.
+<li><strong>State:</strong> The &quot;living document&quot; that moves between steps. This is the load-bearing part of the design: prompts, tool outputs, checkpoints, and control flags all accumulate here.
 </li>
-<li><strong>Nodes:</strong> The computational steps (<a href="python.html" class="wikilink">python</a> logic).
+<li><strong>Nodes:</strong> The computational steps, usually expressed as <a href="python.html" class="wikilink">python</a> logic or framework runnables. Nodes may call models, tools, or deterministic code.
 </li>
-<li><strong>Edges:</strong> The routing paths (Conditional or Direct).
+<li><strong>Edges:</strong> The routing paths. Some are direct, while others are conditional and inspect the current state to decide the next transition.
+</li>
+<li><strong>Entry/Exit Signals:</strong> Real graph runtimes usually model an explicit start and end boundary rather than assuming an endless loop.
 </li>
 </ul>
-<h2>Frameworks</h2>
+<h2>Why Use It</h2>
+<p>Choose graph orchestration when the problem sounds like one of these:</p>
 <ul>
-<li><strong>LangGraph:</strong> The industry standard for graph-based orchestration.
+<li>&quot;This workflow has named phases and cannot just improvise forever.&quot;
 </li>
-<li><strong>LlamaIndex Workflows:</strong> An event-driven alternative focusing on type-safe event passing.
+<li>&quot;We need to pause, resume, or recover from interruption without losing state.&quot;
+</li>
+<li>&quot;A human approval gate or external event should control whether the system advances.&quot;
+</li>
+<li>&quot;We want a visible topology for debugging, tracing, or replay.&quot;
 </li>
 </ul>
+<p>If the task is simple and mostly linear, <a href="workflow-agents.html" class="wikilink">workflow-agents</a> may be enough. If the task is primarily open-ended reasoning with lightweight tool calls, a looser <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> or framework-native agent loop may be cheaper.</p>
+<h2>Control Model</h2>
+<p>Graph orchestration sits between two extremes:</p>
+<ul>
+<li><strong>Looser conversational agents:</strong> The model reasons step by step and the host reacts, but control flow is mostly implicit.
+</li>
+<li><strong>Rigid scripted workflows:</strong> Every branch is hard-coded with little adaptive behavior.
+</li>
+</ul>
+<p>The graph pattern keeps the execution surface explicit while still allowing adaptive work *inside* nodes. That is why it pairs well with tool use, retrieval, or human-in-the-loop review.</p>
+<h2>Framework Instantiations</h2>
+<ul>
+<li><strong><a href="langgraph.html" class="wikilink">langgraph</a>:</strong> The clearest example of explicit stateful graph control. Its emphasis is durable execution, checkpoints, interrupts, and reruns. See <a href="lit-langgraph.html" class="wikilink">lit-langgraph</a>.
+</li>
+<li><strong><a href="llamaindex.html" class="wikilink">llamaindex</a>:</strong> Approaches the same space through async workflows and typed events. This is closer to event-driven orchestration than purely edge-driven graph routing, but the practical role is similar.
+</li>
+<li><strong><a href="workflow-agents.html" class="wikilink">workflow-agents</a>:</strong> ADK&#39;s deterministic orchestration layer. These are not general graph engines, but they occupy the same design family: explicit orchestration over sub-agents instead of unconstrained autonomy.
+</li>
+</ul>
+<h2>Relationship to Other Agent Patterns</h2>
+<ul>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a> uses graph orchestration when the manager needs stable routing among workers rather than ad hoc delegation.
+</li>
+<li><a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a> models ownership transfer between agents; graph orchestration models the workflow topology around such transfers.
+</li>
+<li><a href="code-agents.html" class="wikilink">code-agents</a> can run *inside* graph nodes, but code generation is an execution style, not an orchestration model.
+</li>
+<li><a href="agentic-rag.html" class="wikilink">agentic-rag</a> often benefits from graph control when retrieval, verification, and synthesis should be separate stages instead of one blended loop.
+</li>
+</ul>
+<h2>Start Here</h2>
+<ol>
+<li>Read <a href="langgraph.html" class="wikilink">langgraph</a> if you need the most explicit control-flow implementation.
+</li>
+<li>Read <a href="workflow-agents.html" class="wikilink">workflow-agents</a> if your use case is structured orchestration inside ADK rather than a general graph runtime.
+</li>
+<li>Read <a href="llamaindex.html" class="wikilink">llamaindex</a> if your mental model is event-driven workflows tied closely to retrieval and data agents.
+</li>
+<li>Return to <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> once you know whether your question is about orchestration, execution style, or protocol boundaries.
+</li>
+</ol>
 <h2>See Also</h2>
 <ul>
 <li><a href="index.html" class="wikilink">index</a>
@@ -468,6 +519,12 @@
 <li><a href="langgraph.html" class="wikilink">langgraph</a>
 </li>
 <li><a href="llamaindex.html" class="wikilink">llamaindex</a>
+</li>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a>
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
+</li>
+<li><a href="code-agents.html" class="wikilink">code-agents</a>
 </li>
 <li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
 </li>
@@ -485,6 +542,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
 <li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="langgraph.html" class="">langgraph</a></li>
@@ -496,11 +554,18 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="agentic-rag.html" class="">agentic-rag</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="langgraph.html" class="">langgraph</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="llamaindex.html" class="">llamaindex</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
 <li><a href="python.html" class="">python</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>
         </div>
