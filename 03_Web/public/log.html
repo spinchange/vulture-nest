@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>log — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>log</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">log</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Wiki Log</h1>
+<h2>[2026-05-02] Claude — Anthropic Advanced Capabilities Synthesis</h2>
+<p><strong>Directive</strong>: Executed <a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="wikilink">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a> — extended the Anthropic cluster beyond first-batch fundamentals using the local <code>00_Raw/anthropic/</code> corpus.</p>
+<p><strong>New Notes Created:</strong></p>
+<ul>
+<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a> — Adaptive thinking mode, effort parameter, interleaved thinking, display modes (summarized/omitted), thinking encryption, cache interaction, cost model
+</li>
+<li><a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a> — Async batch execution (50% discount), limits, polling, custom_id tracking, extended output beta (300k tokens), prompt caching interaction
+</li>
+<li><a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a> — Upload-once file storage, file_id reference pattern, content type/block mapping, storage limits, download restriction
+</li>
+<li><a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a> — Server-side MCP client, mcp_servers + mcp_toolset, allowlist/denylist patterns, OAuth auth, TypeScript helpers
+</li>
+<li><a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a> — SDK tool loop automation, @beta_tool decorator, compaction, error interception, result modification
+</li>
+<li><a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a> — Agent/Environment/Session architecture, event-driven interaction, session state machine, vault IDs
+</li>
+<li><a href="lit-anthropic-advanced-capabilities.html" class="wikilink">lit-anthropic-advanced-capabilities</a> — Literature note summarizing all advanced corpus sources with durable patterns vs. drifting operational details
+</li>
+</ul>
+<p><strong>Notes Deepened:</strong></p>
+<ul>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> — Added content block type list, token counting endpoint
+</li>
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> — Added thinking_delta/signature_delta events, omitted display behavior, redacted_thinking handling
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> — Added 1-hour TTL, thinking mode invalidation rules, batch stacking guidance
+</li>
+</ul>
+<p><strong>Graph Updated:</strong></p>
+<ul>
+<li><a href="index.html" class="wikilink">index</a> — Expanded Anthropic API section (7 notes added)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — Added 4 Anthropic advanced notes to Mechanics of Agency
+</li>
+<li><code>02_System/system-index.md</code> — Moved handoff to Completed Handoffs
+</li>
+</ul>
+<p><strong>Stop condition met:</strong> Literature note exists, 3 required new notes exist, 3 existing notes deepened, graph updated. Did not continue into language-root lane.</p>
+<h2>[2026-05-01] Claude — Supabase Flask Quickstart Synthesis (Stage 7–8)</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="claude-supabase-flask-handoff-2026-05-01.html" class="wikilink">claude-supabase-flask-handoff-2026-05-01</a> — performed Stage 7 (Synthesis) and Stage 8 (Promotion) for the Supabase Flask Quickstart source (page ID <code>31f3d047</code>, 2 chunks).
+</li>
+<li><strong>Verification</strong>: <code>verify_source_index</code> passed — 2 chunks, status <code>passed</code>, next state <code>synthesized</code>. Provenance block built with T5 traceability.
+</li>
+<li><strong>Literature Note</strong>: Created <a href="lit-supabase-flask-quickstart.html" class="wikilink">lit-supabase-flask-quickstart</a> — full source summary with code examples, RLS setup, environment config, and singleton client pattern.
+</li>
+<li><strong>Permanent Note</strong>: Created <a href="pattern-supabase-flask-integration.html" class="wikilink">pattern-supabase-flask-integration</a> — atomic pattern note covering module-level <code>create_client()</code> singleton, environment-based config, method-chain query API, and RLS-as-authorization-layer.
+</li>
+<li><strong>Promoted</strong>: Updated <code>01_Wiki/index.md</code> (Literature Notes + Multi-Agent Pattern Language sections) and <code>02_System/system-index.md</code> (new Python / Supabase Integration section).
+</li>
+</ul>
+<h2>[2026-05-01] Claude — OpenAI Agents SDK Synthesis (Firecrawl Pipeline)</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="handoff-firecrawl-openai-agents.html" class="wikilink">handoff-firecrawl-openai-agents</a> — synthesized Gemini&#39;s Firecrawl crawl of the OpenAI Agents SDK docs (15 pages, 168 chunks, all indexed in Supabase pgvector).
+</li>
+<li><strong>Diagnosis</strong>: Found two pipeline bugs blocking synthesis: (1) <code>filter_domain</code> parameter not handled by <code>match_documents</code> RPC — returns 0 results when passed; (2) <code>pipeline-policy.yaml</code> threshold of <code>0.78</code> exceeds all actual similarity scores for this corpus (~0.50–0.70). Used explicit <code>match_threshold=0.5</code> override to retrieve.
+</li>
+<li><strong>MCP Config</strong>: Created <code>.mcp.json</code> in vault root — <code>vulture-ingest</code> server now registered for future sessions.
+</li>
+<li><strong>Note Densified</strong>: <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> — rewrote with provenance block, <code>Runner</code> API, agent loop mechanics, Manager vs Peer handoff patterns, <code>handoff()</code> customization, guardrail scoping (input/output/tool), dynamic instructions, <code>RunState</code> resumability, lifecycle hooks, tracing.
+</li>
+<li><strong>Supabase</strong>: Promoted 14 OpenAI Agents SDK pages from <code>Indexed</code> → <code>Promoted</code>.
+</li>
+<li><strong>Bugs fixed</strong> (follow-up session): (1) <code>match_threshold or policy_default</code> falsiness trap — <code>0.0</code> treated as falsy, overriding explicit threshold; fixed to <code>if not None</code>; (2) policy <code>min_similarity_threshold</code> lowered <code>0.78 → 0.62</code> to match corpus ceiling (~0.70 max observed). <code>filter_domain</code> was correctly implemented — prior misdiagnosis corrected.
+</li>
+</ul>
+<h2>[2026-04-30] Claude — Synthesis Intelligence Layer Implementation</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> — built the &quot;Mind&quot; of the <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>.
+</li>
+<li><strong>Epistemic Risk Classifier</strong>: <code>02_System/vulture-ingest/epistemic_classifier.py</code> — T0–T5 classification logic; <code>classify_claim()</code> and <code>classify_draft()</code> functions. Reads policy thresholds at runtime.
+</li>
+<li><strong>Conflict Resolution Templates</strong>: <code>02_System/vulture-ingest/conflict_templates.py</code> — Arbitration prompt templates for direct_contradiction, version_skew, scope_overlap; <code>ConflictReport</code> dataclass; <code>parse_conflict_report()</code> enforces Escalate→AUTH_REQUIRED invariant.
+</li>
+<li><strong>Provenance Block Generator</strong>: <code>02_System/vulture-ingest/provenance.py</code> — <code>generate_provenance_block()</code> and <code>render_provenance_yaml()</code> matching &#167;7 schema (source_record_ids, chunk_ids, retrieved_at, acting_agent).
+</li>
+<li><strong>Synthesis Quality Rubric</strong>: <code>02_System/vulture-ingest/synthesis_rubric.py</code> — Atomicity checker: word count, section count, scope statement presence, concept-boundary phrase detection; returns <code>atomicity_score</code> 0.0–1.0.
+</li>
+<li><strong>MCP Wiring</strong>: Extended <code>02_System/vulture-ingest/server.py</code> with four new tools: <code>classify_synthesis_draft</code>, <code>get_conflict_resolution_template</code>, <code>run_synthesis_rubric</code>, <code>build_provenance_block</code>.
+</li>
+<li><strong>Tests</strong>: <code>02_System/test_synthesis_intelligence.py</code> — 29 tests, all passing. Existing 6 pipeline tests unaffected.
+</li>
+<li><strong>Note Created</strong>: <a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a> — permanent note documenting the intelligence layer architecture.
+</li>
+<li><strong>Index Updated</strong>: Added synthesis-intelligence-layer to Blueprint Specs.
+</li>
+<li><strong>Next</strong>: Await Codex infrastructure seam (index_crawled_source, verify_source_index, promote_synthesis_candidate) to enable first end-to-end ingestion test.
+</li>
+</ul>
+<h2>[2026-04-29] Gemini — Master Agentic Source Orchestrator Synthesis</h2>
+<ul>
+<li><strong>Synthesis Complete</strong>: Unified v1 (Gemini), v2 (Codex), and v3 (Claude) into a single Master Specification at <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>.
+</li>
+<li><strong>Design DNA</strong>: Integrated 8-stage lifecycle (Codex), Epistemic Risk Tiers (Claude), and Agent Trinity roles (Gemini).
+</li>
+<li><strong>Handoffs Created</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> (Infrastructure/Policy)
+</li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> (Intelligence/Gates)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Archive</strong>: Moved v2 and v3 development versions to <code>00_Raw/reference/orchestrator-archive/</code>.
+</li>
+<li><strong>Status</strong>: Master spec set to <code>active</code>.
+</li>
+</ul>
+<h2>[2026-04-29] Claude — Spec: Agentic Source Orchestrator v3 (Archived)</h2>
+<ul>
+<li><strong>Note Created</strong>: <code>spec-agentic-source-orchestrator-v3</code> — synthesis intelligence layer (Archived into <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a>)
+</li>
+<li><strong>Scope</strong>: Epistemic risk model (T0–T5 claim tiers), evidence reliability dimensions, conflict resolution protocol, synthesis quality rubric, concept decomposition rule, knowledge freshness + re-ingestion signals, retrieval quality failure detection, cross-agent arbitration, provenance link maintenance, extended synthesis loop, policy additions, extended acceptance criteria and build sequence
+</li>
+<li><strong>Design intent</strong>: v2 (Codex) hardened ingestion control; v3 adds the knowledge quality model that governs what ingested material is allowed to become
+</li>
+<li><strong>Index</strong>: Added to Blueprint Specs section
+</li>
+<li><strong>Next</strong>: Codex to implement epistemic tier classifier and provenance block writer per implementation sequence &#167;14
+</li>
+</ul>
+<h2>[2026-04-28] Claude — Inaugural Verbalized Sampling Run</h2>
+<ul>
+<li><strong>Experiment scaffolded</strong>: <code>04_Experiments/2026-04-28_verbalized-sampling-inaugural/</code> via <code>new-experiment.ps1</code>
+</li>
+<li><strong>Run</strong>: <code>verbalized-sampling.ps1</code> — Q: &quot;What is genuinely underrated about how language models fail?&quot; — TailStart=7, 49s, no ParseWarning
+</li>
+<li><strong>Result</strong>: Confirmed. Tail ranks 7–9 surfaced three suppressed framings (training-data sociology, meta-cognitive blindness, alignment-as-surface-polish) integrated by Call 2 into a convergent three-layer failure argument absent from the modal
+</li>
+<li><strong>Key finding</strong>: Convergent thesis — our standard error-detection strategies may operate on a rhetorical surface that alignment training has optimized away
+</li>
+<li><strong>Artifacts</strong>: <code>entry.md</code> complete, <code>results/run-001.json</code> written
+</li>
+<li><strong>Next</strong>: Consider promoting three-layer convergence to a permanent note; Seam written if session ends here
+</li>
+</ul>
+<h2>[2026-04-28] Claude — Sprint Close-Out</h2>
+<ul>
+<li><strong>Status</strong>: April 2026 roadmap sprint complete. All 4 pillars delivered.
+</li>
+<li><strong>Codex delivered</strong>: Seams + Debates SQLite tables, <code>New-WikiSeam</code> structured write, <code>Get-LastSeam</code>, <code>New-DebateLog</code>, <code>New-Experiment</code> scaffold script, <code>Invoke-HumanCommit</code>, untracked files committed.
+</li>
+<li><strong>Gemini delivered</strong>: <code>04_Experiments/</code> tier + README, <code>visitor-directives.md</code> updated (seam protocol + experiment capture), index maintenance, full maintenance cycle.
+</li>
+<li><strong>Known gap resolved</strong>: <code>sync-embeddings.ps1</code> transient API connection failure — confirmed resolved; 285 notes current as of 2026-04-28.
+</li>
+<li><strong>Seam</strong>: Written to PoShWiKi <code>Seams</code> table (id=3) and Session 2026-04-28 page.
+</li>
+<li><strong>Next</strong>: Inaugural <code>04_Experiments/</code> entry — scaffold <code>verbalized-sampling-v2</code> run with <code>New-Experiment</code>.
+</li>
+</ul>
+<h2>[2026-04-27] Claude — Productivity Roadmap Sprint</h2>
+<ul>
+<li><strong>Action</strong>: New-computer setup session. Created CLAUDE.md, cleaned up .claude/settings.local.json, saved persistent memory.
+</li>
+<li><strong>Notes Created</strong>: <a href="productivity-roadmap-2026-04-27.html" class="wikilink">productivity-roadmap-2026-04-27</a>, <a href="experiment-capture-protocol.html" class="wikilink">experiment-capture-protocol</a>, <a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">codex-roadmap-sprint-handoff-2026-04-27</a>, <a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">gemini-roadmap-sprint-handoff-2026-04-27</a>
+</li>
+<li><strong>Index Updated</strong>: Added Active Roadmap section, Experiment &amp; Capture Protocol section, new handoff entries.
+</li>
+<li><strong>Next</strong>: Hand-deliver Codex handoff first, then Gemini handoff after Codex seam.
+</li>
+</ul>
+<h2>[2026-05-18] community-reports | Created Community Report for Community 7 (Rust Type Systems) at <a href="rust-type-systems.html" class="wikilink">rust-type-systems</a>.</h2>
+<h2>[2026-04-27] Vault Health Repair &amp; Workbench Proof</h2>
+<ul>
+<li><strong>Action</strong>: Repaired the vault maintenance gate and captured a repo-local workbench proof artifact at <code>00_Raw/workbench/proof-vulture-nest-maintenance.json</code>.
+</li>
+<li><strong>Health Repair</strong>:
+<ul>
+<li>
+<ul>
+<li>Fixed YANP taxonomy drift in newly added notes.
+</li>
+<li>Restored graph integrity by repairing stale wikilinks and adding canonical <a href="powershell.html" class="wikilink">powershell</a> and <a href="typescript.html" class="wikilink">typescript</a> root notes.
+</li>
+<li>Hardened <code>check-broken-links.ps1</code>, <code>orphan-check.ps1</code>, and <code>generate-dashboard.ps1</code> to handle anchors, path-style wikilinks, recursive note discovery, and fenced-example false positives.
+</li>
+<li>Re-synced the graph with <code>sync-vault-graph.ps1</code>; dashboard health returned to <code>HealthScore=100</code>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Workbench Proof</strong>:
+<ul>
+<li>
+<ul>
+<li>Ran <code>node dist/cli/main.js proof --repo C:\Users\executor\Documents\vulture-nest --output C:\Users\executor\Documents\vulture-nest\00_Raw\workbench\proof-vulture-nest-maintenance.json --search &quot;HealthScore&quot;</code> from <code>00_Raw/workbench/</code>.
+</li>
+<li>Proof artifact status: <code>warn</code>, not because of repo health, but because the repo root has no <code>package.json</code>, so Workbench&#39;s generic <code>testOrExplain()</code> path reports <code>no package.json</code>.
+</li>
+<li>Proof round still verified the current root inventory, dirty worktree state, and <code>HealthScore</code> evidence in <code>generate-dashboard.ps1</code>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>[2026-04-27] Gardening Audit — Triage List</h2>
+<table>
+<thead><tr>
+<th>note_id</th>
+<th>failure_mode</th>
+<th>metric</th>
+<th>suggested_action</th>
+</tr></thead><tbody>
+<tr>
+<td>memex</td>
+<td>Thin Node</td>
+<td>77 words, 1 links</td>
+<td>Expand or Absorb</td>
+</tr>
+<tr>
+<td>cognitive-architectures</td>
+<td>Orphan</td>
+<td>0 meaningful inbound</td>
+<td>Wire</td>
+</tr>
+<tr>
+<td>github-deployment</td>
+<td>Orphan</td>
+<td>0 meaningful inbound</td>
+<td>Wire</td>
+</tr>
+<tr>
+<td>knowledge-compiler-spec</td>
+<td>Orphan</td>
+<td>0 meaningful inbound</td>
+<td>Wire</td>
+</tr>
+</tbody>
+</table>
+<h2>[2026-04-27] Codex Build Sprint</h2>
+<ul>
+<li><strong>Built</strong>: <code>02_System/chunker.py</code> + <code>02_System/test_chunker.py</code>; <code>02_System/memory_mcp/schema.sql</code>, <code>02_System/memory_mcp/server.py</code>, and <code>02_System/test_memory_mcp.py</code>; <code>00_Raw/tier-0/</code> Rust scaffold with capability, state, gate, proof, and error modules.
+</li>
+<li><strong>Gardening Audit</strong>: Appended triage results derived from <code>01_Wiki/*.md</code> frontmatter/body metrics plus the live <code>00_Raw/PoShWiKi/wiki.db</code> <code>Links</code> graph, because the active vault DB does not expose the spec&#39;s <code>Notes</code> table.
+</li>
+<li><strong>Python Verification</strong>: <code>python -m pytest 02_System/test_chunker.py 02_System/test_memory_mcp.py -v -p no:cacheprovider</code> → 8/8 passing.
+</li>
+<li><strong>Rust Verification</strong>: <code>cargo test</code> in <code>00_Raw/tier-0/</code> → 2/2 passing.
+</li>
+<li><strong>Maintenance Result</strong>: <code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code> completed but vault health remained <code>0</code> due pre-existing YANP non-compliance, orphans, broken links, and a skipped embedding sync caused by a refused Gemini connection.
+</li>
+</ul>
+<h2>[2026-04-27] Claude Synthesis, Blueprint &amp; Source Pipeline Sessions</h2>
+<ul>
+<li><strong>Action</strong>: Three consecutive Claude synthesis sessions; 17 new notes committed to <code>main</code>.
+</li>
+<li><strong>Session 1 — Synthesis</strong>: 5 literature notes (<code>lit-typescript-handbook</code>, <code>lit-rust-programming-language</code>, <code>lit-mcp-architecture</code>, <code>lit-python-standard-library</code>, <code>lit-skills-agent-behavior</code>), <a href="community-report-generator.html" class="wikilink">community-report-generator</a> spec (k-means/Leiden algorithm, agent prompt schema), 7 multi-agent pattern language permanents (<a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a>, <a href="pattern-state-transfer.html" class="wikilink">pattern-state-transfer</a>, <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a>, <a href="pattern-parallel-fan-out.html" class="wikilink">pattern-parallel-fan-out</a>, <a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a>, <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a>, <a href="pattern-human-in-the-loop.html" class="wikilink">pattern-human-in-the-loop</a>).
+</li>
+<li><strong>Session 2 — Blueprint</strong>: <a href="spec-memory-mcp.html" class="wikilink">spec-memory-mcp</a> (SQLite-backed MCP server, two scopes, FTS5+cosine search, C# + Python blueprints), <a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> (serializable Capability enum, CapabilitySet lattice ops, serde validation gate, GuardrailProof HMAC bridge).
+</li>
+<li><strong>Session 3 — Gardening &amp; Sources</strong>: <a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a> (5 failure modes, SQL detection queries, 4-phase session protocol), <a href="spec-visual-vault-language.html" class="wikilink">spec-visual-vault-language</a> (Mermaid.js standards — 4 diagram patterns with rendered examples), <a href="spec-firecrawl-pgvector-pipeline.html" class="wikilink">spec-firecrawl-pgvector-pipeline</a> (Firecrawl v2 API, 2-table Postgres schema, HNSW index, heading-aware chunking, ETag+SHA-256 dedup, match_documents RPC, Python ingestion skeleton).
+</li>
+<li><strong>Status</strong>: 17 notes committed. PoShWiKi board updated with Gemini + Codex follow-up tasks.
+</li>
+</ul>
+<h2>[2026-04-27] Log Chronology Fixed</h2>
+<ul>
+<li><strong>Action</strong>: Re-sorted and standardized the entire 02_System/log.md file.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Standardized 10+ loose timestamped entries into proper ## [YYYY-MM-DD] headings.
+</li>
+<li>Fixed out-of-order 2025 and 2026 entries using a custom PowerShell 7 script.
+</li>
+<li>Log is now in strict descending chronological order.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Log health 100%.
+</li>
+</ul>
+<h2>[2026-04-27] Orphan Resolution &amp; Graph Integrity</h2>
+<ul>
+<li><strong>Action</strong>: Performed vault-wide orphan check via <code>02_System/orphan-check.ps1</code>.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Identified 3 orphaned ADK notes (<code>adk-advanced-capabilities</code>, <code>adk-evaluation-framework</code>, <code>adk-long-term-memory</code>).
+</li>
+<li>Integrated orphans into thematic permanent notes: <a href="agent-evaluation.html" class="wikilink">agent-evaluation</a> and <a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: 0 orphans remaining. Knowledge graph 100% connected.
+</li>
+</ul>
+<h2>[2026-04-27] Vault Maintenance</h2>
+<ul>
+<li><strong>Action</strong>: Fixed 25 broken links in <code>02_System/index.md</code> and <code>02_System/log.md</code>.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Converted <code>community-reports/</code> path-based wikilinks to flat unique stem wikilinks.
+</li>
+<li>Removed broken links to non-existent system scripts.
+</li>
+<li>Restored missing handoff notes: <a href="codex-usage-loop-handoff.html" class="wikilink">codex-usage-loop-handoff</a> and <a href="claude-community-summary-handoff.html" class="wikilink">claude-community-summary-handoff</a> as draft placeholders.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Index and Log link health restored.
+</li>
+</ul>
+<h2>[2026-04-27] Index Expansion &amp; MOC Integration</h2>
+<ul>
+<li><strong>Action</strong>: Expanded <code>02_System/index.md</code> from a flat list to a structured &quot;Map of Maps&quot;.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Integrated 16 thematic Maps of Content (MOCs) covering Agentic Frameworks, MCP, Programming Languages, PKM, and System Infrastructure.
+</li>
+<li>Increased indexed coverage of the wiki from ~14% to a comprehensive thematic mapping of all major clusters.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: MOC coverage gap resolved.
+</li>
+</ul>
+<h2>[2026-04-27] Post-Synthesis Semantic Weave</h2>
+<ul>
+<li><strong>Action</strong>: Re-ran the auto-link judge after Pillar 1 &amp; 3 synthesis.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Established 4 new conceptual bridges (MCP Architecture, Rust, Progressive Handoff).
+</li>
+<li>Mapped bidirectional links between permanent concepts and new Literature notes.
+</li>
+<li>Link graph density increased to 2,352 mapped connections.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: New synthesis fully integrated into knowledge graph.
+</li>
+</ul>
+<h2>[2026-04-27] Manifest Synchronization</h2>
+<ul>
+<li><strong>Action</strong>: Synchronized <code>00_Raw/_manifest.yaml</code> with all files on disk.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Added 17 previously untracked source files to the manifest.
+</li>
+<li>Classified sources by domain (agentic-frameworks, programming, pkm, ai-research).
+</li>
+<li>Marked existing synthesized sources as <code>processed</code> to clarify ingestion state.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: 100% manifest coverage achieved.
+</li>
+</ul>
+<h2>[2026-04-27] PowerShell 7 Mandate Hardening</h2>
+<ul>
+<li><strong>Action</strong>: Created and installed the pwsh-shell workspace skill.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Mandates the use of pwsh (PowerShell 7.6.1) for all shell operations.
+</li>
+<li>Skill installed at .gemini/skills/pwsh-shell.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Modern shell environment strictly enforced.
+</li>
+</ul>
+<h2>[2026-04-27] Frontmatter Hardening</h2>
+<ul>
+<li><strong>Action</strong>: Achieved 100% compliance for mandatory YANP frontmatter fields in <code>01_Wiki/</code>.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Injected <code>type: permanent</code> or <code>type: literature</code> into all remaining notes.
+</li>
+<li>Normalized date formats to <code>YYYY-MM-DD</code> for the <code>a2a-*</code> protocol series.
+</li>
+<li>Verified compliance across all ~210 notes via PowerShell regex scan.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Frontmatter compliance confirmed.
+</li>
+</ul>
+<h2>[2026-04-27] Global Weave &amp; Graph Synchronization</h2>
+<ul>
+<li><strong>Action</strong>: Executed vault-wide cross-linking (The Weave) and semantic auto-linking.
+</li>
+<li><strong>Details</strong>:
+<ul>
+<li>
+<ul>
+<li>Linked 150+ unlinked mentions of core terms (PowerShell, Rust, TypeScript, Python, MCP, ADK).
+</li>
+<li>Synchronized embeddings and established 4 new high-similarity semantic bridges.
+</li>
+<li>Link graph updated: 2179 links mapped across 257 notes.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Vault connectivity at maximum density.
+</li>
+</ul>
+<h2>[2026-04-24] ingest | Enriched <a href="zettelkasten.html" class="wikilink">zettelkasten</a> with <a href="zettelkasten-note-types.html" class="wikilink">zettelkasten-note-types</a> and <a href="zettelkasten-workflow.html" class="wikilink">zettelkasten-workflow</a>.</h2>
+<h2>[2026-04-24] lint | Performed &#39;weave&#39; to integrate orphans <a href="yaml-for-yanp.html" class="wikilink">yaml-for-yanp</a> and <a href="plain-plus-design.html" class="wikilink">plain-plus-design</a> into the wiki web.</h2>
+<h2>[2026-04-24] research | Synthesized <a href="augmenting-human-intellect.html" class="wikilink">augmenting-human-intellect</a> from Engelbart&#39;s 1962 paper and updated index.</h2>
+<h2>[2026-04-24] research | Added <a href="roam-research.html" class="wikilink">roam-research</a> to wiki and index.</h2>
+<h2>[2026-04-24] ingest | Fully ingested &#39;LLM Wiki.md&#39; into <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a>, <a href="wiki-pattern-architecture.html" class="wikilink">wiki-pattern-architecture</a>, and <a href="wiki-pattern-operations.html" class="wikilink">wiki-pattern-operations</a>.</h2>
+<h2>[2026-04-24] research | Added <a href="gtd.html" class="wikilink">gtd</a> and <a href="actionable-vs-reference.html" class="wikilink">actionable-vs-reference</a> to wiki and index.</h2>
+<h2>[2026-04-24] research | Synthesized <a href="outliners.html" class="wikilink">outliners</a> and <a href="org-mode.html" class="wikilink">org-mode</a> into wiki and index.</h2>
+<h2>[2026-04-24] research | Started JavaScript thread with <a href="javascript-on-desktop.html" class="wikilink">javascript-on-desktop</a> and <a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a>.</h2>
+<h2>[2026-04-24] research | Added <a href="tauri.html" class="wikilink">tauri</a> to the JavaScript cluster.</h2>
+<h2>[2026-04-24] audit | Performed &#39;Frontmatter Hardening&#39; on all 29 wiki notes. Added <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> to system layer and verified 100% compliance.</h2>
+<p>[2026-04-24] workflow | Created <a href="powershell-moc.html" class="wikilink">powershell-moc</a> as a thematic entry point and updated index.</p>
+<p>[2026-04-24] workflow | Global &#39;MOC-ification&#39; complete. 4 new MOCs created. Index refactored into a high-level map of maps.</p>
+<p>[2026-04-24] ingest | Added <a href="python.html" class="wikilink">python</a> and <a href="racket.html" class="wikilink">racket</a> permanent notes. Created <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> to unify dev environments. Performed link audit and fixed 1 broken reference.</p>
+<p>[2026-04-24] ingest | Synthesized &#39;actions.mdx&#39; into <a href="agent-actions.html" class="wikilink">agent-actions</a> and <a href="code-agents.html" class="wikilink">code-agents</a>. Established <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> to map agency mechanics.</p>
+<p>[2026-04-24] ingest | Large-scale ingestion of HF Agents Course Unit 1. Added <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>, <a href="react-pattern.html" class="wikilink">react-pattern</a>, <a href="chat-templates.html" class="wikilink">chat-templates</a>, <a href="agent-tools.html" class="wikilink">agent-tools</a>, and <a href="smolagents.html" class="wikilink">smolagents</a>.</p>
+<p>[2026-04-24] ingest | Global ingestion of HF Agents Course Unit 2. Added <a href="llamaindex.html" class="wikilink">llamaindex</a>, <a href="langgraph.html" class="wikilink">langgraph</a>, <a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>, <a href="agentic-rag.html" class="wikilink">agentic-rag</a>, and <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>. Refactored Agentic MOC to distinguish between Framework types.</p>
+<p>[2026-04-24] ingest | Ingested HF Bonus Unit 1. Added <a href="function-calling.html" class="wikilink">function-calling</a> and <a href="lora.html" class="wikilink">lora</a>. Expanded Agentic MOC to include training-layer agency.</p>
+<p>[2026-04-24] ingest | Ingested HF Bonus Unit 2. Added <a href="agent-observability.html" class="wikilink">agent-observability</a>, <a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>, and <a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>. Refactored Agentic MOC to include production monitoring standards.</p>
+<p>[2026-04-24] ingest | Global ingestion of HF Unit 3 and Bonus Unit 3. Added <a href="gala-agent-use-case.html" class="wikilink">gala-agent-use-case</a>, <a href="agents-in-games.html" class="wikilink">agents-in-games</a>, and <a href="pokemon-battle-agent.html" class="wikilink">pokemon-battle-agent</a>. Vault now covers the full spectrum from theory to gaming and RAG applications.</p>
+<p>[2026-04-24] ingest | Final ingestion of HF Agents Course complete. Added <a href="gaia-benchmark.html" class="wikilink">gaia-benchmark</a>, <a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>, and <a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>. The vault now contains the full 10-unit course curriculum.</p>
+<p>[2026-04-24] workflow | System Hardening complete. Created <a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a> to formalize agentic maintenance. The vault is now fully self-documenting for incoming agents.</p>
+<p>[2026-04-24] ingest | Ingested Anthropic MCP Documentation. Created <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>, <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>, <a href="mcp-client-capabilities.html" class="wikilink">mcp-client-capabilities</a>, <a href="mcp-transport.html" class="wikilink">mcp-transport</a>, and <a href="mcp-development.html" class="wikilink">mcp-development</a>.</p>
+<p>[2026-04-24] ingest | Ingested &#39;openai-agents-and-swarm.md&#39;. Created <a href="openai-swarm.html" class="wikilink">openai-swarm</a>. Updated <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>. [2026-04-24] ingest | Ingested agent meta-documentation: <a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>, <a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a>, <a href="agent-skills-index.html" class="wikilink">agent-skills-index</a>, and <a href="agent-configuration-sync-strategy.html" class="wikilink">agent-configuration-sync-strategy</a>. Updated <a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a>. [2026-04-24] ingest | Synthesized <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> (ADK) and <a href="foundry-local.html" class="wikilink">foundry-local</a> into the wiki. Expanded <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> to include these enterprise and local frameworks.</p>
+<p>[2026-04-24] ingest | Synthesized &#39;the-rust-programming-language.md&#39; into <a href="rust.html" class="wikilink">rust</a> and <a href="rust-ownership.html" class="wikilink">rust-ownership</a>. Added &#39;Systems &amp; Safety&#39; section to <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>.</p>
+<p>[2026-04-24] ingest | Synthesized &#39;typescript-handbook.md&#39; into <a href="typescript-moc.html" class="wikilink">typescript-moc</a> and 10+ atomic reference notes. Linked to <a href="javascript-moc.html" class="wikilink">javascript-moc</a> and <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>.</p>
+<p>[2026-04-24] ingest | Synthesized <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> as the production evolution of Swarm. Created <a href="chromadb.html" class="wikilink">chromadb</a> reference for agent semantic memory. Updated <a href="agent-observability.html" class="wikilink">agent-observability</a> with production monitoring patterns. Refined <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> to prioritize these production-ready tools.</p>
+<p>[2026-04-24] research | Designed <a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a> to bridge YANP Wikilinks with ChromaDB semantic discovery. Established the &quot;Discovery-Link&quot; workflow for autonomous link recommendation.</p>
+<p>[2026-04-24] ingest | Deconstructed 18 raw MCP documentation files into a structured <a href="mcp-moc.html" class="wikilink">mcp-moc</a> and atomic reference library. Established canonical notes for <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>, <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>, <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a>, and <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>. Integrated the protocol library into <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>.</p>
+<p>[2026-04-24] ingest | Synthesized 7 Hugging Face Agents course files into a structured <a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>. Created/refined atomic notes for <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a>, <a href="react-pattern.html" class="wikilink">react-pattern</a>, <a href="function-calling.html" class="wikilink">function-calling</a>, <a href="smolagents.html" class="wikilink">smolagents</a>, <a href="agentic-rag.html" class="wikilink">agentic-rag</a>, <a href="gaia-benchmark.html" class="wikilink">gaia-benchmark</a>, and <a href="pokemon-battle-agent.html" class="wikilink">pokemon-battle-agent</a>. Integrated theoretical backbone into <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>.</p>
+<p>[2026-04-24] research | Established the <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> for agent-runnable system scripts. Created the <a href="powershell-moc.html" class="wikilink">powershell-moc</a> and synthesized atomic documentation for all existing vault utilities (<a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a>, <a href="ps-vulture-search.html" class="wikilink">ps-vulture-search</a>, <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>, etc.). Formalized the concept of &quot;Executable Knowledge&quot; in the vault.</p>
+<p>[2026-04-24] audit | Executed the first <a href="hybrid-retrieval-spec.html" class="wikilink">hybrid-retrieval-spec</a> Link Audit. Discovered and implemented 4 high-value conceptual bridges:</p>
+<ul>
+<li><a href="rust-concurrency.html" class="wikilink">rust-concurrency</a> &lt;-&gt; <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
+</li>
+<li><a href="typescript-utility-types.html" class="wikilink">typescript-utility-types</a> &lt;-&gt; <a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
+</li>
+<li><a href="foundry-local.html" class="wikilink">foundry-local</a> &lt;-&gt; <a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a>
+</li>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> &lt;-&gt; <a href="ps-vulture-search.html" class="wikilink">ps-vulture-search</a>
+<p>Successfully tightened the knowledge graph using semantic discovery.</p>
+</li>
+</ul>
+<p>[2026-04-24] research | Synthesized <a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a> comparing OpenAI Swarm (Freedom/Handoffs) vs. Google ADK (Control/Workflows). Evaluated their specific utility for vault maintenance tasks (Ingestion vs. Discovery).</p>
+<p>[2026-04-24] research | Synthesized <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>, a technical blueprint for building high-performance, secure MCP servers using Rust&#39;s <code>Tokio</code> and <code>Arc/Mutex</code> primitives. Bridged the Rust and MCP knowledge domains.</p>
+<p>[2026-04-24] research | Synthesized <a href="executable-note-standard.html" class="wikilink">executable-note-standard</a>, defining how wiki notes can contain &quot;Active Knowledge&quot; through embedded PowerShell blocks. Established metadata triggers (<code>type: active</code>) and strict security boundaries for agent-led execution.</p>
+<p>[2026-04-24] research | Synthesized 5 preliminary stubs covering new knowledge domains:</p>
+<ul>
+<li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a>: Isolation (MicroVMs) and hardening.
+</li>
+<li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a>: LLM-centric tool schema design.
+</li>
+<li><a href="hitl-ui-patterns.html" class="wikilink">hitl-ui-patterns</a>: Interaction and approval models for agents.
+</li>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a>: CUDA, MLX, DirectML, and ONNX.
+</li>
+<li><a href="alternative-agent-frameworks.html" class="wikilink">alternative-agent-frameworks</a>: Comparative analysis of CrewAI and AutoGen.
+<p>Successfully linked these domains into <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>.</p>
+</li>
+</ul>
+<p>[2026-04-24] research | Established the architectural framework for the Microsoft stack. Created the <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a>, <a href="csharp-moc.html" class="wikilink">csharp-moc</a>, and <a href="wpf-moc.html" class="wikilink">wpf-moc</a>. Stubbed <a href="csharp-basics.html" class="wikilink">csharp-basics</a> to provide a foundation for future .NET ingestion.</p>
+<div class="log-entry"><span class="log-time">2026-04-25 14:30</span><span class="log-content">Ingested C#, .NET, and WPF documentation from Microsoft Learn. Created literature notes and 7 permanent notes. Updated C#, .NET, and WPF MOCs.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 14:45</span><span class="log-content">Ingested Entity Framework (EF) Core documentation. Created literature note and permanent notes for Basics and Migrations. Updated .NET Ecosystem MOC.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:00</span><span class="log-content">Cloned PoShWiKi repository and initialized its SQLite database. Created literature note and permanent note. Integrated into PowerShell MOC as an agent-memory system.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:15</span><span class="log-content">Built the PoShWiKi &quot;Thought API&quot; Wrapper (<a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a>) for standardized agent logging. Verified log appending, note upsertion, and machine-readable output.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 15:30</span><span class="log-content">Finalized .NET foundation with ASP.NET Core basics. Resolved vault &quot;islands&quot; by linking GraphRAG and LLM Wiki patterns into the Core Patterns MOC. Performed final graph sync.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 16:00</span><span class="log-content">Renamed <code>02_System/tool-registry.md</code> to <code>tool-registry.md</code> for YANP compliance and fixed dead links in <code>01_Wiki/index.md</code> and <code>02_System/index.md</code>.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 16:30</span><span class="log-content">Created <code>llms.txt</code> in vault root and public portal to provide machine-readable architecture and protocol guidance for visiting agents.</span></div>
+<p>[2026-04-25 14:43:00] INGEST: synthesized <a href="type-safety-spectrum-debate.html" class="wikilink">type-safety-spectrum-debate</a> from <code>00_Raw/type-safety-debate.md</code>.</p>
+<div class="log-entry"><span class="log-time">2026-04-25 17:00</span><span class="log-content">Crawled Python 3.14 documentation and synthesized <code>00_Raw/python-standard-library.md</code> as a high-density reference source. Updated index.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 17:15</span><span class="log-content">Synthesized <code>01_Wiki/agentic-tdd-patterns.md</code> to establish an &quot;Executable Intent&quot; protocol for agents building bespoke software. Updated index.</span></div>
+<div class="log-entry"><span class="log-time">2026-04-25 21:37</span><span class="log-content">Normalized generated artifacts with <code>.gitattributes</code> (<code>LF</code>), restored local ignores for <code>00_Raw/openai-js-repl/</code>, <code>00_Raw/workbench/</code>, and <code>**/target/</code>, then repaired graph anchors (<code>agent-actions-unit</code>, <code>claude-codex-interop-test</code>, <code>rust-sqlx-migrations</code>) so <code>run-maintenance.ps1</code> returns a 100/100 health score before committing CI-generated outputs.</span></div>
+<p>[2026-04-25] synthesis | Created <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> from PoShWiKi audit: concrete C# MCP server + local SQLite blueprint. Fixed dotnet-moc → agentic-frameworks-moc reverse edge. Cross-linked csharp-mcp-sdk to sqlite patterns. 100/100 health | 203 notes. [2026-04-25] synthesis | Synthesized <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> as top-level bridge note mapping .NET tier model to agentic-frameworks-moc. Expanded <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> (draft→active) with inference API patterns, SK integration, and hardware comparison. 100/100 health | 205 notes. [2026-04-25] rfc | Drafted <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> and <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a>. Four-tier ADR RFC with selection criteria, inter-tier contracts, failure-mode responsibilities, and enforcement options. Codex verification handoff written. Stub <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> created. 100/100 | 208 notes. [2026-04-25] adr | Codex verified ADR. Key finding: Tier-0 (Rust) and Tier-1 (C#) are architectural intent — no source checked in. PoShWiKi is Tier-2. Workbench is dev scaffolding (outside tier model). Option A (Pester script) preferred for enforcement. <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a> → active, <a href="polyglot-adr-rfc.html" class="wikilink">polyglot-adr-rfc</a> → superseded, <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> → active. Fixed orphan-check.ps1 ps-automation-spec gap. 100/100 | 208 notes. [2026-04-25] portal | Added VULTURE/PORTAL/INDEX/&lt;Note&gt; breadcrumb to template.html. Added pipe-table parser to generate-wiki.ps1 (Flush-Table with separator detection). All 209 notes recompiled. Tables render in dotnet-agent-integration, polyglot-platform-adr, lm-kit-dotnet, etc. 100/100. [2026-04-25] compliance | Codex applied ps-automation-spec scaffolding to the 12 non-compliant <code>02_System/*.ps1</code> scripts, added <code>02_System/test-tier-compliance.ps1</code> as ADR Option A enforcement, and wired <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> step [7/7] to prove Tier-2 compliance on every maintenance run. Two commits landed. 100/100 | 207 notes. [2026-04-25] seam | Wrote <a href="claude-portal-breadcrumbs-handoff.html" class="wikilink">claude-portal-breadcrumbs-handoff</a> for Claude: add portal breadcrumbs/index-back-nav through the shared HTML generation path where possible, inspect standalone pages, and verify whether markdown pipe tables are rendering as raw text in compiled HTML. Maintain 100/100 health.</p>
+<p>[2026-04-25] maintenance | Fixed broken link in GEMINI.md. Used ask_user to review 7 draft notes with user, then activated 6 of them per user&#39;s request.</p>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> (sim=0.8913) — Both scripts are complementary maintenance tools for knowledge graph integrity—broken link checker identifies invalid references while orphan check identifies unreferenced notes—and each would benefit from cross-referencing the other as part of a holistic graph health workflow.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> &lt;-&gt; <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> (sim=0.8856) — Note A explicitly implements the SQLite patterns from Note B, and Note B would benefit from citing Note A as a concrete C# MCP server instantiation of its principles.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a> &lt;-&gt; <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> (sim=0.879) — Note A establishes the foundational C#/.NET agentic pattern with SQLite that Note B explicitly builds upon and generalizes into an MCP server implementation, making them genuinely complementary and mutually reinforcing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: mutual link <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> &lt;-&gt; <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> (sim=0.8753) — Note A establishes the polyglot tier theory as emergent architecture, while Note B applies that same theory to map .NET-specific agentic tasks; each note strengthens the other by providing complementary scope (theory vs. implementation).
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:24] auto-link: added <a href="agent-actions.html" class="wikilink">agent-actions</a> to <a href="agent-actions-unit.html" class="wikilink">agent-actions-unit</a> (sim=0.8733) — Note A is a course-specific summary of agent actions that should reference Note B as its foundational permanent note, while Note B serves as the canonical definition and doesn&#39;t need the reverse link to maintain its conceptual completeness.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:25] auto-link: added <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> to <a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a> (sim=0.8671) — Note B is a specification document that describes Note A&#39;s script as one of its tools, so B should link to A for readers seeking implementation details, but A need not reciprocate since it already references the higher-level protocol standard.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:28] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> (sim=0.8634) — Note A&#39;s best practices for context optimization and tool calling directly inform how Note B&#39;s client orchestration should be implemented, while Note B&#39;s implementation patterns are concrete applications of Note A&#39;s security and performance principles.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:28] auto-link: mutual link <a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a> &lt;-&gt; <a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a> (sim=0.8618) — These notes describe complementary sides of the MCP ecosystem—clients that consume MCP services and servers that provide them—and readers understanding either concept would benefit from seeing the corresponding counterpart.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> &lt;-&gt; <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8606) — Both handoffs identify complementary gaps in the same vault direction (A2A and session types as missing theoretical foundations for trust substrate), were written in the same session, and each note would benefit from acknowledging the parallel prioritization and structural relationship of their respective coverage targets.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> (sim=0.8602) — Note A provides general MCP best practices (context optimization, tool calling, security hardening) while Note B provides Rust-specific implementation patterns for those same concerns, making them genuinely complementary references that would help readers understand both the principles and their concrete Rust implementation.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> &lt;-&gt; <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8585) — Note B explicitly references capability-lattice-spec as foundational context (session types prove correct *usage* of capabilities that the lattice proves an agent *has*), while Note A should reciprocally reference session types as the complementary formalism needed to complete the trust substrate theory.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: added <a href="vault-audit-tool-spec.html" class="wikilink">vault-audit-tool-spec</a> to <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> (sim=0.8558) — Note A orchestrates the maintenance scripts, while Note B formally specifies those same scripts&#39; schemas and behaviors; A should reference B for detailed tool specifications without B needing to reference the orchestration layer.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: added <a href="ms-learn-csharp-overview.html" class="wikilink">ms-learn-csharp-overview</a> to <a href="csharp-basics.html" class="wikilink">csharp-basics</a> (sim=0.8524) — Note A is a permanent note on C# basics that should reference Note B as a literature source for deeper architectural understanding, while Note B (a literature note) does not need to backlink to the more general basics note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8521) — These notes describe complementary halves of the MCP architecture (Client vs Server development), and each would benefit from cross-referencing the other to give readers the complete picture of how the two sides interact.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="ms-repo-poshwiki.html" class="wikilink">ms-repo-poshwiki</a> &lt;-&gt; <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (sim=0.8514) — Note A documents the PoShWiKi repository and its core features, while Note B describes a high-level API wrapper around that same engine; they are directly complementary and each note benefits from explicitly referencing the other to show the relationship between the underlying system and its agent-facing interface.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:29] auto-link: mutual link <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> &lt;-&gt; <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> (sim=0.8508) — Note A&#39;s Tier-0 Rust foundation directly instantiates the Trust-by-Construction substrate that Note B theorizes, and Note B&#39;s capability-governance principles explain why Rust is architecturally essential to Note A&#39;s tiered platform—they are mutually reinforcing rather than redundant.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: mutual link <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8497) — Note A provides strategic best practices and patterns for MCP implementation, while Note B covers tactical development rules and SDK specifics—they are complementary perspectives on the same domain that would benefit readers of either note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a> to <a href="codex-ps-compliance-handoff.html" class="wikilink">codex-ps-compliance-handoff</a> (sim=0.8494) — Note B (ps-compliance handoff) is a concrete downstream task that depends on Note A (polyglot ADR verification) for its tier architecture context and constraints, so B should reference A as its foundational requirement.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> to <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> (sim=0.8486) — Note A is a handoff that identifies session types as a priority gap and should link to Note B as the concrete implementation note that fulfills part of that goal, but Note B should not link back to the handoff document per the handoff-linking convention.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> to <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> (sim=0.8418) — PS: Vault Stats tracks orphan count as a key metric and should reference PS: Orphan Check as the tool that identifies those orphans, establishing a practical dependency relationship.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: mutual link <a href="mcp-debugging.html" class="wikilink">mcp-debugging</a> &lt;-&gt; <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8413) — Note A (Debugging) and Note B (Development) are complementary: developers need debugging techniques while building servers, and debuggers need to understand the development context and logging rules that are critical for troubleshooting.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:33] auto-link: added <a href="rust-affine-types.html" class="wikilink">rust-affine-types</a> to <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> (sim=0.8402) — Note B explicitly depends on understanding affine vs. linear type systems to explain why session types require a workaround in Rust, making a backlink to the foundational affine types note essential for readers.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> (sim=0.8398) — Both notes are complementary PowerShell maintenance scripts that work together to ensure knowledge graph integrity: one checks for broken links while the other audits YANP compliance, making them natural cross-references in a system maintenance context.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> &lt;-&gt; <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> (sim=0.8372) — These are sibling handoffs addressing complementary halves of the trust substrate theory (MCP via capability lattice, A2A as its peer-to-peer complement), and each explicitly identifies the other&#39;s domain as necessary context for vault completeness.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-note-creator.html" class="wikilink">ps-note-creator</a> &lt;-&gt; <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> (sim=0.8371) — These are complementary PowerShell automation tools for the YANP system: Note Creator produces YANP-compliant notes while YANP Audit validates their compliance, making each tool&#39;s purpose clearer when cross-referenced.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> &lt;-&gt; <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> (sim=0.8354) — Note B explicitly tracks &#39;Broken Link Count&#39; as a metric, making Note A (the tool that identifies broken links) a direct dependency and complementary reference for understanding how that metric is generated.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> to <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> (sim=0.8353) — Note A describes a concrete .NET MCP server implementation that would benefit from referencing the security hardening and context optimization best practices in Note B, but Note B is a general guide that doesn&#39;t need to reference this specific implementation pattern.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="microsoft-data-sqlite-agent-patterns.html" class="wikilink">microsoft-data-sqlite-agent-patterns</a> to <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (sim=0.834) — Note B (PoShWiKi Tools API) describes the high-level wrapper and relational sidecar pattern, while Note A provides the underlying implementation patterns and low-level SQLite mechanics that make that API possible; Note B should reference Note A to explain the technical substrate it abstracts.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="csharp-moc.html" class="wikilink">csharp-moc</a> &lt;-&gt; <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8337) — Both are language MOCs serving complementary roles in agent systems; C# users benefit from knowing Python alternatives and vice versa, as evidenced by the existing See Also sections and their parallel coverage of concurrency, validation, and persistence patterns.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a> &lt;-&gt; <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> (sim=0.8337) — Note A describes concrete MCP server implementations built with SDKs, while Note B describes the SDKs themselves—they are complementary resources where readers of either would benefit from understanding the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> to <a href="ms-learn-aspnet-core-overview.html" class="wikilink">ms-learn-aspnet-core-overview</a> (sim=0.8336) — ASP.NET Core is a framework built on .NET fundamentals, so Note A should reference Note B to establish the hierarchical relationship and help readers understand the underlying platform concepts (CLR, IL, DI, Generic Host) that enable ASP.NET Core.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: mutual link <a href="agent-knowledge-vault.html" class="wikilink">agent-knowledge-vault</a> &lt;-&gt; <a href="llm-wiki-pattern.html" class="wikilink">llm-wiki-pattern</a> (sim=0.8308) — These notes describe complementary aspects of the same conceptual system: Agent Knowledge Vault defines the *what* (a shared, model-agnostic knowledge base), while LLM Wiki Pattern defines the *how* (the architectural and operational methodology for maintaining it), and both explicitly reference the same foundational concepts (<a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>, <a href="the-compounding-artifact.html" class="wikilink">the-compounding-artifact</a>, provenance/auditability), making mutual reference essential for readers understanding either concept.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:34] auto-link: added <a href="ms-learn-csharp-overview.html" class="wikilink">ms-learn-csharp-overview</a> to <a href="csharp-moc.html" class="wikilink">csharp-moc</a> (sim=0.8285) — Note A is a MOC (map of content) that should reference foundational literature; Note B is a literature note that documents source material rather than serving as a hub, so it should not link back to the MOC.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: added <a href="ms-learn-wpf-overview.html" class="wikilink">ms-learn-wpf-overview</a> to <a href="wpf-moc.html" class="wikilink">wpf-moc</a> (sim=0.8275) — Note B is a MOC (map of contents) that organizes WPF concepts and should reference Note A as a foundational literature source, while Note A (a literature note) doesn&#39;t need to reciprocally link to the organizational hub.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: added <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> to <a href="claude-rust-type-system-handoff.html" class="wikilink">claude-rust-type-system-handoff</a> (sim=0.8266) — Note A is a handoff document that explicitly identifies session types in Rust as a dependent deliverable (&#39;that handoff depends on this one&#39;), so A should link to B as its realized output, but B should not backlink to A (handoff notes point forward, not receive backward links).
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:35] auto-link: mutual link <a href="mcp-client-features.html" class="wikilink">mcp-client-features</a> &lt;-&gt; <a href="mcp-server-features.html" class="wikilink">mcp-server-features</a> (sim=0.8261) — These notes describe complementary halves of the MCP architecture—Client capabilities (sampling, elicitation, roots, logging) and Server features (tools, resources, prompts)—and each would benefit from cross-referencing to show how they work together as a complete system.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:37] auto-link: added <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> to <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8258) — Note B discusses MCP development across multiple SDKs and should reference the C# SDK as a concrete implementation example, while Note A already appropriately references the general MCP architecture note.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:37] auto-link: mutual link <a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a> &lt;-&gt; <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> (sim=0.8241) — Note A (MCP Example Clients) and Note B (MCP SDKs) are complementary: clients use SDKs to implement MCP support, and SDKs enable the development of the clients described in Note A, so each would benefit from referencing the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="pkm-history-moc.html" class="wikilink">pkm-history-moc</a> &lt;-&gt; <a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> (sim=0.8234) — These are complementary MOCs that together form a complete PKM knowledge base—history provides the philosophical foundations while methods provides the practical implementations, and cross-referencing helps users understand both the &#39;why&#39; and the &#39;how&#39; of personal knowledge management.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="mcp-local-connections.html" class="wikilink">mcp-local-connections</a> &lt;-&gt; <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8224) — These notes describe complementary connection architectures (local stdio vs remote HTTP/SSE) within the MCP protocol ecosystem and would benefit from cross-referencing to help users understand the full landscape of connection options.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: added <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a> to <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8218) — Note B describes a specific implementation pattern (remote connections via HTTP/SSE) that is a concrete instantiation of the general MCP architecture described in Note A, so B should reference A for foundational context, while A need not reference every possible implementation detail.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> &lt;-&gt; <a href="mcp-security.html" class="wikilink">mcp-security</a> (sim=0.8213) — Note A discusses security considerations for remote connections (TLS/SSL, authorization, trust), while Note B provides the foundational security model and best practices that directly apply to those remote scenarios; each note benefits from referencing the other as complementary perspectives on MCP security.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="typescript-objects.html" class="wikilink">typescript-objects</a> &lt;-&gt; <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> (sim=0.8213) — Note A discusses object structure (index signatures, property modifiers, combining types) while Note B explains type operators (keyof, typeof, indexed access) that directly query and manipulate those same object structures, making them genuinely complementary concepts that benefit from cross-referencing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: added <a href="typescript-template-literals.html" class="wikilink">typescript-template-literals</a> to <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> (sim=0.8208) — Template literal types are a specialized application of type operators (particularly <code>keyof</code> and indexed access) for string manipulation, so Note B should reference Note A as a concrete use case, but Note A doesn&#39;t need to reference the broader operator concepts.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 02:38] auto-link: mutual link <a href="dotnet-mcp-server-patterns.html" class="wikilink">dotnet-mcp-server-patterns</a> &lt;-&gt; <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> (sim=0.8205) — Both notes document complementary MCP server implementation patterns in different languages (.NET vs Rust) with shared architectural concerns (connection lifecycle, state management, tool execution safety) that readers exploring MCP patterns would benefit from cross-referencing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: added <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> to <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8405) — Note B surveys multiple MCP SDKs (Python, TypeScript, Java) as general implementation patterns, while Note A is a deep dive into the C# SDK specifically—Note B should reference Note A as the detailed C# implementation example within its SDK comparison section.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: mutual link <a href="csharp-for-agentic-workflows.html" class="wikilink">csharp-for-agentic-workflows</a> &lt;-&gt; <a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a> (sim=0.8278) — Note A describes the architectural pattern and design principles that Note B implements concretely, and Note B exemplifies the C#/.NET agentic pattern that Note A theorizes—they are mutually clarifying and should reference each other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: added <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> to <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> (sim=0.8251) — PS: Vault Maintenance orchestrates multiple maintenance scripts including broken link detection, so it should reference PS: Broken Link Checker as one of its constituent tools, but the reverse link is unnecessary since Broken Link Checker is a standalone utility.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: added <a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a> to <a href="agent-skills-index.html" class="wikilink">agent-skills-index</a> (sim=0.8239) — Note A is a general index of agent skills and should reference Note B as a specific, concrete example of how MCP-related skills are implemented and used in practice.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: added <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> to <a href="mcp-debugging.html" class="wikilink">mcp-debugging</a> (sim=0.8218) — Note B (Debugging) should reference Note A (Best Practices) because debugging strategies are most effective when grounded in understanding the best practices and security patterns that should be implemented, whereas Note A stands as a complete guide independent of debugging concerns.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:22] auto-link: added <a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> to <a href="csharp-basics.html" class="wikilink">csharp-basics</a> (sim=0.8208) — Note A (C# Basics) covers language fundamentals and references the .NET platform, making it natural to point to Note B as a deeper, authoritative source on .NET fundamentals, while Note B (a literature note) should not backlink to general language basics.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> &lt;-&gt; <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8183) — Note A explicitly depends on Python tooling (Pydantic, FastAPI, decorators, asyncio) for implementing agentic frameworks, while Note B explicitly lists agent-tools as a related concept, making them genuinely complementary rather than coincidentally similar.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="mcp-agent-skills.html" class="wikilink">mcp-agent-skills</a> &lt;-&gt; <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> (sim=0.8173) — Note A describes the skills framework for building MCP servers, while Note B provides the best practices and patterns those servers should follow—they are complementary guides for MCP development where each enriches understanding of the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="rust-concurrency.html" class="wikilink">rust-concurrency</a> &lt;-&gt; <a href="rust.html" class="wikilink">rust</a> (sim=0.8157) — Note B introduces Rust&#39;s &#39;Fearless Concurrency&#39; as a key feature and should link to Note A for detailed implementation, while Note A should link to Note B as its parent concept to provide broader context.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: added <a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a> to <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> (sim=0.8155) — Note B&#39;s explanation of the <code>typeof</code> operator in type context should reference Note A&#39;s discussion of <code>typeof</code> as a type guard, since they describe different but related uses of the same operator that would benefit from cross-reference.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a> &lt;-&gt; <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8155) — Both notes are ecosystem MOCs that serve parallel organizational purposes for their respective language stacks, and each explicitly lists the other in their &#39;See Also&#39; section, indicating recognized mutual relevance for cross-ecosystem agent development patterns.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="typescript-objects.html" class="wikilink">typescript-objects</a> &lt;-&gt; <a href="typescript-utility-types.html" class="wikilink">typescript-utility-types</a> (sim=0.8147) — Note A covers foundational object type concepts (property modifiers, index signatures, combining types) while Note B builds on these foundations with utility types that transform objects; they are genuinely complementary and readers of either would benefit from knowing about the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="agent-actions.html" class="wikilink">agent-actions</a> &lt;-&gt; <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> (sim=0.8142) — These notes describe complementary components of the same agent architecture: Note A explains what Actions are (the execution mechanism), while Note B explains the Thought-Action-Observation cycle (the workflow that triggers actions), and each would benefit from referencing the other to provide complete context.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: added <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a> to <a href="agent-tools.html" class="wikilink">agent-tools</a> (sim=0.8138) — Note A discusses MCP as a unifying standard for tools but lacks detail on MCP&#39;s broader architecture and primitives; Note B provides that essential context, while Note B&#39;s tools section doesn&#39;t need to reference the general agent-tools concept.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: added <a href="csharp-mcp-sdk.html" class="wikilink">csharp-mcp-sdk</a> to <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a> (sim=0.8135) — Note B is a catalog/overview of MCP SDKs that should reference the specific C# SDK note for readers seeking detailed implementation guidance, while Note A already references the foundational mcp-architecture and doesn&#39;t need to backlink to a general catalog.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: added <a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> to <a href="dotnet-moc.html" class="wikilink">dotnet-moc</a> (sim=0.8134) — Note A is a MOC (map of contents) that should reference foundational literature; Note B is a literature note on .NET fundamentals that doesn&#39;t need to link back to a hub that organizes more specialized topics.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:23] auto-link: mutual link <a href="agent-skills-index.html" class="wikilink">agent-skills-index</a> &lt;-&gt; <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> (sim=0.8134) — Note A (Agent Skills Index) documents the active procedural capabilities agents use, while Note B (Agentic Frameworks MOC) covers the theoretical foundations and frameworks that enable those capabilities—they are complementary halves of a complete agent architecture and should cross-reference each other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="code-agents.html" class="wikilink">code-agents</a> &lt;-&gt; <a href="smolagents.html" class="wikilink">smolagents</a> (sim=0.8132) — Note A defines Code Agents as a concept and explicitly mentions smolagents as a mandatory tool for security, while Note B is a concrete implementation of that concept, making them genuinely complementary and each strengthening the other through bidirectional reference.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="powershell-moc.html" class="wikilink">powershell-moc</a> &lt;-&gt; <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8125) — Both MOCs describe complementary automation/development ecosystems that explicitly share infrastructure (SQLite, audio-overview-workflow, schema-driven patterns) and should cross-reference each other for users navigating polyglot agent tooling.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="typescript-functions.html" class="wikilink">typescript-functions</a> &lt;-&gt; <a href="typescript-objects.html" class="wikilink">typescript-objects</a> (sim=0.8122) — These notes are complementary parts of TypeScript&#39;s type system: functions describe callable signatures and behavior while objects describe data structures, and both use overlapping concepts (generics, optional parameters, type constraints) that benefit from cross-referencing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="csharp-async-await.html" class="wikilink">csharp-async-await</a> &lt;-&gt; <a href="python-asyncio.html" class="wikilink">python-asyncio</a> (sim=0.8118) — Both notes cover analogous asynchronous programming patterns (async/await in C# vs. asyncio in Python) with parallel concepts (Task vs. coroutine, await keyword, event-loop coordination) and both emphasize agent workflow applications, making them genuine cross-language complements.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: added <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> to <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a> (sim=0.8117) — ps-vault-maintenance orchestrates multiple maintenance scripts and should reference ps-vault-stats as a complementary observability tool that provides metrics on vault health, while ps-vault-stats independently tracks metrics without needing to reference the maintenance orchestrator.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: added <a href="ms-learn-dotnet-fundamentals.html" class="wikilink">ms-learn-dotnet-fundamentals</a> to <a href="ms-learn-csharp-overview.html" class="wikilink">ms-learn-csharp-overview</a> (sim=0.8115) — Note A (C# Overview) describes a language that runs on the .NET runtime, making a reference to Note B (.NET Fundamentals) essential for understanding the execution environment, while Note B is a broader platform overview that doesn&#39;t require C#-specific details.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> &lt;-&gt; <a href="dotnet-agent-integration.html" class="wikilink">dotnet-agent-integration</a> (sim=0.8114) — Note A&#39;s trust-by-construction substrate theory and Tier-0 Rust/MCP foundation directly underpins Note B&#39;s tier model and .NET integration strategy, making them mutually reinforcing frameworks for the same agentic architecture.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: added <a href="typescript-objects.html" class="wikilink">typescript-objects</a> to <a href="typescript-mapped-types.html" class="wikilink">typescript-mapped-types</a> (sim=0.8112) — Mapped types are an advanced pattern built on top of object types and property modifiers, so Note A should reference Note B as foundational context, but Note B is general-purpose and doesn&#39;t need to reference the specialized mapped types concept.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> &lt;-&gt; <a href="mcp-debugging.html" class="wikilink">mcp-debugging</a> (sim=0.8098) — Note A describes MCP client implementation patterns while Note B addresses debugging those clients; they are complementary guides where developers implementing clients (A) need debugging strategies (B) and debuggers need to understand client architecture (A).
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: added <a href="workbench-codex-runner-handoff.html" class="wikilink">workbench-codex-runner-handoff</a> to <a href="codex-polyglot-adr-handoff.html" class="wikilink">codex-polyglot-adr-handoff</a> (sim=0.8097) — Note A explicitly identifies <code>00_Raw/workbench/</code> as an open question about tier classification, and Note B documents the resolution of that artifact&#39;s role in the hardened Codex environment, making B a necessary reference for completing A&#39;s verification.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:24] auto-link: mutual link <a href="community-living-knowledge-system.html" class="wikilink">community-living-knowledge-system</a> &lt;-&gt; <a href="community-polyglot-agent-platform.html" class="wikilink">community-polyglot-agent-platform</a> (sim=0.8096) — Note A describes the knowledge system architecture and execution model that Note B&#39;s polyglot platform must implement across its language tiers; conversely, Note B demonstrates the concrete technical realization of Note A&#39;s abstract principle that &#39;a note is code&#39; through language-specific operational constraints.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:25] auto-link: mutual link <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> &lt;-&gt; <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8094) — Note A describes client development patterns for local/stdio connections while Note B covers remote HTTP/SSE connections; together they represent complementary transport mechanisms that MCP clients must support, and each would benefit from cross-referencing the other&#39;s transport approach.
+</li>
+</ul>
+<ul>
+<li>[2026-04-26 13:25] auto-link: mutual link <a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> &lt;-&gt; <a href="mcp-moc.html" class="wikilink">mcp-moc</a> (sim=0.8093) — Note A develops an emergent theory about MCP&#39;s trust architecture that grounds itself in MCP fundamentals, while Note B provides the comprehensive structural reference that Note A&#39;s theoretical claims depend on; each note strengthens the other by creating a bidirectional pathway between conceptual abstraction (A) and practical taxonomy (B).
+</li>
+</ul>
+<h2>[2026-04-24] schema | Updated GEMINI.md to formalize Zettelkasten note types (Fleeting, Literature, Permanent) in the workflow.</h2>
+<h2>[2026-04-24] ingest | Final cleanup of PKM ideas. Added <a href="wiki-pattern-tooling.html" class="wikilink">wiki-pattern-tooling</a>, <a href="collective-iq.html" class="wikilink">collective-iq</a>, <a href="pkm-software-landscape.html" class="wikilink">pkm-software-landscape</a>, and <a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>.</h2>
+<h2>[2026-04-24] research | Expanded PowerShell thread with <a href="ps-custom-objects.html" class="wikilink">ps-custom-objects</a>, <a href="ps-calculated-properties.html" class="wikilink">ps-calculated-properties</a>, and <a href="ps-classes.html" class="wikilink">ps-classes</a>.</h2>
+<h2>[2026-04-24] research | Started PowerShell learning thread with <a href="powershell-objects.html" class="wikilink">powershell-objects</a>.</h2>
+<h2>[2026-04-23] Agentic YANP Exploration</h2>
+<ul>
+<li><strong>Action</strong>: Created synthesis page for YANP&#39;s role in agentic workflows.
+</li>
+<li><strong>Created</strong>: <a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a>
+</li>
+<li><strong>Action</strong>: Updated <a href="yanp-for-agentic-workflows.html" class="wikilink">yanp-for-agentic-workflows</a> status to active.
+</li>
+</ul>
+<h2>[2026-04-23] Plain+ Ingestion</h2>
+<ul>
+<li><strong>Action</strong>: Ingested the Plain+ Design Specification.
+</li>
+<li><strong>Created</strong>: <a href="plain-plus-design.html" class="wikilink">plain-plus-design</a>, <a href="anti-ai-aesthetic.html" class="wikilink">anti-ai-aesthetic</a>.
+</li>
+<li><strong>Reference</strong>: Added <code>00_Raw/reference/plain-plus-design.md</code>.
+</li>
+</ul>
+<h2>[2026-04-23] YAML Cheat Sheet</h2>
+<ul>
+<li><strong>Action</strong>: Synthesized <a href="yaml-for-yanp.html" class="wikilink">yaml-for-yanp</a> from raw specification.
+</li>
+<li><strong>Created</strong>: <a href="yaml-for-yanp.html" class="wikilink">yaml-for-yanp</a>
+</li>
+</ul>
+<h2>[2026-04-23] Reference Seeding</h2>
+<ul>
+<li><strong>Action</strong>: Created <code>00_Raw/reference/</code> and added <code>yaml-spec-1.2.md</code>.
+</li>
+<li><strong>Purpose</strong>: Provide authoritative source for YANP frontmatter validation.
+</li>
+</ul>
+<h2>[2026-04-23] YANP Refactor</h2>
+<ul>
+<li><strong>Action</strong>: Refactored the entire vault to comply with the <strong>Yet Another Note Protocol (YANP)</strong>.
+</li>
+<li><strong>Changes</strong>:
+<ul>
+<li>
+<ul>
+<li>Updated <code>GEMINI.md</code> to enforce YANP mandates.
+</li>
+<li>Renamed all notes to lowercase kebab-case.
+</li>
+<li>Injected YAML frontmatter into all notes in <code>01_Wiki/</code>.
+</li>
+<li>Updated all internal wikilinks to use kebab-case file stems for maximum stability.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Files Migrated</strong>:
+<ul>
+<li>
+<ul>
+<li><code>llm-wiki-pattern.md</code>
+</li>
+<li><code>memex.md</code>
+</li>
+<li><code>zettelkasten.md</code>
+</li>
+<li><code>the-compounding-artifact.md</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>[2025-05-14] community-reports | Synthesized 6 Level-1 Community Reports: <a href="pkm-history.html" class="wikilink">pkm-history</a>, <a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>, <a href="dotnet-csharp.html" class="wikilink">dotnet-csharp</a>, <a href="vault-systems.html" class="wikilink">vault-systems</a>, <a href="frameworks-eval.html" class="wikilink">frameworks-eval</a>, and <a href="lattice-interop.html" class="wikilink">lattice-interop</a>.</h2>
+<ul>
+<li>[2026-04-27 01:02] auto-link: added <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a> to <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> (sim=0.9003) — Note A is a permanent concept note that should cite its source literature, and Note B is explicitly the literature/documentation source that Note A was synthesized from, making a one-directional reference from A to B appropriate.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:02] auto-link: added <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> to <a href="rfc-agent-orchestration-handoff.html" class="wikilink">rfc-agent-orchestration-handoff</a> (sim=0.8579) — Note B (RFC handoff) explicitly references the incomplete <a href="a2a-protocol.html" class="wikilink">a2a-protocol</a> as its foundation and extends it with orchestration patterns, so B should link back to A as the prerequisite work it builds upon, while A (as a task handoff) should not backlink to downstream RFCs.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:02] auto-link: mutual link <a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a> &lt;-&gt; <a href="adk-session-service.html" class="wikilink">adk-session-service</a> (sim=0.8551) — Both services are core ADK infrastructure components that work together in agent lifecycle management—Session Service manages conversation history and state while Artifact Service manages binary data persistence—and agents commonly use both services together through their context objects.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:02] auto-link: mutual link <a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a> &lt;-&gt; <a href="lit-openai-swarm.html" class="wikilink">lit-openai-swarm</a> (sim=0.8516) — Note A analyzes OpenAI Swarm vs. Google ADK as a philosophical comparison, while Note B provides the foundational literature and mechanics of these systems; they are complementary with A providing evaluation context and B providing source material.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:27] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a> (sim=0.9223) — Note A is a permanent, authoritative explanation of MCP architecture that should cite its literature source (Note B), establishing provenance and allowing readers to consult the original Anthropic documentation.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:27] auto-link: added <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a> to <a href="rfc-agent-orchestration-handoff.html" class="wikilink">rfc-agent-orchestration-handoff</a> (sim=0.8571) — Note A is an RFC proposing unification of agent orchestration protocols and explicitly needs to reference concrete pattern implementations like progressive handoff to ground its design objectives.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:27] auto-link: added <a href="mcp-server-features.html" class="wikilink">mcp-server-features</a> to <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> (sim=0.8566) — Note B is a literature/source note that provides foundational architecture context, and should reference Note A which offers a more detailed, practical breakdown of the server-exposed primitives that Note B only summarizes in tabular form.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 01:27] auto-link: mutual link <a href="rust.html" class="wikilink">rust</a> &lt;-&gt; <a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a> (sim=0.8505) — Note A is the conceptual entry point for Rust that should cite its primary source material, while Note B is the literature note that should link back to its subject concept, creating a bidirectional reference between concept and source.
+</li>
+</ul>
+<ul>
+<li>[2026-04-27] Gemini Cleanup: Reconciled 01_Wiki, indexed ADK notes and Community Reports, synced embeddings. Ref: <a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="wikilink">codex-gemini-cleanup-handoff-2026-04-27</a>
+</li>
+</ul>
+<ul>
+<li>[2026-04-27 02:40] auto-link: mutual link <a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> and <a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> (sim=0.8947) - These are sequential handoff notes describing complementary phases (Synthesis → Blueprint) of the same vault project, where each phase explicitly builds on the previous one&#39;s deliverables, making bidirectional referencing valuable for understanding the project&#39;s progression.
+</li>
+<li>[2026-04-27 02:40] auto-link: mutual link <a href="claude-synthesis-handoff-2026-04-27.html" class="wikilink">claude-synthesis-handoff-2026-04-27</a> and <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8943) - Both are 2026-04-27 handoff sessions delivering complementary work (Synthesis: literature + patterns + community report; Blueprint: memory MCP + Rust patterns), and each explicitly targets the next Claude instance, so cross-referencing provides complete session context.
+</li>
+<li>[2026-04-27 02:41] auto-link: mutual link <a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> and <a href="claude-gardening-visuals-handoff.html" class="wikilink">claude-gardening-visuals-handoff</a> (sim=0.8789) - Both handoff notes address complementary aspects of the same vault evolution (synthesis/architecture in A, gardening/visuals in B), and each mission benefits from cross-referencing the other&#39;s deliverables for holistic knowledge expansion.
+</li>
+<li>[2026-04-27 02:41] auto-link: mutual link <a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> and <a href="claude-gardening-visuals-handoff.html" class="wikilink">claude-gardening-visuals-handoff</a> (sim=0.8685) - Both handoff notes are complementary phases of the same Vulture Nest project (Blueprint Phase vs. Gardening/Visuals Phase) and should cross-reference each other to show their sequential and interdependent relationship in the overall architecture work.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="lit-python-standard-library.html" class="wikilink">lit-python-standard-library</a> to <a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a> (sim=0.8499) - Note A is a curated hub focused on three specific stdlib modules for agents; Note B is comprehensive reference documentation that Note A should cite as its authoritative source material, but Note B (being a literature/reference note) should not reciprocally link to the more specialized hub.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a> to <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8485) - Note A documents completed blueprint specs that Note B uses as prerequisites for its sequenced build sprint tasks.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> to <a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> (sim=0.8447) - Note B explicitly lists <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> as a dependency for implementing Tier-0 Rust patterns, making a backlink from B to A (the handoff that produces that spec) valuable for traceability, but A should not reference B since A precedes it in the workflow sequence.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a> to <a href="rust-moc.html" class="wikilink">rust-moc</a> (sim=0.8439) - The MOC is a structural index that benefits from citing its primary authoritative source, while the literature note is self-contained and doesn&#39;t need to backref the index.
+</li>
+<li>[2026-04-27 02:41] auto-link: mutual link <a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a> and <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> (sim=0.8431) - Both are parallel build sprint handoffs executed on the same date for different systems (Codex vs Gemini); they represent coordinated work streams that would benefit from mutual cross-reference for context and sequencing awareness.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a> (sim=0.8421) - Note A discusses implementation patterns for MCP clients and should reference Note B&#39;s foundational architecture overview to ground those patterns in MCP&#39;s design principles, while Note B is a literature source that doesn&#39;t need to reference downstream implementations.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="lit-typescript-handbook.html" class="wikilink">lit-typescript-handbook</a> to <a href="typescript-moc.html" class="wikilink">typescript-moc</a> (sim=0.8408) - Note A is a navigational MOC that should reference its canonical source material, while Note B is a literature note that naturally stands alone as a reference document.
+</li>
+<li>[2026-04-27 02:41] auto-link: added <a href="lit-python-standard-library.html" class="wikilink">lit-python-standard-library</a> to <a href="python-moc.html" class="wikilink">python-moc</a> (sim=0.8399) - Note A&#39;s &#39;Standard Library Hubs&#39; section explicitly references <a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a> as a concept, and Note B provides the authoritative literature source for understanding those stdlib modules in agent contexts, making it a natural target for Note A to point to without cluttering Note B with a reciprocal link.
+</li>
+<li>[2026-04-27 02:42] auto-link: mutual link <a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> and <a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a> (sim=0.8390) - Note A defines the blueprint specifications that Note B sequences for implementation, and Note B references those specs as prerequisites—they are complementary halves of a handoff cycle where A→B dependency is explicit and B→A context is valuable.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="claude-capability-lattice-handoff.html" class="wikilink">claude-capability-lattice-handoff</a> to <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8385) - Note B documents completed blueprint work that directly fulfills the capability lattice specification handoff initiated in Note A, making it a natural downstream reference for context on what was delivered.
+</li>
+<li>[2026-04-27 02:42] auto-link: mutual link <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> and <a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> (sim=0.8369) - Note A provides concrete ADK implementation details of patterns that Note B abstracts and categorizes (agent-as-tool, dynamic delegation, state transfer), making each a valuable reference for the other—Note A illustrates specific patterns while Note B contextualizes them within broader architectural taxonomy.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="claude-a2a-protocol-handoff.html" class="wikilink">claude-a2a-protocol-handoff</a> to <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8355) - Note B&#39;s Tier-2 agent layer and A2A protocol context directly depend on the A2A protocol scaffold that Note A defines as its deliverable, making a backref from B to A valuable for tracing architectural dependencies.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> to <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8352) - Note B (Blueprint Phase Complete) documents concrete delivery of specs that directly support Note A&#39;s Three Pillars mission—particularly the Memory MCP and Rust patterns feed into Pillar 3 (Unified Agentic Patterns), so B should reference A as the synthesis roadmap it contributes to.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-security.html" class="wikilink">mcp-security</a> (sim=0.8349) - Note A on MCP Security should reference Note B as its architectural foundation, since security mechanisms operate within the client-server architecture that Note B documents.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="lit-rust-programming-language.html" class="wikilink">lit-rust-programming-language</a> to <a href="rust-concurrency.html" class="wikilink">rust-concurrency</a> (sim=0.8346) - Note A cites the Rust Programming Language book as its source (already referenced in its metadata), so adding an explicit wikilink to Note B (the literature note) strengthens traceability and attribution without cluttering Note B with a backlink to every topic it covers.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> to <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> (sim=0.8344) - Note B documents completed blueprint work and should reference Note A as the identified highest-priority gap that contextualizes why these particular specs (memory MCP and Rust patterns) were prioritized over session types in this phase.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a> (sim=0.8324) - Note A explains MCP primitives conceptually while Note B is the authoritative source documentation, so A should reference B as its foundational source material.
+</li>
+<li>[2026-04-27 02:42] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (sim=0.8320) - Note A (practical server development) should reference Note B (foundational architecture documentation) to ground implementation details in the authoritative protocol specification, but Note B is a literature reference that doesn&#39;t need reciprocal links to implementation guides.
+</li>
+<li>[2026-04-27 02:43] auto-link: added <a href="knowledge-gardening-principles.html" class="wikilink">knowledge-gardening-principles</a> to <a href="spec-knowledge-gardening.html" class="wikilink">spec-knowledge-gardening</a> (sim=0.8294) - Note B (the spec) should reference Note A (the principles) to ground its operational protocol in the foundational philosophy, particularly when discussing orphan remediation which directly implements the gap-filling principle.
+</li>
+<li>[2026-04-27 02:43] auto-link: added <a href="claude-synthesis-handoff-2026-04-27.html" class="wikilink">claude-synthesis-handoff-2026-04-27</a> to <a href="claude-blueprint-handoff.html" class="wikilink">claude-blueprint-handoff</a> (sim=0.8293) - Note B (Blueprint Phase) is a direct continuation of Note A&#39;s completed synthesis work and should reference it as the prerequisite foundation, while Note A as a completed handoff artifact does not need to reference forward plans.
+</li>
+<li>[2026-04-27 02:43] auto-link: added <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> to <a href="claude-synthesis-handoff-2026-04-27.html" class="wikilink">claude-synthesis-handoff-2026-04-27</a> (sim=0.8275) - Note A documents the synthesis work completed; Note B is the immediate actionable handoff to Gemini that depends on those 13 notes being created, so A should reference B as the next phase.
+</li>
+<li>[2026-04-27 02:43] auto-link: added <a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a> to <a href="lit-typescript-handbook.html" class="wikilink">lit-typescript-handbook</a> (sim=0.8274) - Note B is a literature/source note that should reference the permanent note A it directly covers, enabling readers of the handbook summary to access the detailed treatment of everyday types.
+</li>
+<li>[2026-04-27 02:43] auto-link: mutual link <a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a> and <a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a> (sim=0.8270) - Both notes describe complementary ADK services with parallel architectural patterns (abstraction, multiple implementations, context-based access, configuration at Runner initialization), and agents naturally use artifacts and memory together for stateful, context-aware behavior.
+</li>
+<li>[2026-04-27 02:43] auto-link: mutual link <a href="mcp-transport.html" class="wikilink">mcp-transport</a> and <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> (sim=0.8267) - Note A provides implementation details of transport mechanisms that are foundational to the two-layer architecture described in Note B, while Note B provides the overarching architectural context that explains why transport abstraction matters in MCP.
+</li>
+<li>[2026-04-27 02:43] auto-link: mutual link <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> and <a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a> (sim=0.8257) - Note A describes ADK&#39;s multi-agent composition mechanisms (including AgentTool as a delegation primitive), while Note B analyzes dynamic delegation as a cross-framework pattern with ADK as a primary implementation example — they are mutually reinforcing and each benefits from citing the other.
+</li>
+<li>[2026-04-27 02:43] auto-link: mutual link <a href="pattern-agent-as-tool.html" class="wikilink">pattern-agent-as-tool</a> and <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a> (sim=0.8247) - These patterns represent complementary agent composition strategies—Agent as Tool encapsulates a sub-agent as an opaque callable within a parent&#39;s tool roster, while Progressive Handoff transfers complete task ownership between agents—and each pattern benefits from acknowledging the other as a distinct alternative approach.
+</li>
+<li>[2026-04-27 02:43] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-remote-connections.html" class="wikilink">mcp-remote-connections</a> (sim=0.8243) - Note A discusses remote connections as a specific implementation pattern within MCP, and should reference Note B&#39;s foundational architecture overview to ground readers in the protocol&#39;s broader design, but Note B is a general literature reference that does not need to link to every specific connection type.
+</li>
+<li>[2026-04-27 02:44] auto-link: added <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> to <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> (sim=0.8242) - Note A (best practices) builds on and assumes knowledge of the foundational MCP architecture documented in Note B, making B a natural prerequisite reference for A.
+</li>
+<li>[2026-04-27 02:44] auto-link: mutual link <a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> and <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> (sim=0.8233) - These are complementary handoff notes from the same date describing sequential work phases: Claude&#39;s synthesis and architecture planning (Pillar 1-3) directly enables Gemini&#39;s build sprint execution (embedding sync, graph integration, clustering), making bidirectional reference essential for continuity.
+</li>
+<li>[2026-04-27 02:44] auto-link: added <a href="claude-blueprint-handoff-2026-04-27.html" class="wikilink">claude-blueprint-handoff-2026-04-27</a> to <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> (sim=0.8229) - Note B (Gemini&#39;s build sprint) needs to reference Note A (Claude&#39;s completed blueprint handoff) because the 17 new notes that Gemini is ingesting were created by Claude in the blueprint phase, making Note A the source context for Note B&#39;s integration work.
+</li>
+<li>[2026-04-27 02:44] auto-link: added <a href="spec-visual-vault-language.html" class="wikilink">spec-visual-vault-language</a> to <a href="claude-gardening-visuals-handoff.html" class="wikilink">claude-gardening-visuals-handoff</a> (sim=0.8201) - Note A is a handoff document that assigns the creation of spec-visual-vault-language as a task, so it should reference the completed Note B as its deliverable; Note B should not link back as it is the standalone specification being handed off to.
+</li>
+<li>[2026-04-28 07:35:10] Ingested 2510.01171v3.pdf into <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a>. Implemented Mode-Anchored Departure (Approach B) focus.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:08] auto-link: added <a href="codex-build-sprint-handoff.html" class="wikilink">codex-build-sprint-handoff</a> to <a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> (sim=0.8744) - Note B (orchestrator handoff, dated 2026-04-29) is a sequential follow-up to Note A (build sprint handoff, dated 2026-04-27) and should reference it as context for the prior gardening audit phase and task sequencing.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: mutual link <a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a> and <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> (sim=0.8732) - Note A is a conceptual permanent note about Verbalized Sampling, while Note B is the literature note documenting the primary paper that introduced the technique; they are directly complementary and each strengthens understanding of the other.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: added <a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> to <a href="claude-synthesis-handoff.html" class="wikilink">claude-synthesis-handoff</a> (sim=0.8695) - Note A (2026-04-27) outlines the three-pillar strategy and vault expansion mission, while Note B (2026-04-29) provides the concrete implementation directives for Pillar 3 (synthesis) and the epistemic gates; Note A should reference B as the detailed handoff that operationalizes its strategic vision.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: mutual link <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> and <a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">gemini-roadmap-sprint-handoff-2026-04-27</a> (sim=0.8682) - Both are complementary handoff notes from the same date describing sequential work (Build Sprint → Roadmap Sprint) that explicitly reference waiting for the other&#39;s completion, making bidirectional links essential for understanding the full handoff context.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: mutual link <a href="gemini-build-sprint-handoff.html" class="wikilink">gemini-build-sprint-handoff</a> and <a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">codex-roadmap-sprint-handoff-2026-04-27</a> (sim=0.8649) - Both are dated handoff notes from the same session (2026-04-27) describing sequential tasks for different agents (Gemini and Codex) working on the same wiki system, so each provides context for the other&#39;s work.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: mutual link <a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="wikilink">claude-orchestrator-synthesis-handoff-2026-04-29</a> and <a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> (sim=0.8589) - These are complementary handoff notes describing interdependent work streams (Synthesis Intelligence and Infrastructure) that explicitly depend on each other&#39;s completion, with Note A&#39;s &#39;Next Seam&#39; waiting for Note B&#39;s infrastructure and Note B&#39;s &#39;Next Seam&#39; handing off to Note A.
+</li>
+</ul>
+<ul>
+<li>[2026-04-29 23:09] auto-link: mutual link <a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="wikilink">codex-gemini-cleanup-handoff-2026-04-27</a> and <a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="wikilink">gemini-roadmap-sprint-handoff-2026-04-27</a> (sim=0.8552) - These are complementary handoff notes from the same sprint date describing different ownership lanes (Codex&#39;s engineering cleanup vs. Gemini&#39;s structural/protocol work) that together form a complete handoff boundary, so each should reference the other for full context.
+</li>
+</ul>
+<h2>Orphan Wiring Verification</h2>
+<ul>
+<li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
+</li>
+<li><a href="code-agents.html" class="wikilink">code-agents</a>
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
+</li>
+<li><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>
+</li>
+<li><a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a>
+</li>
+</ul>
+<h2>[2026-04-30] Gemini — Index Maintenance &amp; Status Sync</h2>
+<ul>
+<li><strong>Action</strong>: Updated <a href="index.html" class="wikilink">index</a> to include <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> and the 2026-04-29 implementation handoffs.
+</li>
+<li><strong>Status</strong>: Reconstructed current vault state for the user session. All 2026-04-29 deliverables are now indexed and discoverable.
+</li>
+<li><strong>Next</strong>: Proceed with <a href="codex-orchestrator-build-handoff-2026-04-29.html" class="wikilink">codex-orchestrator-build-handoff-2026-04-29</a> infrastructure tasks.
+</li>
+</ul>
+<h2>[2026-04-30] Codex — Orchestrator Infrastructure Scaffold</h2>
+<ul>
+<li><strong>Built</strong>: Added <code>02_System/pipeline-policy.yaml</code> and a fail-closed loader at <code>02_System/vulture-ingest/policy.py</code>.
+</li>
+<li><strong>Built</strong>: Added <code>02_System/vulture-ingest/schema.sql</code> with <code>source_pages</code>, <code>source_chunks</code>, extensions, HNSW index, and <code>match_documents()</code>.
+</li>
+<li><strong>Built</strong>: Scaffolded <code>02_System/vulture-ingest/server.py</code> with <code>propose_source_intake</code>, <code>orchestrate_ingestion</code>, and <code>execute_source_crawl</code>, each enforcing denied-domain and quota policy before execution.
+</li>
+<li><strong>Verified</strong>: Added <code>02_System/test_vulture_ingest.py</code> to cover missing-policy failure, invalid policy rejection, denied-domain blocking, new-domain HITL gating, and dry-run crawl policy enforcement.
+</li>
+<li><strong>Seam</strong>: Infrastructure scaffold is in place; actual Supabase provisioning and live Firecrawl execution still depend on runtime credentials and network access. Next step is integrated verification and then Claude&#39;s synthesis-layer work against this tool surface.
+</li>
+</ul>
+<h2>[2026-04-30] Gemini — Integration Handoff Created</h2>
+<ul>
+<li><strong>Action</strong>: Created <a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="wikilink">codex-orchestrator-integration-handoff-2026-04-30</a> to bridge infrastructure and intelligence layers.
+</li>
+<li><strong>Scope</strong>: Lifecycle tools for indexing, semantic retrieval, verification, and promotion.
+</li>
+<li><strong>Status</strong>: Vault ready for the final technical sprint of the Orchestrator build.
+</li>
+</ul>
+<h2>[2026-04-30] Gemini — Test Handoff Created</h2>
+<ul>
+<li><strong>Action</strong>: Created <a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="wikilink">gemini-orchestrator-test-handoff-2026-04-30</a> for the first live E2E run.
+</li>
+<li><strong>Mission</strong>: Execute the full 8-stage lifecycle against a live target this evening.
+</li>
+</ul>
+<h2>[2026-04-30] Gemini — Schema Ingestion Handoff</h2>
+<ul>
+<li><strong>Action</strong>: Created <a href="codex-supabase-schema-ingestion.html" class="wikilink">codex-supabase-schema-ingestion</a> to delegate Supabase DDL application to Codex.
+</li>
+<li><strong>Purpose</strong>: Avoid manual SQL execution and automate infrastructure setup for the Orchestrator.
+</li>
+<li><strong>Status</strong>: Awaiting Codex execution.
+</li>
+</ul>
+<h2>[2026-04-30] Gemini — Inaugural Ingestion Test Success</h2>
+<ul>
+<li><strong>Action</strong>: Successfully executed the full 8-stage lifecycle for <a href="firecrawl-crawling-capabilities.html" class="wikilink">firecrawl-crawling-capabilities</a>, <a href="firecrawl-map-capabilities.html" class="wikilink">firecrawl-map-capabilities</a>, <a href="firecrawl-scrape-capabilities.html" class="wikilink">firecrawl-scrape-capabilities</a>, and <a href="firecrawl-api-v2-reference.html" class="wikilink">firecrawl-api-v2-reference</a>.
+</li>
+<li><strong>Infrastructure</strong>: Unblocked Supabase schema via manual bridge and verified T5 (Verified) epistemic path.
+</li>
+<li><strong>Gardening</strong>: Updated <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> and interlinked the Firecrawl knowledge cluster.
+</li>
+<li><strong>Status</strong>: Vault healthy; ready for commit.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Vault Health Check</h2>
+<ul>
+<li><strong>Action</strong>: Executed comprehensive health audit via <code>vault-lint</code>.
+</li>
+<li><strong>Findings</strong>: Detected 23 broken links (primarily <code>powershell.md</code> and <code>typescript.md</code> drift).
+</li>
+<li><strong>Compliance</strong>: YANP frontmatter core fields are 100% present in sampled notes.
+</li>
+<li><strong>Gap</strong>: Identified <code>00_Raw/LLM Wiki.md</code> as an un-ingested source.
+</li>
+<li><strong>Next</strong>: Recommend batch-fix for <code>.md</code> extension drift in wikilinks.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Vault Repair Mission Execution</h2>
+<ul>
+<li><strong>Action</strong>: Completed vault repair per approved plan.
+</li>
+<li><strong>Collision Resolution</strong>: Renamed <code>02_System/index.md</code> to <code>02_System/system-index.md</code> to resolve YANP stem collision.
+</li>
+<li><strong>Batch Repair</strong>: Repaired 54 notes containing broken wikilinks for <a href="powershell.html" class="wikilink">powershell</a>, <a href="typescript.html" class="wikilink">typescript</a>, <a href="system-index.html" class="wikilink">system-index</a>, and <a href="log.html" class="wikilink">log</a>.
+</li>
+<li><strong>Ingestion</strong>: Ingested <code>00_Raw/LLM Wiki.md</code> into <a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a>.
+</li>
+<li><strong>Status</strong>: Vault health restoration complete.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — MOC Update: lit-llm-wiki</h2>
+<ul>
+<li><strong>Action</strong>: Linked <a href="lit-llm-wiki.html" class="wikilink">lit-llm-wiki</a> into central Maps of Content.
+</li>
+<li><strong>MOCs Updated</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> (Wiki Architecture)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> (Development &amp; Operations)
+</li>
+<li><a href="pkm-methods-moc.html" class="wikilink">pkm-methods-moc</a> (The Zettelkasten Method)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Discovery paths established.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — MOC Update: Orchestrator &amp; Verbalized Sampling</h2>
+<ul>
+<li><strong>Action</strong>: Integrated orchestrator intelligence and verbalized sampling notes into MOCs.
+</li>
+<li><strong>MOCs Updated</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a> (Wiki Architecture)
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> (Protocols &amp; Infrastructure, Advanced Patterns)
+</li>
+<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> (Research and Evaluation)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Notes Wired</strong>: <a href="synthesis-intelligence-layer.html" class="wikilink">synthesis-intelligence-layer</a>, <a href="community-report-generator.html" class="wikilink">community-report-generator</a>, <a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a>, <a href="mode-anchored-departure.html" class="wikilink">mode-anchored-departure</a>, <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a>.
+</li>
+<li><strong>Status</strong>: Navigation paths established.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: MCP Architecture</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://modelcontextprotocol.io/docs/concepts/architecture</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Proposal</strong>: Approved for rationale &quot;Ingesting core MCP architecture documentation&quot;.
+</li>
+<li><strong>Map</strong>: Identified target domain <code>modelcontextprotocol.io</code>.
+</li>
+<li><strong>Execution</strong>: Used Scrape fallback to acquire high-fidelity markdown.
+</li>
+<li><strong>Indexing</strong>: Generated and stored 10 semantic chunks in Supabase.
+</li>
+<li><strong>Verification</strong>: Passed (0 findings).
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>: Updated <a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a> with fresh official documentation and multi-agent provenance.
+</li>
+<li><strong>Status</strong>: MCP grounding densified.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: LangGraph Concepts</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://langchain-ai.github.io/langgraph/concepts/</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Map</strong>: Identified target domain <code>langchain-ai.github.io</code>.
+</li>
+<li><strong>Execution</strong>: Used Scrape fallback to acquire official concept markdown.
+</li>
+<li><strong>Indexing</strong>: Generated and stored 5 semantic chunks in Supabase.
+</li>
+<li><strong>Verification</strong>: Passed.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>:
+<ul>
+<li>
+<ul>
+<li>Created <a href="lit-langgraph.html" class="wikilink">lit-langgraph</a> (Literature: LangGraph Concepts).
+</li>
+<li>Densified <a href="langgraph.html" class="wikilink">langgraph</a> with durable execution and industrial orchestration features.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Multi-agent orchestration grounding enhanced.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Firecrawl Pipeline: OpenAI Agents SDK</h2>
+<ul>
+<li><strong>Action</strong>: Ingested <code>https://openai.github.io/openai-agents-python/</code> via Firecrawl pipeline.
+</li>
+<li><strong>Pipeline Results</strong>:
+<ul>
+<li>
+<ul>
+<li><strong>Proposal</strong>: Approved for rationale &quot;Ingesting OpenAI Agents SDK documentation for multi-agent pattern research.&quot;
+</li>
+<li><strong>Map</strong>: Identified 15 target URLs.
+</li>
+<li><strong>Execution</strong>: Successfully crawled 15 pages.
+</li>
+<li><strong>Indexing</strong>: Stored 15 pages and their semantic chunks in Supabase (pgvector).
+</li>
+<li><strong>Verification</strong>: Passed with 0 findings.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Synthesis</strong>:
+<ul>
+<li>
+<ul>
+<li>Created <a href="lit-openai-agents-sdk.html" class="wikilink">lit-openai-agents-sdk</a> (Literature: OpenAI Agents SDK).
+</li>
+<li>Updated <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> to incorporate production-grade patterns and handoff mechanisms.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Multi-agent research grounding expanded to include official OpenAI production SDK.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Ingestion: Software Engineering Frameworks</h2>
+<ul>
+<li><strong>Action</strong>: Ingested two new markdown documents from <code>00_Raw</code>.
+</li>
+<li><strong>Sources</strong>: <code>project-definition-worksheet.md</code> and <code>software-design-checklist.md</code>.
+</li>
+<li><strong>Notes Created</strong>:
+<ul>
+<li>
+<ul>
+<li><a href="lit-project-definition-worksheet.html" class="wikilink">lit-project-definition-worksheet</a>
+</li>
+<li><a href="project-definition-framework.html" class="wikilink">project-definition-framework</a>
+</li>
+<li><a href="lit-software-design-checklist.html" class="wikilink">lit-software-design-checklist</a>
+</li>
+<li><a href="software-design-principles.html" class="wikilink">software-design-principles</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Index Updated</strong>: Created <strong>Software Methodology</strong> section in <a href="system-index.html" class="wikilink">system-index</a>.
+</li>
+<li><strong>MOC Updated</strong>: Added <strong>Software Engineering &amp; Methodology</strong> section to <a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a>.
+</li>
+<li><strong>Status</strong>: Engineering foundation for new project intake established.
+</li>
+</ul>
+<h3>2026-05-01 10:45 - Graph Integration: lit-mcp-authorization</h3>
+<ul>
+<li><strong>MOC Update</strong>: Wired <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> into <a href="mcp-moc.html" class="wikilink">mcp-moc</a> under Deployment &amp; Security.
+</li>
+<li><strong>Back-reference</strong>: Added link to <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a> from <a href="lit-mcp-security-and-auth.html" class="wikilink">lit-mcp-security-and-auth</a>.
+</li>
+<li><strong>Spec Enrichment</strong>: Added &quot;Protocol Instantiations&quot; to <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> linking OAuth lattice implementation.
+</li>
+<li><strong>Spec Enrichment</strong>: Added HTTP authorization requirement to <a href="spec-agentic-source-orchestrator-v2.html" class="wikilink">spec-agentic-source-orchestrator-v2</a>.
+</li>
+<li><strong>Pattern Enrichment</strong>: Added implementation reference to <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a>.
+</li>
+<li><strong>Verification</strong>: Index was already updated by Claude. Graph integrity confirmed.
+</li>
+</ul>
+<h2>[2026-05-01] gemini-cli — Graph Integration: lit-mcp-security-best-practices</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="claude-mcp-security-bp-handoff-2026-05-01.html" class="wikilink">claude-mcp-security-bp-handoff-2026-05-01</a> — integrated the new threat model literature into the vault graph.
+</li>
+<li><strong>MOC Update</strong>: Wired <a href="lit-mcp-security-best-practices.html" class="wikilink">lit-mcp-security-best-practices</a> into <a href="mcp-moc.html" class="wikilink">mcp-moc</a> under <strong>Deployment &amp; Security</strong> and <strong>See Also</strong>.
+</li>
+<li><strong>Back-reference</strong>: Added companion threat model reference to <a href="lit-mcp-authorization.html" class="wikilink">lit-mcp-authorization</a>&#39;s See Also section.
+</li>
+<li><strong>Pattern Enrichment</strong>: Linked scope minimization in <a href="pattern-capability-gating.html" class="wikilink">pattern-capability-gating</a> as the runtime enforcement of least-privilege gating.
+</li>
+<li><strong>Spec Enrichment</strong>: Added reference to <a href="lit-mcp-security-best-practices.html" class="wikilink">lit-mcp-security-best-practices</a> in <a href="spec-agentic-source-orchestrator-v2.html" class="wikilink">spec-agentic-source-orchestrator-v2</a> Section 4.1 for hardening HTTP-exposed tool surfaces.
+</li>
+<li><strong>Verification</strong>: Confirmed <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> existence. All modified notes passed <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>. Graph integrity 100%.
+</li>
+</ul>
+<h2>[2026-05-02] Codex — Claude Review Normalization</h2>
+<ul>
+<li><strong>Directive</strong>: Consolidated the Gemini note review trail into durable logs after the review-and-hardening pass.
+</li>
+<li><strong>Review Pipeline</strong>: <code>02_System/review-gemini-pages.ps1</code> produced one initial batch report (<code>claude-review.md</code>), a 25-note second pass (<code>claude-review-pass-2.md</code>), a 25-note third pass (<code>claude-review-pass-3.md</code>), and focused per-note follow-up reports for notes that initially required revision.
+</li>
+<li><strong>Outcome</strong>: Review findings were acted on and landed as committed wiki hardening batches covering ADK, agentic workflow, Firecrawl, HF agents, and verbalized-sample graph work. Focused Claude re-reviews returned <code>accept</code> across the revised note sets; the one pass-3 <code>revise</code> note (<a href="agent-skills-index.html" class="wikilink">agent-skills-index</a>) was corrected and committed separately.
+</li>
+<li><strong>Canonical Record</strong>: Durable summaries live here and in <a href="Session%202026-05-02.html" class="wikilink">Session 2026-05-02</a>. The <code>claude-review*.md</code> files in <code>02_System/</code> are working artifacts, not the authoritative long-term record.
+</li>
+</ul>
+<h2>[2026-05-02] gemini-cli — Wiki Expansion Research &amp; Planning</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="wikilink">gemini-wiki-expansion-research-handoff-2026-05-02</a> — researched vault gaps and prioritized expansion lanes.
+</li>
+<li><strong>Findings</strong>: Identified several &quot;thin&quot; high-centrality hubs: <a href="rust.html" class="wikilink">rust</a> (61 links), <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> (59), and <a href="python.html" class="wikilink">python</a> (55). Found extensive un-synthesized source material in <code>00_Raw/adk-documentation.md</code> (2.7MB) and <code>00_Raw/mcp/</code>.
+</li>
+<li><strong>Planning Note</strong>: Created <a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a> — a prioritized roadmap with 5 expansion lanes (ADK Depth, MCP Synthesis, Language Hardening, Anthropic Patterns, and MOC Restoration).
+</li>
+<li><strong>Recommendation</strong>: Recommended &quot;Core Protocol &amp; Framework Depth&quot; as the immediate next batch (ADK and MCP focus).
+</li>
+<li><strong>Status</strong>: Research phase complete; planning note active.
+</li>
+</ul>
+<h2>[2026-05-02] gemini-cli — Execution: Core Protocol &amp; Framework Depth</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="wikilink">gemini-core-protocol-framework-depth-handoff-2026-05-02</a> — hardened ADK and MCP core notes.
+</li>
+<li><strong>ADK Hardening</strong>: Deepened <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> with architectural details on the Runner, Event-Driven Orchestration, Persistent Services (Session, Artifact, Memory), and Multi-Agent patterns. Synthesized from <code>00_Raw/adk-documentation.md</code>.
+</li>
+<li><strong>MCP Synthesis</strong>: Expanded <a href="mcp-best-practices.html" class="wikilink">mcp-best-practices</a> with Progressive Discovery (3-layer pattern) and Programmatic Tool Calling (Code Mode). Deepened <a href="mcp-authorization.html" class="wikilink">mcp-authorization</a> with OAuth 2.1 flow details, DCR, and critical security mitigations (Confused Deputy, SSRF, Token Passthrough). Synthesized from <code>00_Raw/mcp/</code> guides.
+</li>
+<li><strong>Graph Integration</strong>: Verified navigation paths in <a href="index.html" class="wikilink">index</a>, <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>, and <a href="mcp-moc.html" class="wikilink">mcp-moc</a>. Cleaned up redundant links in <a href="mcp-moc.html" class="wikilink">mcp-moc</a>.
+</li>
+<li><strong>Status</strong>: Execution batch complete.
+</li>
+</ul>
+<h2>[2026-05-02] gemini-cli — Language Root Hardening Research &amp; Planning</h2>
+<ul>
+<li><strong>Directive</strong>: Executed <a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="wikilink">gemini-language-root-hardening-research-handoff-2026-05-02</a> — researched gaps in the language-root clusters.
+</li>
+<li><strong>Findings</strong>: Confirmed that all four primary roots (<a href="rust.html" class="wikilink">rust</a>, <a href="python.html" class="wikilink">python</a>, <a href="powershell.html" class="wikilink">powershell</a>, <a href="typescript.html" class="wikilink">typescript</a>) are structurally &quot;thin&quot; relative to their centrality and the depth of their sub-clusters.
+</li>
+<li><strong>Planning Note</strong>: Created <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a> — defines missing hub functions (Vault-Local Framing, Cluster Wayfinding) and recommends a two-batch execution strategy.
+</li>
+<li><strong>Recommendation</strong>: Recommended &quot;The Core Reasoning Roots&quot; (Rust &amp; Python) as the immediate next batch for hardening.
+</li>
+<li><strong>Status</strong>: Research phase complete; implementation plan active.
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
+<li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="workbench-integration.html" class="">workbench-integration</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
+<li><a href="actionable-vs-reference.html" class="">actionable-vs-reference</a></li>
+<li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
+<li><a href="agent-configuration-sync-strategy.html" class="">agent-configuration-sync-strategy</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
+<li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
+<li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
+<li><a href="agent-observability.html" class="">agent-observability</a></li>
+<li><a href="agent-skills-index.html" class="">agent-skills-index</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
+<li><a href="agentic-rag.html" class="">agentic-rag</a></li>
+<li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
+<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
+<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
+<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
+<li><a href="anti-ai-aesthetic.html" class="">anti-ai-aesthetic</a></li>
+<li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
+<li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
+<li><a href="chromadb.html" class="">chromadb</a></li>
+<li><a href="claude-a2a-protocol-handoff.html" class="">claude-a2a-protocol-handoff</a></li>
+<li><a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a></li>
+<li><a href="claude-blueprint-handoff.html" class="">claude-blueprint-handoff</a></li>
+<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
+<li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
+<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
+<li><a href="claude-mcp-security-bp-handoff-2026-05-01.html" class="">claude-mcp-security-bp-handoff-2026-05-01</a></li>
+<li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
+<li><a href="claude-portal-breadcrumbs-handoff.html" class="">claude-portal-breadcrumbs-handoff</a></li>
+<li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
+<li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="claude-supabase-flask-handoff-2026-05-01.html" class="">claude-supabase-flask-handoff-2026-05-01</a></li>
+<li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
+<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
+<li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
+<li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
+<li><a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="">codex-orchestrator-integration-handoff-2026-04-30</a></li>
+<li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
+<li><a href="codex-ps-compliance-handoff.html" class="">codex-ps-compliance-handoff</a></li>
+<li><a href="codex-roadmap-sprint-handoff-2026-04-27.html" class="">codex-roadmap-sprint-handoff-2026-04-27</a></li>
+<li><a href="codex-supabase-schema-ingestion.html" class="">codex-supabase-schema-ingestion</a></li>
+<li><a href="codex-usage-loop-handoff.html" class="">codex-usage-loop-handoff</a></li>
+<li><a href="collective-iq.html" class="">collective-iq</a></li>
+<li><a href="community-living-knowledge-system.html" class="">community-living-knowledge-system</a></li>
+<li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
+<li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="community-report-generator.html" class="">community-report-generator</a></li>
+<li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
+<li><a href="csharp-async-await.html" class="">csharp-async-await</a></li>
+<li><a href="csharp-basics.html" class="">csharp-basics</a></li>
+<li><a href="csharp-for-agentic-workflows.html" class="">csharp-for-agentic-workflows</a></li>
+<li><a href="csharp-mcp-sdk.html" class="">csharp-mcp-sdk</a></li>
+<li><a href="csharp-moc.html" class="">csharp-moc</a></li>
+<li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
+<li><a href="dotnet-agent-integration.html" class="">dotnet-agent-integration</a></li>
+<li><a href="dotnet-csharp.html" class="">dotnet-csharp</a></li>
+<li><a href="dotnet-mcp-server-patterns.html" class="">dotnet-mcp-server-patterns</a></li>
+<li><a href="dotnet-moc.html" class="">dotnet-moc</a></li>
+<li><a href="executable-note-standard.html" class="">executable-note-standard</a></li>
+<li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
+<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="firecrawl-api-v2-reference.html" class="">firecrawl-api-v2-reference</a></li>
+<li><a href="firecrawl-crawling-capabilities.html" class="">firecrawl-crawling-capabilities</a></li>
+<li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
+<li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
+<li><a href="foundry-local.html" class="">foundry-local</a></li>
+<li><a href="frameworks-eval.html" class="">frameworks-eval</a></li>
+<li><a href="function-calling.html" class="">function-calling</a></li>
+<li><a href="gaia-benchmark.html" class="">gaia-benchmark</a></li>
+<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
+<li><a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="">gemini-language-root-hardening-research-handoff-2026-05-02</a></li>
+<li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
+<li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
+<li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="gtd.html" class="">gtd</a></li>
+<li><a href="handoff-firecrawl-openai-agents.html" class="">handoff-firecrawl-openai-agents</a></li>
+<li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
+<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
+<li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
+<li><a href="knowledge-gardening-principles.html" class="">knowledge-gardening-principles</a></li>
+<li><a href="langgraph.html" class="">langgraph</a></li>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="">language-root-hardening-plan-2026-05-02</a></li>
+<li><a href="lattice-interop.html" class="">lattice-interop</a></li>
+<li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="lit-anthropic-advanced-capabilities.html" class="">lit-anthropic-advanced-capabilities</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
+<li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
+<li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
+<li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
+<li><a href="lit-mcp-security-and-auth.html" class="">lit-mcp-security-and-auth</a></li>
+<li><a href="lit-mcp-security-best-practices.html" class="">lit-mcp-security-best-practices</a></li>
+<li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
+<li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-project-definition-worksheet.html" class="">lit-project-definition-worksheet</a></li>
+<li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
+<li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
+<li><a href="lit-software-design-checklist.html" class="">lit-software-design-checklist</a></li>
+<li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
+<li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
+<li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
+<li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
+<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
+<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
+<li><a href="mcp-best-practices.html" class="">mcp-best-practices</a></li>
+<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
+<li><a href="mcp-client-features.html" class="">mcp-client-features</a></li>
+<li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
+<li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
+<li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
+<li><a href="mcp-local-connections.html" class="">mcp-local-connections</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>
+<li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
+<li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="mcp-security.html" class="">mcp-security</a></li>
+<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
+<li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
+<li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
+<li><a href="ms-learn-aspnet-core-overview.html" class="">ms-learn-aspnet-core-overview</a></li>
+<li><a href="ms-learn-csharp-overview.html" class="">ms-learn-csharp-overview</a></li>
+<li><a href="ms-learn-dotnet-fundamentals.html" class="">ms-learn-dotnet-fundamentals</a></li>
+<li><a href="ms-learn-wpf-overview.html" class="">ms-learn-wpf-overview</a></li>
+<li><a href="ms-repo-poshwiki.html" class="">ms-repo-poshwiki</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
+<li><a href="org-mode.html" class="">org-mode</a></li>
+<li><a href="outliners.html" class="">outliners</a></li>
+<li><a href="pattern-agent-as-tool.html" class="">pattern-agent-as-tool</a></li>
+<li><a href="pattern-capability-gating.html" class="">pattern-capability-gating</a></li>
+<li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="pattern-human-in-the-loop.html" class="">pattern-human-in-the-loop</a></li>
+<li><a href="pattern-parallel-fan-out.html" class="">pattern-parallel-fan-out</a></li>
+<li><a href="pattern-progressive-handoff.html" class="">pattern-progressive-handoff</a></li>
+<li><a href="pattern-state-transfer.html" class="">pattern-state-transfer</a></li>
+<li><a href="pattern-supabase-flask-integration.html" class="">pattern-supabase-flask-integration</a></li>
+<li><a href="pkm-history.html" class="">pkm-history</a></li>
+<li><a href="pkm-history-moc.html" class="">pkm-history-moc</a></li>
+<li><a href="pkm-methods-moc.html" class="">pkm-methods-moc</a></li>
+<li><a href="pkm-software-landscape.html" class="">pkm-software-landscape</a></li>
+<li><a href="plain-plus-design.html" class="">plain-plus-design</a></li>
+<li><a href="pokemon-battle-agent.html" class="">pokemon-battle-agent</a></li>
+<li><a href="polyglot-adr-rfc.html" class="">polyglot-adr-rfc</a></li>
+<li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
+<li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="powershell-objects.html" class="">powershell-objects</a></li>
+<li><a href="productivity-roadmap-2026-04-27.html" class="">productivity-roadmap-2026-04-27</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="project-definition-framework.html" class="">project-definition-framework</a></li>
+<li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="ps-broken-link-checker.html" class="">ps-broken-link-checker</a></li>
+<li><a href="ps-calculated-properties.html" class="">ps-calculated-properties</a></li>
+<li><a href="ps-classes.html" class="">ps-classes</a></li>
+<li><a href="ps-custom-objects.html" class="">ps-custom-objects</a></li>
+<li><a href="ps-note-creator.html" class="">ps-note-creator</a></li>
+<li><a href="ps-orphan-check.html" class="">ps-orphan-check</a></li>
+<li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
+<li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
+<li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
+<li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
+<li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="python-asyncio.html" class="">python-asyncio</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
+<li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
+<li><a href="react-pattern.html" class="">react-pattern</a></li>
+<li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="roam-research.html" class="">roam-research</a></li>
+<li><a href="rust.html" class="">rust</a></li>
+<li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
+<li><a href="rust-concurrency.html" class="">rust-concurrency</a></li>
+<li><a href="rust-mcp-patterns.html" class="">rust-mcp-patterns</a></li>
+<li><a href="rust-moc.html" class="">rust-moc</a></li>
+<li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
+<li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
+<li><a href="Session%202026-05-02.html" class="">Session 2026-05-02</a></li>
+<li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
+<li><a href="smolagents.html" class="">smolagents</a></li>
+<li><a href="software-design-principles.html" class="">software-design-principles</a></li>
+<li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
+<li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
+<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
+<li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
+<li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
+<li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
+<li><a href="tauri.html" class="">tauri</a></li>
+<li><a href="the-compounding-artifact.html" class="">the-compounding-artifact</a></li>
+<li><a href="type-safety-spectrum-debate.html" class="">type-safety-spectrum-debate</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
+<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
+<li><a href="typescript-functions.html" class="">typescript-functions</a></li>
+<li><a href="typescript-mapped-types.html" class="">typescript-mapped-types</a></li>
+<li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="typescript-narrowing.html" class="">typescript-narrowing</a></li>
+<li><a href="typescript-objects.html" class="">typescript-objects</a></li>
+<li><a href="typescript-template-literals.html" class="">typescript-template-literals</a></li>
+<li><a href="typescript-type-operators.html" class="">typescript-type-operators</a></li>
+<li><a href="typescript-utility-types.html" class="">typescript-utility-types</a></li>
+<li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
+<li><a href="vault-systems.html" class="">vault-systems</a></li>
+<li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
+<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
+<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
+<li><a href="wiki-pattern-architecture.html" class="">wiki-pattern-architecture</a></li>
+<li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
+<li><a href="wiki-pattern-tooling.html" class="">wiki-pattern-tooling</a></li>
+<li><a href="workbench-codex-runner-handoff.html" class="">workbench-codex-runner-handoff</a></li>
+<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
+<li><a href="yaml-for-yanp.html" class="">yaml-for-yanp</a></li>
+<li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
+<li><a href="zettelkasten.html" class="">zettelkasten</a></li>
+<li><a href="zettelkasten-note-types.html" class="">zettelkasten-note-types</a></li>
+<li><a href="zettelkasten-workflow.html" class="">zettelkasten-workflow</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vault Pulse Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #11151a;
+      --panel-2: #161c22;
+      --text: #e7ecef;
+      --muted: #95a1aa;
+      --line: #2a333c;
+      --accent: #d7f75b;
+      --accent-soft: rgba(215, 247, 91, 0.12);
+      --danger: #ff8a80;
+      --mono: "Cascadia Code", "IBM Plex Mono", "Consolas", monospace;
+      --sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(215, 247, 91, 0.08), transparent 28%),
+        linear-gradient(180deg, #0b0d10 0%, #090b0d 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .topbar .brand {
+      color: var(--accent);
+    }
+
+    .topbar .sep {
+      color: var(--line);
+    }
+
+    .topbar a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .topbar a:hover {
+      color: var(--accent);
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)), var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .terminal {
+      font-family: var(--mono);
+      letter-spacing: 0.02em;
+    }
+
+    .eyebrow, .feed-meta, .metric-label, .kicker {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 11px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 0.95;
+      margin-top: 8px;
+    }
+
+    .subhead {
+      margin-top: 12px;
+      color: var(--muted);
+      max-width: 58ch;
+    }
+
+    .stamp {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .hero-score {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100%;
+      background: linear-gradient(180deg, var(--accent-soft), transparent 45%), var(--panel-2);
+    }
+
+    .score {
+      font-family: var(--mono);
+      font-size: clamp(56px, 8vw, 96px);
+      color: var(--accent);
+      line-height: 0.9;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .metrics {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .metric {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric-value {
+      font-family: var(--mono);
+      font-size: clamp(28px, 4vw, 42px);
+      margin-top: 16px;
+    }
+
+    .metric-foot {
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .topology { grid-column: span 5; }
+    .activity { grid-column: span 7; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    td.value {
+      text-align: right;
+      color: var(--accent);
+    }
+
+    ul.feed {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    ul.feed li {
+      border-left: 2px solid var(--line);
+      padding-left: 12px;
+    }
+
+    .feed-text {
+      display: block;
+      margin-top: 4px;
+      white-space: pre-wrap;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .callout {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .commit-strip {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .commit-strip h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .commit-track {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-color: var(--line) transparent;
+    }
+
+    .commit-track::-webkit-scrollbar { height: 6px; }
+    .commit-track::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+
+    .commit-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.02);
+      flex: 0 0 auto;
+    }
+
+    .commit-pill .sha {
+      color: var(--accent);
+    }
+
+    .health-ok { color: var(--accent); }
+    .health-warn { color: var(--danger); }
+
+    @media (max-width: 980px) {
+      .masthead, .metrics, .split { grid-template-columns: 1fr; }
+      .topology, .activity { grid-column: span 12; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>DASHBOARD</span>
+    </nav>
+    <section class="masthead">
+      <div class="panel">
+        <div class="eyebrow terminal">Vault Pulse / Live Substrate Dashboard</div>
+        <h1>Vulture Engine<br>Operational Surface</h1>
+        <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
+        <div class="stamp">
+          <span>Generated 2026-05-02 23:31</span>
+          <span>Source: SQLite + Markdown</span>
+        </div>
+      </div>
+      <div class="panel hero-score">
+        <div class="kicker terminal">Vault Health</div>
+        <div class="score">95%</div>
+        <div class="health-warn terminal">orphan=0 / broken=1 / neural_gap=0</div>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="panel metric">
+        <div class="metric-label terminal">Total Notes</div>
+        <div class="metric-value">362</div>
+        <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Link Density</div>
+        <div class="metric-value">9.82</div>
+        <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Neural Gap</div>
+        <div class="metric-value">0</div>
+        <div class="metric-foot">"Semantic orphans" — highly similar notes lacking a formal wikilink.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">PoShWiKi Pages</div>
+        <div class="metric-value">8</div>
+        <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Session Actions</div>
+        <div class="metric-value">6</div>
+        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-05-02</span>.</div>
+      </article>
+      <article class="panel metric">
+        <div class="metric-label terminal">Tier-2 Compliance</div>
+        <div class="metric-value">26/26</div>
+        <div class="metric-foot">PowerShell scripts passing EAP + try/catch enforcement. Non-compliant: 0.</div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel topology">
+        <div class="eyebrow terminal">Knowledge Topology</div>
+        <h2>Top 5 Hubs</h2>
+        <table>
+          <thead>
+            <tr><th>Note</th><th style="text-align:right">Incoming</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class='rank'>mcp-moc</td><td class='value'>98</td></tr>
+<tr><td class='rank'>rust</td><td class='value'>76</td></tr>
+<tr><td class='rank'>capability-lattice-spec</td><td class='value'>73</td></tr>
+<tr><td class='rank'>python</td><td class='value'>70</td></tr>
+<tr><td class='rank'>agent-development-kit</td><td class='value'>67</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">Centrality is computed from the <span class="terminal">Links</span> table in PoShWiKi by incoming link count.</div>
+      </article>
+
+      <article class="panel activity">
+        <div class="eyebrow terminal">Activity Feed</div>
+        <h2>Recent Motion</h2>
+        <div class="split">
+          <section>
+            <h3>PoShWiKi Session</h3>
+            <div class="callout">Latest session page: <span class='terminal'>Session 2026-05-02</span></div>
+            <ul class="feed">
+              <li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: revised agentic-protocols, core-patterns-moc, and code-agents to add maturity framing, scope caveats, and concrete operational guidance after Claude review. Focused re-reviews returned accept verdicts; no human-review blocker remained in this batch.</span></li>
+<li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: rebuilt firecrawl-api-v2-reference, firecrawl-crawling-capabilities, firecrawl-map-capabilities, and firecrawl-scrape-capabilities from local pipeline evidence after failed doc-scrape artifacts were found. Reframed them as vault-local references grounded in spec-firecrawl-pgvector-pipeline and ingest code; focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-go-implementation, adk-evaluation-framework, agent-actions-unit, and agentic-tdd-patterns to remove unsupported certainty, distinguish documented patterns from vault-local guidance, and strengthen graph links. Focused Claude re-reviews returned accept across the batch.</span></li>
+<li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: revised adk-advanced-capabilities and lightly hardened adk-artifact-service using the raw ADK documentation snapshot. Added caveats around planner/code-execution capability boundaries, versioning semantics, and artifact-service failure modes; focused Claude re-reviews returned accept for both notes.</span></li>
+            </ul>
+            <div class="callout">Current seam and immediate handoff state.</div>
+            <ul class="feed">
+              <li><span class='feed-meta'>May 02 17:51 | Current Seam</span><span class='feed-text'>Inspected active PoShWiKi state and confirmed the live DB is 00_Raw/PoShWiKi/wiki.db, not the ignored repo-root wiki.db. Recorded the previously unmirrored Supabase Flask completion chain: ingestion handoff, synthesis/promotion handoff, literature note lit-supabase-flask-quickstart, and permanent note pattern-supabase-flask-integration.</span></li>
+<li><span class='feed-meta'>May 02 17:51 | Next Step</span><span class='feed-text'>If Supabase ingestion is still an active lane, verify index promotion coverage and graph wiring in related MOCs; otherwise continue from the latest MCP security seam.</span></li>
+            </ul>
+          </section>
+          <section>
+            <h3>log.md Major Actions</h3>
+            <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
+            <ul class="feed">
+              <li><span class='feed-text'>[2026-05-01] gemini-cli — Graph Integration: lit-mcp-security-best-practices</span></li>
+<li><span class='feed-text'>[2026-05-02] Codex — Claude Review Normalization</span></li>
+<li><span class='feed-text'>[2026-05-02] gemini-cli — Wiki Expansion Research &amp; Planning</span></li>
+<li><span class='feed-text'>[2026-05-02] gemini-cli — Execution: Core Protocol &amp; Framework Depth</span></li>
+<li><span class='feed-text'>[2026-05-02] gemini-cli — Language Root Hardening Research &amp; Planning</span></li>
+            </ul>
+          </section>
+        </div>
+      </article>
+    </section>
+
+    <section class="commit-strip">
+      <h3>Recent Commits</h3>
+      <div class="commit-track">
+        <span class='commit-pill'><span class='sha'>159b2e25</span><span>docs(handoff): add Codex post-synthesis maintenance handoff</span></span>
+<span class='commit-pill'><span class='sha'>d5caeb63</span><span>feat(wiki): add Anthropic advanced capabilities cluster</span></span>
+<span class='commit-pill'><span class='sha'>2645da12</span><span>fix(dashboard): parse frontmatter types without false orphans</span></span>
+<span class='commit-pill'><span class='sha'>6f41be97</span><span>docs(anthropic): add initial API corpus and evaluation record</span></span>
+<span class='commit-pill'><span class='sha'>c844db08</span><span>chore(handoff): add Anthropic docs ingestion prompts</span></span>
+<span class='commit-pill'><span class='sha'>4e5693a7</span><span>chore(tracking): normalize Claude review trail into durable logs</span></span>
+<span class='commit-pill'><span class='sha'>febd35ea</span><span>chore(sources): capture verbalized sample skill artifacts</span></span>
+<span class='commit-pill'><span class='sha'>05535330</span><span>chore(tracking): update session export for review and integration passes</span></span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
