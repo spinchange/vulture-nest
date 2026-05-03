@@ -1,0 +1,183 @@
+{
+  "batch_id": "anthropic-batch-2-2026-05-02",
+  "label": "Anthropic Batch 2 Intake",
+  "requested_by": "claude",
+  "prepared_at": "2026-05-02",
+  "canonical_base_url": "https://platform.claude.com/docs/en/",
+  "raw_output_dir": "00_Raw/anthropic",
+  "default_expected_pages": 1,
+  "sub_batches": [
+    {
+      "id": "E",
+      "label": "SDK and Service Configuration",
+      "order": 1,
+      "note_target": "01_Wiki/lit-anthropic-sdk-service-2026.md",
+      "entries": [
+        {
+          "corpus_file": "client-sdks.md",
+          "source_url": "https://platform.claude.com/docs/en/api/client-sdks"
+        },
+        {
+          "corpus_file": "models-overview.md",
+          "source_url": "https://platform.claude.com/docs/en/about-claude/models/overview"
+        },
+        {
+          "corpus_file": "api-service-tiers.md",
+          "source_url": "https://platform.claude.com/docs/en/api/service-tiers"
+        },
+        {
+          "corpus_file": "api-versioning.md",
+          "source_url": "https://platform.claude.com/docs/en/api/versioning"
+        },
+        {
+          "corpus_file": "api-beta-headers.md",
+          "source_url": "https://platform.claude.com/docs/en/api/beta-headers"
+        },
+        {
+          "corpus_file": "context-editing.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/context-editing"
+        }
+      ]
+    },
+    {
+      "id": "A",
+      "label": "Tool Use Depth",
+      "order": 2,
+      "note_target": "01_Wiki/lit-anthropic-tool-use-depth.md",
+      "entries": [
+        {
+          "corpus_file": "tool-use-overview.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview"
+        },
+        {
+          "corpus_file": "tool-use-how-it-works.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works"
+        },
+        {
+          "corpus_file": "tool-use-define-tools.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools"
+        },
+        {
+          "corpus_file": "tool-use-handle-tool-calls.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls"
+        },
+        {
+          "corpus_file": "tool-use-tool-reference.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference"
+        },
+        {
+          "corpus_file": "tool-use-server-tools.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools"
+        },
+        {
+          "corpus_file": "tool-use-strict-mode.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use"
+        },
+        {
+          "corpus_file": "tool-use-parallel.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use"
+        },
+        {
+          "corpus_file": "tool-use-runner-sdk.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner"
+        },
+        {
+          "corpus_file": "tool-use-mcp-connector.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector"
+        },
+        {
+          "corpus_file": "tool-use-tool-search.md",
+          "source_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Thinking Capabilities",
+      "order": 3,
+      "note_target": "01_Wiki/lit-anthropic-thinking-capabilities.md",
+      "entries": [
+        {
+          "corpus_file": "extended-thinking.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking"
+        },
+        {
+          "corpus_file": "adaptive-thinking.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking"
+        },
+        {
+          "corpus_file": "effort-parameter.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/effort"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "label": "Async and Data APIs",
+      "order": 4,
+      "note_target": "01_Wiki/lit-anthropic-async-data-apis.md",
+      "entries": [
+        {
+          "corpus_file": "batch-processing.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+        },
+        {
+          "corpus_file": "files-api.md",
+          "source_url": "https://platform.claude.com/docs/en/build-with-claude/files"
+        },
+        {
+          "corpus_file": "token-counting-api.md",
+          "source_url": "https://platform.claude.com/docs/en/api/messages/count_tokens"
+        },
+        {
+          "corpus_file": "models-api-reference.md",
+          "source_url": "https://platform.claude.com/docs/en/api/models/list"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "label": "Claude Managed Agents",
+      "order": 5,
+      "note_target": "01_Wiki/lit-anthropic-managed-agents.md",
+      "entries": [
+        {
+          "corpus_file": "managed-agents-quickstart.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/quickstart"
+        },
+        {
+          "corpus_file": "managed-agents-agent-setup.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/agent-setup"
+        },
+        {
+          "corpus_file": "managed-agents-sessions.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/sessions"
+        },
+        {
+          "corpus_file": "managed-agents-environments.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/environments"
+        },
+        {
+          "corpus_file": "managed-agents-tools.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/tools"
+        },
+        {
+          "corpus_file": "managed-agents-events-streaming.md",
+          "source_url": "https://platform.claude.com/docs/en/managed-agents/events-and-streaming"
+        }
+      ]
+    }
+  ],
+  "invariants": [
+    "Files API beta header: files-api-2025-04-14",
+    "MCP connector beta header: mcp-client-2025-11-20; previous 2025-04-04 is deprecated",
+    "Managed Agents beta header: managed-agents-2026-04-01",
+    "Opus 4.7 supports adaptive thinking only; manual thinking with budget_tokens returns HTTP 400",
+    "display default differs between Opus 4.6 and Opus 4.7",
+    "Files API is direct Anthropic API only; not Bedrock or Vertex AI",
+    "Tool Runner SDK is Python, TypeScript, and Ruby only",
+    "Claude Sonnet 4 and Claude Opus 4 retire on 2026-06-15",
+    "Prompt caching writes differ by TTL: 5 minute write 1.25x, 1 hour write 2x, read 0.1x",
+    "Managed Agents is a separate product surface, not the Messages API tool loop"
+  ]
+}
