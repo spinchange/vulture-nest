@@ -12,7 +12,7 @@ aliases:
 
 # OpenAI Symphony
 
-**OpenAI Symphony** is an open-source service specification for orchestrating coding agents (specifically [[codex]]) around project work items rather than interactive sessions. It shifts the unit of coordination from individual chat messages to **Issues/Work Items** (e.g., tickets in Linear).
+**OpenAI Symphony** is an open-source service specification for orchestrating coding agents around project work items rather than interactive sessions. It shifts the unit of coordination from individual chat messages to **Issues/Work Items** (e.g., tickets in Linear).
 
 ## What It Is
 Symphony is a **scheduler, runner, and tracker reader**. It acts as an autonomous background daemon that:
