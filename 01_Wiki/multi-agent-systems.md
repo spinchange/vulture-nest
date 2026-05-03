@@ -23,6 +23,7 @@ aliases: [agent-collaboration, orchestrator-worker, specialized-agents]
 ## Implementation Examples
 *   **smolagents:** Uses `ManagedAgent` to wrap workers.
 *   **LlamaIndex:** Uses `AgentWorkflow` to handle multi-agent loops and handoffs.
+*   **[[openai-symphony]]**: A service spec where the orchestrator manages coding-agent workspaces and issue lifecycle.
 
 ## See Also
 * [[agentic-frameworks-moc]]

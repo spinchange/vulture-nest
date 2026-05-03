@@ -41,6 +41,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 ## Frameworks & toolkits
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
 * [[openai-swarm]]: Experimental multi-agent orchestration pattern centered on handoffs.
+* [[openai-symphony]]: Service specification for background coding-agent orchestration.
 * [[openai-agents-sdk]]: Production-oriented OpenAI agent SDK for scalable orchestration.
 * [[agent-development-kit]]: Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
 * [[llamaindex]]: Data-oriented agent toolkit with strong retrieval and workflow support (Retrieval).

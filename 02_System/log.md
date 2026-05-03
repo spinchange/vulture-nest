@@ -817,3 +817,19 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Planning Note**: Created [[language-root-hardening-plan-2026-05-02]] — defines missing hub functions (Vault-Local Framing, Cluster Wayfinding) and recommends a two-batch execution strategy.
 * **Recommendation**: Recommended "The Core Reasoning Roots" (Rust & Python) as the immediate next batch for hardening.
 * **Status**: Research phase complete; implementation plan active.
+
+
+### 2026-05-03 12:00
+- **Action:** /ingest [OpenAI Symphony Spec]
+- **Details:** Researched OpenAI Symphony announcement and SPEC.md. Created permanent note [[openai-symphony]] and literature note [[lit-openai-symphony-spec]]. Updated [[agentic-frameworks-moc]], [[openai-swarm]], [[multi-agent-systems]], and [[system-index]].
+- **Author:** gemini-cli
+
+
+## [2026-05-03] Claude — OpenAI Symphony Literature Note Grounding
+
+- **Directive:** Executed [[claude-openai-symphony-synthesis-handoff-2026-05-03]] from Codex — ground the Symphony literature note in indexed evidence.
+- **Semantic Retrieval:** Ran 9 semantic searches against two indexed pages (page `76b9c652` announcement, page `f53a802d` SPEC.md) using `semantic_search_sources`. Retrieved 19 unique chunks covering §1–3, §5.2, §5.4, §6.4, §10, §15.1, §18.1–18.2.
+- **Literature Note:** Materially strengthened [[lit-openai-symphony-spec]] — added `## Core Architecture` (8 components, 6 abstraction layers), `## Workflow Contract` (file format, prompt template contract, core config fields), `## Trust Boundary` (§15.1 verbatim + non-goals), expanded `## Critical Distinctions` (not-A2A, not-Swarm, not-general-workflow-engine, WORKFLOW.md load-bearing, ticket-writes-are-agent-side). Full provenance table with 19 chunk IDs.
+- **YANP Fix:** Corrected `type: completion` → `type: fleeting` in [[gemini-openai-symphony-completion-2026-05-03]] (invalid YANP type).
+- **Audit:** All notes YANP compliant.
+- **Status:** Literature note grounded. Graph integration already complete per gemini completion note.

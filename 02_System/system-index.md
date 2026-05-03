@@ -6,6 +6,7 @@
 - [[agent-development-kit]] - Google's Agent Development Kit (ADK) integration.
 - [[verbalized-sample-skill]] - Operational protocol for distribution-aware reasoning.
 - [[openai-swarm]] - Experimental multi-agent orchestration.
+- [[openai-symphony]] - Service specification for background coding-agent orchestration.
 - [[hf-agents-course-moc]] - Hugging Face Agents Course curriculum.
 - [[workflow-agents]] - Deterministic orchestration patterns.
 - [[type-safety-spectrum-debate]] - Codex vs Claude debate on type safety.
@@ -61,6 +62,7 @@
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[gemini-openai-symphony-spec-research-handoff-2026-05-03]] - Completed: Research and ingestion of the OpenAI Symphony specification.
 - [[claude-anthropic-batch-2-handoff-2026-05-02]] - Completed: Intake plan for the 30-page Anthropic Batch 2 ingestion run.
 - [[codex-anthropic-batch-2-synthesis-handoff-2026-05-02]] - Completed: Anthropic Batch 2 corpus synthesized into literature and permanent notes.
 - [[claude-powershell-typescript-hub-handoff-2026-05-02]] - Completed: PowerShell and TypeScript root notes hardened into functional hub notes.
@@ -103,3 +105,5 @@
 ## Python / Supabase Integration
 - [[lit-supabase-flask-quickstart]]: Literature note — Supabase Flask Quickstart (T5 provenance, 2 chunks).
 - [[pattern-supabase-flask-integration]]: Permanent note — Flask+Supabase pattern (singleton client, RLS auth layer, method-chain API).
+
+- [[lit-openai-symphony-spec]]: Official specification for the Symphony orchestration service.

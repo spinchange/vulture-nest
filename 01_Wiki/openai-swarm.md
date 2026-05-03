@@ -58,3 +58,5 @@ return Result(
 ---
 *Source: [[lit-openai-swarm]]*
 
+
+* [[openai-symphony]]: For comparison with background, tracker-driven orchestration.
