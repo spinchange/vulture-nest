@@ -8,7 +8,7 @@ aliases:
   - claude-extended-thinking
   - anthropic-thinking-modes
   - adaptive-thinking
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-thinking-capabilities]]"
 ---
 
 # Anthropic Adaptive Thinking
@@ -96,4 +96,4 @@ Measure actual impact on your workload before deploying prompt-based tuning. Con
 - [[anthropic-prompt-caching]]
 - [[anthropic-streaming-patterns]]
 - [[anthropic-tool-use]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-thinking-capabilities]]

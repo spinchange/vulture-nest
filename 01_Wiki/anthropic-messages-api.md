@@ -72,5 +72,6 @@ Token counting is especially valuable when building multi-turn conversations wit
 - [[anthropic-prompt-caching]]
 - [[anthropic-adaptive-thinking]]
 - [[anthropic-files-api]]
+- [[anthropic-claude-4-model-family]]
 - [[chat-templates]]
 - [[function-calling]]

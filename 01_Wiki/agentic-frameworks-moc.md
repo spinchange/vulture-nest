@@ -26,6 +26,8 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[code-agents]]: The shift from JSON schemas to executable logic.
 * [[anthropic-messages-api]]: Direct Claude API request/response semantics and token counting.
 * [[anthropic-tool-use]]: Anthropic-specific client/server tool loop behavior.
+* [[anthropic-agentic-loop]]: Higher-level loop model: client tools, server tools, and `pause_turn`.
+* [[anthropic-server-tools]]: Server-executed web, fetch, code-execution, and tool-search behavior.
 * [[anthropic-streaming-patterns]]: SSE event flow, streamed tool arguments, and thinking block streaming.
 * [[anthropic-adaptive-thinking]]: Model-driven reasoning allocation via `effort`; interleaved thinking for agentic workflows.
 * [[anthropic-tool-runner-sdk]]: SDK tool loop automation with compaction for long-running agents.

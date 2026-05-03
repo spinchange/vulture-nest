@@ -50,6 +50,8 @@ source: "[[lit-anthropic-messages-api]]"
 ## See also
 
 - [[anthropic-messages-api]]
+- [[anthropic-agentic-loop]]
+- [[anthropic-server-tools]]
 - [[anthropic-streaming-patterns]]
 - [[agent-tools]]
 - [[function-calling]]

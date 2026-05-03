@@ -61,6 +61,8 @@
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[claude-anthropic-batch-2-handoff-2026-05-02]] - Completed: Intake plan for the 30-page Anthropic Batch 2 ingestion run.
+- [[codex-anthropic-batch-2-synthesis-handoff-2026-05-02]] - Completed: Anthropic Batch 2 corpus synthesized into literature and permanent notes.
 - [[claude-powershell-typescript-hub-handoff-2026-05-02]] - Completed: PowerShell and TypeScript root notes hardened into functional hub notes.
 - [[claude-core-reasoning-roots-handoff-2026-05-02]] - Completed: Rust and Python root notes hardened into functional hub notes.
 - [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] - Completed: Anthropic advanced cluster (adaptive thinking, batches, files, MCP connector, tool runner, managed agents).

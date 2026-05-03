@@ -7,7 +7,7 @@ type: permanent
 aliases:
   - claude-managed-agents
   - anthropic-sessions-api
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-managed-agents]]"
 ---
 
 # Anthropic Managed Agents Model
@@ -110,4 +110,4 @@ For workloads that need full control over tool execution, use the Messages API w
 - [[anthropic-tool-runner-sdk]]
 - [[anthropic-mcp-connector]]
 - [[pattern-human-in-the-loop]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-managed-agents]]

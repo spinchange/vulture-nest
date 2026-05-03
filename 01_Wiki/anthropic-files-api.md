@@ -7,7 +7,7 @@ type: permanent
 aliases:
   - claude-files-api
   - anthropic-file-upload
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-async-data-apis]]"
 ---
 
 # Anthropic Files API
@@ -120,4 +120,4 @@ File management operations (upload, download, list, delete, metadata) are free. 
 - [[anthropic-messages-api]]
 - [[anthropic-tool-use]]
 - [[anthropic-message-batches]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-async-data-apis]]

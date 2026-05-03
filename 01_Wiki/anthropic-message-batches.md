@@ -8,7 +8,7 @@ aliases:
   - claude-batch-api
   - anthropic-batches
   - message-batches-api
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-async-data-apis]]"
 ---
 
 # Anthropic Message Batches
@@ -135,4 +135,4 @@ Batch request and response data is retained for 29 days. Not ZDR-eligible. Delet
 - [[anthropic-messages-api]]
 - [[anthropic-prompt-caching]]
 - [[anthropic-adaptive-thinking]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-async-data-apis]]

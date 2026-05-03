@@ -7,7 +7,7 @@ type: permanent
 aliases:
   - claude-mcp-connector
   - anthropic-mcp-client
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-tool-use-depth]]"
 ---
 
 # Anthropic MCP Connector
@@ -141,4 +141,4 @@ The MCP Connector removes the need to implement an MCP client, which simplifies 
 - [[anthropic-messages-api]]
 - [[mcp-moc]]
 - [[mcp-client-development]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-tool-use-depth]]

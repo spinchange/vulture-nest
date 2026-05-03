@@ -7,7 +7,7 @@ type: permanent
 aliases:
   - claude-tool-runner
   - anthropic-sdk-tool-loop
-source: "[[lit-anthropic-advanced-capabilities]]"
+source: "[[lit-anthropic-tool-use-depth]]"
 ---
 
 # Anthropic Tool Runner SDK
@@ -119,4 +119,4 @@ Tool Runner is a convenience layer, not a protocol change. It uses the same Mess
 - [[anthropic-messages-api]]
 - [[anthropic-mcp-connector]]
 - [[anthropic-adaptive-thinking]]
-- [[lit-anthropic-advanced-capabilities]]
+- [[lit-anthropic-tool-use-depth]]
