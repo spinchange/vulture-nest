@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Multi-Agent Orchestration</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Multi-Agent Orchestration</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Multi-Agent Orchestration</span></span>
       </div>
     </header>
 
@@ -445,6 +445,19 @@
       <main class="content-zone" id="content">
         <h1>ADK Multi-Agent Orchestration</h1>
 <p>The <a href="agent-development-kit.html" class="wikilink">ADK</a> provides several mechanisms for composing multiple agents into complex, collaborative systems. These range from deterministic hierarchies to dynamic, LLM-driven delegation.</p>
+<h2>Core Opinion</h2>
+<p>This note matters because ADK supports more than one kind of &quot;multi-agent&quot; composition, and those mechanisms are not interchangeable. The important design choice is not whether there are multiple agents, but whether coordination happens through explicit structure, LLM-selected transfer, or agent-as-tool encapsulation.</p>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Should a sub-agent be transferred to, called like a tool, or placed in a workflow controller?&quot;
+</li>
+<li>&quot;How do ADK agents share results across a session?&quot;
+</li>
+<li>&quot;What is the cleanest way to compose specialists in ADK?&quot;
+</li>
+</ul>
+<p>If the question is mainly about deterministic control, route to <a href="workflow-agents.html" class="wikilink">workflow-agents</a>. If the question is mainly about general multi-agent patterns across frameworks, route to <a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> or <a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a>.</p>
 <h2>1. Composition Primitives</h2>
 <h3>Agent Hierarchy</h3>
 <p>Agents can be nested. A &quot;Parent&quot; agent can have multiple <code>sub_agents</code>. The framework automatically manages the parent-child relationship (e.g., <code>agent.parent_agent</code>).</p>
@@ -488,6 +501,17 @@
 <p>A root <code>LlmAgent</code> acting as a router using <code>transfer_to_agent</code>. It maintains the high-level goal while delegating specific tasks to specialized sub-agents.</p>
 <h3>Parallel Information Gathering</h3>
 <p>A <code>ParallelAgent</code> runs multiple &quot;Fetcher&quot; agents concurrently. A final &quot;Synthesizer&quot; agent reads the gathered data from the shared state to produce a unified response.</p>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a> covers the deterministic controller layer.
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a> explains the adjacent pattern where an agent is wrapped as a callable capability.
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> is the broader execution pattern; this note is the ADK-specific instantiation.
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a> provides the framework-agnostic architectural reading.
+</li>
+</ul>
 <hr>
 <p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>*</p>
 <h2>Related</h2>
@@ -511,19 +535,27 @@
 <ul>
 <li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
 <li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
 <li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
 <li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
 <li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>

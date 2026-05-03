@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Thought Cycle</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">thought-action-observation, ooda-loop-for-agents</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Thought Cycle</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">thought-action-observation, ooda-loop-for-agents</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Thought Cycle</span></span>
       </div>
     </header>
 
@@ -445,6 +445,18 @@
       <main class="content-zone" id="content">
         <h1>Agent Thought Cycle</h1>
 <p>The <strong>Thought-Action-Observation</strong> cycle is the fundamental workflow of an autonomous agent, enabling it to reason about a goal and refine its approach based on environment feedback.</p>
+<h2>Core Opinion</h2>
+<p>This loop is the smallest useful model of an agent runtime. It matters in the Nest because most higher-level frameworks differ less in whether they use this cycle than in how much of it they expose, constrain, or automate.</p>
+<p>The practical reading is:</p>
+<ul>
+<li>&quot;thought&quot; is the model selecting a next move from the current state
+</li>
+<li>&quot;action&quot; is the runtime boundary where the model leaves pure text and invokes a capability
+</li>
+<li>&quot;observation&quot; is the new state returned to the loop, which either grounds the next step or reveals failure
+</li>
+</ul>
+<p>Once that is clear, notes like <a href="react-pattern.html" class="wikilink">react-pattern</a>, <a href="agent-tools.html" class="wikilink">agent-tools</a>, <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>, and <a href="workflow-agents.html" class="wikilink">workflow-agents</a> become easier to place.</p>
 <h2>The Loop</h2>
 <ol>
 <li><strong>Thought</strong>: The LLM reasons about the current state and decides which step to take next.
@@ -456,6 +468,39 @@
 </ol>
 <h2>Evolution: ReAct</h2>
 <p>This cycle is often implemented using the <a href="react-pattern.html" class="wikilink">react-pattern</a>, where the reasoning and acting are interleaved in a single context window to maintain a logical &quot;chain of thought.&quot;</p>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a></code> when your question is about the minimal logic of agency:</p>
+<ul>
+<li>&quot;What actually makes a tool-using system an agent instead of just a completion?&quot;
+</li>
+<li>&quot;Where does failure usually enter the loop?&quot;
+</li>
+<li>&quot;How do reasoning, tool use, and returned state fit together?&quot;
+</li>
+</ul>
+<p>If the question is about a framework packaging this loop, route to <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>, <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, or <a href="smolagents.html" class="wikilink">smolagents</a>. If the question is about deterministic control over multiple loops, route to <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> or <a href="workflow-agents.html" class="wikilink">workflow-agents</a>.</p>
+<h2>Failure Modes</h2>
+<p>Most agent bugs are distortions of one phase of this cycle:</p>
+<ul>
+<li>bad <strong>Thought</strong>: the model plans against the wrong objective or hallucinates what it already knows
+</li>
+<li>bad <strong>Action</strong>: the tool contract is vague, the chosen tool is wrong, or the runtime boundary is unsafe
+</li>
+<li>bad <strong>Observation</strong>: the returned result is incomplete, noisy, or not written back into state in a usable form
+</li>
+</ul>
+<p>That is why <a href="agent-tools.html" class="wikilink">agent-tools</a> and <a href="agent-actions.html" class="wikilink">agent-actions</a> matter operationally more than generic &quot;reasoning&quot; descriptions.</p>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="react-pattern.html" class="wikilink">react-pattern</a> is the canonical prompt/runtime expression of this loop.
+</li>
+<li><a href="agent-tools.html" class="wikilink">agent-tools</a> explains the action surface in more detail.
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> explains what happens when many such loops are wired together explicitly.
+</li>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a> shows the deterministic counterpart where flow control is moved out of the model.
+</li>
+</ul>
 <hr>
 <h2>References</h2>
 <ul>
@@ -485,6 +530,9 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="agentic-tdd-patterns.html" class="">agentic-tdd-patterns</a></li>
 <li><a href="agents-in-games.html" class="">agents-in-games</a></li>
@@ -508,9 +556,16 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="react-pattern.html" class="">react-pattern</a></li>
+<li><a href="smolagents.html" class="">smolagents</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>
         </div>

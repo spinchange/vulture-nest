@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Tools</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">tool-definition, function-calling</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Tools</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">tool-definition, function-calling</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Tools</span></span>
       </div>
     </header>
 
@@ -445,6 +445,29 @@
       <main class="content-zone" id="content">
         <h1>Agent Tools</h1>
 <p>A <strong>Tool</strong> is a function provided to an LLM to complement its native capabilities (e.g., calculators, web search, database access).</p>
+<h2>Core Opinion</h2>
+<p>Tools are the real execution boundary of most agent systems. In the Nest, they matter less as &quot;features&quot; and more as the point where a model stops predicting text and starts requesting capabilities that have cost, latency, side effects, and trust implications.</p>
+<p>The practical split is:</p>
+<ul>
+<li>use <strong>tools</strong> when the model needs a bounded capability with a clear contract
+</li>
+<li>use <strong><a href="code-agents.html" class="wikilink">code-agents</a></strong> when the task is too open-ended for narrow tool schemas and needs generated executable logic
+</li>
+<li>use <strong><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a></strong> when the question is protocol shape rather than framework-local tool design
+</li>
+</ul>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="agent-tools.html" class="wikilink">agent-tools</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;What should count as a tool versus plain prompt context?&quot;
+</li>
+<li>&quot;How should a capability be described so the model can use it reliably?&quot;
+</li>
+<li>&quot;Why do tool contracts fail even when the underlying function works?&quot;
+</li>
+<li>&quot;How do framework-local tools relate to MCP?&quot;
+</li>
+</ul>
 <h2>Anatomy of a Tool</h2>
 <p>To be usable by an agent, a tool must be described precisely in the <strong>System Message</strong>:</p>
 <ul>
@@ -460,8 +483,32 @@
 <p>Anthropic&#39;s direct API exposes this surface through a top-level <code>tools</code> field on the Messages API, with tool calls returned as <code>tool_use</code> content blocks rather than a separate role channel.</p>
 <h2>Auto-Documentation</h2>
 <p>Modern frameworks use Python introspection (decorators like <code>@tool</code>) to automatically generate tool descriptions from docstrings and type hints. This reduces the risk of the LLM receiving a mismatched specification.</p>
+<h2>What Makes a Tool Good</h2>
+<p>A good tool contract is:</p>
+<ul>
+<li><strong>narrow enough to choose correctly</strong>: the model should know when to use it and when not to
+</li>
+<li><strong>structured enough to validate</strong>: arguments should be typed and reject malformed requests
+</li>
+<li><strong>observable enough to recover from</strong>: outputs and errors should give the loop something actionable
+</li>
+<li><strong>bounded enough to trust</strong>: side effects and authority should be explicit
+</li>
+</ul>
+<p>This is why Pydantic schemas, decorators, and MCP capability descriptions show up repeatedly across the vault.</p>
 <h2>Model Context Protocol (<a href="mcp-moc.html" class="wikilink">MCP</a>)</h2>
 <p>MCP is an open standard designed to unify how tools are provided to LLMs, allowing tools to be shared across different agentic frameworks without re-implementation.</p>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> explains where tools sit in the basic loop.
+</li>
+<li><a href="mcp-primitives.html" class="wikilink">mcp-primitives</a> explains the protocol-level distinction between tools, resources, and prompts.
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> and <a href="function-calling.html" class="wikilink">function-calling</a> cover provider-specific tool invocation surfaces.
+</li>
+<li><a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> shows the adjacent pattern where an entire agent is wrapped as a tool.
+</li>
+</ul>
 <h2>See Also</h2>
 <ul>
 <li><a href="agent-actions.html" class="wikilink">agent-actions</a>
@@ -489,8 +536,11 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
@@ -514,8 +564,12 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
+<li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="code-agents.html" class="">code-agents</a></li>
 <li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-primitives.html" class="">mcp-primitives</a></li>

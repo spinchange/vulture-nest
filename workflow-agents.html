@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Workflow Agents ([[agent-development-kit|ADK]])</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Workflow Agents ([[agent-development-kit|ADK]])</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Workflow Agents ([[agent-development-kit|ADK]])</span></span>
       </div>
     </header>
 
@@ -445,6 +445,17 @@
       <main class="content-zone" id="content">
         <h1>Workflow Agents (ADK)</h1>
 <p><strong>Workflow Agents</strong> are specialized, deterministic controllers in the <a href="agent-development-kit.html" class="wikilink">ADK</a> that manage the execution flow of other agents. Unlike <code>LlmAgent</code>s, which use LLMs to decide their next action, Workflow Agents follow predefined patterns for orchestration.</p>
+<h2>Core Opinion</h2>
+<p>Workflow agents matter because they move flow control out of the model and into explicit structure. In the Nest, they are the clearest example of when &quot;agentic&quot; does not have to mean &quot;LLM decides everything.&quot;</p>
+<p>They are the right abstraction when:</p>
+<ul>
+<li>the execution pattern is already known
+</li>
+<li>predictability matters more than conversational flexibility
+</li>
+<li>you want model intelligence inside steps, not in the control plane itself
+</li>
+</ul>
 <h2>Core Characteristics</h2>
 <ul>
 <li><strong>Deterministic:</strong> Execution paths are fixed and predictable.
@@ -504,13 +515,35 @@
 </tr>
 </tbody>
 </table>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="workflow-agents.html" class="wikilink">workflow-agents</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Should this coordination pattern be explicit instead of model-selected?&quot;
+</li>
+<li>&quot;Which deterministic controller fits this multi-step job?&quot;
+</li>
+<li>&quot;How does ADK express sequence, parallelism, or iteration structurally?&quot;
+</li>
+</ul>
+<p>If the question is broader than ADK, route to <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>. If the question is about how agents share state or delegate, route to <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a>.</p>
 <h2>Related Patterns</h2>
 <ul>
 <li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>: Workflow agents often sit at the top of a tree, managing specialized sub-agents.
 </li>
 <li><a href="pattern-dynamic-delegation.html" class="wikilink">pattern-dynamic-delegation</a>: While workflow agents use structural delegation, <code>LlmAgent</code>s use dynamic delegation via tools or transfer.
 </li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>: The higher-level pattern that workflow agents instantiate concretely inside ADK.
+</li>
 </ul>
+<h2>Start Here</h2>
+<ol>
+<li>Read this note if the main issue is choosing sequence vs. parallel vs. loop control.
+</li>
+<li>Then read <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> if state sharing or transfer semantics matter.
+</li>
+<li>Return to <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> if you need the broader runtime and service model.
+</li>
+</ol>
 <hr>
 <p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>*</p>
       </main>
@@ -528,6 +561,7 @@
 <li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
 <li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="claude-openai-symphony-synthesis-handoff-2026-05-03.html" class="">claude-openai-symphony-synthesis-handoff-2026-05-03</a></li>
 <li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="gemini-openai-symphony-spec-research-handoff-2026-05-03.html" class="">gemini-openai-symphony-spec-research-handoff-2026-05-03</a></li>
@@ -540,13 +574,17 @@
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 <li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
 <li><a href="system-index.html" class="">system-index</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
 <li><a href="pattern-dynamic-delegation.html" class="">pattern-dynamic-delegation</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>
         </div>

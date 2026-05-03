@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Development Kit ([[agent-development-kit|ADK]])</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Development Kit ([[agent-development-kit|ADK]])</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">adk, google-adk</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Development Kit ([[agent-development-kit|ADK]])</span></span>
       </div>
     </header>
 
@@ -445,6 +445,30 @@
       <main class="content-zone" id="content">
         <h1>Agent Development Kit (ADK)</h1>
 <p>The <strong>Agent Development Kit (ADK)</strong> is an open-source, code-first toolkit for building, evaluating, and deploying sophisticated AI agents with high flexibility and control. It is particularly optimized for Google&#39;s Gemini models but designed for broad LLM support.</p>
+<h2>Core Opinion</h2>
+<p>ADK matters in this vault because it is one of the clearest frameworks for separating LLM-driven agent behavior from explicit orchestration structure. It is strongest when you want a code-first agent system with durable session state, first-class workflow controllers, and a runner that treats execution as an event stream rather than a chat transcript.</p>
+<p>The practical reading of ADK in the Nest is:</p>
+<ul>
+<li>use <strong>ADK</strong> when you want explicit control over agent runtime structure, persistent services, and the boundary between deterministic flow and model-driven reasoning
+</li>
+<li>compare it to <strong><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a></strong> when the question is orchestration ergonomics or handoff style
+</li>
+<li>compare it to <strong><a href="openai-swarm.html" class="wikilink">openai-swarm</a></strong> when the question is lightweight interactive multi-agent chat rather than structured runtime services
+</li>
+</ul>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Which framework gives me workflow controllers instead of only free-form agent loops?&quot;
+</li>
+<li>&quot;How do sessions, artifacts, and long-term memory fit into an agent runtime?&quot;
+</li>
+<li>&quot;Where do I look in ADK for multi-agent routing, callbacks, or evaluation?&quot;
+</li>
+<li>&quot;How does ADK split deterministic orchestration from LLM-driven behavior?&quot;
+</li>
+</ul>
+<p>If the question is instead about general execution topology, route to <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> or <a href="workflow-agents.html" class="wikilink">workflow-agents</a>. If it is about generic tool contracts rather than the framework runtime, route to <a href="agent-tools.html" class="wikilink">agent-tools</a>.</p>
 <h2>Architectural Blueprint</h2>
 <p>ADK operates on an <strong>Event-Driven Orchestration</strong> model managed by the <strong>Runner</strong>.</p>
 <h3>The Runner (Orchestrator)</h3>
@@ -506,6 +530,29 @@
 <li><strong><a href="adk-evaluation-framework.html" class="wikilink">Evaluation</a></strong>: Built-in tools for multi-turn dataset creation and systematic performance assessment.
 </li>
 </ul>
+<h2>Start Here</h2>
+<p>Choose the shortest path based on the work:</p>
+<ol>
+<li>If you need the runtime model, start with <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a> and then return here.
+</li>
+<li>If you need deterministic orchestration, go straight to <a href="workflow-agents.html" class="wikilink">workflow-agents</a> and <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a>.
+</li>
+<li>If you need memory or persistence behavior, route through <a href="adk-session-service.html" class="wikilink">adk-session-service</a>, <a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a>, and <a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a>.
+</li>
+<li>If you need evaluation or productionization concerns, go to <a href="adk-evaluation-framework.html" class="wikilink">adk-evaluation-framework</a> after the runner model is clear.
+</li>
+</ol>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> is the higher-level execution pattern; ADK is one concrete implementation family.
+</li>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a> is the clearest entry point when the question is deterministic control flow rather than the whole framework.
+</li>
+<li><a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> and <a href="agent-tools.html" class="wikilink">agent-tools</a> explain the lower-level mechanics that ADK packages into a framework runtime.
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> is the broader comparison surface once you know which ADK subsystem matters.
+</li>
+</ul>
 <hr>
 <h2>Implementations</h2>
 <ul>
@@ -549,6 +596,7 @@
 <li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
@@ -585,13 +633,18 @@
 <li><a href="adk-evaluation-framework.html" class="">adk-evaluation-framework</a></li>
 <li><a href="adk-go-implementation.html" class="">adk-go-implementation</a></li>
 <li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-thought-cycle.html" class="">agent-thought-cycle</a></li>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>
