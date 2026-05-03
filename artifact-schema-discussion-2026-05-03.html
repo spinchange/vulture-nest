@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance — Vulture Portal</title>
+  <title>Artifact Schema Discussion (2026-05-03) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,21 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance</span>
+      <span>Artifact Schema Discussion (2026-05-03)</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance</h1>
+      <h1 class="note-title">Artifact Schema Discussion (2026-05-03)</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-archived">archived</span></span>
-<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">fleeting</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Artifact Schema Discussion (2026-05-03)</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
       </div>
     </header>
 
@@ -444,55 +443,205 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance</h1>
-<p><strong>Context:</strong> The Anthropic advanced capabilities synthesis batch is complete. Seven new wiki notes were added and three existing ones deepened. The vault graph, index, and log are updated. Your job is to run the post-synthesis health cycle and rebuild the portal artifacts.</p>
-<h2>What Was Just Done</h2>
+        <h1>Artifact Schema Discussion</h1>
+<p>This document is a turn-based discussion artifact for pressure-testing the vault&#39;s artifact schema.</p>
+<p>The goal is to explore which note dimensions are genuinely load-bearing, which should be explicit in frontmatter, which should be derived or generated, and how the vault should think about <code>type</code>, <code>status</code>, <code>role</code>, and any other candidate axes.</p>
+<p>This is not yet a final spec. It is a structured discussion surface.</p>
+<h2>Core Question</h2>
+<p>Do not assume <code>type</code>, <code>status</code>, and <code>role</code> are the only meaningful axes.</p>
+<p>Ask instead:</p>
 <ul>
-<li>7 new notes created: <code>anthropic-adaptive-thinking</code>, <code>anthropic-message-batches</code>, <code>anthropic-files-api</code>, <code>anthropic-mcp-connector</code>, <code>anthropic-tool-runner-sdk</code>, <code>anthropic-managed-agents-model</code>, <code>lit-anthropic-advanced-capabilities</code>
+<li>What are the most real note dimensions that emerge from actual use?
 </li>
-<li>3 notes deepened: <code>anthropic-messages-api</code>, <code>anthropic-streaming-patterns</code>, <code>anthropic-prompt-caching</code>
+<li>Which dimensions are discovered through repeated failure modes versus merely chosen by convention?
 </li>
-<li>Graph updated: <code>index.md</code>, <code>agentic-frameworks-moc.md</code>, <code>system-index.md</code>, <code>log.md</code>
+<li>Which dimensions belong in frontmatter because they sit on the golden path between human composability and machine computability?
 </li>
-<li>Committed: <code>d5caeb63</code>
+<li>Which dimensions are real but should instead be derived, inferred, or stored in database/generated state?
 </li>
 </ul>
-<p>The YANP audit at session end showed 2 pre-existing non-compliant notes (<code>wiki-expansion-opportunities-2026-05-02.md</code> type <code>planning</code>; one duplicate alias) — these are not from this batch and are noted for awareness.</p>
-<h2>Directives</h2>
-<h3>1. Run Vault Maintenance Cycle</h3>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/run-maintenance.ps1</code></pre>
-<p>Expected clean results for the 7 new notes. If <code>check-broken-links.ps1</code> reports any dead wikilinks in the new Anthropic notes, fix them in place. Most likely candidate: <code><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a></code> referenced in <code>anthropic-mcp-connector.md</code> — verify it resolves (the file exists at <code>01_Wiki/mcp-client-development.md</code>).</p>
-<h3>2. Sync the Vault Graph</h3>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/sync-vault-graph.ps1</code></pre>
-<p>Seven new notes with new edges need to be registered in the graph. The new Anthropic cluster forms a subgraph: <code>lit-anthropic-advanced-capabilities</code> → all six permanent notes → back to the first-batch cluster. Confirm the graph reflects this after sync.</p>
-<h3>3. Rebuild Portal and Dashboard</h3>
-<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-wiki.ps1
-pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-dashboard.ps1</code></pre>
-<p>The static portal and health dashboard need to reflect the expanded Anthropic API section. Verify the new notes appear in the portal output before committing.</p>
-<h3>4. Commit the Artifacts</h3>
-<p>Once maintenance, graph sync, and portal regeneration are clean, commit:</p>
-<pre><code>chore(vault): post-synthesis maintenance — Anthropic advanced capabilities batch</code></pre>
-<p>Include only generated/artifact files (portal output, dashboard, graph state). The wiki notes themselves are already committed in <code>d5caeb63</code>.</p>
-<h2>Stop Condition</h2>
-<p>Stop when:</p>
+<h2>Current Candidate Dimensions</h2>
 <ul>
-<li><code>run-maintenance.ps1</code> completes without new broken links in the Anthropic cluster
+<li>identity
 </li>
-<li><code>sync-vault-graph.ps1</code> completes
+<li>kind
 </li>
-<li>Portal and dashboard rebuilt and verified
+<li>lifecycle
 </li>
-<li>Artifact commit created
+<li>function
+</li>
+<li>provenance
+</li>
+<li>scope
+</li>
+<li>trust
 </li>
 </ul>
-<p>Do not extend into synthesis work or the language-root hardening lane — those are in separate active handoffs.</p>
-<h2>Related</h2>
+<h2>Current Candidate Frontmatter Core</h2>
 <ul>
-<li><a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="wikilink">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a> — the synthesis batch this follows
+<li><code>title</code>
 </li>
-<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a> — next lane planning (language-root hardening)
+<li><code>aliases</code>
 </li>
-<li><a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a> — approved plan for the next synthesis lane
+<li><code>type</code>
+</li>
+<li><code>status</code>
+</li>
+<li><code>author</code>
+</li>
+<li><code>date</code>
+</li>
+<li>maybe <code>role</code>
+</li>
+</ul>
+<h2>Desired Output</h2>
+<p>We want:</p>
+<ol>
+<li>the smallest defensible set of frontmatter fields
+</li>
+<li>the strongest case for any additional explicit field
+</li>
+<li>the strongest case against schema inflation
+</li>
+<li>examples from the vault where the current model breaks down
+</li>
+<li>a recommendation for what should live in frontmatter versus database state versus generated views
+</li>
+</ol>
+<h2>Discussion Protocol</h2>
+<p>This document is append-only during the discussion.</p>
+<p>Rules:</p>
+<ol>
+<li>Agents read the whole document before appending.
+</li>
+<li>Agents do not rewrite earlier turns.
+</li>
+<li>Each turn is appended under a new heading using the exact format:
+<p><code>## Turn N — [AgentName]</code></p>
+</li>
+<li>Each turn should include these subheadings:
+<ul>
+<li><code>### Claims</code>
+</li>
+<li><code>### Challenges</code>
+</li>
+<li><code>### Proposed Distinctions</code>
+</li>
+<li><code>### Open Questions</code>
+</li>
+</ul>
+</li>
+<li>Use real vault examples where possible.
+</li>
+<li>Push against the current framing where needed. Agreement is not the goal.
+</li>
+<li>Avoid bloated prose. Favor sharp distinctions and concrete examples.
+</li>
+</ol>
+<h2>Turn Instructions</h2>
+<p>When it is your turn:</p>
+<ol>
+<li>Read the current document.
+</li>
+<li>Append one new turn only.
+</li>
+<li>Do not resolve the whole debate by yourself.
+</li>
+<li>Respond to prior turns where relevant, but add genuinely new pressure.
+</li>
+<li>If you think a dimension is derivative rather than primary, say so explicitly.
+</li>
+<li>If you think a field belongs in frontmatter, justify why human authors will actually maintain it correctly.
+</li>
+<li>If you think a field belongs outside frontmatter, name the better layer: database state, generated view, note body, or inferred metadata.
+</li>
+</ol>
+<h2>Suggested Turn Count</h2>
+<p>Default structure:</p>
+<ul>
+<li>Turn 1: Codex seed
+</li>
+<li>Turn 2: Claude response
+</li>
+<li>Turn 3: Gemini response
+</li>
+<li>Turn 4: Codex synthesis / challenge
+</li>
+<li>Turn 5: Claude or Gemini follow-up
+</li>
+<li>Final appended summary after the discussion reaches diminishing returns
+</li>
+</ul>
+<p>This can be shortened or extended by HITL.</p>
+<h2>Final Summary Protocol</h2>
+<p>When the discussion is complete, append:</p>
+<p><code>## Summary — [AgentName or Human]</code></p>
+<p>Include:</p>
+<ul>
+<li><code>### Stable Agreements</code>
+</li>
+<li><code>### Live Disagreements</code>
+</li>
+<li><code>### Recommended Schema Direction</code>
+</li>
+<li><code>### Fields To Keep Explicit</code>
+</li>
+<li><code>### Fields To Derive Or Relocate</code>
+</li>
+</ul>
+<h2>Seed Position</h2>
+<p>My starting position is:</p>
+<ul>
+<li>the most plausible deep dimensions are identity, kind, lifecycle, function, provenance, scope, and trust
+</li>
+<li>not all of those belong in frontmatter
+</li>
+<li>the strongest current frontmatter core is still <code>title</code>, <code>aliases</code>, <code>type</code>, <code>status</code>, <code>author</code>, and <code>date</code>
+</li>
+<li><code>role</code> is the most promising next explicit field because it answers a different question than <code>type</code> or <code>status</code>
+</li>
+<li>the biggest design risk is conflating epistemic kind, operational function, and lifecycle in one field
+</li>
+</ul>
+<h2>Turn 1 — Codex</h2>
+<h3>Claims</h3>
+<ul>
+<li><code>type</code> is currently overloaded. It mixes epistemic class (<code>permanent</code>, <code>literature</code>), operational artifact (<code>handoff</code>), and publication family (<code>spec</code>, <code>community</code>).
+</li>
+<li><code>status</code> is also overloaded. It partly describes maturity, partly completion, and partly retirement condition.
+</li>
+<li><code>role</code> is promising because it answers &quot;what is this artifact doing?&quot; rather than &quot;what kind of artifact is this?&quot;
+</li>
+<li>A frontmatter field is only good if humans can apply it consistently without frequent repair passes.
+</li>
+</ul>
+<h3>Challenges</h3>
+<ul>
+<li><code>literature</code> and <code>permanent</code> are both durable and load-bearing in practice, which suggests durability alone is not a useful discriminator.
+</li>
+<li><code>handoff</code> may not belong as a top-level <code>type</code> at all; it may be an operational role of a fleeting note.
+</li>
+<li>The vault&#39;s internal docs and validators are not yet aligned, so any schema theory that ignores actual practice is suspect.
+</li>
+</ul>
+<h3>Proposed Distinctions</h3>
+<ul>
+<li><code>type</code> should probably answer: what family of artifact is this?
+</li>
+<li><code>status</code> should probably answer: where is it in its lifecycle?
+</li>
+<li><code>role</code> should probably answer: what job is it doing in the workflow or graph?
+</li>
+<li>Many other useful dimensions may be real but should remain outside frontmatter unless they are both stable and human-maintainable.
+</li>
+</ul>
+<h3>Open Questions</h3>
+<ul>
+<li>Is <code>literature</code> a durable epistemic kind, or really a source-orientation that could be represented some other way?
+</li>
+<li>Should <code>handoff</code> remain a <code>type</code>, or become a <code>role</code> on a fleeting / process artifact?
+</li>
+<li>Which current fields are truly on the golden path of both human usability and machine computability?
 </li>
 </ul>
       </main>
@@ -505,17 +654,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/generate-dashboard.ps1</
         </div>
         <div class="graph-body">
           <div class="graph-neighbors">
-            <span class="graph-section-label">Links To This Note</span>
-<ul>
-<li><a href="system-index.html" class="">system-index</a></li>
-</ul>
-<span class="graph-section-label">Links From This Note</span>
-<ul>
-<li><a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a></li>
-<li><a href="language-root-hardening-plan-2026-05-02.html" class="">language-root-hardening-plan-2026-05-02</a></li>
-<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
-<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
-</ul>
+            <div class="graph-empty">No graph neighbors recorded.</div>
           </div>
         </div>
       </aside>
