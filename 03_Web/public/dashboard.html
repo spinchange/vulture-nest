@@ -306,26 +306,26 @@
         <h1>Vulture Engine<br>Operational Surface</h1>
         <p class="subhead">Text-first telemetry for the vault substrate: health, centrality, and the most recent motion across system logs and PoShWiKi memory.</p>
         <div class="stamp">
-          <span>Generated 2026-05-02 23:31</span>
+          <span>Generated 2026-05-03 00:35</span>
           <span>Source: SQLite + Markdown</span>
         </div>
       </div>
       <div class="panel hero-score">
         <div class="kicker terminal">Vault Health</div>
-        <div class="score">95%</div>
-        <div class="health-warn terminal">orphan=0 / broken=1 / neural_gap=0</div>
+        <div class="score">100%</div>
+        <div class="health-ok terminal">orphan=0 / broken=0 / neural_gap=0</div>
       </div>
     </section>
 
     <section class="metrics">
       <article class="panel metric">
         <div class="metric-label terminal">Total Notes</div>
-        <div class="metric-value">362</div>
+        <div class="metric-value">377</div>
         <div class="metric-foot">Wiki notes currently indexed under <span class="terminal">01_Wiki</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Link Density</div>
-        <div class="metric-value">9.82</div>
+        <div class="metric-value">10.26</div>
         <div class="metric-foot">Average wikilinks per note across the active vault corpus.</div>
       </article>
       <article class="panel metric">
@@ -335,13 +335,13 @@
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">PoShWiKi Pages</div>
-        <div class="metric-value">8</div>
+        <div class="metric-value">9</div>
         <div class="metric-foot">Structured pages currently stored in <span class="terminal">wiki.db</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Session Actions</div>
         <div class="metric-value">6</div>
-        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-05-02</span>.</div>
+        <div class="metric-foot">Action lines recorded on <span class='terminal'>Session 2026-05-02</span>. Latest session page is <span class='terminal'>Session 2026-05-03</span>.</div>
       </article>
       <article class="panel metric">
         <div class="metric-label terminal">Tier-2 Compliance</div>
@@ -360,10 +360,10 @@
           </thead>
           <tbody>
             <tr><td class='rank'>mcp-moc</td><td class='value'>98</td></tr>
-<tr><td class='rank'>rust</td><td class='value'>76</td></tr>
+<tr><td class='rank'>rust</td><td class='value'>80</td></tr>
+<tr><td class='rank'>python</td><td class='value'>74</td></tr>
 <tr><td class='rank'>capability-lattice-spec</td><td class='value'>73</td></tr>
-<tr><td class='rank'>python</td><td class='value'>70</td></tr>
-<tr><td class='rank'>agent-development-kit</td><td class='value'>67</td></tr>
+<tr><td class='rank'>agent-development-kit</td><td class='value'>68</td></tr>
           </tbody>
         </table>
         <div class="callout">Centrality is computed from the <span class="terminal">Links</span> table in PoShWiKi by incoming link count.</div>
@@ -375,7 +375,7 @@
         <div class="split">
           <section>
             <h3>PoShWiKi Session</h3>
-            <div class="callout">Latest session page: <span class='terminal'>Session 2026-05-02</span></div>
+            <div class="callout">Latest page with an <span class='terminal'>Actions</span> section: <span class='terminal'>Session 2026-05-02</span>. Latest session page: <span class='terminal'>Session 2026-05-03</span>.</div>
             <ul class="feed">
               <li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: revised agentic-protocols, core-patterns-moc, and code-agents to add maturity framing, scope caveats, and concrete operational guidance after Claude review. Focused re-reviews returned accept verdicts; no human-review blocker remained in this batch.</span></li>
 <li><span class='feed-meta'>May 02 17:51 | action</span><span class='feed-text'>Cleanup pass advanced: rebuilt firecrawl-api-v2-reference, firecrawl-crawling-capabilities, firecrawl-map-capabilities, and firecrawl-scrape-capabilities from local pipeline evidence after failed doc-scrape artifacts were found. Reframed them as vault-local references grounded in spec-firecrawl-pgvector-pipeline and ingest code; focused Claude re-reviews returned accept across the batch.</span></li>
@@ -392,11 +392,11 @@
             <h3>log.md Major Actions</h3>
             <div class="callout">Last five major actions pulled from <span class="terminal">02_System/log.md</span>.</div>
             <ul class="feed">
-              <li><span class='feed-text'>[2026-05-01] gemini-cli — Graph Integration: lit-mcp-security-best-practices</span></li>
-<li><span class='feed-text'>[2026-05-02] Codex — Claude Review Normalization</span></li>
-<li><span class='feed-text'>[2026-05-02] gemini-cli — Wiki Expansion Research &amp; Planning</span></li>
+              <li><span class='feed-text'>[2026-05-02] gemini-cli — Wiki Expansion Research &amp; Planning</span></li>
 <li><span class='feed-text'>[2026-05-02] gemini-cli — Execution: Core Protocol &amp; Framework Depth</span></li>
 <li><span class='feed-text'>[2026-05-02] gemini-cli — Language Root Hardening Research &amp; Planning</span></li>
+<li><span class='feed-text'>[2026-05-03] Claude — OpenAI Symphony Literature Note Grounding</span></li>
+<li><span class='feed-text'>[2026-05-03] codex — Navigational Hub Restoration</span></li>
             </ul>
           </section>
         </div>
@@ -406,14 +406,14 @@
     <section class="commit-strip">
       <h3>Recent Commits</h3>
       <div class="commit-track">
-        <span class='commit-pill'><span class='sha'>159b2e25</span><span>docs(handoff): add Codex post-synthesis maintenance handoff</span></span>
-<span class='commit-pill'><span class='sha'>d5caeb63</span><span>feat(wiki): add Anthropic advanced capabilities cluster</span></span>
-<span class='commit-pill'><span class='sha'>2645da12</span><span>fix(dashboard): parse frontmatter types without false orphans</span></span>
-<span class='commit-pill'><span class='sha'>6f41be97</span><span>docs(anthropic): add initial API corpus and evaluation record</span></span>
-<span class='commit-pill'><span class='sha'>c844db08</span><span>chore(handoff): add Anthropic docs ingestion prompts</span></span>
-<span class='commit-pill'><span class='sha'>4e5693a7</span><span>chore(tracking): normalize Claude review trail into durable logs</span></span>
-<span class='commit-pill'><span class='sha'>febd35ea</span><span>chore(sources): capture verbalized sample skill artifacts</span></span>
-<span class='commit-pill'><span class='sha'>05535330</span><span>chore(tracking): update session export for review and integration passes</span></span>
+        <span class='commit-pill'><span class='sha'>1eaada93</span><span>docs(moc): restore navigation across weak hub notes</span></span>
+<span class='commit-pill'><span class='sha'>616e20c9</span><span>chore(symfony): close handoffs and export session snapshot</span></span>
+<span class='commit-pill'><span class='sha'>01723d52</span><span>fix(graph): remove broken codex link from symphony note</span></span>
+<span class='commit-pill'><span class='sha'>bd5b5a63</span><span>feat(wiki): ground openai symphony literature note</span></span>
+<span class='commit-pill'><span class='sha'>b3b8a1fd</span><span>feat(ingest): add manifest-driven batch runner</span></span>
+<span class='commit-pill'><span class='sha'>e4e06bb3</span><span>docs(handoff): add OpenAI Symphony research brief</span></span>
+<span class='commit-pill'><span class='sha'>01d18d75</span><span>docs(planning): add 2026-05-02 expansion and hardening handoffs</span></span>
+<span class='commit-pill'><span class='sha'>752459df</span><span>docs(anthropic): publish batch 2 corpus and routing</span></span>
       </div>
     </section>
   </main>

@@ -439,6 +439,58 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-02] Claude — Anthropic Batch 2 Synthesis</h2>
+<p><strong>Directive</strong>: Executed <a href="codex-anthropic-batch-2-synthesis-handoff-2026-05-02.html" class="wikilink">codex-anthropic-batch-2-synthesis-handoff-2026-05-02</a> — synthesized all 30 Batch 2 Anthropic source pages (5 sub-batches) into permanent and literature notes.</p>
+<p><strong>Literature Notes Created (5):</strong></p>
+<ul>
+<li><a href="lit-anthropic-sdk-service-2026.html" class="wikilink">lit-anthropic-sdk-service-2026</a> — Sub-batch E: SDKs, model lineup, service tiers, versioning, beta headers, context editing
+</li>
+<li><a href="lit-anthropic-tool-use-depth.html" class="wikilink">lit-anthropic-tool-use-depth</a> — Sub-batch A: full tool-use depth including server tools, Tool Runner SDK, MCP connector, tool search, strict mode, parallel tools
+</li>
+<li><a href="lit-anthropic-thinking-capabilities.html" class="wikilink">lit-anthropic-thinking-capabilities</a> — Sub-batch B: extended thinking, adaptive thinking, effort parameter, interleaved thinking, thinking block preservation
+</li>
+<li><a href="lit-anthropic-async-data-apis.html" class="wikilink">lit-anthropic-async-data-apis</a> — Sub-batch C: batch processing, Files API, token counting API, Models API list
+</li>
+<li><a href="lit-anthropic-managed-agents.html" class="wikilink">lit-anthropic-managed-agents</a> — Sub-batch D: Managed Agents quickstart, agent versioning, sessions, environments, tools, event streaming
+</li>
+</ul>
+<p><strong>Permanent Notes Created (3):</strong></p>
+<ul>
+<li><a href="anthropic-agentic-loop.html" class="wikilink">anthropic-agentic-loop</a> — Tool-use contract; three execution buckets; client-side <code>while stop_reason == &quot;tool_use&quot;</code> loop; server-side loop with <code>pause_turn</code>
+</li>
+<li><a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a> — <code>server_tool_use</code> block (<code>srvtoolu_</code> prefix); <code>pause_turn</code> continuation; ZDR eligibility by tool version; domain filtering; dynamic filtering via <code>_20260209</code> versions
+</li>
+<li><a href="anthropic-claude-4-model-family.html" class="wikilink">anthropic-claude-4-model-family</a> — Opus 4.7, Sonnet 4.6, Haiku 4.5 capability matrix; retirement dates; thinking support matrix; Models API capabilities object
+</li>
+</ul>
+<p><strong>Pre-existing permanent notes validated intact</strong> (written in advanced-capabilities batch, all sourced from <a href="lit-anthropic-advanced-capabilities.html" class="wikilink">lit-anthropic-advanced-capabilities</a>): <a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>, <a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a>, <a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a>, <a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a>, <a href="anthropic-tool-runner-sdk.html" class="wikilink">anthropic-tool-runner-sdk</a>, <a href="anthropic-managed-agents-model.html" class="wikilink">anthropic-managed-agents-model</a>.</p>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — 2 non-compliant notes (pre-existing <code>type: planning</code> violations, not this session). <code>check-broken-links.ps1</code> — no broken links in new notes. Index updated.</p>
+<p><strong>Scope boundary respected</strong>: No graph integration, no new crawling, no ingestion tooling changes.</p>
+<h2>[2026-05-02] Codex — PowerShell &amp; TypeScript Hub Hardening</h2>
+<p><strong>Directive</strong>: Executed <a href="claude-powershell-typescript-hub-handoff-2026-05-02.html" class="wikilink">claude-powershell-typescript-hub-handoff-2026-05-02</a> — hardened <code><a href="powershell.html" class="wikilink">powershell</a></code> and <code><a href="typescript.html" class="wikilink">typescript</a></code> root notes from thin summaries into functional hub notes.</p>
+<p><strong>Notes Hardened:</strong></p>
+<ul>
+<li><a href="powershell.html" class="wikilink">powershell</a> — Preserved the existing operations-layer framing, then expanded it into a real hub: clarified the object-pipeline distinction, separated language/data-flow navigation from vault-operations navigation, and added explicit &quot;Where to Start&quot; guidance for new script authors versus maintenance work.
+</li>
+<li><a href="typescript.html" class="wikilink">typescript</a> — Preserved the existing web-tier/scaffolding framing, then expanded it into a real hub: named structural typing as the key rationale, separated handbook fundamentals from MCP/application routing, and added explicit &quot;Where to Start&quot; guidance for cold readers and Rust/Python transferees.
+</li>
+</ul>
+<p><strong>Stop condition met</strong>: Both hubs materially stronger; no third language or MOC-restoration lane added.</p>
+<h2>[2026-05-02] Claude — Core Reasoning Roots Hardening (Rust &amp; Python)</h2>
+<p><strong>Directive</strong>: Executed <a href="claude-core-reasoning-roots-handoff-2026-05-02.html" class="wikilink">claude-core-reasoning-roots-handoff-2026-05-02</a> — hardened <code><a href="rust.html" class="wikilink">rust</a></code> and <code><a href="python.html" class="wikilink">python</a></code> root notes from thin language summaries into functional hub notes.</p>
+<p><strong>Notes Hardened:</strong></p>
+<ul>
+<li><a href="rust.html" class="wikilink">rust</a> — Rewrote with vault-local framing: Tier-0 Safe Core role, MCP server implementation context. Three-track navigation: Language Fundamentals → Vault Applications (Tier-0 patterns, MCP patterns, sqlx) → Type System Theory (phantom types, type-level programming, affine types). Replaced generic &quot;References&quot; section with high-signal See Also.
+</li>
+<li><a href="python.html" class="wikilink">python</a> — Rewrote with &quot;Python in the Nest&quot; section: Tier-1 orchestration layer, SDK/integration surface, practical glue. Added explicit &quot;Where to Start&quot; guidance with two paths (general vs. ingestion/MCP work). Deepened routing to decorators, context managers, asyncio, typing as first-class navigation targets.
+</li>
+</ul>
+<p><strong>Supporting Updates:</strong></p>
+<ul>
+<li><a href="rust-moc.html" class="wikilink">rust-moc</a> — Added missing &quot;Vault Applications&quot; section registering <code>rust-tier-0-patterns</code>, <code>rust-mcp-patterns</code>, <code>rust-sqlx-migrations</code> (all existed but were absent from MOC).
+</li>
+</ul>
+<p><strong>Stop condition met</strong>: Both hubs materially stronger; did not extend into PowerShell or TypeScript lane.</p>
 <h2>[2026-05-02] Claude — Anthropic Advanced Capabilities Synthesis</h2>
 <p><strong>Directive</strong>: Executed <a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="wikilink">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a> — extended the Anthropic cluster beyond first-batch fundamentals using the local <code>00_Raw/anthropic/</code> corpus.</p>
 <p><strong>New Notes Created:</strong></p>
@@ -1818,6 +1870,43 @@
 <li><strong>Status</strong>: Research phase complete; implementation plan active.
 </li>
 </ul>
+<h3>2026-05-03 12:00</h3>
+<ul>
+<li><strong>Action:</strong> /ingest [OpenAI Symphony Spec]
+</li>
+<li><strong>Details:</strong> Researched OpenAI Symphony announcement and SPEC.md. Created permanent note <a href="openai-symphony.html" class="wikilink">openai-symphony</a> and literature note <a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a>. Updated <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>, <a href="openai-swarm.html" class="wikilink">openai-swarm</a>, <a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>, and <a href="system-index.html" class="wikilink">system-index</a>.
+</li>
+<li><strong>Author:</strong> gemini-cli
+</li>
+</ul>
+<h2>[2026-05-03] Claude — OpenAI Symphony Literature Note Grounding</h2>
+<ul>
+<li><strong>Directive:</strong> Executed <a href="claude-openai-symphony-synthesis-handoff-2026-05-03.html" class="wikilink">claude-openai-symphony-synthesis-handoff-2026-05-03</a> from Codex — ground the Symphony literature note in indexed evidence.
+</li>
+<li><strong>Semantic Retrieval:</strong> Ran 9 semantic searches against two indexed pages (page <code>76b9c652</code> announcement, page <code>f53a802d</code> SPEC.md) using <code>semantic_search_sources</code>. Retrieved 19 unique chunks covering &#167;1–3, &#167;5.2, &#167;5.4, &#167;6.4, &#167;10, &#167;15.1, &#167;18.1–18.2.
+</li>
+<li><strong>Literature Note:</strong> Materially strengthened <a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a> — added <code>## Core Architecture</code> (8 components, 6 abstraction layers), <code>## Workflow Contract</code> (file format, prompt template contract, core config fields), <code>## Trust Boundary</code> (&#167;15.1 verbatim + non-goals), expanded <code>## Critical Distinctions</code> (not-A2A, not-Swarm, not-general-workflow-engine, WORKFLOW.md load-bearing, ticket-writes-are-agent-side). Full provenance table with 19 chunk IDs.
+</li>
+<li><strong>YANP Fix:</strong> Corrected <code>type: completion</code> → <code>type: fleeting</code> in <a href="gemini-openai-symphony-completion-2026-05-03.html" class="wikilink">gemini-openai-symphony-completion-2026-05-03</a> (invalid YANP type).
+</li>
+<li><strong>Audit:</strong> All notes YANP compliant.
+</li>
+<li><strong>Status:</strong> Literature note grounded. Graph integration already complete per gemini completion note.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Navigational Hub Restoration</h2>
+<ul>
+<li><strong>Directive:</strong> Executed the next high-signal follow-on from <a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a> after the completed ADK/MCP and language-root batches: strengthen weak MOCs as real wayfinding hubs.
+</li>
+<li><strong>MOC Hardening:</strong> Reworked <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>, <a href="javascript-moc.html" class="wikilink">javascript-moc</a>, <a href="pkm-history-moc.html" class="wikilink">pkm-history-moc</a>, <a href="wpf-moc.html" class="wikilink">wpf-moc</a>, and <a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> so they route by task, architectural role, and reading path instead of acting as bare link lists.
+</li>
+<li><strong>Language Navigation:</strong> Clarified when to start from <a href="rust.html" class="wikilink">rust</a>, <a href="python.html" class="wikilink">python</a>, <a href="powershell.html" class="wikilink">powershell</a>, <a href="typescript.html" class="wikilink">typescript</a>, or their MOCs based on trust-boundary, orchestration, operations, and integration concerns.
+</li>
+<li><strong>Pattern Navigation:</strong> Added &quot;where to start&quot; guidance to the multi-agent patterns cluster so delegation, handoff, safety, and concurrency questions route to the right pattern notes immediately.
+</li>
+<li><strong>Status:</strong> Navigational restoration pass complete for the weakest MOC surfaces in this batch.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -1864,12 +1953,15 @@
 <li><a href="agentic-rag.html" class="">agentic-rag</a></li>
 <li><a href="alternative-agent-frameworks.html" class="">alternative-agent-frameworks</a></li>
 <li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
+<li><a href="anthropic-agentic-loop.html" class="">anthropic-agentic-loop</a></li>
+<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
 <li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
 <li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
 <li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
 <li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
 <li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
 <li><a href="anti-ai-aesthetic.html" class="">anti-ai-aesthetic</a></li>
@@ -1883,16 +1975,20 @@
 <li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
 <li><a href="claude-capability-lattice-handoff.html" class="">claude-capability-lattice-handoff</a></li>
 <li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
+<li><a href="claude-core-reasoning-roots-handoff-2026-05-02.html" class="">claude-core-reasoning-roots-handoff-2026-05-02</a></li>
 <li><a href="claude-gardening-visuals-handoff.html" class="">claude-gardening-visuals-handoff</a></li>
 <li><a href="claude-mcp-security-bp-handoff-2026-05-01.html" class="">claude-mcp-security-bp-handoff-2026-05-01</a></li>
+<li><a href="claude-openai-symphony-synthesis-handoff-2026-05-03.html" class="">claude-openai-symphony-synthesis-handoff-2026-05-03</a></li>
 <li><a href="claude-orchestrator-synthesis-handoff-2026-04-29.html" class="">claude-orchestrator-synthesis-handoff-2026-04-29</a></li>
 <li><a href="claude-portal-breadcrumbs-handoff.html" class="">claude-portal-breadcrumbs-handoff</a></li>
+<li><a href="claude-powershell-typescript-hub-handoff-2026-05-02.html" class="">claude-powershell-typescript-hub-handoff-2026-05-02</a></li>
 <li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
 <li><a href="claude-supabase-flask-handoff-2026-05-01.html" class="">claude-supabase-flask-handoff-2026-05-01</a></li>
 <li><a href="claude-synthesis-handoff.html" class="">claude-synthesis-handoff</a></li>
 <li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
 <li><a href="code-agents.html" class="">code-agents</a></li>
+<li><a href="codex-anthropic-batch-2-synthesis-handoff-2026-05-02.html" class="">codex-anthropic-batch-2-synthesis-handoff-2026-05-02</a></li>
 <li><a href="codex-build-sprint-handoff.html" class="">codex-build-sprint-handoff</a></li>
 <li><a href="codex-gemini-cleanup-handoff-2026-04-27.html" class="">codex-gemini-cleanup-handoff-2026-04-27</a></li>
 <li><a href="codex-orchestrator-build-handoff-2026-04-29.html" class="">codex-orchestrator-build-handoff-2026-04-29</a></li>
@@ -1932,6 +2028,7 @@
 <li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
 <li><a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="">gemini-language-root-hardening-research-handoff-2026-05-02</a></li>
+<li><a href="gemini-openai-symphony-completion-2026-05-03.html" class="">gemini-openai-symphony-completion-2026-05-03</a></li>
 <li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
@@ -1951,6 +2048,11 @@
 <li><a href="lattice-interop.html" class="">lattice-interop</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 <li><a href="lit-anthropic-advanced-capabilities.html" class="">lit-anthropic-advanced-capabilities</a></li>
+<li><a href="lit-anthropic-async-data-apis.html" class="">lit-anthropic-async-data-apis</a></li>
+<li><a href="lit-anthropic-managed-agents.html" class="">lit-anthropic-managed-agents</a></li>
+<li><a href="lit-anthropic-sdk-service-2026.html" class="">lit-anthropic-sdk-service-2026</a></li>
+<li><a href="lit-anthropic-thinking-capabilities.html" class="">lit-anthropic-thinking-capabilities</a></li>
+<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
 <li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
@@ -1959,6 +2061,7 @@
 <li><a href="lit-mcp-security-best-practices.html" class="">lit-mcp-security-best-practices</a></li>
 <li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
 <li><a href="lit-openai-swarm.html" class="">lit-openai-swarm</a></li>
+<li><a href="lit-openai-symphony-spec.html" class="">lit-openai-symphony-spec</a></li>
 <li><a href="lit-project-definition-worksheet.html" class="">lit-project-definition-worksheet</a></li>
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
@@ -1995,8 +2098,10 @@
 <li><a href="ms-learn-wpf-overview.html" class="">ms-learn-wpf-overview</a></li>
 <li><a href="ms-repo-poshwiki.html" class="">ms-repo-poshwiki</a></li>
 <li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="openai-symphony.html" class="">openai-symphony</a></li>
 <li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 <li><a href="org-mode.html" class="">org-mode</a></li>
 <li><a href="outliners.html" class="">outliners</a></li>
