@@ -842,3 +842,11 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Language Navigation:** Clarified when to start from [[rust]], [[python]], [[powershell]], [[typescript]], or their MOCs based on trust-boundary, orchestration, operations, and integration concerns.
 - **Pattern Navigation:** Added "where to start" guidance to the multi-agent patterns cluster so delegation, handoff, safety, and concurrency questions route to the right pattern notes immediately.
 - **Status:** Navigational restoration pass complete for the weakest MOC surfaces in this batch.
+
+
+## [2026-05-03] codex — Language Root Hardening Batch A
+
+- **Directive:** Executed the immediate batch from [[language-root-hardening-plan-2026-05-02]] — harden [[rust]] and [[python]] as durable root hubs rather than thin summaries.
+- **Rust Hardening:** Added a vault-local "Core Opinion," a concrete decision rule for when Rust should own a system boundary, explicit start paths for fundamentals vs. vault applications vs. type-system study, and clearer linkage to [[python]] and [[rust-moc]].
+- **Python Hardening:** Added a "Core Opinion," a concrete decision rule for orchestration vs. boundary work, stronger route selection for async/typing/schema vs. standard-library workflows, and clearer placement of Python as the Tier-1 execution layer adjacent to [[rust]].
+- **Outcome:** The two highest-centrality language roots now act as routing surfaces for the Nest's reasoning stack instead of generic language summaries.

@@ -11,6 +11,15 @@ aliases: [rust-lang, rust-programming-language]
 
 **Rust** is a systems programming language built around a compile-time ownership model that eliminates memory errors and data races without a garbage collector. It is the Nest's language for trust-boundary enforcement, high-performance MCP servers, and type-level safety guarantees that Python cannot express.
 
+## Core Opinion
+
+Rust matters here because the compiler can reject entire classes of boundary mistakes before the code is allowed to run. In this vault, that makes Rust more than a "fast language": it is the language used when a capability gate, protocol boundary, or long-running service should be hard to misuse.
+
+The practical reading of Rust in the Nest is:
+
+- use **[[python]]** when orchestration speed and SDK reach matter more than hard compile-time guarantees
+- use **Rust** when the work sits at the trust boundary, must stay predictable under load, or benefits from encoding invariants in types instead of comments and tests
+
 ## Why Rust in the Nest
 
 Rust appears in two distinct roles here:
@@ -20,6 +29,17 @@ Rust appears in two distinct roles here:
 **MCP Server Implementation.** [[rust-mcp-patterns]] describes the pattern for building MCP servers in Rust — trading Python's development speed for predictable latency, memory efficiency, and the ability to use the type system to encode protocol invariants. Rust MCP servers are appropriate when a tool must be fast, long-running, or exposed to untrusted callers.
 
 The type system also provides formal tools — affine types, phantom types, const generics — that are studied in the vault for their theoretical properties and their influence on how to think about capability lattices.
+
+## Decision Rule
+
+Start from `[[rust]]` when your question sounds like one of these:
+
+- "What should sit at the capability or trust boundary?"
+- "Which language should own the long-running service or MCP daemon?"
+- "How do we make an invariant impossible rather than merely documented?"
+- "Which Rust subnote explains the safety or concurrency primitive I need?"
+
+If the question is instead about agent loops, SDK ergonomics, or fast integration work, route to [[python]] first and only come back here if the design graduates into a hardened service or boundary layer.
 
 ## Reading the Cluster
 
@@ -57,6 +77,21 @@ Start here if you are studying formal safety properties or the capability lattic
 - **[[rust-affine-types]]** — the formal type-theoretic reading of Rust's ownership model.
 
 The community report [[rust-type-systems]] synthesizes this track across multiple sources.
+
+## Start Here
+
+Choose the shortest path based on the work in front of you:
+
+1. If you need vault architecture context, read [[rust-tier-0-patterns]] first.
+2. If you need general Rust fluency, read [[rust-ownership]], then [[rust-generics-and-traits]], then [[rust-error-handling]].
+3. If you are building a service, pair [[rust-concurrency]] with [[rust-async]] and then jump to [[rust-mcp-patterns]].
+4. If you are studying capability design, route from [[rust-affine-types]] to [[rust-phantom-types]] and [[rust-type-level-programming]].
+
+## Relationship to the Rest of the Vault
+
+- [[python]] is the adjacent Tier-1 orchestration layer; Rust hands verified state upward to it.
+- [[programming-languages-moc]] explains when Rust wins over Python, PowerShell, or TypeScript at the architectural level.
+- [[rust-moc]] is the fuller cluster map once you know which track you are in.
 
 ## See Also
 

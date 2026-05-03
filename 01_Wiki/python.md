@@ -11,6 +11,15 @@ aliases: [python-fundamentals, python-programming]
 
 **Python** is a high-level, dynamically typed language whose runtime model, async primitives, and ecosystem make it the default orchestration language for LLM and agent workflows. In the Nest it is the Tier-1 layer: the language where agent loops run, tools are called, and MCP clients and servers are written.
 
+## Core Opinion
+
+Python is the Nest's default execution language when the work is mostly coordination: agent loops, SDK calls, schema validation, filesystem automation, and API integration. Its value is not just "easy syntax"; it is the combination of rapid iteration, first-class async support, and an ecosystem where nearly every agent framework and provider ships a Python surface first.
+
+The practical split is:
+
+- use **Python** when you are orchestrating work, binding tool contracts, or integrating SDKs
+- use **[[rust]]** when the same system needs stronger trust guarantees, lower-level control, or a compile-time boundary
+
 ## Python in the Nest
 
 Python's role here is specific:
@@ -20,6 +29,17 @@ Python's role here is specific:
 **SDK and integration surface.** Every major LLM provider (Anthropic, OpenAI, Google) ships Python SDKs first. The Anthropic SDK, FastMCP, Pydantic, and `asyncio` are the core toolchain for the Nest's agentic workflows. When a new tool contract needs to be defined, a new MCP server built, or a new ingestion step wired up, Python is where that work lands.
 
 **Practical glue.** Python's standard library covers the operational needs of the vault — file access (`pathlib`), serialization (`json`), and local storage (`sqlite3`) — without requiring external dependencies for prototyping.
+
+## Decision Rule
+
+Start from `[[python]]` when your question sounds like one of these:
+
+- "Which language should own this agent loop or SDK integration?"
+- "How should tool schemas, validators, or MCP clients be expressed?"
+- "Which Python note explains the runtime or library pattern I need?"
+- "Where do I start for ingestion, orchestration, or lightweight local persistence?"
+
+If the question is instead about hardening a protocol boundary or encoding safety guarantees at compile time, route to [[rust]].
 
 ## Language Foundation
 
@@ -35,19 +55,26 @@ These are the highest-leverage things to understand about Python for work in the
 
 - **[[pydantic]]** — runtime validation and JSON Schema generation for tool inputs. The standard for defining and enforcing tool contracts in Python.
 - **[[python-standard-library-hubs]]** — why `pathlib`, `json`, and `sqlite3` belong together as a practical building block set.
-  - [[python-pathlib]] — filesystem navigation, path construction, file operations.
-  - [[python-json]] — deterministic serialization boundaries.
-  - [[python-sqlite]] — embedded persistence for local memory stores and caches.
+- **[[python-pathlib]]** — filesystem navigation, path construction, file operations.
+- **[[python-json]]** — deterministic serialization boundaries.
+- **[[python-sqlite]]** — embedded persistence for local memory stores and caches.
 
 ## Where to Start
 
-If you are new to the Python layer of the Nest:
-1. [[python-asyncio]] — async fluency is required almost immediately.
-2. [[python-data-model]] — understanding the object model pays off quickly.
-3. [[python-typing]] — type annotations are everywhere in tool and schema work.
-4. [[python-decorators]] — clarifies the FastMCP registration pattern.
+Choose the path that matches the job:
+
+1. For agent orchestration or SDK work, start with [[python-asyncio]], then [[python-typing]], then [[pydantic]].
+2. For local tooling or ingestion scripts, start with [[python-standard-library-hubs]], then [[python-pathlib]] and [[python-json]].
+3. For framework internals, read [[python-data-model]] and [[python-decorators]] to understand how registration and dynamic dispatch actually work.
+4. For persistent local state, route from [[python-context-managers]] into [[python-sqlite]].
 
 If you are working on the ingestion pipeline or MCP server code specifically, read [[python-asyncio]] and [[python-context-managers]] first, then [[python-standard-library-hubs]].
+
+## Relationship to the Rest of the Vault
+
+- [[rust-tier-0-patterns]] explains the Tier-0/Tier-1 split: Rust validates the boundary; Python orchestrates the work above it.
+- [[agentic-frameworks-moc]] is the next stop if your question is framework-specific rather than language-specific.
+- [[python-moc]] is the broader cluster map once you know whether you are following the async, typing, or standard-library lane.
 
 ## See Also
 
