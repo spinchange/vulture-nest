@@ -1,6 +1,17 @@
 # Wiki Log
 
 
+## [2026-05-02] Codex — PowerShell & TypeScript Hub Hardening
+
+**Directive**: Executed [[claude-powershell-typescript-hub-handoff-2026-05-02]] — hardened `[[powershell]]` and `[[typescript]]` root notes from thin summaries into functional hub notes.
+
+**Notes Hardened:**
+* [[powershell]] — Preserved the existing operations-layer framing, then expanded it into a real hub: clarified the object-pipeline distinction, separated language/data-flow navigation from vault-operations navigation, and added explicit "Where to Start" guidance for new script authors versus maintenance work.
+* [[typescript]] — Preserved the existing web-tier/scaffolding framing, then expanded it into a real hub: named structural typing as the key rationale, separated handbook fundamentals from MCP/application routing, and added explicit "Where to Start" guidance for cold readers and Rust/Python transferees.
+
+**Stop condition met**: Both hubs materially stronger; no third language or MOC-restoration lane added.
+
+
 ## [2026-05-02] Claude — Core Reasoning Roots Hardening (Rust & Python)
 
 **Directive**: Executed [[claude-core-reasoning-roots-handoff-2026-05-02]] — hardened `[[rust]]` and `[[python]]` root notes from thin language summaries into functional hub notes.

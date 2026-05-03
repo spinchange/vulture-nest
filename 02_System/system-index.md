@@ -56,12 +56,12 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
-- [[claude-powershell-typescript-hub-handoff-2026-05-02]] - Batch B: harden PowerShell and TypeScript root notes into hub notes.
 - [[codex-post-anthropic-synthesis-handoff-2026-05-02]] - Vault maintenance cycle after Anthropic advanced capabilities batch.
 - [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[claude-powershell-typescript-hub-handoff-2026-05-02]] - Completed: PowerShell and TypeScript root notes hardened into functional hub notes.
 - [[claude-core-reasoning-roots-handoff-2026-05-02]] - Completed: Rust and Python root notes hardened into functional hub notes.
 - [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] - Completed: Anthropic advanced cluster (adaptive thinking, batches, files, MCP connector, tool runner, managed agents).
 - [[gemini-language-root-hardening-research-handoff-2026-05-02]] - Research the next bounded batch for Rust, Python, PowerShell, and TypeScript hub hardening.
