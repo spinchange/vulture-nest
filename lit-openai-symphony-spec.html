@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Literature: OpenAI Symphony Service Specification — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <span>Literature: OpenAI Symphony Service Specification</span>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">Literature: OpenAI Symphony Service Specification</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">page_ids</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: OpenAI Symphony Service Specification</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
+<span class="fm-field"><span class="fm-key">source_url</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">- https</span><span class="fm-val">//github.com/openai/symphony/blob/main/SPEC.md</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">provenance</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>Literature: OpenAI Symphony Service Specification</h1>
+<p>Grounded synthesis from two indexed sources: the OpenAI announcement (2026-04-27) and the SPEC.md specification document. See <a href="openai-symphony.html" class="wikilink">openai-symphony</a> for the derived permanent note.</p>
+<h2>Sources</h2>
+<ul>
+<li><strong>Announcement:</strong> &quot;An open-source spec for Codex orchestration: Symphony&quot; — openai.com, 2026-04-27 (page <code>76b9c652</code>, 24 chunks)
+</li>
+<li><strong>Specification:</strong> Symphony SPEC.md, <code>openai/symphony</code> repository (page <code>f53a802d</code>, 78 chunks)
+</li>
+</ul>
+<hr>
+<h2>Key Findings</h2>
+<ul>
+<li><strong>Status:</strong> Draft v1, language-agnostic. Symphony is technically a <code>SPEC.md</code> file — a problem definition and intended solution, not a shipping product. [chunk <code>63960b55</code>]
+</li>
+<li><strong>Purpose:</strong> &quot;Define a service that orchestrates coding agents to get project work done.&quot; [chunk <code>4168dbbb</code>]
+</li>
+<li><strong>Core shift:</strong> Reorients coordination from *coding sessions* to *work items*. &quot;We were optimizing the wrong thing. We were orienting our system around coding sessions and merged PRs, when PRs and sessions are really a means to an end.&quot; [chunk <code>0e9d4911</code>]
+</li>
+<li><strong>Four operational problems solved:</strong> daemon workflow repeatability; per-issue execution isolation; in-repo policy versioning via <code>WORKFLOW.md</code>; multi-run observability. [chunk <code>4168dbbb</code>]
+</li>
+<li><strong>Important boundary (verbatim from spec):</strong> &quot;Symphony is a scheduler/runner and tracker reader. Ticket writes (state transitions, comments, PR links) are typically performed by the coding agent using tools available in the workflow/runtime environment.&quot; [chunk <code>4168dbbb</code>]
+</li>
+<li><strong>Terminal state ambiguity:</strong> A successful run may end at a workflow-defined handoff state (e.g., <code>Human Review</code>), not necessarily <code>Done</code>. [chunk <code>4168dbbb</code>]
+</li>
+<li><strong>Reference implementation:</strong> Elixir — chosen for concurrency primitives. Codex built the initial Elixir implementation in one shot. The spec was subsequently verified by having Codex implement it in TypeScript, Go, Rust, Java, and Python. [chunk <code>1dc433ee</code>]
+</li>
+<li><strong>Intentional minimalism:</strong> &quot;We don&#39;t plan to maintain Symphony as a standalone product. Think of it as a reference implementation.&quot; [chunk <code>75338bba</code>]
+</li>
+</ul>
+<hr>
+<h2>Core Architecture</h2>
+<h3>Components (&#167;3.1) [chunk <code>e07327a8</code>]</h3>
+<table>
+<thead><tr>
+<th>Component</th>
+<th>Role</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Workflow Loader</strong></td>
+<td>Reads <code>WORKFLOW.md</code>; parses YAML front matter + prompt body; returns <code>{config, prompt_template}</code></td>
+</tr>
+<tr>
+<td><strong>Config Layer</strong></td>
+<td>Typed getters for workflow config values; applies defaults and <code>$VAR</code> environment indirection</td>
+</tr>
+<tr>
+<td><strong>Issue Tracker Client</strong></td>
+<td>Fetches candidate issues; normalizes tracker payloads into a stable issue model; handles reconciliation fetches</td>
+</tr>
+<tr>
+<td><strong>Orchestrator</strong></td>
+<td>Owns the poll tick and in-memory runtime state; decides dispatch, retry, stop, release</td>
+</tr>
+<tr>
+<td><strong>Workspace Manager</strong></td>
+<td>Maps issue IDs to workspace paths; runs lifecycle hooks; cleans up terminal-issue workspaces</td>
+</tr>
+<tr>
+<td><strong>Agent Runner</strong></td>
+<td>Creates workspace; builds prompt; launches Codex app-server client; streams agent updates to orchestrator</td>
+</tr>
+<tr>
+<td><strong>Status Surface</strong></td>
+<td>*(OPTIONAL)* Human-readable runtime status — terminal output, dashboard, etc. Must not be required for correctness.</td>
+</tr>
+<tr>
+<td><strong>Logging</strong></td>
+<td>Structured runtime logs to one or more configured sinks; REQUIRED fields include <code>issue_id</code>, <code>issue_identifier</code>, <code>session_id</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Abstraction Layers (&#167;3.2) [chunk <code>a8a9454f</code>]</h3>
+<p>Symphony is easiest to port when kept in these six layers:</p>
+<ol>
+<li><strong>Policy Layer</strong> (repo-defined) — <code>WORKFLOW.md</code> prompt body; team-specific rules for ticket handling and handoff
+</li>
+<li><strong>Configuration Layer</strong> — Parses front matter into typed runtime settings; handles defaults, env tokens, path normalization
+</li>
+<li><strong>Coordination Layer</strong> — Polling loop, issue eligibility, concurrency, retries, reconciliation
+</li>
+<li><strong>Execution Layer</strong> — Filesystem lifecycle, workspace preparation, coding-agent protocol
+</li>
+<li><strong>Integration Layer</strong> — Linear API calls and payload normalization
+</li>
+<li><strong>Observability Layer</strong> — Operator visibility into orchestrator and agent behavior
+</li>
+</ol>
+<h3>External Dependencies (&#167;3.3) [chunk <code>ce4acb33</code>]</h3>
+<p>Issue tracker API (Linear for <code>tracker.kind: linear</code>); local filesystem; optional workspace population tooling (e.g., Git CLI); coding-agent executable supporting Codex app-server mode; host environment authentication for tracker and agent.</p>
+<hr>
+<h2>Workflow Contract</h2>
+<h3>File Format (&#167;5.2) [chunk <code>3ff54047</code>]</h3>
+<p><code>WORKFLOW.md</code> is a Markdown file with <strong>optional</strong> YAML front matter.</p>
+<ul>
+<li>If file starts with <code>---</code>, lines until the next <code>---</code> are parsed as YAML front matter.
+</li>
+<li>Remaining lines become the prompt body.
+</li>
+<li>If front matter is absent, the entire file is the prompt body with an empty config map.
+</li>
+<li>YAML front matter MUST decode to a map/object — non-map YAML is an error.
+</li>
+<li>Prompt body is trimmed before use.
+</li>
+</ul>
+<p><strong>Design constraint:</strong> <code>WORKFLOW.md</code> SHOULD be self-contained enough to describe and run different workflows (prompt, runtime settings, hooks, tracker selection/config) without out-of-band service-specific configuration.</p>
+<p><strong>Returned workflow object:</strong> <code>config</code> (front matter root object) + <code>prompt_template</code> (trimmed Markdown body).</p>
+<h3>Prompt Template Contract (&#167;5.4) [chunk <code>a164b516</code>]</h3>
+<p>The Markdown body of <code>WORKFLOW.md</code> is the per-issue prompt template.</p>
+<ul>
+<li>Template engine: strict, Liquid-compatible semantics. Unknown variables <strong>MUST</strong> fail rendering. Unknown filters <strong>MUST</strong> fail rendering.
+</li>
+<li>Template input variables: <code>issue</code> (object — all normalized issue fields including labels and blockers); <code>attempt</code> (null on first attempt, integer on retry/continuation).
+</li>
+<li>Fallback: if the prompt body is empty, the runtime MAY use <code>&quot;You are working on an issue from Linear.&quot;</code>.
+</li>
+<li>Parse/read failures are <strong>configuration errors</strong> and MUST NOT silently fall back to any prompt.
+</li>
+</ul>
+<h3>Core Config Fields (&#167;6.4) [chunk <code>00690797</code>]</h3>
+<p>Key fields confirming the contract scope:</p>
+<ul>
+<li><code>tracker.active_states</code>: default <code>[&quot;Todo&quot;, &quot;In Progress&quot;]</code>
+</li>
+<li><code>tracker.terminal_states</code>: default <code>[&quot;Closed&quot;, &quot;Cancelled&quot;, &quot;Done&quot;]</code>
+</li>
+<li><code>polling.interval_ms</code>: default 30 seconds
+</li>
+<li><code>agent.max_concurrent_agents</code>: default 10
+</li>
+<li><code>agent.max_turns</code>: default 20
+</li>
+<li><code>agent.max_retry_backoff_ms</code>: default 5 minutes
+</li>
+<li><code>codex.approval_policy</code>, <code>codex.thread_sandbox</code>, <code>codex.turn_sandbox_policy</code>: <strong>all implementation-defined defaults</strong>
+</li>
+<li>Workspace lifecycle hooks: <code>after_create</code>, <code>before_run</code>, <code>after_run</code>, <code>before_remove</code>
+</li>
+</ul>
+<p>The config layer&#39;s support for <code>$VAR</code> indirection means sensitive credentials (Linear API key, Codex auth) resolve from environment variables rather than being embedded in the file.</p>
+<hr>
+<h2>Trust Boundary</h2>
+<h3>&#167;15.1 Trust Boundary Assumption [chunk <code>6eac575a</code>]</h3>
+<p>&gt; &quot;Each implementation defines its own trust boundary.&quot;</p>
+<p>Operational safety requirements (normative SHOULD, not MUST):</p>
+<ul>
+<li>Implementations SHOULD state clearly whether they target trusted environments, more restrictive environments, or both.
+</li>
+<li>Implementations SHOULD state clearly whether they rely on auto-approved actions, operator approvals, stricter sandboxing, or some combination.
+</li>
+<li>Workspace isolation and path validation are <strong>important baseline controls, but not a substitute</strong> for whatever approval and sandbox policy an implementation chooses.
+</li>
+</ul>
+<h3>Non-Goals Re: Trust (&#167;2.2) [chunk <code>85c240a9</code>]</h3>
+<p>Explicitly out of scope:</p>
+<ul>
+<li>Mandating strong sandbox controls beyond what the coding agent and host OS provide.
+</li>
+<li>Mandating a single default approval, sandbox, or operator-confirmation posture for all implementations.
+</li>
+</ul>
+<h3>Implication</h3>
+<p>The spec&#39;s trust language is normative architecture without normative policy: it defines *how* to wire trust configuration (the <code>codex.approval_policy</code>, <code>codex.thread_sandbox</code>, <code>codex.turn_sandbox_policy</code> config fields exist) but leaves the values and their enforcement to the implementation. &quot;High-trust&quot; (fully autonomous, auto-approved) and &quot;low-trust&quot; (human-in-the-loop, sandboxed) configurations are equally conformant. Claims that Symphony mandates a specific sandbox model are not supported by the indexed text.</p>
+<hr>
+<h2>Critical Distinctions</h2>
+<h3>Symphony is not A2A</h3>
+<p>A2A (Agent-to-Agent) is a peer-to-peer delegation protocol where agents discover and call each other directly. Symphony has no peer-to-peer delegation layer. It is a centralized orchestrator pattern: one Orchestrator component owns the poll tick and in-memory runtime state; the coding agent is a subordinate subprocess, not a peer. [chunk <code>e07327a8</code>]</p>
+<h3>Symphony is not Swarm [chunk <code>bd24c15d</code>, <code>0e9d4911</code>]</h3>
+<p><a href="openai-swarm.html" class="wikilink">openai-swarm</a> is an ephemeral, session-based framework for interactive handoffs between agents — a user initiates a session, agents route via return-based handoffs, and state is the caller&#39;s responsibility. Symphony is a persistent background daemon driven entirely by tracker state: no user initiates a session; the Orchestrator ensures every active issue has an agent running until terminal state is reached. The unit of coordination is the <strong>issue</strong>, not the <strong>turn</strong> or <strong>session</strong>.</p>
+<table>
+<thead><tr>
+<th>Dimension</th>
+<th><a href="openai-swarm.html" class="wikilink">openai-swarm</a></th>
+<th>Symphony</th>
+</tr></thead><tbody>
+<tr>
+<td>Lifecycle</td>
+<td>Session (user-initiated)</td>
+<td>Issue (tracker-driven)</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Stateless per turn</td>
+<td>Daemon + per-issue workspace</td>
+</tr>
+<tr>
+<td>Trigger</td>
+<td>User prompt</td>
+<td>Tracker state change</td>
+</tr>
+<tr>
+<td>Agent relationship</td>
+<td>Peer handoff via return</td>
+<td>Subordinate subprocess</td>
+</tr>
+<tr>
+<td>Concurrency model</td>
+<td>Single thread</td>
+<td>Bounded concurrent workers</td>
+</tr>
+</tbody>
+</table>
+<h3>Symphony is not a general workflow engine</h3>
+<p>Explicitly listed as a non-goal: &quot;General-purpose workflow engine or distributed job scheduler.&quot; Symphony knows about issues, workspaces, and coding agents. Business logic for editing tickets, PRs, or comments lives in the workflow prompt and the coding agent&#39;s tooling — not in Symphony. [chunk <code>85c240a9</code>]</p>
+<h3>WORKFLOW.md is load-bearing, not a prompt file</h3>
+<p><code>WORKFLOW.md</code> is the repository-owned contract for runtime behavior: it configures polling intervals, concurrency, workspace hooks, tracker authentication, and agent policies, in addition to providing the prompt template. Dynamic reload/re-apply is a conformance requirement. Parse failures are hard errors. [chunks <code>3ff54047</code>, <code>a0767396</code>]</p>
+<h3>Ticket writes are agent-side</h3>
+<p>Symphony reads from the tracker; it does not write to it. State transitions (<code>In Progress</code> → <code>Human Review</code> → <code>Done</code>), PR links, and comments are performed by the coding agent using tools in the runtime environment. This boundary is stated as a spec-level invariant. [chunk <code>4168dbbb</code>]</p>
+<hr>
+<h2>See Also</h2>
+<ul>
+<li><a href="openai-symphony.html" class="wikilink">openai-symphony</a> — permanent note derived from this literature
+</li>
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a> — contrast: ephemeral, session-based, handoff-oriented
+</li>
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> — the SDK that provides agent primitives Symphony orchestrates
+</li>
+<li><a href="workflow-agents.html" class="wikilink">workflow-agents</a> — contrast: deterministic code-controlled agents vs. tracker-driven orchestration
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a> — Symphony as canonical Orchestrator/Manager pattern implementation
+</li>
+</ul>
+<hr>
+<h2>Provenance</h2>
+<table>
+<thead><tr>
+<th>Chunk ID</th>
+<th>Source</th>
+<th>Section</th>
+</tr></thead><tbody>
+<tr>
+<td><code>4168dbbb</code></td>
+<td>SPEC.md</td>
+<td>&#167;1 Problem Statement</td>
+</tr>
+<tr>
+<td><code>63960b55</code></td>
+<td>openai.com announcement</td>
+<td>SPEC.md &#167;1-3 embedded</td>
+</tr>
+<tr>
+<td><code>e07327a8</code></td>
+<td>SPEC.md</td>
+<td>&#167;3.1 Main Components</td>
+</tr>
+<tr>
+<td><code>a8a9454f</code></td>
+<td>SPEC.md</td>
+<td>&#167;3.2 Abstraction Levels</td>
+</tr>
+<tr>
+<td><code>ce4acb33</code></td>
+<td>SPEC.md</td>
+<td>&#167;3.3 External Dependencies</td>
+</tr>
+<tr>
+<td><code>85c240a9</code></td>
+<td>SPEC.md</td>
+<td>&#167;2.2 Non-Goals</td>
+</tr>
+<tr>
+<td><code>3ff54047</code></td>
+<td>SPEC.md</td>
+<td>&#167;5.2 File Format</td>
+</tr>
+<tr>
+<td><code>a164b516</code></td>
+<td>SPEC.md</td>
+<td>&#167;5.4 Prompt Template Contract</td>
+</tr>
+<tr>
+<td><code>00690797</code></td>
+<td>SPEC.md</td>
+<td>&#167;6.4 Core Config Fields</td>
+</tr>
+<tr>
+<td><code>9c20f580</code></td>
+<td>SPEC.md</td>
+<td>&#167;10 Agent Runner Protocol</td>
+</tr>
+<tr>
+<td><code>03824ae3</code></td>
+<td>SPEC.md</td>
+<td>&#167;10.2 Session Startup Responsibilities</td>
+</tr>
+<tr>
+<td><code>6eac575a</code></td>
+<td>SPEC.md</td>
+<td>&#167;15.1 Trust Boundary Assumption</td>
+</tr>
+<tr>
+<td><code>a0767396</code></td>
+<td>SPEC.md</td>
+<td>&#167;18.1 REQUIRED for Conformance</td>
+</tr>
+<tr>
+<td><code>292d97e9</code></td>
+<td>SPEC.md</td>
+<td>&#167;18.2 RECOMMENDED Extensions</td>
+</tr>
+<tr>
+<td><code>0e9d4911</code></td>
+<td>openai.com announcement</td>
+<td>&quot;A shift in perspective&quot;</td>
+</tr>
+<tr>
+<td><code>bd24c15d</code></td>
+<td>openai.com announcement</td>
+<td>&quot;Turning our issue tracker into an agent orchestrator&quot;</td>
+</tr>
+<tr>
+<td><code>30b7e27a</code></td>
+<td>openai.com announcement</td>
+<td>&quot;An increase in exploration&quot;</td>
+</tr>
+<tr>
+<td><code>1dc433ee</code></td>
+<td>openai.com announcement</td>
+<td>&quot;Using Symphony to build Symphony&quot; (cont.)</td>
+</tr>
+<tr>
+<td><code>75338bba</code></td>
+<td>openai.com announcement</td>
+<td>&quot;What&#39;s next&quot;</td>
+</tr>
+</tbody>
+</table>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="claude-openai-symphony-synthesis-handoff-2026-05-03.html" class="">claude-openai-symphony-synthesis-handoff-2026-05-03</a></li>
+<li><a href="claude-symphony-graph-handoff-2026-05-03.html" class="">claude-symphony-graph-handoff-2026-05-03</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="openai-symphony.html" class="">openai-symphony</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
+<li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="openai-symphony.html" class="">openai-symphony</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</body>
+</html>
