@@ -1918,6 +1918,17 @@
 <li><strong>Outcome:</strong> The two highest-centrality language roots now act as routing surfaces for the Nest&#39;s reasoning stack instead of generic language summaries.
 </li>
 </ul>
+<h2>[2026-05-03] codex — Vault Stats Reconciliation</h2>
+<ul>
+<li><strong>Directive:</strong> Reconciled <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> behavior with the authoritative graph-health scripts after the stats surface diverged from live health checks.
+</li>
+<li><strong>Root Cause:</strong> <code>generate-wiki-stats.ps1</code> still used early basename-only heuristics while <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> and <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> had evolved to alias-aware, normalized wikilink resolution.
+</li>
+<li><strong>Fix:</strong> Updated <code>02_System/generate-wiki-stats.ps1</code> to use the same normalized link-target handling, code-fence stripping, recursive wiki scanning, alias-aware orphan counting, and system/root-note target recognition as the live validators.
+</li>
+<li><strong>Result:</strong> Vault stats now report <code>0</code> orphans, <code>0</code> broken links, and <code>100%</code> health in agreement with <code>orphan-check.ps1</code> and <code>check-broken-links.ps1</code>.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
