@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mode-Anchored Departure (Verbalized Sampling Approach B) — Vulture Portal</title>
+  <title>Claude Handoff — PowerShell &amp; TypeScript Hub Hardening (2026-05-02) — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,21 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Mode-Anchored Departure (Verbalized Sampling Approach B)</span>
+      <span>Claude Handoff — PowerShell &amp; TypeScript Hub Hardening (2026-05-02)</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Mode-Anchored Departure (Verbalized Sampling Approach B)</h1>
+      <h1 class="note-title">Claude Handoff — PowerShell &amp; TypeScript Hub Hardening (2026-05-02)</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Mode-Anchored Departure (Verbalized Sampling Approach B)</span></span>
+<span class="fm-field"><span class="fm-key">targets</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Claude Handoff — PowerShell &amp; TypeScript Hub Hardening (2026-05-02)</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">approach-b, mad-sampling, mode-anchored-departure, vs-approach-b</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
       </div>
     </header>
 
@@ -443,159 +444,118 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Mode-Anchored Departure (Verbalized Sampling Approach B)</h1>
-<p><strong>Mode-Anchored Departure (MAD)</strong> is the two-call verbalized sampling pipeline implemented in <a href="verbalized-sampling-ps-scripts.html" class="wikilink">verbalized-sampling-ps-scripts</a> as <code>verbalized-sampling.ps1</code>. It is &quot;Approach B&quot; in the three-way design comparison documented there, selected over flat enumeration (A) and tournament-rank (C) for its departure-distance framing and 2-call cost.</p>
-<p>The core mechanism: the model first names its modal response explicitly, then enumerates departures ranked by distance from that anchor. This makes tail items genuinely non-modal, not just stylistically varied.</p>
-<hr>
-<h2>How It Works</h2>
-<h3>Call 1 — Modal Anchor + Departure Enumeration</h3>
-<p>The model is asked to:</p>
-<ol>
-<li>State its <strong>modal response</strong> — the completion a typical unguided LLM run would produce — and assign it a <code>P≈X%</code> estimate
-</li>
-<li>Enumerate <strong>9 departures</strong> in ascending departure-distance order (Rank 1 = closest to modal, Rank 9 = furthest), each with a departure tag and its own <code>P≈X%</code>
-</li>
-</ol>
-<p>The modal anchor is what distinguishes Approach B from Approach A. In A, departure distance is inferred from rank order alone. In B, it is measured against an explicit reference point. This matters because the model can name what it is departing *from*, making the Call 2 contrast frame concrete.</p>
-<h3>Call 2 — Tail Synthesis</h3>
-<p>Tail departures (default: ranks 7–9) plus the modal are submitted as context for a synthesis pass. The synthesis prompt instructs the model to integrate the tail insights into a substantive response that the modal would not contain — not a list or rephrase of the departures, but a genuinely novel perspective.</p>
-<p>Reversion detection runs a Jaccard similarity check between the synthesis and the modal. A score above 0.60 sets <code>ParseWarning = Call2Reversion</code>.</p>
-<hr>
-<h2>The P≈ Statistic</h2>
-<p><code>P≈X%</code> means: <strong>the estimated probability that a typical, unguided LLM completion would produce this response</strong> (or one closely matching it).</p>
-<p>This is defined by the system prompt: &gt; *P=80% is very default; P=5% is deep tail, normally suppressed by alignment pressure.*</p>
-<h3>What P≈ Is and Is Not</h3>
-<p>P≈ is a <strong>verbalized probability</strong> — the model is generating contextually appropriate probability-language, not reading an internal meter. The <a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> grounds this: lowering the P% constraint (e.g., <code>p &lt; 0.01</code>) significantly increases output diversity, because the constraint steers the model toward lower-probability positions in its distribution even though the model cannot directly observe those positions.</p>
-<p>The practical limitation — noted in the run-001 tail synthesis — is that this makes P≈ figures <strong>rhetorical estimates, not epistemic readings</strong>. The model is good at producing plausible-sounding confidence language. The P≈ values are useful as a relative ordering mechanism (rank 9 should be lower P than rank 1) and as a steering signal (the constraint works) but should not be treated as calibrated probabilities.</p>
-<p>The <strong>modal P≈</strong> tells you how compressed the distribution is for a given question:</p>
+        <h1>Claude Handoff: PowerShell &amp; TypeScript Hub Hardening</h1>
+<h2>Objective</h2>
+<p>Execute Batch B of the language-root hardening plan from <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a>: harden <code><a href="powershell.html" class="wikilink">powershell</a></code> and <code><a href="typescript.html" class="wikilink">typescript</a></code> into functional hub notes.</p>
+<p>Batch A (Rust + Python) was completed this session. This is the direct continuation.</p>
+<h2>Session Context</h2>
+<p>What was done this session, for continuity:</p>
 <ul>
-<li>P≈90%: near-total modal dominance, limited framing space
+<li><strong>Anthropic advanced capabilities batch</strong> — 7 new notes: <code>anthropic-adaptive-thinking</code>, <code>anthropic-message-batches</code>, <code>anthropic-files-api</code>, <code>anthropic-mcp-connector</code>, <code>anthropic-tool-runner-sdk</code>, <code>anthropic-managed-agents-model</code>, <code>lit-anthropic-advanced-capabilities</code>. Three existing notes deepened. Committed <code>d5caeb63</code>.
 </li>
-<li>P≈72%: moderate compression — strong default, but substantive departures exist (observed in both inaugural runs)
-</li>
-<li>P≈40%: genuine spread, less pressure needed to reach tail
+<li><strong>Rust + Python hub hardening</strong> — <code>rust.md</code> and <code>python.md</code> rewritten with vault-local framing and three-track cluster navigation. <code>rust-moc.md</code> updated to add Vault Applications section. Committed <code>e48f34aa</code> (with Gemini&#39;s maintenance commit <code>a0d0fc12</code> landing just before it).
 </li>
 </ul>
-<hr>
-<h2>ParseWarning Conditions</h2>
-<p>The script sets <code>ParseWarning</code> on four failure modes observed in practice:</p>
-<table>
-<thead><tr>
-<th>Warning</th>
-<th>Condition</th>
-<th>Implication</th>
-</tr></thead><tbody>
-<tr>
-<td><code>MissingModal</code></td>
-<td>Modal block not parsed</td>
-<td>Call 1 format non-compliance</td>
-</tr>
-<tr>
-<td><code>MissingRanks</code></td>
-<td>Fewer than 9 departure ranks parsed</td>
-<td>Question may have limited framing space; or model truncated</td>
-</tr>
-<tr>
-<td><code>ModalCollapse</code></td>
-<td>Rank-9 Jaccard vs modal &gt; 0.55</td>
-<td>Rank-9 is a rephrase, not a tail departure</td>
-</tr>
-<tr>
-<td><code>Call2Reversion</code></td>
-<td>Synthesis Jaccard vs modal &gt; 0.60</td>
-<td>Call 2 failed to escape the modal</td>
-</tr>
-</tbody>
-</table>
-<h3>MissingRanks in Practice</h3>
-<p>The inaugural run-002 (&quot;What is the best way to structure a multi-agent handoff?&quot;) produced <code>MissingRanks</code> — 7/9 ranks parsed, with R08–R09 absent. This is informative rather than catastrophic:</p>
+<h2>Verified Facts</h2>
+<p>From <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a>:</p>
 <ul>
-<li>The question is a practical engineering question with a well-defined answer space. The model may have genuinely exhausted substantive departures at R7.
+<li><code><a href="powershell.html" class="wikilink">powershell</a></code> — 36 incoming links, current ~150 words
 </li>
-<li>Epistemically self-referential questions (run-001: &quot;What is genuinely underrated about how language models fail?&quot;) produced clean 9/9 parsing — more framing pressure means more latent space.
-</li>
-<li>A single-rank tail (R07 only) still produced a strong synthesis. The Call 2 prompt does not require multiple tail items to reframe effectively.
+<li><code><a href="typescript.html" class="wikilink">typescript</a></code> — 35 incoming links, current ~120 words
 </li>
 </ul>
-<p><strong>Rule of thumb:</strong> <code>MissingRanks</code> is a signal about the question&#39;s framing space, not a script failure. Questions with a strong cultural consensus answer and limited reframings will compress the distribution faster.</p>
-<hr>
-<h2>Empirical Results (Inaugural Runs)</h2>
-<table>
-<thead><tr>
-<th>Run</th>
-<th>Question type</th>
-<th>ParseWarning</th>
-<th>Tail items</th>
-<th>Synthesis quality</th>
-</tr></thead><tbody>
-<tr>
-<td>001</td>
-<td>Epistemically self-referential</td>
-<td>None</td>
-<td>3 (R7–R9)</td>
-<td>High — convergent three-layer thesis</td>
-</tr>
-<tr>
-<td>002</td>
-<td>Practical engineering</td>
-<td>MissingRanks (7/9)</td>
-<td>1 (R7 only)</td>
-<td>High — complete economic reframing</td>
-</tr>
-</tbody>
-</table>
-<p>Both runs produced modal <code>P≈72%</code> — consistent across question types. This may reflect a characteristic of the model&#39;s alignment pressure rather than the question.</p>
-<p>The key cross-run finding: <strong>synthesis quality did not degrade with a single-rank tail</strong>. The Call 2 prompt&#39;s contrast frame (modal vs. tail) is sufficient to produce a non-modal claim even when the tail is narrow.</p>
-<hr>
-<h2>Relationship to the Paper</h2>
-<p><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> documents the paper&#39;s P% constraint mechanism: &gt; *Prompting the model to &quot;sample from the tail distribution, where each response/word should be &lt; p%.&quot;*</p>
-<p>MAD (Approach B) implements a structurally related but distinct mechanism. Rather than a single P% floor constraint, it uses:</p>
+<p>Both already have Codex-authored vault-local framing (written 2026-04-27) — this is an advantage over the Rust/Python starting state. The framing is accurate but both notes are still thin: no cluster navigation, no &quot;start here&quot; guidance, no distinction between fundamentals and advanced topics.</p>
+<p>Current state of the roots:</p>
+<p><strong>powershell.md</strong> has: operations layer role, &quot;bridge between knowledge graph and executable maintenance&quot;, references to powershell-moc, ps-automation-spec, ps-vault-maintenance, poshwiki.</p>
+<p><strong>typescript.md</strong> has: web-tier/CLI/scaffolding role, MCP tooling context, references to typescript-moc, javascript-moc, bun-vs-deno, mcp-sdks.</p>
+<p>Both need: cluster navigation with a learning path, &quot;where to start&quot; for someone arriving cold, distinction between foundational language notes and vault-applied notes.</p>
+<h2>Cluster Inventory</h2>
+<p>Before writing, run:</p>
+<pre><code>Get-ChildItem 01_Wiki\powershell*.md, 01_Wiki\ps-*.md | Select-Object Name
+Get-ChildItem 01_Wiki\typescript*.md | Select-Object Name</code></pre>
+<p>Known subnotes from the MOC (verify these exist):</p>
+<ul>
+<li><strong>PowerShell</strong>: powershell-moc, ps-automation-spec, ps-vault-maintenance, poshwiki, ps-objects, ps-pipelines, ps-error-handling, ps-modules, ps-remoting, etc.
+</li>
+<li><strong>TypeScript</strong>: typescript-moc, typescript-types, typescript-narrowing, typescript-generics, typescript-utility-types, typescript-modules, typescript-objects, typescript-template-literals, typescript-type-operators, typescript-decorators (from Handbook notes)
+</li>
+</ul>
+<h2>Task</h2>
+<p>Harden <code>01_Wiki/powershell.md</code> and <code>01_Wiki/typescript.md</code> so they function as real hub notes. For each:</p>
 <ol>
-<li>An explicit modal anchor as the reference distribution
+<li>Preserve the existing vault-local framing (it is accurate) — extend and deepen it.
 </li>
-<li>Rank-ordered departures as a proxy for P% distance from the mode
+<li>Add cluster navigation with a clear learning path structure.
 </li>
-<li>A synthesis pass that treats the tail as a contrast context
+<li>Distinguish fundamentals from operational/applied notes.
+</li>
+<li>Add a &quot;Where to Start&quot; or equivalent guidance for cold readers.
 </li>
 </ol>
-<p>The paper reports 1.6–2.1&#215; diversity gains for creative writing. MAD&#39;s value is different — not diversity of surface output, but <strong>extraction of latent framing alternatives</strong> that alignment pressure suppresses. The goal is a synthesis that names what the modal actively avoids naming.</p>
-<hr>
-<h2>When to Use Each Approach</h2>
-<table>
-<thead><tr>
-<th>Goal</th>
-<th>Recommended approach</th>
-</tr></thead><tbody>
-<tr>
-<td>Explore alternative framings of a question</td>
-<td>MAD (Approach B)</td>
-</tr>
-<tr>
-<td>Generate diverse creative outputs at scale</td>
-<td>Paper&#39;s P% constraint; Approach A</td>
-</tr>
-<tr>
-<td>Maximum reproducibility and calibration</td>
-<td>Approach C (tournament-rank, not yet built)</td>
-</tr>
-<tr>
-<td>Quick tail check without synthesis</td>
-<td>Approach A (<code>invoke-tail-extractor.ps1</code>)</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2>See Also</h2>
+<h2>Recommended Shape</h2>
+<h3>PowerShell</h3>
+<p>The framing in the current note is right: operations layer, programmable object pipeline, bridge between knowledge graph and executable maintenance. What is missing:</p>
 <ul>
-<li><a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a> — parent concept and typicality bias framing
+<li><strong>The object pipeline distinction</strong> — PowerShell passes objects, not text; this matters for vault scripting patterns (e.g., why <code>Select-Object</code> is common in maintenance scripts)
 </li>
-<li><a href="verbalized-sampling-ps-scripts.html" class="wikilink">verbalized-sampling-ps-scripts</a> — Approach A/B/C comparison and script design
+<li><strong>Vault operations track</strong> — routing to the maintenance scripts and automation specs (<code>ps-automation-spec</code>, <code>ps-vault-maintenance</code>, <code>poshwiki-tools</code>)
 </li>
-<li><a href="verbalized-sampling-experiment.html" class="wikilink">verbalized-sampling-experiment</a> — audio processing workflow and audio series findings
+<li><strong>Language track</strong> — routing to core language notes (objects, pipelines, error handling, modules) for someone building a new script
 </li>
-<li><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> — paper summary (2510.01171v3)
+<li><strong>&quot;Start here&quot; guidance</strong> — if writing a new maintenance script vs. learning the language from scratch
 </li>
-<li><a href="experiments-moc.html" class="wikilink">experiments-moc</a> — experiment index
+</ul>
+<h3>TypeScript</h3>
+<p>The framing in the current note is right: web-tier/CLI/scaffolding, Node/browser interop, MCP tooling. What is missing:</p>
+<ul>
+<li><strong>The type system rationale</strong> — TypeScript&#39;s structural typing is the reason it matters for tool schema design; name this
+</li>
+<li><strong>Handbook track</strong> — the vault has 12+ TypeScript Handbook notes (types, narrowing, generics, utility types, etc.); route through them with a learning path
+</li>
+<li><strong>Applied track</strong> — MCP SDK examples, workbench tooling, Node-based integrations
+</li>
+<li><strong>Where to start</strong> — for someone approaching TypeScript as a Rust or Python developer
+</li>
+</ul>
+<h2>Constraints</h2>
+<ul>
+<li>Preserve existing Codex-authored framing — build on it, do not discard it.
+</li>
+<li>Do not drift into JavaScript, Bun/Deno, or C# in the same session.
+</li>
+<li>Touch <code>typescript-moc.md</code> or <code>powershell-moc.md</code> only if clearly needed for routing consistency (same standard as the rust-moc update this session).
+</li>
+<li>Update <code>02_System/log.md</code> and <code>02_System/system-index.md</code> at session end.
+</li>
+</ul>
+<h2>Stop Condition</h2>
+<p>Stop when:</p>
+<ul>
+<li><code><a href="powershell.html" class="wikilink">powershell</a></code> is materially stronger as a hub
+</li>
+<li><code><a href="typescript.html" class="wikilink">typescript</a></code> is materially stronger as a hub
+</li>
+<li>log and system-index updated
+</li>
+</ul>
+<p>Do not extend into navigational hub restoration or a third language in the same session.</p>
+<h2>Evidence</h2>
+<ul>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a>
+</li>
+<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a>
+</li>
+<li>Current <code>01_Wiki/powershell.md</code> and <code>01_Wiki/typescript.md</code>
+</li>
+<li><code>01_Wiki/powershell-moc.md</code>, <code>01_Wiki/typescript-moc.md</code>
+</li>
+</ul>
+<h2>Next Decision</h2>
+<p>After Batch B, the remaining open questions from <a href="wiki-expansion-opportunities-2026-05-02.html" class="wikilink">wiki-expansion-opportunities-2026-05-02</a> are:</p>
+<ul>
+<li>Navigational hub restoration
+</li>
+<li>Any gaps surfaced during this hardening pass
 </li>
 </ul>
       </main>
@@ -610,17 +570,15 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
-<li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="experiments-moc.html" class="">experiments-moc</a></li>
-<li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
-<li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
-<li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
-<li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>
+<li><a href="language-root-hardening-plan-2026-05-02.html" class="">language-root-hardening-plan-2026-05-02</a></li>
+<li><a href="powershell.html" class="">powershell</a></li>
+<li><a href="typescript.html" class="">typescript</a></li>
+<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
 </ul>
           </div>
         </div>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">TypeScript</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">TypeScript</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
@@ -445,8 +445,59 @@
       <main class="content-zone" id="content">
         <h1>TypeScript</h1>
 <p><strong>TypeScript</strong> is the typed JavaScript layer in the vault&#39;s toolchain. It matters here because several repo-adjacent tools, especially the local workbench and Node-based MCP examples, depend on a language that preserves JavaScript&#39;s runtime reach while adding stronger structural guarantees for developer tooling.</p>
-<p>Within the Vulture Nest, TypeScript sits closest to web-tier, CLI, and scaffolding work rather than the trusted core. It is useful when fast iteration, package-ecosystem access, and browser or Node interoperability matter more than the stricter guarantees expected from Rust or the operational convenience of PowerShell. For the broader map of the language, use <a href="typescript-moc.html" class="wikilink">typescript-moc</a>. For its relationship to JavaScript runtimes, start with <a href="javascript-moc.html" class="wikilink">javascript-moc</a> and <a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a>.</p>
-<h2>References</h2>
+<p>Within the Vulture Nest, TypeScript sits closest to web-tier, CLI, and scaffolding work rather than the trusted core. It is useful when fast iteration, package-ecosystem access, and browser or Node interoperability matter more than the stricter guarantees expected from Rust or the operational convenience of PowerShell.</p>
+<p>The reason it matters beyond &quot;typed JavaScript&quot; is the type system&#39;s structural model. Tool schemas, client contracts, and MCP-facing helpers often care more about the shape of data than about nominal class hierarchies, and TypeScript is built around describing and refining those shapes. That makes it a good fit for SDK-driven integration work and a weaker fit for trust-boundary enforcement.</p>
+<h2>TypeScript in the Nest</h2>
+<p>TypeScript appears here in two main roles:</p>
+<p><strong>Typed integration layer.</strong> When the Nest needs browser or Node reach, package-ecosystem access, or SDK examples that live in the JavaScript world, TypeScript is the safest default. The MCP ecosystem especially treats TypeScript as a first-class language, with the official SDK and many examples assuming its type-driven workflow.</p>
+<p><strong>Scaffolding and web-tier language.</strong> TypeScript is where web-facing prototypes, CLI glue, and example clients are easiest to build quickly. It is adjacent to the main architecture, not the trusted center of it.</p>
+<h2>Reading the Cluster</h2>
+<p>The TypeScript cluster is easiest to navigate in two tracks: the language handbook path and the applied integration path.</p>
+<h3>Track 1 — Handbook Fundamentals</h3>
+<p>Start here if you are coming from Rust or Python and need a clean path into TypeScript&#39;s model.</p>
+<ul>
+<li><strong><a href="typescript-basics.html" class="wikilink">typescript-basics</a></strong> — the entry point: primitive types, annotations, and gradual typing.
+</li>
+<li><strong><a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a></strong> — unions, aliases, interfaces, and the shapes you will use constantly.
+</li>
+<li><strong><a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a></strong> — how control flow refines types; one of the most important practical ideas in the language.
+</li>
+<li><strong><a href="typescript-functions.html" class="wikilink">typescript-functions</a></strong> and <strong><a href="typescript-objects.html" class="wikilink">typescript-objects</a></strong> — how callable and object-shaped APIs are described.
+</li>
+<li><strong><a href="typescript-generics.html" class="wikilink">typescript-generics</a></strong> — the gateway to reusable, schema-heavy abstractions.
+</li>
+<li><strong><a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a></strong>, <strong><a href="typescript-conditional-types.html" class="wikilink">typescript-conditional-types</a></strong>, <strong><a href="typescript-mapped-types.html" class="wikilink">typescript-mapped-types</a></strong>, <strong><a href="typescript-template-literals.html" class="wikilink">typescript-template-literals</a></strong> — the type manipulation layer for advanced library and tool design.
+</li>
+<li><strong><a href="typescript-utility-types.html" class="wikilink">typescript-utility-types</a></strong>, <strong><a href="typescript-modules.html" class="wikilink">typescript-modules</a></strong>, <strong><a href="typescript-compiler-options.html" class="wikilink">typescript-compiler-options</a></strong>, <strong><a href="typescript-classes.html" class="wikilink">typescript-classes</a></strong> — reference notes for everyday project structure and built-in helpers.
+</li>
+<li><strong><a href="typescript-moc.html" class="wikilink">typescript-moc</a></strong> — full handbook-oriented map of the cluster.
+</li>
+</ul>
+<h3>Track 2 — Applied Tooling and MCP Work</h3>
+<p>Start here if you are using TypeScript to build or understand integrations rather than to study the language in isolation.</p>
+<ul>
+<li><strong><a href="mcp-sdks.html" class="wikilink">mcp-sdks</a></strong> — TypeScript is a Tier-1 MCP SDK language; this is the highest-signal application note.
+</li>
+<li><strong><a href="mcp-client-development.html" class="wikilink">mcp-client-development</a></strong> — how the TypeScript client model is structured in practice.
+</li>
+<li><strong><a href="mcp-example-servers.html" class="wikilink">mcp-example-servers</a></strong> and <strong><a href="mcp-example-clients.html" class="wikilink">mcp-example-clients</a></strong> — concrete entry points for protocol-shaped code.
+</li>
+<li><strong><a href="javascript-moc.html" class="wikilink">javascript-moc</a></strong> and <strong><a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a></strong> — runtime context when choosing the surrounding JavaScript environment.
+</li>
+</ul>
+<h2>Where to Start</h2>
+<p>If you are new to TypeScript in this vault:</p>
+<ol>
+<li>Read <a href="typescript-basics.html" class="wikilink">typescript-basics</a>.
+</li>
+<li>Then read <a href="typescript-everyday-types.html" class="wikilink">typescript-everyday-types</a> and <a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a>.
+</li>
+<li>Then read <a href="typescript-functions.html" class="wikilink">typescript-functions</a> and <a href="typescript-objects.html" class="wikilink">typescript-objects</a> before moving into generics.
+</li>
+</ol>
+<p>If you are approaching TypeScript as a Rust or Python developer, the biggest adjustment is that TypeScript proves compatibility by data shape rather than by ownership or nominal inheritance. Read <a href="typescript-objects.html" class="wikilink">typescript-objects</a>, <a href="typescript-narrowing.html" class="wikilink">typescript-narrowing</a>, and <a href="typescript-generics.html" class="wikilink">typescript-generics</a> with that in mind.</p>
+<p>If your goal is MCP or SDK integration work specifically, start with <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a>, then <a href="mcp-client-development.html" class="wikilink">mcp-client-development</a>, then return to <a href="typescript-generics.html" class="wikilink">typescript-generics</a> and <a href="typescript-type-operators.html" class="wikilink">typescript-type-operators</a> when the schema layer becomes opaque.</p>
+<h2>See Also</h2>
 <ul>
 <li><a href="typescript-moc.html" class="wikilink">typescript-moc</a>
 </li>
@@ -455,6 +506,8 @@
 <li><a href="bun-vs-deno.html" class="wikilink">bun-vs-deno</a>
 </li>
 <li><a href="mcp-sdks.html" class="wikilink">mcp-sdks</a>
+</li>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
 </ul>
       </main>
@@ -470,6 +523,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
+<li><a href="claude-powershell-typescript-hub-handoff-2026-05-02.html" class="">claude-powershell-typescript-hub-handoff-2026-05-02</a></li>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
 <li><a href="javascript-on-desktop.html" class="">javascript-on-desktop</a></li>
@@ -502,8 +556,26 @@
 <ul>
 <li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
 <li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="mcp-client-development.html" class="">mcp-client-development</a></li>
+<li><a href="mcp-example-clients.html" class="">mcp-example-clients</a></li>
+<li><a href="mcp-example-servers.html" class="">mcp-example-servers</a></li>
 <li><a href="mcp-sdks.html" class="">mcp-sdks</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="typescript-basics.html" class="">typescript-basics</a></li>
+<li><a href="typescript-classes.html" class="">typescript-classes</a></li>
+<li><a href="typescript-compiler-options.html" class="">typescript-compiler-options</a></li>
+<li><a href="typescript-conditional-types.html" class="">typescript-conditional-types</a></li>
+<li><a href="typescript-everyday-types.html" class="">typescript-everyday-types</a></li>
+<li><a href="typescript-functions.html" class="">typescript-functions</a></li>
+<li><a href="typescript-generics.html" class="">typescript-generics</a></li>
+<li><a href="typescript-mapped-types.html" class="">typescript-mapped-types</a></li>
 <li><a href="typescript-moc.html" class="">typescript-moc</a></li>
+<li><a href="typescript-modules.html" class="">typescript-modules</a></li>
+<li><a href="typescript-narrowing.html" class="">typescript-narrowing</a></li>
+<li><a href="typescript-objects.html" class="">typescript-objects</a></li>
+<li><a href="typescript-template-literals.html" class="">typescript-template-literals</a></li>
+<li><a href="typescript-type-operators.html" class="">typescript-type-operators</a></li>
+<li><a href="typescript-utility-types.html" class="">typescript-utility-types</a></li>
 </ul>
           </div>
         </div>

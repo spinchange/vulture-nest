@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">PowerShell</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PowerShell</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
 
@@ -445,8 +445,57 @@
       <main class="content-zone" id="content">
         <h1>PowerShell</h1>
 <p><strong>PowerShell</strong> is the vault&#39;s primary shell and automation substrate for system-facing work. In the Vulture Nest it occupies the practical operations layer: maintenance scripts, graph sync, dashboard generation, deployment glue, and terminal-native workflows are all written to run under <code>pwsh</code>, not legacy Windows PowerShell.</p>
-<p>The important distinction in this vault is that PowerShell is not just a shell. It is a programmable object pipeline and the default execution environment for many Tier-2 automation tasks. That makes it the bridge between the knowledge graph and executable maintenance. For language-specific patterns, use <a href="powershell-moc.html" class="wikilink">powershell-moc</a>. For the executable standards that govern scripts in this repo, use <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> and <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>.</p>
-<h2>References</h2>
+<p>The important distinction in this vault is that PowerShell is not just a shell. It is a programmable object pipeline and the default execution environment for many Tier-2 automation tasks. Commands pass structured .NET objects rather than plain text, which is why patterns like <code>Select-Object</code>, calculated properties, and custom objects appear throughout the vault&#39;s maintenance scripts. That makes PowerShell the bridge between the knowledge graph and executable maintenance.</p>
+<h2>PowerShell in the Nest</h2>
+<p>PowerShell appears here in two closely related roles:</p>
+<p><strong>Operational runtime.</strong> The vault&#39;s maintenance lane is defined in PowerShell: audits, orphan checks, broken-link scans, dashboard and registry generation, note scaffolding, and search tooling all run through <code>pwsh</code>. For the executable standards that govern scripts in this repo, start with <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> and <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>.</p>
+<p><strong>Language for object-shaped automation.</strong> The reason PowerShell works well for the Nest is not only shell access. It is the object pipeline model: commands emit records with fields, downstream commands transform those records, and scripts can stay structured all the way to JSON, SQLite, or formatted output. That is the practical foundation behind <a href="powershell-objects.html" class="wikilink">powershell-objects</a>, <a href="ps-custom-objects.html" class="wikilink">ps-custom-objects</a>, and <a href="ps-calculated-properties.html" class="wikilink">ps-calculated-properties</a>.</p>
+<h2>Reading the Cluster</h2>
+<p>The PowerShell cluster is easiest to navigate in two tracks depending on whether you are learning the language or trying to operate the vault.</p>
+<h3>Track 1 — Language and Data Flow</h3>
+<p>Start here if you are writing a new script or need to understand why the existing maintenance code is structured the way it is.</p>
+<ul>
+<li><strong><a href="powershell-objects.html" class="wikilink">powershell-objects</a></strong> — the core mental model. PowerShell moves objects through the pipeline, not strings.
+</li>
+<li><strong><a href="ps-custom-objects.html" class="wikilink">ps-custom-objects</a></strong> — how scripts emit stable, machine-readable records for downstream steps.
+</li>
+<li><strong><a href="ps-calculated-properties.html" class="wikilink">ps-calculated-properties</a></strong> — the common pattern for reshaping object output without losing structure.
+</li>
+<li><strong><a href="ps-classes.html" class="wikilink">ps-classes</a></strong> — use when a script grows beyond simple pipeline composition and needs more explicit state or behavior.
+</li>
+<li><strong><a href="powershell-moc.html" class="wikilink">powershell-moc</a></strong> — the broader map once the object pipeline model is clear.
+</li>
+</ul>
+<h3>Track 2 — Vault Operations</h3>
+<p>Start here if your goal is to run, extend, or debug the Nest&#39;s maintenance and memory tooling.</p>
+<ul>
+<li><strong><a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a></strong> — the canonical rules for agent-runnable scripts in this repo.
+</li>
+<li><strong><a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a></strong> — the top-level maintenance runner; the quickest way to understand the operational workflow.
+</li>
+<li><strong><a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a></strong>, <strong><a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a></strong>, <strong><a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a></strong> — the core health checks for note quality and graph integrity.
+</li>
+<li><strong><a href="ps-tool-registry-generator.html" class="wikilink">ps-tool-registry-generator</a></strong> and <strong><a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a></strong> — metadata and observability outputs for the vault.
+</li>
+<li><strong><a href="ps-note-creator.html" class="wikilink">ps-note-creator</a></strong> — scaffolding path for adding new notes without drifting from conventions.
+</li>
+<li><strong><a href="ps-vulture-search.html" class="wikilink">ps-vulture-search</a></strong> — retrieval tooling that connects note content to operational search.
+</li>
+<li><strong><a href="poshwiki.html" class="wikilink">poshwiki</a></strong> and <strong><a href="poshwiki-tools.html" class="wikilink">poshwiki-tools</a></strong> — the SQLite-backed memory layer and the higher-level script interface agents actually use.
+</li>
+</ul>
+<h2>Where to Start</h2>
+<p>If you are new to PowerShell in this vault:</p>
+<ol>
+<li>Read <a href="powershell-objects.html" class="wikilink">powershell-objects</a> first.
+</li>
+<li>Then read <a href="ps-custom-objects.html" class="wikilink">ps-custom-objects</a> and <a href="ps-calculated-properties.html" class="wikilink">ps-calculated-properties</a> to understand the data-shaping patterns used in real scripts.
+</li>
+<li>Then read <a href="ps-automation-spec.html" class="wikilink">ps-automation-spec</a> before editing or creating any repo automation.
+</li>
+</ol>
+<p>If you are here to modify maintenance behavior specifically, start with <a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>, then follow its supporting tools into <a href="ps-yanp-audit.html" class="wikilink">ps-yanp-audit</a> or <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> as needed.</p>
+<h2>See Also</h2>
 <ul>
 <li><a href="powershell-moc.html" class="wikilink">powershell-moc</a>
 </li>
@@ -455,6 +504,8 @@
 <li><a href="ps-vault-maintenance.html" class="wikilink">ps-vault-maintenance</a>
 </li>
 <li><a href="poshwiki.html" class="wikilink">poshwiki</a>
+</li>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
 </ul>
       </main>
@@ -470,6 +521,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agent-configuration-sync-strategy.html" class="">agent-configuration-sync-strategy</a></li>
+<li><a href="claude-powershell-typescript-hub-handoff-2026-05-02.html" class="">claude-powershell-typescript-hub-handoff-2026-05-02</a></li>
 <li><a href="codex-polyglot-adr-handoff.html" class="">codex-polyglot-adr-handoff</a></li>
 <li><a href="codex-ps-compliance-handoff.html" class="">codex-ps-compliance-handoff</a></li>
 <li><a href="community-polyglot-agent-platform.html" class="">community-polyglot-agent-platform</a></li>
@@ -502,9 +554,22 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="poshwiki.html" class="">poshwiki</a></li>
+<li><a href="poshwiki-tools.html" class="">poshwiki-tools</a></li>
 <li><a href="powershell-moc.html" class="">powershell-moc</a></li>
+<li><a href="powershell-objects.html" class="">powershell-objects</a></li>
+<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
+<li><a href="ps-broken-link-checker.html" class="">ps-broken-link-checker</a></li>
+<li><a href="ps-calculated-properties.html" class="">ps-calculated-properties</a></li>
+<li><a href="ps-classes.html" class="">ps-classes</a></li>
+<li><a href="ps-custom-objects.html" class="">ps-custom-objects</a></li>
+<li><a href="ps-note-creator.html" class="">ps-note-creator</a></li>
+<li><a href="ps-orphan-check.html" class="">ps-orphan-check</a></li>
+<li><a href="ps-tool-registry-generator.html" class="">ps-tool-registry-generator</a></li>
 <li><a href="ps-vault-maintenance.html" class="">ps-vault-maintenance</a></li>
+<li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
+<li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
+<li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
 </ul>
           </div>
         </div>
