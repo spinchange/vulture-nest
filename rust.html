@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Rust</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-lang, rust-programming-language</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Rust</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">rust-lang, rust-programming-language</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -445,11 +445,33 @@
       <main class="content-zone" id="content">
         <h1>Rust</h1>
 <p><strong>Rust</strong> is a systems programming language built around a compile-time ownership model that eliminates memory errors and data races without a garbage collector. It is the Nest&#39;s language for trust-boundary enforcement, high-performance MCP servers, and type-level safety guarantees that Python cannot express.</p>
+<h2>Core Opinion</h2>
+<p>Rust matters here because the compiler can reject entire classes of boundary mistakes before the code is allowed to run. In this vault, that makes Rust more than a &quot;fast language&quot;: it is the language used when a capability gate, protocol boundary, or long-running service should be hard to misuse.</p>
+<p>The practical reading of Rust in the Nest is:</p>
+<ul>
+<li>use <strong><a href="python.html" class="wikilink">python</a></strong> when orchestration speed and SDK reach matter more than hard compile-time guarantees
+</li>
+<li>use <strong>Rust</strong> when the work sits at the trust boundary, must stay predictable under load, or benefits from encoding invariants in types instead of comments and tests
+</li>
+</ul>
 <h2>Why Rust in the Nest</h2>
 <p>Rust appears in two distinct roles here:</p>
 <p><strong>Tier-0 Safe Core.</strong> The <a href="rust-tier-0-patterns.html" class="wikilink">Tier-0 architecture</a> places Rust at the trust boundary of the multi-agent stack. Rust validates and gates capability claims — using <code>serde</code> for schema enforcement at the protocol boundary — before handing verified state to Python orchestrators. The choice of Rust here is deliberate: the ownership system makes the boundary *provably* safe at compile time rather than relying on runtime checks.</p>
 <p><strong>MCP Server Implementation.</strong> <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a> describes the pattern for building MCP servers in Rust — trading Python&#39;s development speed for predictable latency, memory efficiency, and the ability to use the type system to encode protocol invariants. Rust MCP servers are appropriate when a tool must be fast, long-running, or exposed to untrusted callers.</p>
 <p>The type system also provides formal tools — affine types, phantom types, const generics — that are studied in the vault for their theoretical properties and their influence on how to think about capability lattices.</p>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="rust.html" class="wikilink">rust</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;What should sit at the capability or trust boundary?&quot;
+</li>
+<li>&quot;Which language should own the long-running service or MCP daemon?&quot;
+</li>
+<li>&quot;How do we make an invariant impossible rather than merely documented?&quot;
+</li>
+<li>&quot;Which Rust subnote explains the safety or concurrency primitive I need?&quot;
+</li>
+</ul>
+<p>If the question is instead about agent loops, SDK ergonomics, or fast integration work, route to <a href="python.html" class="wikilink">python</a> first and only come back here if the design graduates into a hardened service or boundary layer.</p>
 <h2>Reading the Cluster</h2>
 <p>The Rust cluster is large. Navigate it in three tracks depending on your goal.</p>
 <h3>Track 1 — Language Fundamentals</h3>
@@ -494,6 +516,27 @@
 </li>
 </ul>
 <p>The community report <a href="rust-type-systems.html" class="wikilink">rust-type-systems</a> synthesizes this track across multiple sources.</p>
+<h2>Start Here</h2>
+<p>Choose the shortest path based on the work in front of you:</p>
+<ol>
+<li>If you need vault architecture context, read <a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> first.
+</li>
+<li>If you need general Rust fluency, read <a href="rust-ownership.html" class="wikilink">rust-ownership</a>, then <a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a>, then <a href="rust-error-handling.html" class="wikilink">rust-error-handling</a>.
+</li>
+<li>If you are building a service, pair <a href="rust-concurrency.html" class="wikilink">rust-concurrency</a> with <a href="rust-async.html" class="wikilink">rust-async</a> and then jump to <a href="rust-mcp-patterns.html" class="wikilink">rust-mcp-patterns</a>.
+</li>
+<li>If you are studying capability design, route from <a href="rust-affine-types.html" class="wikilink">rust-affine-types</a> to <a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a> and <a href="rust-type-level-programming.html" class="wikilink">rust-type-level-programming</a>.
+</li>
+</ol>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="python.html" class="wikilink">python</a> is the adjacent Tier-1 orchestration layer; Rust hands verified state upward to it.
+</li>
+<li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> explains when Rust wins over Python, PowerShell, or TypeScript at the architectural level.
+</li>
+<li><a href="rust-moc.html" class="wikilink">rust-moc</a> is the fuller cluster map once you know which track you are in.
+</li>
+</ul>
 <h2>See Also</h2>
 <ul>
 <li><a href="rust-moc.html" class="wikilink">rust-moc</a> — full structured traversal of the cluster
@@ -543,7 +586,9 @@
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="rfc-agent-orchestration-handoff.html" class="">rfc-agent-orchestration-handoff</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-async.html" class="">rust-async</a></li>
 <li><a href="rust-cargo.html" class="">rust-cargo</a></li>
@@ -580,6 +625,8 @@
 <ul>
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
+<li><a href="python.html" class="">python</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
 <li><a href="rust-async.html" class="">rust-async</a></li>
 <li><a href="rust-cargo.html" class="">rust-cargo</a></li>

@@ -429,12 +429,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Python</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Python</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">python-fundamentals, python-programming</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -445,11 +445,33 @@
       <main class="content-zone" id="content">
         <h1>Python</h1>
 <p><strong>Python</strong> is a high-level, dynamically typed language whose runtime model, async primitives, and ecosystem make it the default orchestration language for LLM and agent workflows. In the Nest it is the Tier-1 layer: the language where agent loops run, tools are called, and MCP clients and servers are written.</p>
+<h2>Core Opinion</h2>
+<p>Python is the Nest&#39;s default execution language when the work is mostly coordination: agent loops, SDK calls, schema validation, filesystem automation, and API integration. Its value is not just &quot;easy syntax&quot;; it is the combination of rapid iteration, first-class async support, and an ecosystem where nearly every agent framework and provider ships a Python surface first.</p>
+<p>The practical split is:</p>
+<ul>
+<li>use <strong>Python</strong> when you are orchestrating work, binding tool contracts, or integrating SDKs
+</li>
+<li>use <strong><a href="rust.html" class="wikilink">rust</a></strong> when the same system needs stronger trust guarantees, lower-level control, or a compile-time boundary
+</li>
+</ul>
 <h2>Python in the Nest</h2>
 <p>Python&#39;s role here is specific:</p>
 <p><strong>Orchestration layer (Tier-1).</strong> In the <a href="rust-tier-0-patterns.html" class="wikilink">tiered architecture</a>, Python sits above Rust&#39;s trust boundary and receives validated state from the Tier-0 binary via <code>serde</code>-serialized JSON. Agent SDKs — ADK, OpenAI Agents SDK, Swarm — all ship their primary APIs in Python. The ingestion pipeline (<code>vulture-ingest</code>) is a Python MCP server.</p>
 <p><strong>SDK and integration surface.</strong> Every major LLM provider (Anthropic, OpenAI, Google) ships Python SDKs first. The Anthropic SDK, FastMCP, Pydantic, and <code>asyncio</code> are the core toolchain for the Nest&#39;s agentic workflows. When a new tool contract needs to be defined, a new MCP server built, or a new ingestion step wired up, Python is where that work lands.</p>
 <p><strong>Practical glue.</strong> Python&#39;s standard library covers the operational needs of the vault — file access (<code>pathlib</code>), serialization (<code>json</code>), and local storage (<code>sqlite3</code>) — without requiring external dependencies for prototyping.</p>
+<h2>Decision Rule</h2>
+<p>Start from <code><a href="python.html" class="wikilink">python</a></code> when your question sounds like one of these:</p>
+<ul>
+<li>&quot;Which language should own this agent loop or SDK integration?&quot;
+</li>
+<li>&quot;How should tool schemas, validators, or MCP clients be expressed?&quot;
+</li>
+<li>&quot;Which Python note explains the runtime or library pattern I need?&quot;
+</li>
+<li>&quot;Where do I start for ingestion, orchestration, or lightweight local persistence?&quot;
+</li>
+</ul>
+<p>If the question is instead about hardening a protocol boundary or encoding safety guarantees at compile time, route to <a href="rust.html" class="wikilink">rust</a>.</p>
 <h2>Language Foundation</h2>
 <p>These are the highest-leverage things to understand about Python for work in the Nest:</p>
 <ul>
@@ -469,29 +491,36 @@
 <li><strong><a href="pydantic.html" class="wikilink">pydantic</a></strong> — runtime validation and JSON Schema generation for tool inputs. The standard for defining and enforcing tool contracts in Python.
 </li>
 <li><strong><a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a></strong> — why <code>pathlib</code>, <code>json</code>, and <code>sqlite3</code> belong together as a practical building block set.
-<ul>
-<li><a href="python-pathlib.html" class="wikilink">python-pathlib</a> — filesystem navigation, path construction, file operations.
 </li>
-<li><a href="python-json.html" class="wikilink">python-json</a> — deterministic serialization boundaries.
+<li><strong><a href="python-pathlib.html" class="wikilink">python-pathlib</a></strong> — filesystem navigation, path construction, file operations.
 </li>
-<li><a href="python-sqlite.html" class="wikilink">python-sqlite</a> — embedded persistence for local memory stores and caches.
+<li><strong><a href="python-json.html" class="wikilink">python-json</a></strong> — deterministic serialization boundaries.
 </li>
-</ul>
+<li><strong><a href="python-sqlite.html" class="wikilink">python-sqlite</a></strong> — embedded persistence for local memory stores and caches.
 </li>
 </ul>
 <h2>Where to Start</h2>
-<p>If you are new to the Python layer of the Nest:</p>
+<p>Choose the path that matches the job:</p>
 <ol>
-<li><a href="python-asyncio.html" class="wikilink">python-asyncio</a> — async fluency is required almost immediately.
+<li>For agent orchestration or SDK work, start with <a href="python-asyncio.html" class="wikilink">python-asyncio</a>, then <a href="python-typing.html" class="wikilink">python-typing</a>, then <a href="pydantic.html" class="wikilink">pydantic</a>.
 </li>
-<li><a href="python-data-model.html" class="wikilink">python-data-model</a> — understanding the object model pays off quickly.
+<li>For local tooling or ingestion scripts, start with <a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>, then <a href="python-pathlib.html" class="wikilink">python-pathlib</a> and <a href="python-json.html" class="wikilink">python-json</a>.
 </li>
-<li><a href="python-typing.html" class="wikilink">python-typing</a> — type annotations are everywhere in tool and schema work.
+<li>For framework internals, read <a href="python-data-model.html" class="wikilink">python-data-model</a> and <a href="python-decorators.html" class="wikilink">python-decorators</a> to understand how registration and dynamic dispatch actually work.
 </li>
-<li><a href="python-decorators.html" class="wikilink">python-decorators</a> — clarifies the FastMCP registration pattern.
+<li>For persistent local state, route from <a href="python-context-managers.html" class="wikilink">python-context-managers</a> into <a href="python-sqlite.html" class="wikilink">python-sqlite</a>.
 </li>
 </ol>
 <p>If you are working on the ingestion pipeline or MCP server code specifically, read <a href="python-asyncio.html" class="wikilink">python-asyncio</a> and <a href="python-context-managers.html" class="wikilink">python-context-managers</a> first, then <a href="python-standard-library-hubs.html" class="wikilink">python-standard-library-hubs</a>.</p>
+<h2>Relationship to the Rest of the Vault</h2>
+<ul>
+<li><a href="rust-tier-0-patterns.html" class="wikilink">rust-tier-0-patterns</a> explains the Tier-0/Tier-1 split: Rust validates the boundary; Python orchestrates the work above it.
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> is the next stop if your question is framework-specific rather than language-specific.
+</li>
+<li><a href="python-moc.html" class="wikilink">python-moc</a> is the broader cluster map once you know whether you are following the async, typing, or standard-library lane.
+</li>
+</ul>
 <h2>See Also</h2>
 <ul>
 <li><a href="python-moc.html" class="wikilink">python-moc</a> — full structured traversal of the cluster
@@ -553,6 +582,7 @@
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
 <li><a href="python-context-managers.html" class="">python-context-managers</a></li>
 <li><a href="python-data-model.html" class="">python-data-model</a></li>
@@ -563,6 +593,7 @@
 <li><a href="python-sqlite.html" class="">python-sqlite</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
 <li><a href="python-typing.html" class="">python-typing</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 <li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
 <li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
@@ -573,6 +604,7 @@
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
+<li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
 <li><a href="python-context-managers.html" class="">python-context-managers</a></li>
 <li><a href="python-data-model.html" class="">python-data-model</a></li>
@@ -583,6 +615,7 @@
 <li><a href="python-sqlite.html" class="">python-sqlite</a></li>
 <li><a href="python-standard-library-hubs.html" class="">python-standard-library-hubs</a></li>
 <li><a href="python-typing.html" class="">python-typing</a></li>
+<li><a href="rust.html" class="">rust</a></li>
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 </ul>
           </div>
