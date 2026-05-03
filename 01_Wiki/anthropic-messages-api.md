@@ -32,16 +32,45 @@ The **Anthropic Messages API** is the direct Claude API surface for prompt-respo
 - `stop_reason` is operationally important. `end_turn` means normal completion, while `tool_use` means the caller should execute one or more requested tools and continue the loop.
 - Usage accounting is returned with the response and should be treated as the billing and observability source of truth for the request.
 
-## Implementation implications
+## Content Block Types
+
+The API supports multiple content block types beyond text:
+- `text` — standard text content
+- `image` — inline or file-referenced images
+- `document` — PDF, plain text, or file-referenced documents
+- `tool_use` — Claude's tool call (in assistant turns)
+- `tool_result` — tool execution result (in user turns)
+- `thinking` — extended thinking summary or signature (in assistant turns when thinking is enabled)
+- `redacted_thinking` — safety-redacted thinking block (opaque; must be round-tripped unchanged)
+
+## Token Counting
+
+The `POST /v1/messages/count_tokens` endpoint counts tokens for a planned request without executing it. It accepts the same parameters as the Messages endpoint and supports tools, images, documents, and system prompts. Use it before long or expensive calls to verify you are within context limits.
+
+```python
+count = client.messages.count_tokens(
+    model="claude-opus-4-7",
+    system="You are a helpful assistant.",
+    messages=[{"role": "user", "content": "Hello"}],
+)
+print(count.input_tokens)
+```
+
+Token counting is especially valuable when building multi-turn conversations with thinking blocks, since thinking tokens from previous turns count as input tokens on Opus 4.5+ and Sonnet 4.6+.
+
+## Implementation Implications
 
 - Anthropic's API shape makes conversation state an application concern.
-- Message construction should be treated as an explicit serialization step, especially when mixing text, images, and tool content blocks.
-- Provider-specific model behaviors such as prefill support can vary by model family, so integrations should verify feature support against current docs before depending on them in production.
+- Message construction should be treated as an explicit serialization step, especially when mixing text, images, tool content blocks, and thinking blocks.
+- Provider-specific model behaviors such as prefill support can vary by model family; verify feature support against current docs before depending on them in production.
+- When using extended thinking or large documents, use the token counting endpoint before calls to avoid context overflow errors.
 
 ## See also
 
 - [[anthropic-tool-use]]
 - [[anthropic-streaming-patterns]]
 - [[anthropic-prompt-caching]]
+- [[anthropic-adaptive-thinking]]
+- [[anthropic-files-api]]
 - [[chat-templates]]
 - [[function-calling]]

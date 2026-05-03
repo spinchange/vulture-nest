@@ -24,9 +24,13 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[agent-tools]]: How to define and provide capabilities to an LLM.
 * [[agent-actions]]: The "Stop and Parse" loop and tool usage.
 * [[code-agents]]: The shift from JSON schemas to executable logic.
-* [[anthropic-messages-api]]: Direct Claude API request/response semantics.
+* [[anthropic-messages-api]]: Direct Claude API request/response semantics and token counting.
 * [[anthropic-tool-use]]: Anthropic-specific client/server tool loop behavior.
-* [[anthropic-streaming-patterns]]: SSE event flow and streamed tool arguments.
+* [[anthropic-streaming-patterns]]: SSE event flow, streamed tool arguments, and thinking block streaming.
+* [[anthropic-adaptive-thinking]]: Model-driven reasoning allocation via `effort`; interleaved thinking for agentic workflows.
+* [[anthropic-tool-runner-sdk]]: SDK tool loop automation with compaction for long-running agents.
+* [[anthropic-mcp-connector]]: Messages API as MCP client — remote servers without local MCP client.
+* [[anthropic-managed-agents-model]]: Hosted agent runtime; Agent/Environment/Session state machine.
 
 ## Communication & Formatting
 * [[chat-templates]]: Managing System, User, and Assistant roles.

@@ -56,6 +56,15 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
+- [[claude-core-reasoning-roots-handoff-2026-05-02]] - Harden Rust and Python into durable architectural hub notes.
+- [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
+- [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
+
+## 🏁 Completed Handoffs
+- [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] - Completed: Anthropic advanced cluster (adaptive thinking, batches, files, MCP connector, tool runner, managed agents).
+- [[gemini-language-root-hardening-research-handoff-2026-05-02]] - Research the next bounded batch for Rust, Python, PowerShell, and TypeScript hub hardening.
+- [[gemini-wiki-expansion-research-handoff-2026-05-02]] - Research and planning for the 2026-05-02 expansion cycle.
+- [[gemini-core-protocol-framework-depth-handoff-2026-05-02]] - Approved execution batch: deepen ADK and MCP core notes.
 - [[gemini-orchestrator-test-handoff-2026-04-30]] - Inaugural End-to-End Test for the Orchestrator.
 - [[codex-orchestrator-integration-handoff-2026-04-30]] - Integration & State-Machine completion for the Orchestrator.
 - [[claude-orchestrator-synthesis-handoff-2026-04-29]] - Intelligence & Epistemic Gates for the Orchestrator.

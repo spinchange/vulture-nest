@@ -1,6 +1,31 @@
 # Wiki Log
 
 
+## [2026-05-02] Claude — Anthropic Advanced Capabilities Synthesis
+
+**Directive**: Executed [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] — extended the Anthropic cluster beyond first-batch fundamentals using the local `00_Raw/anthropic/` corpus.
+
+**New Notes Created:**
+* [[anthropic-adaptive-thinking]] — Adaptive thinking mode, effort parameter, interleaved thinking, display modes (summarized/omitted), thinking encryption, cache interaction, cost model
+* [[anthropic-message-batches]] — Async batch execution (50% discount), limits, polling, custom_id tracking, extended output beta (300k tokens), prompt caching interaction
+* [[anthropic-files-api]] — Upload-once file storage, file_id reference pattern, content type/block mapping, storage limits, download restriction
+* [[anthropic-mcp-connector]] — Server-side MCP client, mcp_servers + mcp_toolset, allowlist/denylist patterns, OAuth auth, TypeScript helpers
+* [[anthropic-tool-runner-sdk]] — SDK tool loop automation, @beta_tool decorator, compaction, error interception, result modification
+* [[anthropic-managed-agents-model]] — Agent/Environment/Session architecture, event-driven interaction, session state machine, vault IDs
+* [[lit-anthropic-advanced-capabilities]] — Literature note summarizing all advanced corpus sources with durable patterns vs. drifting operational details
+
+**Notes Deepened:**
+* [[anthropic-messages-api]] — Added content block type list, token counting endpoint
+* [[anthropic-streaming-patterns]] — Added thinking_delta/signature_delta events, omitted display behavior, redacted_thinking handling
+* [[anthropic-prompt-caching]] — Added 1-hour TTL, thinking mode invalidation rules, batch stacking guidance
+
+**Graph Updated:**
+* [[index]] — Expanded Anthropic API section (7 notes added)
+* [[agentic-frameworks-moc]] — Added 4 Anthropic advanced notes to Mechanics of Agency
+* `02_System/system-index.md` — Moved handoff to Completed Handoffs
+
+**Stop condition met:** Literature note exists, 3 required new notes exist, 3 existing notes deepened, graph updated. Did not continue into language-root lane.
+
 ## [2026-05-01] Claude — Supabase Flask Quickstart Synthesis (Stage 7–8)
 * **Directive**: Executed [[claude-supabase-flask-handoff-2026-05-01]] — performed Stage 7 (Synthesis) and Stage 8 (Promotion) for the Supabase Flask Quickstart source (page ID `31f3d047`, 2 chunks).
 * **Verification**: `verify_source_index` passed — 2 chunks, status `passed`, next state `synthesized`. Provenance block built with T5 traceability.
@@ -721,3 +746,27 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * **Review Pipeline**: `02_System/review-gemini-pages.ps1` produced one initial batch report (`claude-review.md`), a 25-note second pass (`claude-review-pass-2.md`), a 25-note third pass (`claude-review-pass-3.md`), and focused per-note follow-up reports for notes that initially required revision.
 * **Outcome**: Review findings were acted on and landed as committed wiki hardening batches covering ADK, agentic workflow, Firecrawl, HF agents, and verbalized-sample graph work. Focused Claude re-reviews returned `accept` across the revised note sets; the one pass-3 `revise` note ([[agent-skills-index]]) was corrected and committed separately.
 * **Canonical Record**: Durable summaries live here and in [[Session 2026-05-02]]. The `claude-review*.md` files in `02_System/` are working artifacts, not the authoritative long-term record.
+
+
+## [2026-05-02] gemini-cli — Wiki Expansion Research & Planning
+* **Directive**: Executed [[gemini-wiki-expansion-research-handoff-2026-05-02]] — researched vault gaps and prioritized expansion lanes.
+* **Findings**: Identified several "thin" high-centrality hubs: [[rust]] (61 links), [[agent-development-kit]] (59), and [[python]] (55). Found extensive un-synthesized source material in `00_Raw/adk-documentation.md` (2.7MB) and `00_Raw/mcp/`.
+* **Planning Note**: Created [[wiki-expansion-opportunities-2026-05-02]] — a prioritized roadmap with 5 expansion lanes (ADK Depth, MCP Synthesis, Language Hardening, Anthropic Patterns, and MOC Restoration).
+* **Recommendation**: Recommended "Core Protocol & Framework Depth" as the immediate next batch (ADK and MCP focus).
+* **Status**: Research phase complete; planning note active.
+
+
+## [2026-05-02] gemini-cli — Execution: Core Protocol & Framework Depth
+* **Directive**: Executed [[gemini-core-protocol-framework-depth-handoff-2026-05-02]] — hardened ADK and MCP core notes.
+* **ADK Hardening**: Deepened [[agent-development-kit]] with architectural details on the Runner, Event-Driven Orchestration, Persistent Services (Session, Artifact, Memory), and Multi-Agent patterns. Synthesized from `00_Raw/adk-documentation.md`.
+* **MCP Synthesis**: Expanded [[mcp-best-practices]] with Progressive Discovery (3-layer pattern) and Programmatic Tool Calling (Code Mode). Deepened [[mcp-authorization]] with OAuth 2.1 flow details, DCR, and critical security mitigations (Confused Deputy, SSRF, Token Passthrough). Synthesized from `00_Raw/mcp/` guides.
+* **Graph Integration**: Verified navigation paths in [[index]], [[agentic-frameworks-moc]], and [[mcp-moc]]. Cleaned up redundant links in [[mcp-moc]].
+* **Status**: Execution batch complete.
+
+
+## [2026-05-02] gemini-cli — Language Root Hardening Research & Planning
+* **Directive**: Executed [[gemini-language-root-hardening-research-handoff-2026-05-02]] — researched gaps in the language-root clusters.
+* **Findings**: Confirmed that all four primary roots ([[rust]], [[python]], [[powershell]], [[typescript]]) are structurally "thin" relative to their centrality and the depth of their sub-clusters.
+* **Planning Note**: Created [[language-root-hardening-plan-2026-05-02]] — defines missing hub functions (Vault-Local Framing, Cluster Wayfinding) and recommends a two-batch execution strategy.
+* **Recommendation**: Recommended "The Core Reasoning Roots" (Rust & Python) as the immediate next batch for hardening.
+* **Status**: Research phase complete; implementation plan active.

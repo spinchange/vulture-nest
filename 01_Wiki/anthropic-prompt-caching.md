@@ -29,20 +29,57 @@ source: "[[lit-anthropic-messages-api]]"
 - The caching system still applies the documented `20-block` lookback behavior.
 - Conflicting cache-control configurations can produce `400` errors.
 
-## When to use it
+## When to Use It
 
 - Large system prompts
 - Repeated tool definitions
 - Multi-turn workflows with stable shared context
 - Long-context requests where repeated prefix cost would otherwise dominate
 
-## Caveat
+## 1-Hour Cache Duration
 
-- Prompt caching is useful for both latency and cost, but rate-limit accounting can still depend on model-specific behavior documented elsewhere. Treat current rate-limit tables as operational docs to verify at integration time.
+The default 5-minute TTL is too short for extended thinking sessions (which can exceed 5 minutes) and batch jobs (which typically take 30–60 minutes). Use the 1-hour TTL when:
+- Prompt caching is combined with thinking (`budget_tokens` > ~32k or long adaptive thinking sessions)
+- Using the Message Batches API with shared context across requests
+
+```json
+{"type": "text", "text": "...", "cache_control": {"type": "ephemeral", "ttl": "1h"}}
+```
+
+The 1-hour TTL is priced higher than the 5-minute TTL — verify current pricing before deploying.
+
+## Thinking Mode Interaction
+
+Prompt caching and thinking modes interact with specific invalidation rules:
+
+- **Within the same mode:** Consecutive requests in the same thinking mode (`adaptive`, `enabled`, or `disabled`) preserve message cache breakpoints.
+- **Across modes:** Switching between `adaptive`, `enabled`, and `disabled` invalidates message cache breakpoints.
+- **System prompts and tool definitions:** Remain cached regardless of thinking mode changes.
+
+This means a system prompt cache investment is stable even when you change thinking configuration. Message history cache is not.
+
+**Thinking blocks as cached input tokens:**  
+On Opus 4.5+ and Sonnet 4.6+, thinking blocks from previous turns are preserved in context by default. When these thinking blocks are passed back with tool results, they count as cached input tokens. In long tool-use chains, this can create non-trivial input token costs even when "the prompt hasn't changed."
+
+## Batch Processing Interaction
+
+Batch processing and prompt caching discounts stack. Cache hits are best-effort in batches (concurrent async processing means requests may not share a warm cache). Expected cache hit rates range from 30% to 98% depending on traffic pattern.
+
+To maximize batch cache hits:
+1. Use identical `cache_control` blocks in every request.
+2. Use the 1-hour TTL (batch processing typically exceeds 5 minutes).
+3. Structure requests to maximize shared prefix length.
+
+## Caveats
+
+- Rate-limit accounting can still depend on model-specific behavior documented elsewhere. Treat current rate-limit tables as operational docs to verify at integration time.
 - Anthropic documents substantial savings for eligible cached prefixes, with pricing reductions reported as high as about `90%` for cached reads. Treat the current pricing page as the authoritative source for exact numbers.
+- `max_tokens: 0` (cache pre-warming) is incompatible with extended thinking (requires `budget_tokens < max_tokens`) and with the Batches API.
 
 ## See also
 
 - [[anthropic-messages-api]]
 - [[anthropic-tool-use]]
+- [[anthropic-adaptive-thinking]]
+- [[anthropic-message-batches]]
 - [[anthropic-error-handling]]

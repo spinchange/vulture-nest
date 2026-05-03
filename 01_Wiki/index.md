@@ -119,11 +119,18 @@ Session seams are bounded resume points that capture current state, immediate ne
 
 ## Anthropic API
 * [[lit-anthropic-messages-api]] - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
-* [[anthropic-messages-api]] - Direct Messages API request/response model
+* [[lit-anthropic-advanced-capabilities]] - Literature: adaptive thinking, batch execution, files API, tool extensions, managed agents
+* [[anthropic-messages-api]] - Direct Messages API request/response model and token counting
 * [[anthropic-tool-use]] - Client/server tool execution loop
-* [[anthropic-streaming-patterns]] - SSE event flow and streamed tool arguments
+* [[anthropic-streaming-patterns]] - SSE event flow, streamed tool arguments, and thinking block streaming
 * [[anthropic-error-handling]] - Errors, request-size limits, and rate-limit behavior
-* [[anthropic-prompt-caching]] - Prompt-prefix reuse via `cache_control`
+* [[anthropic-prompt-caching]] - Prompt-prefix reuse, 1-hour TTL, thinking and batch interactions
+* [[anthropic-adaptive-thinking]] - Adaptive thinking mode, effort parameter, interleaved thinking, thinking display
+* [[anthropic-message-batches]] - Async batch execution, 50% discount, extended output beta
+* [[anthropic-files-api]] - Upload-once file storage for reuse across API calls
+* [[anthropic-mcp-connector]] - Server-side MCP client via Messages API, allowlist/denylist toolset config
+* [[anthropic-tool-runner-sdk]] - SDK tool loop automation with compaction support
+* [[anthropic-managed-agents-model]] - Hosted agent runtime: Agent + Environment + Session model
 
 ## Literature Notes (Grounded Sources)
 * [[lit-supabase-flask-quickstart]] - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)
