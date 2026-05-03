@@ -4,6 +4,8 @@
 - [[agentic-frameworks-moc]] - Central hub for agent architectures and frameworks.
 - [[multi-agent-patterns-moc]] - Unifying patterns for ADK, Swarm, and A2A.
 - [[agent-development-kit]] - Google's Agent Development Kit (ADK) integration.
+- [[code-agents]] - Code-executing agent pattern and its security tradeoffs.
+- [[graph-orchestration]] - Directed-graph workflow model for deterministic agent control.
 - [[verbalized-sample-skill]] - Operational protocol for distribution-aware reasoning.
 - [[openai-swarm]] - Experimental multi-agent orchestration.
 - [[openai-symphony]] - Service specification for background coding-agent orchestration.
@@ -15,6 +17,8 @@
 - [[mcp-moc]] - Model Context Protocol standards and implementations.
 - [[mcp-ecosystem]] - Hierarchical synthesis of the MCP knowledge domain.
 - [[mcp-agent-skills]] - Bridge between MCP tools and agent capabilities.
+- [[mcp-best-practices]] - Operational patterns for discovery, code mode, and security hardening.
+- [[mcp-authorization]] - OAuth 2.1 authorization flow and remote-server consent boundary.
 - [[spec-chatgpt-web-mcp-wrapper]] - Remote MCP wrapper for ChatGPT web access to the vault.
 
 ## 💻 Programming Languages
@@ -49,7 +53,7 @@
 
 ## 📊 Community Reports
 - [[pkm-history]] - History and methodology of PKM.
-- [[agentic-protocols]] - Standards for AI agent communication.
+- [[agentic-protocols-community-report]] - Standards for AI agent communication.
 - [[dotnet-csharp]] - .NET ecosystem and C# language synthesis.
 - [[vault-systems]] - Operational logic and automation of the Nest.
 - [[frameworks-eval]] - Agent frameworks and evaluation benchmarking.
@@ -62,9 +66,14 @@
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[anthropic-broad-intake-packet-2026-05-02]] - Completed: broad intake packet that defined the Anthropic documentation expansion lane.
 - [[gemini-openai-symphony-spec-research-handoff-2026-05-03]] - Completed: Research and ingestion of the OpenAI Symphony specification.
+- [[claude-symphony-graph-handoff-2026-05-03]] - Completed: verification seam for the expanded Symphony literature note.
 - [[claude-anthropic-batch-2-handoff-2026-05-02]] - Completed: Intake plan for the 30-page Anthropic Batch 2 ingestion run.
 - [[codex-anthropic-batch-2-synthesis-handoff-2026-05-02]] - Completed: Anthropic Batch 2 corpus synthesized into literature and permanent notes.
+- [[codex-anthropic-docs-ingestion-handoff-2026-05-02]] - Completed: first bounded Anthropic ingestion batch execution seam.
+- [[gemini-anthropic-docs-ingestion-handoff-2026-05-02]] - Completed: first bounded Anthropic ingestion batch librarian seam.
+- [[claude-mcp-authorization-handoff-2026-05-01]] - Completed: graph-integration handoff for the MCP authorization literature note.
 - [[claude-powershell-typescript-hub-handoff-2026-05-02]] - Completed: PowerShell and TypeScript root notes hardened into functional hub notes.
 - [[claude-core-reasoning-roots-handoff-2026-05-02]] - Completed: Rust and Python root notes hardened into functional hub notes.
 - [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] - Completed: Anthropic advanced cluster (adaptive thinking, batches, files, MCP connector, tool runner, managed agents).

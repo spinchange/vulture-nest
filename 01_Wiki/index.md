@@ -55,6 +55,7 @@ Status legend: implemented references describe working artifacts; handoff refere
 * [[adk-evaluation-framework]] - Trajectory-Based Assessment
 * [[adk-advanced-capabilities]] - Planning, Thinking, & Code Execution
 * [[adk-go-implementation]] - Native Performance Reference
+* [[code-agents]] - When agents execute generated code instead of narrow tool schemas
 
 ## Multi-Agent Pattern Language
 * [[pattern-supabase-flask-integration]] - Flask + Supabase: module-level singleton, RLS as auth layer, method-chain query API
@@ -65,12 +66,15 @@ Status legend: implemented references describe working artifacts; handoff refere
 * [[pattern-agent-as-tool]] - Expose complete agent as opaque callable in tool roster
 * [[pattern-progressive-handoff]] - Three-phase atomic transfer of task ownership
 * [[pattern-human-in-the-loop]] - Mid-task pause/resume for human input or authorization
+* [[graph-orchestration]] - Deterministic state-machine workflows for multi-step agent systems
 
 ## System / Protocol
 * [[experiment-capture-protocol]] - Lightweight YANP variant for 04_Experiments/; covers runs and adversarial debates
 
 ## Protocol Bridges
 * [[agentic-protocols]] - [[mcp-moc|MCP]]↔Agent Spec
+* [[mcp-best-practices]] - Operational scaling patterns for large MCP tool surfaces
+* [[mcp-authorization]] - OAuth 2.1 and consent flow for remote MCP servers
 * [[csharp-mcp-sdk]] - High-Performance .NET Tooling
 * [[dotnet-agent-integration]] - Bridging Ecosystems
 * [[csharp-records]] - Immutable Data Models
@@ -100,7 +104,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[community-report-generator]] - Algorithm: k-means → LLM → Community Report notes
 
 ## Community Reports (Synthesis)
-* [[agentic-protocols|Agentic Protocols]] - Communication & Thought Cycles
+* [[agentic-protocols-community-report|Agentic Protocols]] - Communication & Thought Cycles
 * [[dotnet-csharp|Dotnet & C#]] - Ecosystem & SDK Patterns
 * [[frameworks-eval|Frameworks & Evaluation]] - ADK vs. Swarm Comparison
 * [[lattice-interop|Lattice & Interop]] - Capability Lattice Theory
@@ -118,6 +122,9 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-verbalized-sampling-paper]] - Paper summary: 2510.01171v3 (P% constraint, empirical gains)
 
 ## Anthropic API
+* [[anthropic-broad-intake-packet-2026-05-02]] - Intake packet that defined the broader Anthropic documentation expansion lane
+* [[codex-anthropic-docs-ingestion-handoff-2026-05-02]] - Execution seam for the first bounded Anthropic ingestion batch
+* [[gemini-anthropic-docs-ingestion-handoff-2026-05-02]] - Librarian/ingester seam for the same first Anthropic batch
 * [[lit-anthropic-messages-api]] - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
 * [[lit-anthropic-advanced-capabilities]] - Literature: adaptive thinking, batch execution, files API, tool extensions, managed agents
 * [[lit-anthropic-sdk-service-2026]] - Literature: Batch 2 sub-batch E — SDKs, model lineup, service tiers, versioning, beta headers, context editing
@@ -144,6 +151,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-supabase-flask-quickstart]] - Literature: Supabase Flask Quickstart (Python client, RLS, module-level singleton, method-chain query API)
 * [[lit-chatgpt-web-mcp-guidance]] - Literature: ChatGPT Web MCP Guidance (remote only, write confirmations, plan gating)
 * [[lit-mcp-authorization]] - Literature: MCP Authorization Specification (OAuth 2.1, RFC 9728, audience binding, step-up)
+* [[claude-mcp-authorization-handoff-2026-05-01]] - Graph-integration seam for the MCP authorization literature note
 * [[lit-mcp-security-best-practices]] - Literature: MCP Security Best Practices (confused deputy, token passthrough, SSRF, session hijacking, local compromise, scope minimization)
 * [[lit-llm-wiki]] - Literature: LLM Wiki (Foundational Pattern)
 
@@ -154,6 +162,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-skills-agent-behavior]] - Skills vs. Vault Knowledge (active/passive split)
 * [[lit-adk-documentation]] - ADK Documentation (multi-agent toolkit)
 * [[lit-openai-swarm]] - OpenAI Swarm (handoffs, context_variables)
+* [[claude-symphony-graph-handoff-2026-05-03]] - Archived verification seam for the Symphony literature-note expansion
 
 ## Sources (Raw Data)
 * [00_Raw/LLM Wiki.md](https://github.com/spinchange/vulture-nest/blob/main/00_Raw/LLM%20Wiki.md)

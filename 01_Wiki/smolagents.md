@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [hugging-face-smolagents, code-agents]
+aliases: [hugging-face-smolagents]
 ---
 # smolagents
 

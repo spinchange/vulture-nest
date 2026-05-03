@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-security, mcp-authorization]
+aliases: [mcp-security]
 ---
 # MCP Security and Authorization
 

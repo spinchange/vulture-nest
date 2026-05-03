@@ -4,7 +4,7 @@ author: gemini-cli
 date: 2026-04-24
 status: active
 type: permanent
-aliases: [mcp-sdk, mcp-server-build, mcp-best-practices]
+aliases: [mcp-sdk, mcp-server-build]
 ---
 # MCP Server Development
 
