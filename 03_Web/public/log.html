@@ -1907,6 +1907,86 @@
 <li><strong>Status:</strong> Navigational restoration pass complete for the weakest MOC surfaces in this batch.
 </li>
 </ul>
+<h2>[2026-05-03] codex — Language Root Hardening Batch A</h2>
+<ul>
+<li><strong>Directive:</strong> Executed the immediate batch from <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a> — harden <a href="rust.html" class="wikilink">rust</a> and <a href="python.html" class="wikilink">python</a> as durable root hubs rather than thin summaries.
+</li>
+<li><strong>Rust Hardening:</strong> Added a vault-local &quot;Core Opinion,&quot; a concrete decision rule for when Rust should own a system boundary, explicit start paths for fundamentals vs. vault applications vs. type-system study, and clearer linkage to <a href="python.html" class="wikilink">python</a> and <a href="rust-moc.html" class="wikilink">rust-moc</a>.
+</li>
+<li><strong>Python Hardening:</strong> Added a &quot;Core Opinion,&quot; a concrete decision rule for orchestration vs. boundary work, stronger route selection for async/typing/schema vs. standard-library workflows, and clearer placement of Python as the Tier-1 execution layer adjacent to <a href="rust.html" class="wikilink">rust</a>.
+</li>
+<li><strong>Outcome:</strong> The two highest-centrality language roots now act as routing surfaces for the Nest&#39;s reasoning stack instead of generic language summaries.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Vault Stats Reconciliation</h2>
+<ul>
+<li><strong>Directive:</strong> Reconciled <a href="ps-vault-stats.html" class="wikilink">ps-vault-stats</a> behavior with the authoritative graph-health scripts after the stats surface diverged from live health checks.
+</li>
+<li><strong>Root Cause:</strong> <code>generate-wiki-stats.ps1</code> still used early basename-only heuristics while <a href="ps-broken-link-checker.html" class="wikilink">ps-broken-link-checker</a> and <a href="ps-orphan-check.html" class="wikilink">ps-orphan-check</a> had evolved to alias-aware, normalized wikilink resolution.
+</li>
+<li><strong>Fix:</strong> Updated <code>02_System/generate-wiki-stats.ps1</code> to use the same normalized link-target handling, code-fence stripping, recursive wiki scanning, alias-aware orphan counting, and system/root-note target recognition as the live validators.
+</li>
+<li><strong>Result:</strong> Vault stats now report <code>0</code> orphans, <code>0</code> broken links, and <code>100%</code> health in agreement with <code>orphan-check.ps1</code> and <code>check-broken-links.ps1</code>.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Duplicate Alias Cleanup</h2>
+<ul>
+<li><strong>Directive:</strong> Reduced alias collisions after graph integrity and vault stats returned to a clean state.
+</li>
+<li><strong>Canonicalization:</strong> Kept the short, high-ambiguity aliases on the primary active notes such as <a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>, <a href="mcp-moc.html" class="wikilink">mcp-moc</a>, <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>, <a href="mcp-transport.html" class="wikilink">mcp-transport</a>, <a href="pattern-progressive-handoff.html" class="wikilink">pattern-progressive-handoff</a>, <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, <a href="pydantic.html" class="wikilink">pydantic</a>, <a href="polyglot-platform-adr.html" class="wikilink">polyglot-platform-adr</a>, <a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a>, and <a href="zettelkasten.html" class="wikilink">zettelkasten</a>.
+</li>
+<li><strong>Cleanup:</strong> Removed overlapping aliases from bridge notes, narrower implementation notes, literature notes, and the superseded polyglot ADR RFC so short wikilinks resolve more predictably.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Status Hygiene Pass</h2>
+<ul>
+<li><strong>Directive:</strong> Reconciled handoff metadata with the actual completed state of the Anthropic expansion lane, the completed language-root research/execution setup, and the Anthropic post-synthesis maintenance pass.
+</li>
+<li><strong>Archived:</strong> Marked completed handoff and fleeting artifacts as <code>status: archived</code> where the work was already executed and reflected in the vault graph or index surfaces.
+</li>
+<li><strong>Index Alignment:</strong> Removed the completed Anthropic post-synthesis maintenance handoff from the active section of <a href="system-index.html" class="wikilink">system-index</a> and registered it under completed handoffs instead.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Execution Topology Lane</h2>
+<ul>
+<li><strong>Directive:</strong> Started a fresh bounded content lane by deepening the execution-topology path around <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> and <a href="code-agents.html" class="wikilink">code-agents</a>.
+</li>
+<li><strong>Graph Orchestration:</strong> Expanded the note from a stub into a routing surface covering when graph control is preferable, how state/nodes/edges function, and how <a href="langgraph.html" class="wikilink">langgraph</a>, <a href="llamaindex.html" class="wikilink">llamaindex</a>, and <a href="workflow-agents.html" class="wikilink">workflow-agents</a> instantiate the pattern differently.
+</li>
+<li><strong>Code Agents:</strong> Expanded the note into a real execution-style note covering when code generation beats narrow tool schemas, what execution contracts matter, and how it relates to <a href="agent-tools.html" class="wikilink">agent-tools</a>, <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>, and <a href="smolagents.html" class="wikilink">smolagents</a>.
+</li>
+</ul>
+<h2>[2026-05-03] codex — MCP Execution-Surface Completion</h2>
+<ul>
+<li><strong>Directive:</strong> Executed the next bounded MCP completion lane by deepening <a href="mcp-primitives.html" class="wikilink">mcp-primitives</a>, <a href="mcp-sdks.html" class="wikilink">mcp-sdks</a>, and <a href="mcp-security.html" class="wikilink">mcp-security</a>.
+</li>
+<li><strong>Primitives:</strong> Reframed tools/resources/prompts as distinct control surfaces with different owners, added decision rules for when each primitive fits, and linked the note more directly into client/server and best-practices notes.
+</li>
+<li><strong>SDKs:</strong> Turned the note from a tier list into an implementation-choice note: what really varies across SDKs, how to choose by runtime role, and how SDK selection maps to the Nest&#39;s language-tier model.
+</li>
+<li><strong>Security:</strong> Reworked the note into a trust-boundary note covering the local-vs-remote split, main MCP threat categories, the authorization boundary, and the adjacent notes that carry the deeper spec-level detail.
+</li>
+</ul>
+<h2>[2026-05-03] codex — Language Root Hardening Batch B</h2>
+<ul>
+<li><strong>Directive:</strong> Continued <a href="language-root-hardening-plan-2026-05-02.html" class="wikilink">language-root-hardening-plan-2026-05-02</a> by hardening <a href="powershell.html" class="wikilink">powershell</a> and <a href="typescript.html" class="wikilink">typescript</a> as durable root hubs rather than thinner language summaries.
+</li>
+<li><strong>PowerShell Hardening:</strong> Added a vault-local &quot;Core Opinion,&quot; a concrete decision rule for when operational work should stay in PowerShell instead of moving into Python or Rust, a direct start-path by maintenance vs. scripting vs. memory tooling, and clearer placement against <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a> and <a href="powershell-moc.html" class="wikilink">powershell-moc</a>.
+</li>
+<li><strong>TypeScript Hardening:</strong> Added a &quot;Core Opinion,&quot; a concrete decision rule for Node/browser/schema-shaped integration work, explicit route selection for handbook study vs. MCP/SDK work, and clearer placement against <a href="powershell.html" class="wikilink">powershell</a>, <a href="python.html" class="wikilink">python</a>, <a href="rust.html" class="wikilink">rust</a>, and the JavaScript runtime lane.
+</li>
+</ul>
+<h2>[2026-05-03] codex — ADK Adjacency Follow-Through</h2>
+<ul>
+<li><strong>Directive:</strong> Deepened the ADK-adjacent execution notes after the framework and execution-topology passes so the cluster routes more cleanly from root framework note to runtime mechanics.
+</li>
+<li><strong>ADK Root:</strong> Strengthened <a href="agent-development-kit.html" class="wikilink">agent-development-kit</a> with a vault-local &quot;Core Opinion,&quot; a decision rule for when ADK is the right framework, explicit start paths by runtime/orchestration/persistence/evaluation concern, and clearer placement against <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, <a href="openai-swarm.html" class="wikilink">openai-swarm</a>, and <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>.
+</li>
+<li><strong>Mechanics:</strong> Reworked <a href="agent-thought-cycle.html" class="wikilink">agent-thought-cycle</a> and <a href="agent-tools.html" class="wikilink">agent-tools</a> from short glossary notes into execution-mechanics notes covering the minimal agent loop, common failure modes, tool-contract quality, and when tools differ from broader code execution or MCP primitives.
+</li>
+<li><strong>Orchestration:</strong> Strengthened <a href="workflow-agents.html" class="wikilink">workflow-agents</a> and <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> so ADK&#39;s deterministic controllers, transfer patterns, shared state, and agent-as-tool composition route more directly into the newer execution-topology lane.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->

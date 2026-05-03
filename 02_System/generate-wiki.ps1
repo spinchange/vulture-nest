@@ -28,6 +28,10 @@ try {
     $WikiPath = Join-Path $VaultRoot '01_Wiki'
     $TemplatePath = Join-Path $VaultRoot '03_Web/template.html'
     $OutputDirectory = Join-Path $VaultRoot '03_Web/public'
+    $LlmsTxtRootPath = Join-Path $VaultRoot 'llms.txt'
+    $LlmsTxtPublicPath = Join-Path $OutputDirectory 'llms.txt'
+    $PortalBaseUrl = 'https://spinchange.github.io/vulture-nest'
+    $RepoBaseUrl = 'https://github.com/spinchange/vulture-nest'
     $DbPath = $env:POSHWIKI_DB_PATH
     if ([string]::IsNullOrWhiteSpace($DbPath)) {
         $DbPath = Join-Path $VaultRoot '00_Raw/PoShWiKi/wiki.db'
@@ -105,6 +109,19 @@ try {
     function Get-HtmlFileName {
         param([string]$NoteName)
         return ([uri]::EscapeDataString($NoteName) -replace '%2F', '/') + '.html'
+    }
+
+    function Get-PortalUrl {
+        param([string]$NoteName)
+        return "$PortalBaseUrl/$(Get-HtmlFileName -NoteName $NoteName)"
+    }
+
+    function Get-RepoBlobUrl {
+        param([string]$RelativePath)
+        $normalized = ($RelativePath -replace '\\', '/')
+        $segments = $normalized -split '/'
+        $escapedSegments = $segments | ForEach-Object { [uri]::EscapeDataString($_) }
+        return "$RepoBaseUrl/blob/main/$($escapedSegments -join '/')"
     }
 
     function New-WikiAnchor {
@@ -296,16 +313,102 @@ try {
         return ($sections -join [Environment]::NewLine)
     }
 
+    function New-LlmsTxtContent {
+        param(
+            [System.IO.FileInfo[]]$WikiFiles,
+            [System.IO.FileInfo[]]$SystemMarkdownFiles
+        )
+
+        $allMarkdownFiles = @($WikiFiles) + @($SystemMarkdownFiles)
+        $portalPages = @(Get-ChildItem -Path $OutputDirectory -File -Filter '*.html')
+        $generatedAt = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+
+        $sections = @(
+            @{ Name = 'Wiki Index'; PortalNote = 'index'; Description = 'Primary navigation hub for MOCs, specs, framework clusters, literature, and raw-source pointers.' }
+            @{ Name = 'System Index'; PortalNote = 'system-index'; Description = 'Operational index for scripts, maintenance surfaces, health tooling, and execution seams.' }
+            @{ Name = 'Dashboard'; Url = "$PortalBaseUrl/dashboard.html"; Description = 'Live health metrics, density signals, and portal telemetry.' }
+            @{ Name = 'System Log'; PortalNote = 'log'; Description = 'Durable session history of agent and human actions.' }
+            @{ Name = 'Visitor Directives'; PortalNote = 'visitor-directives'; Description = 'Collaboration protocol and write constraints for visiting agents.' }
+            @{ Name = 'Tool Registry'; PortalNote = 'tool-registry'; Description = 'Machine-readable inventory of PowerShell automation capabilities.' }
+        )
+
+        $clusters = @(
+            @{ Name = 'Agentic Frameworks'; PortalNote = 'agentic-frameworks-moc'; Description = 'Framework comparison surface spanning ADK, OpenAI Agents SDK, Swarm, orchestration patterns, and execution models.' }
+            @{ Name = 'MCP Cluster'; PortalNote = 'mcp-moc'; Description = 'Protocol, transports, primitives, security, SDKs, and implementation guidance for Model Context Protocol.' }
+            @{ Name = 'Programming Languages'; PortalNote = 'programming-languages-moc'; Description = 'Architectural routing across Rust, Python, PowerShell, TypeScript, and adjacent language clusters.' }
+            @{ Name = 'Multi-Agent Patterns'; PortalNote = 'multi-agent-patterns-moc'; Description = 'Pattern language for delegation, handoff, parallelism, safety, and human approval.' }
+            @{ Name = 'Execution Topology'; PortalNote = 'graph-orchestration'; Description = 'When to use explicit workflow control, deterministic orchestration, and code-execution agents.' }
+        )
+
+        $lines = New-Object System.Collections.Generic.List[string]
+        $lines.Add('# vulture-nest')
+        $lines.Add('')
+        $lines.Add('> A YANP-compliant knowledge vault and multi-agent engineering substrate with a compiled wiki, operational scripts, and a static portal.')
+        $lines.Add('')
+        $lines.Add("Generated: $generatedAt")
+        $lines.Add("Repository: $RepoBaseUrl")
+        $lines.Add("Portal: $PortalBaseUrl/index.html")
+        $lines.Add("Machine-readable file: $PortalBaseUrl/llms.txt")
+        $lines.Add('')
+        $lines.Add('## What This Is')
+        $lines.Add('')
+        $lines.Add('The vault treats notes as audited technical artifacts rather than loose prose. Permanent notes live in `01_Wiki/`, system automation and operational records live in `02_System/`, source captures live in `00_Raw/`, and the static public portal is generated into `03_Web/public/`.')
+        $lines.Add('')
+        $lines.Add('## Current Surface')
+        $lines.Add('')
+        $lines.Add("- Wiki notes: $($WikiFiles.Count)")
+        $lines.Add("- System markdown surfaces: $($SystemMarkdownFiles.Count)")
+        $lines.Add("- Total markdown surfaces in compiled portal scope: $($allMarkdownFiles.Count)")
+        $lines.Add("- Public HTML pages currently generated: $($portalPages.Count)")
+        $lines.Add('')
+        $lines.Add('## Start Here')
+        $lines.Add('')
+        foreach ($section in $sections) {
+            $url = if ($section.ContainsKey('PortalNote')) { Get-PortalUrl -NoteName $section.PortalNote } else { $section.Url }
+            $lines.Add("- [$($section.Name)]($url): $($section.Description)")
+        }
+        $lines.Add('')
+        $lines.Add('## Major Clusters')
+        $lines.Add('')
+        foreach ($cluster in $clusters) {
+            $lines.Add("- [$($cluster.Name)]($(Get-PortalUrl -NoteName $cluster.PortalNote)): $($cluster.Description)")
+        }
+        $lines.Add('')
+        $lines.Add('## Protocol Rules For Agents')
+        $lines.Add('')
+        $lines.Add('- Filenames in `01_Wiki/` are lowercase kebab-case and filename stems must remain unique across the vault.')
+        $lines.Add('- Internal links use wikilinks in source notes and compile to static HTML in the portal.')
+        $lines.Add('- Notes in `01_Wiki/` require YAML frontmatter with at least `title`, `author`, `date`, `status`, `type`, and `aliases`.')
+        $lines.Add('- Graph integrity and note compliance are enforced by PowerShell maintenance scripts rather than by convention alone.')
+        $lines.Add('')
+        $lines.Add('## Key Source And Repo Surfaces')
+        $lines.Add('')
+        $lines.Add("- [README]($(Get-RepoBlobUrl -RelativePath 'README.md')): high-level project framing and live portal links.")
+        $lines.Add("- [Wiki Index Source]($(Get-RepoBlobUrl -RelativePath '01_Wiki/index.md')): source markdown for the main navigation hub.")
+        $lines.Add("- [System Index Source]($(Get-RepoBlobUrl -RelativePath '02_System/system-index.md')): source markdown for operational and tooling navigation.")
+        $lines.Add("- [Visitor Directives Source]($(Get-RepoBlobUrl -RelativePath '02_System/visitor-directives.md')): collaboration contract for guest agents.")
+        $lines.Add("- [Portal Generator]($(Get-RepoBlobUrl -RelativePath '02_System/generate-wiki.ps1')): static site compiler for wiki and system markdown.")
+        $lines.Add('')
+        $lines.Add('## Retrieval Guidance')
+        $lines.Add('')
+        $lines.Add('- Use the portal index for broad navigation and the system index for tooling and maintenance tasks.')
+        $lines.Add('- Start from root hubs (`rust`, `python`, `powershell`, `typescript`, `agent-development-kit`, `mcp-moc`) before dropping into narrow subnotes.')
+        $lines.Add('- Prefer literature notes (`lit-*`) when you need source-grounded summaries, and permanent notes when you need vault-local synthesis or decision rules.')
+        return ($lines -join [Environment]::NewLine) + [Environment]::NewLine
+    }
+
     Import-SqliteAssemblies
     if (-not (Test-Path $TemplatePath)) { throw "Template not found: $TemplatePath" }
     if (-not (Test-Path $OutputDirectory)) { New-Item -ItemType Directory -Path $OutputDirectory | Out-Null }
 
     $template = Get-NormalizedContent -Path $TemplatePath
-    $wikiFiles = Get-ChildItem -Path $WikiPath, $PSScriptRoot -Filter '*.md' | Sort-Object Name
+    $wikiFiles = @(Get-ChildItem -Path $WikiPath -File -Filter '*.md' | Sort-Object Name)
+    $systemMarkdownFiles = @(Get-ChildItem -Path $PSScriptRoot -File -Filter '*.md' | Sort-Object Name)
+    $compiledMarkdownFiles = @($wikiFiles) + @($systemMarkdownFiles)
     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
     $results = New-Object System.Collections.Generic.List[object]
 
-    foreach ($file in $wikiFiles) {
+    foreach ($file in $compiledMarkdownFiles) {
         $noteName = $file.BaseName
         $outputPath = Join-Path $OutputDirectory (Get-HtmlFileName -NoteName $noteName)
         if (-not $Force -and (Test-Path $outputPath)) {
@@ -325,7 +428,12 @@ try {
         $results.Add([PSCustomObject]@{ Note = $noteName; Title = $title; OutputPath = $outputPath; Incoming = $neighbors.Incoming.Count; Outgoing = $neighbors.Outgoing.Count })
     }
 
+    $llmsTxtContent = New-LlmsTxtContent -WikiFiles $wikiFiles -SystemMarkdownFiles $systemMarkdownFiles
+    [System.IO.File]::WriteAllText($LlmsTxtRootPath, $llmsTxtContent, $utf8NoBom)
+    [System.IO.File]::WriteAllText($LlmsTxtPublicPath, $llmsTxtContent, $utf8NoBom)
+
     if ($results.Count -gt 0) { Write-Host "Compiled $($results.Count) wiki pages into $OutputDirectory" -ForegroundColor Green }
-    else { Write-Host "No changes detected. Portal is up to date." -ForegroundColor Cyan }
+    else { Write-Host "No HTML changes detected. Portal is up to date." -ForegroundColor Cyan }
+    Write-Host "Refreshed llms.txt at repo root and public portal output." -ForegroundColor Green
     return $results
 } catch { Write-Error $_; exit 1 }

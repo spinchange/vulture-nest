@@ -902,3 +902,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **ADK Root:** Strengthened [[agent-development-kit]] with a vault-local "Core Opinion," a decision rule for when ADK is the right framework, explicit start paths by runtime/orchestration/persistence/evaluation concern, and clearer placement against [[openai-agents-sdk]], [[openai-swarm]], and [[graph-orchestration]].
 - **Mechanics:** Reworked [[agent-thought-cycle]] and [[agent-tools]] from short glossary notes into execution-mechanics notes covering the minimal agent loop, common failure modes, tool-contract quality, and when tools differ from broader code execution or MCP primitives.
 - **Orchestration:** Strengthened [[workflow-agents]] and [[adk-multi-agent-orchestration]] so ADK's deterministic controllers, transfer patterns, shared state, and agent-as-tool composition route more directly into the newer execution-topology lane.
+
+
+## [2026-05-03] codex — llms.txt Generation Wiring
+
+- **Directive:** Replaced the stale hand-maintained `llms.txt` artifact with a generated one tied to the portal build.
+- **Tooling:** Extended `02_System/generate-wiki.ps1` so each portal build now regenerates `llms.txt` at both the repo root and `03_Web/public/`.
+- **Output Shape:** The generated file now includes live portal URLs, repo URLs, current surface counts, key entry points, major cluster routes, and concise retrieval guidance for external agents and tooling.
