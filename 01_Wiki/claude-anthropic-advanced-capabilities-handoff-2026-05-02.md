@@ -2,7 +2,7 @@
 title: Claude Handoff — Anthropic Advanced Capabilities (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - claude
@@ -148,4 +148,3 @@ After this batch, reassess whether the next Claude-facing lane should be:
 
 - language-root hardening
 - navigational hub restoration
-

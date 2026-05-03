@@ -61,12 +61,12 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
-- [[codex-post-anthropic-synthesis-handoff-2026-05-02]] - Vault maintenance cycle after Anthropic advanced capabilities batch.
 - [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
 - [[anthropic-broad-intake-packet-2026-05-02]] - Completed: broad intake packet that defined the Anthropic documentation expansion lane.
+- [[codex-post-anthropic-synthesis-handoff-2026-05-02]] - Completed: maintenance, graph sync, and portal rebuild after the Anthropic advanced-capabilities batch.
 - [[gemini-openai-symphony-spec-research-handoff-2026-05-03]] - Completed: Research and ingestion of the OpenAI Symphony specification.
 - [[claude-symphony-graph-handoff-2026-05-03]] - Completed: verification seam for the expanded Symphony literature note.
 - [[claude-anthropic-batch-2-handoff-2026-05-02]] - Completed: Intake plan for the 30-page Anthropic Batch 2 ingestion run.

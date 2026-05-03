@@ -2,7 +2,7 @@
 title: Gemini Handoff — Language Root Hardening Research (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - gemini
@@ -129,4 +129,3 @@ After the planning note is written, decide whether the execution batch should be
 - `rust + python` first
 - all four language roots together
 - one language root plus one navigation/MOC repair pass
-

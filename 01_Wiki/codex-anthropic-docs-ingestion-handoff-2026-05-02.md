@@ -2,7 +2,7 @@
 title: Codex Handoff — Anthropic Documentation Ingestion (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - codex

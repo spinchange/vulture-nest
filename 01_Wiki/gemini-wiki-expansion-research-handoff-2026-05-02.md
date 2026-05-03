@@ -2,7 +2,7 @@
 title: Gemini Handoff — Wiki Expansion Research (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - gemini

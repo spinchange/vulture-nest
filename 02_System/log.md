@@ -865,3 +865,10 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 - **Directive:** Reduced alias collisions after graph integrity and vault stats returned to a clean state.
 - **Canonicalization:** Kept the short, high-ambiguity aliases on the primary active notes such as [[a2a-protocol]], [[mcp-moc]], [[mcp-primitives]], [[mcp-transport]], [[pattern-progressive-handoff]], [[openai-agents-sdk]], [[pydantic]], [[polyglot-platform-adr]], [[verbalized-sampling]], and [[zettelkasten]].
 - **Cleanup:** Removed overlapping aliases from bridge notes, narrower implementation notes, literature notes, and the superseded polyglot ADR RFC so short wikilinks resolve more predictably.
+
+
+## [2026-05-03] codex — Status Hygiene Pass
+
+- **Directive:** Reconciled handoff metadata with the actual completed state of the Anthropic expansion lane, the completed language-root research/execution setup, and the Anthropic post-synthesis maintenance pass.
+- **Archived:** Marked completed handoff and fleeting artifacts as `status: archived` where the work was already executed and reflected in the vault graph or index surfaces.
+- **Index Alignment:** Removed the completed Anthropic post-synthesis maintenance handoff from the active section of [[system-index]] and registered it under completed handoffs instead.

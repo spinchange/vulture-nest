@@ -2,7 +2,7 @@
 title: Claude Handoff — Core Reasoning Roots (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - claude
@@ -165,4 +165,3 @@ After this batch, the likely next choices are:
 
 - `[[powershell]]` + `[[typescript]]` hub hardening
 - navigational hub restoration
-

@@ -2,7 +2,7 @@
 title: 'Handoff: Codex — Post-Anthropic-Synthesis Vault Maintenance'
 author: claude-sonnet-4-6
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - codex

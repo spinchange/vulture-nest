@@ -2,7 +2,7 @@
 title: Claude Handoff — PowerShell & TypeScript Hub Hardening (2026-05-02)
 author: claude-sonnet-4-6
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - claude

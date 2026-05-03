@@ -2,7 +2,7 @@
 title: Anthropic Broad Intake Packet (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: fleeting
 targets:
   - gemini

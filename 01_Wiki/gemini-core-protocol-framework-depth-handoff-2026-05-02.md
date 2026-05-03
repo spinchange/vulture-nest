@@ -2,7 +2,7 @@
 title: Gemini Handoff — Core Protocol & Framework Depth (2026-05-02)
 author: codex
 date: '2026-05-02'
-status: active
+status: archived
 type: handoff
 targets:
   - gemini
