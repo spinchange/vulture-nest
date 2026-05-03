@@ -1,0 +1,57 @@
+# vulture-nest
+
+> A YANP-compliant knowledge vault and multi-agent engineering substrate with a compiled wiki, operational scripts, and a static portal.
+
+Generated: 2026-05-03T06:27:26Z
+Repository: https://github.com/spinchange/vulture-nest
+Portal: https://spinchange.github.io/vulture-nest/index.html
+Machine-readable file: https://spinchange.github.io/vulture-nest/llms.txt
+
+## What This Is
+
+The vault treats notes as audited technical artifacts rather than loose prose. Permanent notes live in `01_Wiki/`, system automation and operational records live in `02_System/`, source captures live in `00_Raw/`, and the static public portal is generated into `03_Web/public/`.
+
+## Current Surface
+
+- Wiki notes: 376
+- System markdown surfaces: 5
+- Total markdown surfaces in compiled portal scope: 381
+- Public HTML pages currently generated: 382
+
+## Start Here
+
+- [Wiki Index](https://spinchange.github.io/vulture-nest/index.html): Primary navigation hub for MOCs, specs, framework clusters, literature, and raw-source pointers.
+- [System Index](https://spinchange.github.io/vulture-nest/system-index.html): Operational index for scripts, maintenance surfaces, health tooling, and execution seams.
+- [Dashboard](https://spinchange.github.io/vulture-nest/dashboard.html): Live health metrics, density signals, and portal telemetry.
+- [System Log](https://spinchange.github.io/vulture-nest/log.html): Durable session history of agent and human actions.
+- [Visitor Directives](https://spinchange.github.io/vulture-nest/visitor-directives.html): Collaboration protocol and write constraints for visiting agents.
+- [Tool Registry](https://spinchange.github.io/vulture-nest/tool-registry.html): Machine-readable inventory of PowerShell automation capabilities.
+
+## Major Clusters
+
+- [Agentic Frameworks](https://spinchange.github.io/vulture-nest/agentic-frameworks-moc.html): Framework comparison surface spanning ADK, OpenAI Agents SDK, Swarm, orchestration patterns, and execution models.
+- [MCP Cluster](https://spinchange.github.io/vulture-nest/mcp-moc.html): Protocol, transports, primitives, security, SDKs, and implementation guidance for Model Context Protocol.
+- [Programming Languages](https://spinchange.github.io/vulture-nest/programming-languages-moc.html): Architectural routing across Rust, Python, PowerShell, TypeScript, and adjacent language clusters.
+- [Multi-Agent Patterns](https://spinchange.github.io/vulture-nest/multi-agent-patterns-moc.html): Pattern language for delegation, handoff, parallelism, safety, and human approval.
+- [Execution Topology](https://spinchange.github.io/vulture-nest/graph-orchestration.html): When to use explicit workflow control, deterministic orchestration, and code-execution agents.
+
+## Protocol Rules For Agents
+
+- Filenames in `01_Wiki/` are lowercase kebab-case and filename stems must remain unique across the vault.
+- Internal links use wikilinks in source notes and compile to static HTML in the portal.
+- Notes in `01_Wiki/` require YAML frontmatter with at least `title`, `author`, `date`, `status`, `type`, and `aliases`.
+- Graph integrity and note compliance are enforced by PowerShell maintenance scripts rather than by convention alone.
+
+## Key Source And Repo Surfaces
+
+- [README](https://github.com/spinchange/vulture-nest/blob/main/README.md): high-level project framing and live portal links.
+- [Wiki Index Source](https://github.com/spinchange/vulture-nest/blob/main/01_Wiki/index.md): source markdown for the main navigation hub.
+- [System Index Source](https://github.com/spinchange/vulture-nest/blob/main/02_System/system-index.md): source markdown for operational and tooling navigation.
+- [Visitor Directives Source](https://github.com/spinchange/vulture-nest/blob/main/02_System/visitor-directives.md): collaboration contract for guest agents.
+- [Portal Generator](https://github.com/spinchange/vulture-nest/blob/main/02_System/generate-wiki.ps1): static site compiler for wiki and system markdown.
+
+## Retrieval Guidance
+
+- Use the portal index for broad navigation and the system index for tooling and maintenance tasks.
+- Start from root hubs (`rust`, `python`, `powershell`, `typescript`, `agent-development-kit`, `mcp-moc`) before dropping into narrow subnotes.
+- Prefer literature notes (`lit-*`) when you need source-grounded summaries, and permanent notes when you need vault-local synthesis or decision rules.

@@ -1987,6 +1987,15 @@
 <li><strong>Orchestration:</strong> Strengthened <a href="workflow-agents.html" class="wikilink">workflow-agents</a> and <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> so ADK&#39;s deterministic controllers, transfer patterns, shared state, and agent-as-tool composition route more directly into the newer execution-topology lane.
 </li>
 </ul>
+<h2>[2026-05-03] codex — llms.txt Generation Wiring</h2>
+<ul>
+<li><strong>Directive:</strong> Replaced the stale hand-maintained <code>llms.txt</code> artifact with a generated one tied to the portal build.
+</li>
+<li><strong>Tooling:</strong> Extended <code>02_System/generate-wiki.ps1</code> so each portal build now regenerates <code>llms.txt</code> at both the repo root and <code>03_Web/public/</code>.
+</li>
+<li><strong>Output Shape:</strong> The generated file now includes live portal URLs, repo URLs, current surface counts, key entry points, major cluster routes, and concise retrieval guidance for external agents and tooling.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
