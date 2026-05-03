@@ -57,11 +57,11 @@
 
 ## 📬 Active Handoffs
 - [[codex-post-anthropic-synthesis-handoff-2026-05-02]] - Vault maintenance cycle after Anthropic advanced capabilities batch.
-- [[claude-core-reasoning-roots-handoff-2026-05-02]] - Harden Rust and Python into durable architectural hub notes.
 - [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[claude-core-reasoning-roots-handoff-2026-05-02]] - Completed: Rust and Python root notes hardened into functional hub notes.
 - [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] - Completed: Anthropic advanced cluster (adaptive thinking, batches, files, MCP connector, tool runner, managed agents).
 - [[gemini-language-root-hardening-research-handoff-2026-05-02]] - Research the next bounded batch for Rust, Python, PowerShell, and TypeScript hub hardening.
 - [[gemini-wiki-expansion-research-handoff-2026-05-02]] - Research and planning for the 2026-05-02 expansion cycle.

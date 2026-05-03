@@ -1,6 +1,19 @@
 # Wiki Log
 
 
+## [2026-05-02] Claude — Core Reasoning Roots Hardening (Rust & Python)
+
+**Directive**: Executed [[claude-core-reasoning-roots-handoff-2026-05-02]] — hardened `[[rust]]` and `[[python]]` root notes from thin language summaries into functional hub notes.
+
+**Notes Hardened:**
+* [[rust]] — Rewrote with vault-local framing: Tier-0 Safe Core role, MCP server implementation context. Three-track navigation: Language Fundamentals → Vault Applications (Tier-0 patterns, MCP patterns, sqlx) → Type System Theory (phantom types, type-level programming, affine types). Replaced generic "References" section with high-signal See Also.
+* [[python]] — Rewrote with "Python in the Nest" section: Tier-1 orchestration layer, SDK/integration surface, practical glue. Added explicit "Where to Start" guidance with two paths (general vs. ingestion/MCP work). Deepened routing to decorators, context managers, asyncio, typing as first-class navigation targets.
+
+**Supporting Updates:**
+* [[rust-moc]] — Added missing "Vault Applications" section registering `rust-tier-0-patterns`, `rust-mcp-patterns`, `rust-sqlx-migrations` (all existed but were absent from MOC).
+
+**Stop condition met**: Both hubs materially stronger; did not extend into PowerShell or TypeScript lane.
+
 ## [2026-05-02] Claude — Anthropic Advanced Capabilities Synthesis
 
 **Directive**: Executed [[claude-anthropic-advanced-capabilities-handoff-2026-05-02]] — extended the Anthropic cluster beyond first-batch fundamentals using the local `00_Raw/anthropic/` corpus.
