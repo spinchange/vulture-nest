@@ -116,3 +116,6 @@
 - [[pattern-supabase-flask-integration]]: Permanent note — Flask+Supabase pattern (singleton client, RLS auth layer, method-chain API).
 
 - [[lit-openai-symphony-spec]]: Official specification for the Symphony orchestration service.
+
+
+## Active Handoffs

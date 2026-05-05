@@ -86,3 +86,4 @@ This mirrors the PR workflow deliberately. It encodes the principle that the **h
 - [[yanp-for-agentic-workflows]]
 - [[the-compounding-artifact]]
 - [[plain-plus-design]]
+- [[vulture-nest]]
