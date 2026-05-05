@@ -76,3 +76,7 @@ This map organizes the operational history of the **vulture-nest**, tracking the
 - [[index]]
 - [[agent-note-conventions]]
 - [[core-patterns-moc]]
+
+
+## Gemini Handoffs
+- [[gemini-content-expansion-handoff-2026-05-04]] - Strategic roadmap for deepening Telephony, Observability, and Schema-driven patterns.
