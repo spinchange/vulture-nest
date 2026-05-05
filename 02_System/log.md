@@ -1,6 +1,19 @@
 # Wiki Log
 
 
+## [2026-05-04] Claude — Hardware-Aware Inference Hub Hardening
+
+**Directive**: Third lane from [[observability-first-expansion-brief-2026-05-04]] — harden `hardware-aware-inference` as the local acceleration routing hub.
+
+**Notes Hardened (2):**
+* [[hardware-aware-inference]] — Full rewrite from a 3-section definition note into a routing hub. Added: "When to Start Here" entry framing; "The Two Dimensions" section separating hardware-target from runtime+model-format decisions; GGUF vs. ONNX format table with runtime options; expanded acceleration backends covering MLX Unified Memory advantage, DirectML cross-vendor coverage, ONNX Runtime execution providers, and NPU targets (Intel NPU, Apple Neural Engine, Qualcomm Hexagon); selection strategy table with concrete runtimes named per scenario; quantization guidance (Q4/Q8 GGUF, int4 ONNX); "Where to Go Next" routing footer to `foundry-local`, `local-agent-environments`, `lm-kit-dotnet`, `docker-sandbox`.
+* [[agentic-frameworks-moc]] — Updated `hardware-aware-inference` entry description to reflect the new routing scope (runtimes named, not just backends).
+
+**No new notes created**: llama.cpp, quantization, and NPU are contextual concepts within the hub, not atomic vault concepts requiring separate notes.
+
+**Validation**: `audit-yanp.ps1` — all notes compliant. No broken links introduced.
+
+
 ## [2026-05-04] Claude — Schema-Driven Development Lane Hardening
 
 **Directive**: Second lane from [[observability-first-expansion-brief-2026-05-04]] — schema-driven development routing and contract clarity.

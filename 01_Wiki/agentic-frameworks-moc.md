@@ -84,7 +84,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[foundry-local]]: Microsoft's hardware-optimized local inference SDK.
 * [[local-agent-environments]]: Running models locally via Ollama and LiteLLM.
 * [[docker-sandbox]]: Secure environment isolation for agents.
-* [[hardware-aware-inference]]: Optimizing for CUDA, MLX, and NPUs.
+* [[hardware-aware-inference]]: Runtime and format selection for local inference — CUDA, MLX, DirectML, ONNX, and NPU targets; routes to Ollama, Foundry Local, and LM-Kit.NET.
 
 ## Practical Use Cases
 * [[gala-agent-use-case]]: Building a multi-tool gala assistant.
