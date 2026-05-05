@@ -18,6 +18,9 @@ This MOC mixes adopted operating conventions with more exploratory architectural
 * [[yaml-for-yanp]]: The technical specification for our metadata schema.
 * [[agent-note-conventions]]: The current operating standard for agent-written notes.
 
+* [[frontmatter-schema-rfc-2026-05-04]]: RFC proposing a shift from `type/status` to `kind/phase` and multi-model provenance.
+* [[artifact-write-protocol-rfc-2026-05-03]]: RFC for formalizing the agent-to-vault write cycle.
+* [[note-hardening-pattern-rfc-2026-05-03]]: Proposed pattern for graduating fleeting notes to permanent status.
 ## Wiki Architecture
 The vault is treated as a living codebase rather than a static document.
 * [[wiki-as-codebase]]: The core philosophy of treating maintenance, linting, and generation as a form of "Knowledge CI/CD."

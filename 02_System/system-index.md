@@ -119,3 +119,19 @@
 
 
 ## Active Handoffs
+
+
+## Operations & Deployment
+- [[github-deployment]] - Strategy for CI/CD and repository sync.
+- [[automation-test]] - Verification suite for vault maintenance.
+- [[productivity-roadmap-2026-04-27]] - Historical project milestones.
+- [[language-root-hardening-plan-2026-05-02]] - Active operation for securing language hubs.
+- [[gemini-openai-symphony-completion-2026-05-03]] - Log of the Symphony integration sprint.
+## System & Infrastructure
+- [[handoffs-moc]] - Chronological session history and inter-agent work transfers.
+- [[specifications-moc]] - Formal standards, RFCs, and protocol definitions.
+
+
+- [[web-data-ingestion-moc]] - Tools and protocols for web scraping and data intake.
+## Knowledge Management (PKM)
+- [[literature-moc]] - Index of external research, papers, and technical documentation.

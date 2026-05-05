@@ -8,6 +8,7 @@ aliases:
   - artifact-schema-debate
   - frontmatter-schema-discussion
   - note-dimensions-discussion
+toc: true
 ---
 
 # Artifact Schema Discussion

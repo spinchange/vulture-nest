@@ -33,3 +33,10 @@ A comparative look at different systems for organizing thought and action.
 
 - [[knowledge-gardening-principles]]
 - [[pkm-history-moc]]
+
+
+## Vault Architecture (YANP)
+### Ontological Research
+- [[nest-from-scratch-ontology-2026-05-03]] - Initial framing of the vault as a claim-evidence graph.
+- [[nest-claim-lifecycle-ontology-2026-05-03]] - Refined ontology for autonomous synthesis.
+- [[foundational-vault-docs-summary-2026-05-04]] - Synthesis of core vault conventions.

@@ -56,3 +56,10 @@ This map provides a comprehensive traversal of the Model Context Protocol (MCP) 
 * [[lit-mcp-connections-and-debugging]] - Connection lifecycle and debugging reference
 * [[lit-mcp-authorization]] - Specification-level grounding for OAuth 2.1 authorization
 * [[lit-mcp-security-best-practices]] - Threat model and mitigations (attack-vector level)
+
+
+## Protocol Extensions & Patterns
+### Session Types & Formal Proofs
+- [[session-types]] - Theory of typed communication channels.
+- [[session-types-in-rust]] - Implementing formal contracts in the Rust SDK.
+- [[session-types-mcp-mapping]] - Mapping session types to MCP transport state machines.

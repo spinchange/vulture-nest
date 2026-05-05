@@ -211,3 +211,13 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[github-deployment|GitHub Deployment (Cloud Daemon)]]
 * [[poshwiki-tools|PoShWiKi Tools API]]
 * [[tool-registry|Tool Registry (Machine-Readable)]]
+
+
+## Structure & Meta-Knowledge
+- [[foundational-vault-docs-summary-2026-05-04]] - High-level synthesis of the Nest's core documentation and conventions.
+### Project Meta-Knowledge
+- [[vulture-nest]] - The primary knowledge base for localhost:lyra.
+- [[vulture-mcp]] - Implementation details for the Nest's custom MCP server.
+- [[the-vulture-portal]] - The static dashboard and graph visualization layer.
+- [[community-living-knowledge-system]] - The long-term vision for the Nest.
+- [[wiki-expansion-opportunities-2026-05-02]] - Strategic roadmap for vault content growth.

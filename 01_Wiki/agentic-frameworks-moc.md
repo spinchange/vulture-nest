@@ -24,7 +24,9 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[agent-tools]]: How to define and provide capabilities to an LLM.
 * [[agent-actions]]: The "Stop and Parse" loop and tool usage.
 * [[code-agents]]: The shift from JSON schemas to executable logic.
-* [[anthropic-messages-api]]: Direct Claude API request/response semantics and token counting.
+## Anthropic & Claude Ecosystem
+- [[anthropic-moc]] - Comprehensive guide to the Anthropic platform and agentic features.
+- [[anthropic-messages-api]]: Direct Claude API request/response semantics and token counting.
 * [[anthropic-tool-use]]: Anthropic-specific client/server tool loop behavior.
 * [[anthropic-agentic-loop]]: Higher-level loop model: client tools, server tools, and `pause_turn`.
 * [[anthropic-server-tools]]: Server-executed web, fetch, code-execution, and tool-search behavior.
@@ -43,7 +45,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[openai-swarm]]: Experimental multi-agent orchestration pattern centered on handoffs.
 * [[openai-symphony]]: Service specification for background coding-agent orchestration.
 * [[openai-agents-sdk]]: Production-oriented OpenAI agent SDK for scalable orchestration.
-* [[agent-development-kit]]: Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
+- [[adk-moc]] - Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
 * [[llamaindex]]: Data-oriented agent toolkit with strong retrieval and workflow support (Retrieval).
 * [[langgraph]]: Stateful orchestration framework with explicit control-flow graphs (Control).
 * [[pydantic-fastapi-agents]]: Using Pydantic for robust tool schema definition.
@@ -107,3 +109,12 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 - [[agent-skills-index]]
 * [[code-agents]] - LLM-centric Development & Security
 * [[graph-orchestration]] - Multi-agent Workflow Topologies
+
+
+## Core Paradigms & Theory
+### High-Level Architectures
+- [[cognitive-architectures]] - Reasoning models and memory-augmented agents.
+- [[daemon-design-pattern]] - Persistent, backgrounded agent processes.
+- [[hierarchical-graph-synthesis]] - Multi-layered graph building and arbitration.
+- [[community-polyglot-agent-platform]] - Vision for multi-language agent coordination.
+- [[lattice-implementation-guide]] - Practical steps for building capability lattices.
