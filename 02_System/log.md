@@ -1,6 +1,22 @@
 # Wiki Log
 
 
+## [2026-05-04] Claude — Schema-Driven Development Lane Hardening
+
+**Directive**: Second lane from [[observability-first-expansion-brief-2026-05-04]] — schema-driven development routing and contract clarity.
+
+**Notes Hardened (3):**
+* [[pydantic]] — Added "Schema Pipeline" section: what `model_json_schema()` emits, how it maps to Anthropic `input_schema`, MCP `inputSchema`, and FastAPI OpenAPI; strict-mode correctness implication; V2 `@field_validator` mention. Added "Where to Start" routing footer pointing toward `pydantic-fastapi-agents`, `mcp-server-development`, and `anthropic-tool-use`. Wired new links: `[[pydantic-fastapi-agents]]`, `[[mcp-server-development]]`, `[[anthropic-tool-use]]`.
+* [[pydantic-fastapi-agents]] — Added "When to Start Here" routing header distinguishing schema-definition (start at `pydantic`) from execution infrastructure (start here). Expanded section 3 into a concrete four-step FastAPI→MCP pipeline showing how a Pydantic model propagates to an MCP `inputSchema` via `fastapi-mcp` without manual schema translation. Wired new links: `[[python-moc]]`, `[[anthropic-tool-use]]`.
+* [[python-moc]] — Added `[[pydantic-fastapi-agents]]` to "Schema and Validation" section with description framing it as the execution-infrastructure side of schema-driven development.
+
+**No new notes created**: all work was additive hardening; no missing bridge concept warranted a new permanent note.
+
+**Validation**: `audit-yanp.ps1` — all notes compliant. `check-broken-links.ps1` — no broken links.
+
+**Scope boundary respected**: Taxonomy unchanged. `author`/`sources` list normalization deferred per brief constraints.
+
+
 ## [2026-05-04] Claude — Agent Observability Hub Hardening
 
 **Directive**: Executed observability-first expansion lane from [[observability-first-expansion-brief-2026-05-04]].

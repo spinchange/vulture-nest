@@ -22,6 +22,7 @@ This map organizes the Python foundation most relevant to agent systems, tool ex
 
 ## Schema and Validation
 - [[pydantic]]: Runtime parsing, validation, and JSON Schema emission for tool inputs.
+- [[pydantic-fastapi-agents]]: Wiring Pydantic models into FastAPI routes and MCP tool surfaces — the execution infrastructure side of schema-driven development.
 
 ## Standard Library Hubs
 - [[python-standard-library-hubs]]: Why these modules matter together.
