@@ -18,12 +18,15 @@ It does not attempt to solve the full write protocol. It only addresses the fron
 
 ## Objective
 
-Replace the current overloaded frontmatter language with a cleaner, more honest schema that:
+Make the smallest useful improvements to the current frontmatter contract while preserving the live vault's working note ecology.
 
-- separates note kind from temporal standing
-- separates authorship provenance from source citation
-- stays permissive where the vault is still learning
-- remains simple enough for humans and agents to maintain
+Specifically:
+
+- keep `type` and `status`
+- preserve the working `literature`, `permanent`, and `fleeting` distinctions
+- standardize `author` as a list
+- standardize `sources` as a list when present
+- avoid disruptive renames until a real migration need is proven
 
 ## Why This RFC Exists
 
@@ -33,10 +36,10 @@ In practice:
 
 - `type` mixes epistemic class, artifact family, and workflow intent
 - `status` mixes lifecycle, maturity, retirement, and completion signals
-- `author` compresses human and model provenance into one field
+- `author` compresses collaborative provenance into one scalar
 - source citation exists, but its shape has drifted across notes
 
-The Nest is now large enough that this drift is worth correcting.
+The Nest is now large enough that this drift is worth correcting, but the existing `type` vocabulary is also visibly load-bearing in practice. The safest path is to fix the fields that are structurally wrong without renaming the ones the vault already relies on.
 
 ## Working Model
 
@@ -56,25 +59,31 @@ Computed or index-oriented properties such as graph centrality, hub-ness, link c
 
 This RFC only specifies layer 1.
 
-## Proposed Field Shifts
+## Proposed Field Changes
 
-### `type` -> `kind`
+### Keep `type`
 
-The current `type` field name is overloaded by YAML language itself and by the vault's own mixed use of note categories.
+Do not rename `type` at this stage.
 
-`kind` is a better name for coarse artifact classification.
+The vault already contains a large, meaningful population of `literature`, `permanent`, and `fleeting` notes. That distinction is not merely theoretical; it is visible in routing, synthesis, and actual agent behavior. Renaming `type` now would create migration cost without a proportionate gain.
 
-### `status` -> `phase`
+### Keep `status`
 
-The current `status` field is trying to express temporal standing.
+Do not rename `status` at this stage.
 
-`phase` is a better name for that axis in YAML than `status`, and less misleading than `lifecycle`.
+The field is imperfect, but it is already part of the operating language of the vault. The conservative move is to tighten its written meaning later, not replace it immediately.
 
-### `author` -> `users` and `models`
+### `author` stays `author`, but becomes list-shaped
 
-The current `author` field collapses human and model provenance.
+The current `author` field collapses collaborative provenance into one scalar.
 
-The Nest is now multi-human and multi-model enough that this should be split.
+The Nest is already multi-agent and occasionally multi-human. The lowest-risk fix is:
+
+- keep the field name `author`
+- require YAML list shape
+- allow single-item lists for singly-authored notes
+
+This solves the real structural problem without introducing a broader provenance redesign.
 
 ### `source` / `source_url` / variants -> `sources`
 
@@ -92,66 +101,53 @@ The inner object shape can remain permissive for now.
 
 - `title`
 - `date`
-- `kind`
-- `phase`
+- `type`
+- `status`
+- `author`
 
 ### Strongly Recommended
 
 - `aliases`
-- `users`
-- `models`
 
 ### Conditional
 
 - `sources`
-  Required for documentary notes and any note whose claims materially depend on external sources.
+  Required for source-grounded notes and any note whose claims materially depend on external sources.
 
 ## Proposed Meanings
 
-### `kind`
+### `type`
 
-What the note is primarily about right now.
+Keep the current field and vocabulary for now, especially the core working set:
 
-Candidate values:
+- `literature`
+- `permanent`
+- `fleeting`
 
-- `documentary`
-- `conceptual`
-- `operational`
+Other live values may still need later cleanup, but that is a separate question from this RFC's conservative amendment.
 
-Working distinction:
+### `status`
 
-- `documentary` = primarily about someone else's artifact, text, repo, spec, corpus, or claim-world
-- `conceptual` = primarily about the vault's own synthesis, model, distinction, protocol, or idea
-- `operational` = primarily about doing, coordinating, handing off, reviewing, planning, or resuming work
+Keep the current field.
 
-### `phase`
+This RFC does not settle the complete vocabulary beyond preserving the existing contract.
 
-How the note stands in time.
+### `author`
 
-`phase` should be permissive for now and MAY be scalar or list-shaped.
+`author` MUST be a YAML list.
 
 Examples:
 
-- `active`
-- `fleeting`
-- `archived`
-- `superseded`
-- `dormant`
-- combinations where needed
+```yaml
+author:
+  - gemini-cli
+```
 
-This RFC does not freeze the final phase vocabulary.
-
-### `users`
-
-Humans who materially directed, owned, or shaped the artifact.
-
-`users` SHOULD be a list.
-
-### `models`
-
-Models that materially contributed to the artifact's current form.
-
-`models` SHOULD be a list.
+```yaml
+author:
+  - executor
+  - codex
+```
 
 ### `sources`
 
@@ -176,18 +172,16 @@ sources:
 
 ## Example Shapes
 
-### Documentary Note
+### Literature Note
 
 ```yaml
 ---
 title: Literature: OpenAI Symphony Service Specification
 date: 2026-05-04
-kind: documentary
-phase:
-  - active
-users:
+type: literature
+status: active
+author:
   - executor
-models:
   - claude-sonnet-4-6
   - codex
 sources:
@@ -198,37 +192,35 @@ sources:
 ---
 ```
 
-### Conceptual Note
+### Permanent Note
 
 ```yaml
 ---
 title: OpenAI Symphony
 date: 2026-05-04
-kind: conceptual
-phase:
-  - active
-users:
+type: permanent
+status: active
+author:
   - executor
-models:
   - gemini-cli
 aliases:
   - symphony
+sources:
+  - 01_Wiki/lit-openai-symphony-spec.md
 ---
 ```
 
-### Operational Note
+### Handoff Note
 
 ```yaml
 ---
 title: Claude OpenAI Symphony Synthesis Handoff
 date: 2026-05-04
-kind: operational
-phase:
-  - fleeting
-  - archived
-users:
+type: handoff
+status: archived
+author:
   - executor
-models:
+  - claude-sonnet-4-6
   - codex
 sources:
   - 01_Wiki/lit-openai-symphony-spec.md
@@ -237,22 +229,22 @@ sources:
 
 ## What This RFC Does Not Settle
 
-- the final closed vocabulary for `phase`
-- whether `phase` should eventually be list-only
-- whether `documentary` is the final best word, even if it is currently the strongest candidate
-- migration mechanics from `type` / `status` / `author`
+- whether `type` should later be narrowed to a stricter closed set
+- whether `status` needs a sharper documented vocabulary
+- whether `author` should eventually split into more granular provenance fields
 - whether some notes should support additional specialized fields beyond this core
 
 ## Migration Direction
 
-This RFC does not require immediate vault-wide migration.
+This RFC does not require immediate vault-wide migration beyond shape normalization for the amended fields.
 
 The intended order is:
 
-1. pressure-test the proposed schema against real notes
-2. identify failure cases and mixed cases
-3. revise the RFC if needed
-4. only then define migration and validator changes
+1. treat the current YANP baseline as canonical
+2. normalize `author` to YAML-list shape
+3. normalize `sources` to YAML-list shape when present
+4. revise validators and writing guidance only for those changes
+5. defer broader naming or taxonomy changes unless the live vault proves they are necessary
 
 ## Review Questions
 
@@ -260,12 +252,11 @@ Please pressure-test this against the actual Nest, not schema theory alone.
 
 Questions:
 
-1. Does `kind = documentary | conceptual | operational` fit the real note population?
-2. Which existing notes fail or blur under that split?
-3. Is `phase` the right field name and is list-shaped permissiveness acceptable for now?
-4. Are `users` and `models` enough to replace `author` at the coarse frontmatter layer?
-5. Is requiring `sources` as a list the right level of stabilization right now?
-6. What should remain in note body structure or Supabase/index state rather than frontmatter?
+1. Are `author` and `sources` the only frontmatter changes we can justify right now without harming the existing vault ecology?
+2. Which real notes become easier to model once `author` is list-shaped?
+3. Is requiring `sources` as a list the right level of stabilization right now?
+4. Should `sources` remain optional on permanent notes that synthesize from vault-internal literature rather than direct external inputs?
+5. What should remain in note body structure or Supabase/index state rather than frontmatter?
 
 ## Feedback Protocol
 

@@ -28,6 +28,17 @@ This is the frontmatter block table from the YANP (Yet Another Notes Project) v.
 |scheduled|string|YYYY-MM-DD|
 |project|string|grouping label|
 
+## Conservative Amendment Notes
+
+If this baseline is amended, the safest changes currently appear to be:
+
+- keep `type` and `status` as-is
+- preserve `literature`, `permanent`, and `fleeting` as working note kinds
+- allow or require `author` to become a YAML list for multi-agent authorship
+- standardize `sources` as a YAML list when source grounding is present
+
+This preserves the live vault's working ecology while fixing the two metadata shapes most visibly under strain.
+
 I had to go back and look this up becauase I felt a sense of deja vu, like we are addressing things that already have been spoken to previously, and that I had assumed were the vulture-nest's status quo without really checking deeply.
 
 Here's an immediate observation and something that I was uncomfortbale all along: YAML frontmatter blocks and my YANP specification don't really seek to say what something **_is_**

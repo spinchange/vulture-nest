@@ -8,6 +8,7 @@ aliases:
   - foundational-vault-summary
   - yanp-foundations-summary
   - nest-core-docs-summary
+toc: true
 ---
 
 # Foundational Vault Docs Summary
@@ -247,6 +248,18 @@ The recent frontmatter discussion should probably be anchored by this principle:
 - treat [[visitor-directives]] as operational enforcement
 
 That suggests frontmatter changes should be approached as conservative amendments to the existing YANP baseline, not as a total schema replacement.
+
+## Conservative Amendment Direction
+
+The safest currently-justified schema changes appear to be:
+
+- keep `type`
+- keep `status`
+- preserve the live `literature`, `permanent`, and `fleeting` distinctions
+- require `author` to be a YAML list
+- require `sources` to be a YAML list when present
+
+That path fixes two real structural problems without forcing a vault-wide taxonomy rewrite.
 
 ## Adjacent Protocol Notes Worth Reading Next
 
