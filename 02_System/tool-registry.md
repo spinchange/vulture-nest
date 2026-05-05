@@ -1,6 +1,8 @@
 # Vault Tool Registry (Agent Optimized)
 
 This document provides a machine-readable index of the system utilities available in this vault.
+
+Note: `02_System\vulture-ingest\local_crawler.py` supports local JS rendering via Playwright. One-time setup: `pip install -r 02_System\vulture-ingest\requirements.txt` and `playwright install chromium`.
 ## audio-overview-workflow.ps1 [-InputFiles] <string[]> [-OutputRoot <string>] [-TranscriptModel <string>] [-Language <string>] [-WaveformVideo] [<CommonParameters>]
 *   **File:** `02_System\audio-overview-workflow.ps1` 
 *   **Description:** No description provided.

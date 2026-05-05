@@ -49,6 +49,7 @@ from policy import (  # noqa: E402
 from epistemic_classifier import classify_draft  # noqa: E402
 from conflict_templates import get_template, parse_conflict_report  # noqa: E402
 from synthesis_rubric import check_synthesis_scope  # noqa: E402
+from local_crawler import crawl_local  # noqa: E402
 from provenance import generate_provenance_block, render_provenance_yaml  # noqa: E402
 
 
@@ -59,6 +60,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_EMBEDDING_MODEL = os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+USE_LOCAL_CRAWLER = os.environ.get("USE_LOCAL_CRAWLER", "false").strip().lower() in {"1", "true", "yes", "on"}
 POLICY_PATH = Path(os.environ.get("VULTURE_PIPELINE_POLICY_PATH", DEFAULT_POLICY_PATH))
 WIKI_ROOT = Path(os.environ.get("VULTURE_WIKI_ROOT", Path(__file__).resolve().parents[2] / "01_Wiki"))
 RUNTIME_LEDGER = RuntimeLedger()
@@ -610,6 +612,22 @@ def execute_source_crawl(
             "onlyMainContent": True,
         },
     }
+    if USE_LOCAL_CRAWLER:
+        result = crawl_local(
+            url=url,
+            expected_pages=expected_pages,
+            include_paths=include_paths,
+            exclude_paths=exclude_paths,
+            max_discovery_depth=crawl_payload["maxDiscoveryDepth"],
+        )
+        record_usage(
+            RUNTIME_LEDGER,
+            domain=gate["domain"],
+            credits_used=estimated_credits,
+            pages_crawled=result["page_count"],
+        )
+        return result
+
     job = _json_request("POST", "/crawl", crawl_payload)
     job_id = job.get("id")
     if not job_id:
