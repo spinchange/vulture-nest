@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Agent Observability</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Observability</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Agent Observability</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-04</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-monitoring, agent-tracing, session-replays</span></span>
       </div>
     </header>
@@ -444,44 +444,120 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Agent Observability</h1>
-<p>Agent Observability is the practice of tracking, monitoring, and analyzing the behavior of autonomous agents to ensure reliability, safety, and performance.</p>
-<h2>Core Metrics</h2>
+<p>Agent observability is the practice of instrumenting agent systems to understand internal states through external signals — making non-deterministic, multi-step execution legible enough to debug, tune, and trust in production.</p>
+<h2>The Three Pillars</h2>
+<p><strong>Logs</strong> — structured records of discrete events: tool invocations, model calls, errors, state changes. Cheapest to collect; queryable after the fact.</p>
+<p><strong>Metrics</strong> — quantitative aggregates over time:</p>
 <ul>
-<li><strong>Token Usage</strong>: Tracking cost and efficiency across sessions.
+<li>Token usage and cumulative cost
 </li>
-<li><strong>Latency</strong>: Measuring response times and tool execution duration.
+<li>Latency per step and end-to-end
 </li>
-<li><strong>Success Rate</strong>: Evaluating how often the agent achieves the intended goal.
+<li>Tool error rate and success rate
 </li>
-<li><strong>Tool Accuracy</strong>: Identifying failures or misuse of external functions and APIs.
+<li>User feedback signals (explicit ratings, implicit retry behavior)
 </li>
 </ul>
-<h2>Monitoring Patterns</h2>
-<ol>
-<li><strong>Session Replays</strong>: Recording full conversational turns and internal reasoning (traces) to debug unexpected behavior.
-</li>
-<li><strong>OpenTelemetry Tracing</strong>: Using standardized protocols to map the flow of execution from the initial prompt through multiple agent handoffs and tool calls.
-</li>
-<li><strong>Callbacks</strong>: Implementing lifecycle hooks (e.g., <code>on_tool_start</code>, <code>on_agent_finish</code>) to log granular events without modifying core logic.
-</li>
-</ol>
-<h2>Integration Platforms</h2>
+<p><strong>Traces</strong> — causal chains that link events into a complete execution graph:</p>
 <ul>
-<li><strong>AgentOps</strong>: Provides session replays, metrics, and automated monitoring with minimal code changes. It often replaces native framework telemetry to act as a unified source of truth.
+<li>A <strong>trace</strong> represents one complete task (from the first user message to the final agent response)
 </li>
-<li><strong>Arize AX</strong>: A production-grade platform for tracing and performance evaluation at scale.
+<li>A <strong>span</strong> represents one atomic step within that trace — an LLM call, a single tool execution, or an agent handoff
 </li>
-<li><strong>BigQuery Analytics</strong>: Logging operational events to a data warehouse for deep offline analysis and auditability.
+<li>Together they answer &quot;where in the pipeline did this fail, and why?&quot;
+</li>
+</ul>
+<h2>Observability vs. Evaluation vs. Replay</h2>
+<table>
+<thead><tr>
+<th>Signal</th>
+<th>Question answered</th>
+<th>Timing</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Observability</strong> (logs/metrics/traces)</td>
+<td>What is the system doing right now?</td>
+<td>Real-time</td>
+</tr>
+<tr>
+<td><strong>Evaluation</strong></td>
+<td>Did it do the right thing?</td>
+<td>Offline + Online</td>
+</tr>
+<tr>
+<td><strong>Session replay</strong></td>
+<td>What exactly happened in interaction X?</td>
+<td>Post-hoc</td>
+</tr>
+</tbody>
+</table>
+<p>Observability is the instrumentation layer that makes evaluation and replay possible. Without traces, evaluation is blind to *why* an output was wrong — only that it was.</p>
+<h2>Instrumentation Standards</h2>
+<p><strong>OpenTelemetry (OTel)</strong> is the industry standard for collecting telemetry data. The GenAI semantic conventions define portable span attributes for LLM calls:</p>
+<ul>
+<li><code>gen_ai.system</code> — the model provider
+</li>
+<li><code>gen_ai.request.model</code> — model identifier
+</li>
+<li><code>gen_ai.usage.input_tokens</code> / <code>gen_ai.usage.output_tokens</code> — token accounting
+</li>
+</ul>
+<p>OTel-compatible instrumentation keeps traces portable across observability backends (Jaeger, Honeycomb, Arize AX, custom pipelines).</p>
+<p><strong>AgentOps</strong> provides drop-in session replay and a unified metrics dashboard with minimal code changes, often replacing native framework telemetry as a single source of truth.</p>
+<p><strong>Arize AX</strong> targets production-grade tracing and quality evaluation at scale, with built-in LLM-as-a-judge scoring.</p>
+<h2>Instrumentation by Framework</h2>
+<h3>ADK</h3>
+<p>ADK exposes lifecycle hooks as the primary observability surface. The key hooks for tracing are:</p>
+<ul>
+<li><code>on_agent_start</code> / <code>on_agent_finish</code> — agent-boundary events, good for outer span boundaries
+</li>
+<li><code>on_tool_start</code> / <code>on_tool_end</code> — tool-boundary events, good for individual spans
+</li>
+<li><code>before_model_callback</code> — fires before each LLM call; use to capture input shape before the round-trip
+</li>
+</ul>
+<p>All hooks receive a <code>CallbackContext</code> carrying <code>agent_name</code>, <code>session_id</code>, and <code>state</code> — enough context to emit structured spans without modifying core agent logic. See <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>.</p>
+<h3>Anthropic</h3>
+<p>Streaming events carry inline telemetry: <code>message_start</code> contains input token counts, <code>message_delta</code> delivers output totals, and <code>tool_use</code> content blocks identify which tool was invoked and with what arguments. For high-volume pipelines, batch status polling aggregates this across many requests. See <a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a> and <a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a>.</p>
+<h3>Multi-agent orchestration</h3>
+<p>In multi-agent pipelines, trace correlation across agent boundaries is the hard problem. Each agent leg should emit spans that share a root trace ID, so failures can be pinpointed to a specific handoff or delegation edge rather than just the final output. See <a href="graph-orchestration.html" class="wikilink">graph-orchestration</a> and <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a>.</p>
+<h2>Where to Start</h2>
+<ul>
+<li><strong>Instrumenting an agent for the first time?</strong> Start here, then go to <a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a> for the hook implementation.
+</li>
+<li><strong>Measuring output quality, not execution flow?</strong> Go to <a href="agent-evaluation.html" class="wikilink">agent-evaluation</a> (offline benchmarking + online monitoring loop).
+</li>
+<li><strong>ADK trajectory and multi-turn benchmarking?</strong> Go to <a href="adk-evaluation-framework.html" class="wikilink">adk-evaluation-framework</a>.
+</li>
+<li><strong>Automated output scoring?</strong> Go to <a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>.
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
-<li>Source: <code>00_Raw/adk-documentation.md</code>
+<li>Sources: <code>00_Raw/hf-agents-bonus2.md</code>, <code>00_Raw/adk-documentation.md</code>
+</li>
+<li><a href="lit-hf-agents-bonus.html" class="wikilink">lit-hf-agents-bonus</a>
+</li>
+<li><a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>
+</li>
+<li><a href="adk-evaluation-framework.html" class="wikilink">adk-evaluation-framework</a>
 </li>
 <li><a href="agent-evaluation.html" class="wikilink">agent-evaluation</a>
 </li>
+<li><a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>
+</li>
+<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a>
+</li>
+<li><a href="anthropic-message-batches.html" class="wikilink">anthropic-message-batches</a>
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
+</li>
+<li><a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a>
+</li>
 <li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+</li>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a>
 </li>
 </ul>
       </main>
@@ -496,17 +572,29 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="adk-moc.html" class="">adk-moc</a></li>
 <li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="anthropic-error-handling.html" class="">anthropic-error-handling</a></li>
+<li><a href="gemini-content-expansion-handoff-2026-05-04.html" class="">gemini-content-expansion-handoff-2026-05-04</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="lit-hf-agents-bonus.html" class="">lit-hf-agents-bonus</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
+<li><a href="adk-evaluation-framework.html" class="">adk-evaluation-framework</a></li>
+<li><a href="adk-moc.html" class="">adk-moc</a></li>
+<li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
+<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="lit-hf-agents-bonus.html" class="">lit-hf-agents-bonus</a></li>
+<li><a href="llm-as-a-judge.html" class="">llm-as-a-judge</a></li>
 </ul>
           </div>
         </div>

@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Advanced Capabilities: Planning &amp; Code Execution</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Advanced Capabilities: Planning &amp; Code Execution</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Advanced Capabilities: Planning &amp; Code Execution</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -497,7 +497,38 @@ code_agent = LlmAgent(
 <li><strong>Inspection workflow:</strong> In practice, these events are most useful for logging, debugging, and guardrails rather than as a guaranteed stable public reasoning transcript.
 </li>
 </ul>
-<h2>4. Tradeoffs and Limits</h2>
+<h2>4. Streaming &amp; Live Audio</h2>
+<p>ADK provides a streaming execution path for real-time, bidirectional voice and audio interactions. It uses different primitives from the standard request-response path.</p>
+<h3>Execution model</h3>
+<ul>
+<li><code>Runner.run_live()</code> replaces <code>Runner.run()</code> for streaming sessions.
+</li>
+<li><code>LiveRequestQueue</code> accepts continuous audio input for bidirectional streaming — the caller pushes audio chunks; the runner emits output events as they arrive.
+</li>
+<li>Native-audio models power live sessions; text chat is disabled on native-audio model connections, and not all models support this modality.
+</li>
+</ul>
+<h3>Configuration types</h3>
+<ul>
+<li><code>SpeechConfig</code> / <code>VoiceConfig</code> — controls voice output characteristics (pitch, rate, voice identity).
+</li>
+<li><code>PrebuiltVoiceConfig</code> — selects from provider-managed voice presets without manual configuration.
+</li>
+<li><code>Modality</code> — specifies the interaction modality (audio, text, video) during <code>RunConfig</code> setup.
+</li>
+</ul>
+<h3>Design considerations</h3>
+<ul>
+<li><strong>Turn detection</strong> — live audio sessions must handle speaker overlap and turn boundaries; these are typically managed by the model or the runtime, not by application code.
+</li>
+<li><strong>Testing locally</strong> — the ADK Dev UI (<code>adk web</code>) includes a microphone button for voice input; the same session that works as text chat cannot be used with a native-audio model.
+</li>
+<li><strong>Custom audio pipelines</strong> — production deployment requires an explicit audio I/O pipeline (microphone capture, speaker output) or an audio-capable hosting platform; the Dev UI handles this only for local development.
+</li>
+</ul>
+<h3>Telephony via MCP</h3>
+<p>For phone call and SMS capabilities — outbound AI calls, autonomous voice agents, SMS threads, call transfer — the ADK ecosystem documents integration with the AgentPhone MCP server (<code>agentphone-mcp</code>). This follows the standard <code>McpToolset</code> pattern: the telephony capabilities arrive as tool definitions; no new ADK primitives are involved. See <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> for the <code>McpToolset</code> connection pattern.</p>
+<h2>5. Tradeoffs and Limits</h2>
 <ul>
 <li><strong>Token cost:</strong> Planning consumes extra reasoning budget and can increase latency.
 </li>
@@ -507,6 +538,8 @@ code_agent = LlmAgent(
 </li>
 <li><strong>Security posture:</strong> Treat code execution as an explicitly governed feature, not as a harmless extension of normal text generation.
 </li>
+<li><strong>Streaming latency budget:</strong> Native-audio models are optimized for low latency; the same underlying LLM running in text mode may respond differently in timing and behavior.
+</li>
 </ul>
 <h2>See Also</h2>
 <ul>
@@ -515,6 +548,8 @@ code_agent = LlmAgent(
 <li><a href="adk-callbacks-and-lifecycle.html" class="wikilink">adk-callbacks-and-lifecycle</a>
 </li>
 <li><a href="react-pattern.html" class="wikilink">react-pattern</a>
+</li>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="python.html" class="wikilink">python</a>
 </li>
@@ -540,12 +575,14 @@ code_agent = LlmAgent(
 <li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
 <li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="adk-callbacks-and-lifecycle.html" class="">adk-callbacks-and-lifecycle</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
+<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="react-pattern.html" class="">react-pattern</a></li>
 </ul>

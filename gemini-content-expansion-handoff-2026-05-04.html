@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JavaScript on Desktop — Vulture Portal</title>
+  <title>Content Expansion Roadmap 2026-05-04 — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -421,20 +421,20 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>JavaScript on Desktop</span>
+      <span>Content Expansion Roadmap 2026-05-04</span>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">JavaScript on Desktop</h1>
+      <h1 class="note-title">Content Expansion Roadmap 2026-05-04</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">JavaScript on Desktop</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">js-scripting, nodejs, deno, bun, system-js</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">handoff</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Content Expansion Roadmap 2026-05-04</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-04</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">content-expansion-handoff-2026-05-04, expansion-roadmap</span></span>
       </div>
     </header>
 
@@ -443,39 +443,52 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>JavaScript on Desktop</h1>
-<p>JavaScript is no longer confined to the browser. Modern runtimes have turned it into a first-class citizen for desktop automation, system scripting, and application development.</p>
-<h2>The Major Runtimes</h2>
-<ul>
-<li><strong>Node.js:</strong> The industry standard. Powerhouse of the ecosystem, but requires <code>npm</code> management.
-</li>
-<li><strong>Deno:</strong> A secure-by-default runtime with native <a href="typescript.html" class="wikilink">TypeScript</a> support. Ideal for single-file scripts without a <code>node_modules</code> folder.
-</li>
-<li><strong>Bun:</strong> An ultra-fast runtime with a built-in shell (<code>$</code>) and package manager. Designed for high-performance CLI tools.
-</li>
-</ul>
-<h2>Key Advantages</h2>
+        <h1>Content Expansion Roadmap 2026-05-04</h1>
+<h2>Objective</h2>
+<p>Deepen the wiki&#39;s technical coverage in four identified &quot;thin&quot; domains where raw documentation exists but permanent/literature notes are underdeveloped.</p>
+<h2>Verified Facts (The &quot;Thin Spots&quot;)</h2>
 <ol>
-<li><strong>JSON as Native:</strong> JavaScript handles JSON (the language of modern APIs) more natively than any other language.
+<li><strong>Telephony &amp; Voice Agents</strong>: <code>00_Raw/adk-documentation.md</code> contains <code>AgentPhone</code> specs; the wiki has 0 coverage.
 </li>
-<li><strong>Universal Ecosystem:</strong> Access to millions of libraries via NPM for every imaginable task (cloud, database, networking).
+<li><strong>Agent Observability</strong>: <code>AgentOps</code> and OTel tracing mentions are high in raw docs, but the <code>agent-observability</code> note is a &quot;thin node&quot; (6 inbound links, low depth).
 </li>
-<li><strong>Cross-Platform:</strong> A script written in JS/TS is much more likely to run perfectly on Windows, Linux, and macOS than a <a href="powershell.html" class="wikilink">PowerShell</a> or Bash script.
+<li><strong>Schema-Driven Development</strong>: Lack of integration notes between Pydantic models and autonomous tool-schema generation (FastAPI/MCP context).
+</li>
+<li><strong>Hardware-Aware Inference</strong>: Local execution patterns for MLX, NPU, and CUDA are currently only fleeting sketches.
 </li>
 </ol>
-<h2>Shell Integration: The <code>zx</code> and <code>$</code> Patterns</h2>
-<p>Modern JS scripting focuses on making shell execution feel native.</p>
+<h2>Constraints</h2>
 <ul>
-<li><strong>zx (Node):</strong> <code>await $</code>ls -l``
+<li>All new notes must adhere to YANP (lowercase kebab-case, atomic, frontmatter).
 </li>
-<li><strong>Bun Shell:</strong> <code>await $</code>cat config.json``
+<li>Maintain 100% MOC coverage (every new note must be linked in a relevant hub).
 </li>
 </ul>
-<h2>See Also</h2>
-<ul>
-<li><a href="powershell-objects.html" class="wikilink">powershell-objects</a> (for a comparison of OO philosophies)
+<h2>Recommendations</h2>
+<ol>
+<li><strong>Ingest AgentPhone</strong>: Create <code>telephony-agents.md</code> literature note from <code>00_Raw/adk-documentation.md</code>.
 </li>
-<li><a href="wiki-as-codebase.html" class="wikilink">wiki-as-codebase</a>
+<li><strong>Harden Observability</strong>: Cross-reference <code>agent-observability</code> with OpenTelemetry GenAI semantic conventions.
+</li>
+<li><strong>Map Pydantic</strong>: Add a section to <code>python-moc</code> for Pydantic-to-Tool-Schema mapping patterns.
+</li>
+</ol>
+<h2>Evidence</h2>
+<p>Findings based on <code>02_System/find-thin-nodes.ps1</code>, <code>02_System/audit-moc-coverage.ps1</code>, and semantic analysis of <code>01_Wiki</code> vs <code>00_Raw</code>.</p>
+<h2>Next Decision</h2>
+<p>Which domain—<strong>Telephony</strong> (new capability) or <strong>Observability</strong> (production hardening)—should be prioritized for the next ingestion run?</p>
+<hr>
+<h2>References</h2>
+<ul>
+<li><a href="handoffs-moc.html" class="wikilink">handoffs-moc</a>
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+</li>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a>
+</li>
+<li><a href="agent-observability.html" class="wikilink">agent-observability</a>
+</li>
+<li><a href="02_System/log.html" class="wikilink">02_System/log</a>
 </li>
 </ul>
       </main>
@@ -490,19 +503,17 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
-<li><a href="javascript-moc.html" class="">javascript-moc</a></li>
+<li><a href="handoffs-moc.html" class="">handoffs-moc</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
-<li><a href="tauri.html" class="">tauri</a></li>
-<li><a href="wpf-moc.html" class="">wpf-moc</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="powershell.html" class="">powershell</a></li>
-<li><a href="powershell-objects.html" class="">powershell-objects</a></li>
-<li><a href="typescript.html" class="">typescript</a></li>
-<li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
+<li><a href="02_System/log.html" class="">02_System/log</a></li>
+<li><a href="adk-moc.html" class="">adk-moc</a></li>
+<li><a href="agent-observability.html" class="">agent-observability</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="handoffs-moc.html" class="">handoffs-moc</a></li>
 </ul>
           </div>
         </div>

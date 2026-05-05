@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Pydantic</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Pydantic</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Pydantic</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">pydantic-v2, python-validation-models</span></span>
       </div>
     </header>
@@ -467,15 +467,37 @@
 <li>Pydantic is a bridge between Python typing and API frameworks such as FastAPI and <a href="mcp-moc.html" class="wikilink">MCP</a>-style tool surfaces.
 </li>
 </ul>
+<h2>The Schema Pipeline</h2>
+<p><code>model_json_schema()</code> emits a JSON Schema object with <code>type: &quot;object&quot;</code>, a <code>properties</code> map (one entry per field carrying its <code>description</code> and type constraints), and a <code>required</code> list derived from fields with no default. Three tool surfaces consume this shape directly:</p>
+<ul>
+<li><strong>Anthropic API</strong> — the <code>input_schema</code> field in a tool definition is this object verbatim; when Anthropic strict mode (<code>strict: true</code>) is enabled, schema conformance matters more because the host treats that generated shape as the execution contract
+</li>
+<li><strong>MCP / FastMCP</strong> — <code>@mcp.tool()</code> introspects Python type hints and generates <code>inputSchema</code> through the same path; passing a Pydantic model as the parameter type produces equivalent output
+</li>
+<li><strong>FastAPI</strong> — generates an OpenAPI schema from the Pydantic request model automatically; the <code>fastapi-mcp</code> library then reads that OpenAPI spec and registers each route as an MCP tool, meaning a well-described Pydantic model propagates into the MCP tool surface without manual schema translation
+</li>
+</ul>
+<p>Schema quality therefore becomes a correctness concern: a missing <code>description</code>, a loose <code>Any</code> type, or an unconstrained numeric range degrades both model selection accuracy and strict-mode validation.</p>
 <h2>Practical Heuristics</h2>
 <ul>
 <li>Keep models flat when possible; deep nesting increases prompt and recovery complexity.
 </li>
-<li>Add descriptions to every externally visible field.
+<li>Add <code>description</code> to every externally visible field — it populates the schema the model reads to decide whether and how to call the tool.
 </li>
-<li>Encode enums and bounded numeric values explicitly instead of relying on prose.
+<li>Encode enums with <code>Literal</code> and bounded numeric values with <code>Field(ge=..., le=...)</code> rather than relying on prose constraints.
+</li>
+<li>Use <code>@field_validator</code> (V2) for cross-field or domain rules that JSON Schema cannot express; do not conflate those with schema shape.
 </li>
 <li>Do not confuse schema generation with business validation; domain rules still need application logic.
+</li>
+</ul>
+<h2>Where to Start</h2>
+<ul>
+<li><strong>Defining a Pydantic model and understanding validation?</strong> Start here.
+</li>
+<li><strong>Wiring models into FastAPI routes or MCP tool registration?</strong> Go to <a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a>.
+</li>
+<li><strong>Understanding the protocol-level tool surface?</strong> Go to <a href="mcp-server-development.html" class="wikilink">mcp-server-development</a> (Python/FastMCP) or <a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> (Anthropic API).
 </li>
 </ul>
 <hr>
@@ -486,6 +508,12 @@
 <li><a href="python-typing.html" class="wikilink">python-typing</a>
 </li>
 <li><a href="agent-tools.html" class="wikilink">agent-tools</a>
+</li>
+<li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a>
+</li>
+<li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
 </li>
 <li><a href="https://docs.pydantic.dev/latest/concepts/models/">Pydantic Models</a>
 </li>
@@ -507,6 +535,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="python-json.html" class="">python-json</a></li>
@@ -516,7 +545,10 @@
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="python-typing.html" class="">python-typing</a></li>
 </ul>

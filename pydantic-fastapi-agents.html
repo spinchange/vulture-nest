@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Pydantic and FastAPI for Agents</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Pydantic and FastAPI for Agents</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Pydantic and FastAPI for Agents</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -445,6 +445,8 @@
       <main class="content-zone" id="content">
         <h1>Pydantic and FastAPI for Agents</h1>
 <p>Building AI agent tools requires &quot;LLM-centric&quot; design, where tools are self-describing, safe, and easily consumable by non-deterministic models.</p>
+<h2>When to Start Here</h2>
+<p>Start here when your question is about the <strong>execution infrastructure</strong> that wires Pydantic schemas into live tool surfaces: FastAPI route definitions, MCP server registration, or the point where a Python function becomes a callable agent tool. For understanding Pydantic validation and schema generation in isolation, start at <a href="pydantic.html" class="wikilink">pydantic</a>.</p>
 <h2>1. Pydantic V2: Schema Contracts</h2>
 <p>Pydantic V2 acts as the source of truth for the LLM&#39;s <code>inputSchema</code>.</p>
 <ul>
@@ -468,23 +470,34 @@
 <li><strong>Structured Errors</strong>: Return error messages that explain *why* a tool failed, allowing the agent to self-correct.
 </li>
 </ul>
-<h2>3. Advanced Tool Management</h2>
-<ul>
-<li><strong>Semantic Tool Selection</strong>: If a host has &gt;50 tools, use a vector database to provide only the 3-5 most relevant tool definitions.
+<h2>3. The FastAPI → MCP Bridge</h2>
+<p>The pipeline from a Python function to a registered MCP tool has four steps:</p>
+<ol>
+<li>Annotate a Pydantic <code>BaseModel</code> with <code>Field(description=...)</code> for every parameter the LLM will fill
 </li>
-<li><strong>FastApiMCP</strong>: Libraries like <code>fastapi-mcp</code> can automatically convert FastAPI routes into <a href="mcp-moc.html" class="wikilink"><a href="mcp-moc%7CMCP%3C/a%3E-compliant.html" class="wikilink">mcp-moc|MCP&lt;/a&gt;-compliant</a> tools.
+<li>Declare a FastAPI route that accepts the model as its request body
 </li>
-</ul>
+<li>Mount <code>fastapi-mcp</code> on the FastAPI app — it reads the app&#39;s OpenAPI spec and generates an MCP <code>inputSchema</code> for each route, deriving name, description, and parameter shapes automatically
+</li>
+<li>An agent host connects to the MCP server; tool definitions arrive already validated for schema correctness
+</li>
+</ol>
+<p>This pipeline means a well-described Pydantic model written once serves both HTTP callers (via FastAPI&#39;s OpenAPI docs) and agent callers (via the MCP tool surface) without manual schema translation.</p>
+<p><strong>Semantic Tool Selection</strong>: If a host has more than ~50 tools, use a vector database to surface only the 3–5 most relevant definitions per turn, rather than passing the full roster in every request context.</p>
 <hr>
 <h2>References</h2>
 <ul>
+<li><a href="pydantic.html" class="wikilink">pydantic</a>
+</li>
 <li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
 </li>
 <li><a href="agent-tools.html" class="wikilink">agent-tools</a>
 </li>
-<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
 </li>
-<li><a href="pydantic.html" class="wikilink">pydantic</a>
+<li><a href="python-moc.html" class="wikilink">python-moc</a>
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
 </li>
 </ul>
       </main>
@@ -503,14 +516,18 @@
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lit-python-standard-library.html" class="">lit-python-standard-library</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
+<li><a href="pydantic.html" class="">pydantic</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="agent-tools.html" class="">agent-tools</a></li>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="pydantic.html" class="">pydantic</a></li>
+<li><a href="python-moc.html" class="">python-moc</a></li>
 </ul>
           </div>
         </div>

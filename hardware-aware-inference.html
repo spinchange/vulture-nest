@@ -429,11 +429,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Hardware-Aware Inference</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hardware-Aware Inference</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hardware-Aware Inference</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-04</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
@@ -444,64 +444,123 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Hardware-Aware Inference</h1>
-<p>Hardware-aware inference involves selecting the optimal software stack to maximize the performance of specific hardware architectures.</p>
-<h2>1. Core Acceleration Stacks</h2>
+<p>Hardware-aware inference is the practice of matching model execution to the available hardware accelerators — and selecting the runtime and model format that exposes those accelerators to a running process.</p>
+<h2>When to Start Here</h2>
+<p>Start here when the question is about <strong>where and how a model physically runs</strong>, not about which model to use or how to write the agent loop around it. Typical entry questions:</p>
 <ul>
-<li><strong>CUDA (NVIDIA)</strong>: The industry standard for NVIDIA GPUs. Offers peak performance and mature libraries (cuDNN, TensorRT).
+<li>&quot;Which acceleration stack should I use for my hardware?&quot;
 </li>
-<li><strong>MLX (Apple)</strong>: Open-source framework optimized for Apple Silicon&#39;s <strong>Unified Memory Architecture</strong>, allowing large models to run efficiently in system RAM.
+<li>&quot;What runtime do I need to run local models on Windows / Mac?&quot;
 </li>
-<li><strong>DirectML (Microsoft)</strong>: High-performance, hardware-agnostic library for machine learning on Windows and WSL, compatible with any DX12 GPU (NVIDIA, AMD, Intel).
+<li>&quot;How does ONNX differ from GGUF, and why does it matter for my setup?&quot;
 </li>
-<li><strong>ONNX Runtime</strong>: A universal inference engine that uses &quot;Execution Providers&quot; to talk to specific hardware (e.g., using CUDA, CoreML, or DirectML as backends).
+<li>&quot;My application runs in Python or .NET — how do I get local inference without a cloud endpoint?&quot;
 </li>
 </ul>
-<h2>2. Hardware Targets</h2>
+<h2>The Two Dimensions</h2>
+<p>Picking a local inference setup requires two separate decisions that interact:</p>
+<p><strong>Hardware target</strong> — which silicon does the work: NVIDIA GPU (CUDA), Apple Silicon (MLX / Metal), any DX12 GPU (DirectML), NPU, or CPU fallback.</p>
+<p><strong>Runtime + model format</strong> — the software layer between your code and the hardware. The format determines which runtimes are available:</p>
 <table>
 <thead><tr>
-<th>Stack</th>
-<th>Primary Hardware</th>
-<th>OS Support</th>
+<th>Format</th>
+<th>Runtime options</th>
+<th>Hardware surfaces</th>
 </tr></thead><tbody>
 <tr>
-<td><strong>CUDA</strong></td>
-<td>NVIDIA GPUs</td>
-<td>Windows, Linux</td>
-</tr>
-<tr>
-<td><strong>MLX</strong></td>
-<td>Apple Silicon (M1-M4)</td>
-<td>macOS</td>
-</tr>
-<tr>
-<td><strong>DirectML</strong></td>
-<td>Any DX12 GPU</td>
-<td>Windows, WSL</td>
+<td><strong>GGUF</strong></td>
+<td>llama.cpp, Ollama, LM-Kit.NET</td>
+<td>CUDA, Metal, DirectML, CPU</td>
 </tr>
 <tr>
 <td><strong>ONNX</strong></td>
-<td>Universal (CPU/GPU/NPU)</td>
-<td>All major platforms</td>
+<td>ONNX Runtime, Foundry Local</td>
+<td>CUDA EP, CoreML EP, DirectML EP, NPU EP</td>
 </tr>
 </tbody>
 </table>
-<h2>3. Selection Strategy</h2>
+<p>Choosing a format first narrows the runtime options. Choosing hardware first narrows the formats that perform well on that silicon.</p>
+<p>The tables and routing guidance below combine two layers:</p>
 <ul>
-<li><strong>Local Mac Development</strong>: Prioritize <strong>MLX</strong> for memory efficiency.
+<li>directly sourced facts from <a href="foundry-local.html" class="wikilink">foundry-local</a> and <a href="lit-foundry-local.html" class="wikilink">lit-foundry-local</a> about the Microsoft / ONNX / NPU stack
 </li>
-<li><strong>Windows Ecosystem</strong>: Use <strong>DirectML</strong> for broad compatibility across different vendors.
+<li>vault-local synthesis about adjacent runtimes such as Ollama and llama.cpp, based on how related notes in this vault divide the local inference ecosystem
 </li>
-<li><strong>Production/Data Center</strong>: Use <strong>CUDA</strong> for absolute maximum throughput on NVIDIA hardware.
+</ul>
+<p>Read the runtime-selection matrix as operational guidance, not as a claim that every row comes from one upstream source.</p>
+<h2>Acceleration Backends</h2>
+<p><strong>CUDA (NVIDIA)</strong> — industry standard for NVIDIA GPUs. Mature library ecosystem (cuDNN, TensorRT). Best absolute throughput for large models on Linux or Windows. Requires the CUDA toolkit installed on the host.</p>
+<p><strong>MLX (Apple)</strong> — Apple&#39;s open-source framework optimized for Apple Silicon&#39;s Unified Memory Architecture (M1–M4). CPU and GPU share the same physical memory pool, so large models can exceed GPU VRAM limits without discrete-GPU copy overhead. The preferred acceleration surface for Mac-native Python workflows.</p>
+<p><strong>DirectML (Microsoft)</strong> — hardware-agnostic ML library for Windows and WSL that targets any DX12-capable GPU: NVIDIA, AMD, or Intel Arc, including integrated graphics. The practical choice for Windows development when CUDA hardware is unavailable or when cross-vendor GPU coverage is needed.</p>
+<p><strong>ONNX Runtime Execution Providers</strong> — ONNX Runtime selects the best available accelerator at runtime via pluggable &quot;execution providers&quot;: CUDA EP, DirectML EP, CoreML EP, NPU EP. It is the inference substrate under Foundry Local and is also available as a standalone library for cross-platform deployment.</p>
+<p><strong>NPU targets</strong> — dedicated neural processing units on modern consumer hardware (Intel NPU on Meteor Lake, Apple Neural Engine via CoreML EP, Qualcomm Hexagon on Snapdragon). Foundry Local explicitly routes int4 ONNX models to NPUs on supported hardware, delivering lower power draw than GPU inference at modest model sizes.</p>
+<h2>Selection Strategy</h2>
+<table>
+<thead><tr>
+<th>Scenario</th>
+<th>Stack</th>
+<th>Concrete runtime</th>
+</tr></thead><tbody>
+<tr>
+<td>Mac development, large models</td>
+<td>MLX + Metal</td>
+<td>Ollama on Mac, or MLX Python library directly</td>
+</tr>
+<tr>
+<td>Windows, any GPU vendor</td>
+<td>DirectML</td>
+<td>Foundry Local (ONNX), or llama.cpp DirectML backend</td>
+</tr>
+<tr>
+<td>NVIDIA GPU, Linux or Windows</td>
+<td>CUDA</td>
+<td>Ollama (llama.cpp), ORT CUDA EP, or Foundry Local</td>
+</tr>
+<tr>
+<td>.NET application, embedded model</td>
+<td>CUDA / Metal / DirectML</td>
+<td><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a> (wraps llama.cpp)</td>
+</tr>
+<tr>
+<td>Cross-platform or NPU-targeted</td>
+<td>ONNX Runtime</td>
+<td>Foundry Local (managed) or ORT standalone</td>
+</tr>
+<tr>
+<td>CPU fallback, small models</td>
+<td>x64 / ARM64</td>
+<td>Ollama, llama.cpp, or ORT CPU EP</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quantization</strong> affects which hardware tier is required. In this note, the GGUF Q4 / Q8 guidance is a vault-local rule of thumb for reasoning about memory pressure and deployment fit, not a property documented by the Foundry Local source itself. By contrast, the ONNX / int4 edge-device story is directly aligned with the Foundry Local model-catalog positioning.</p>
+<h2>Where to Go Next</h2>
+<ul>
+<li><strong>Microsoft stack on Windows, ONNX models</strong>: <a href="foundry-local.html" class="wikilink">foundry-local</a> and <a href="lit-foundry-local.html" class="wikilink">lit-foundry-local</a>
 </li>
-<li><strong>Cross-Platform Apps</strong>: Use <strong>ONNX Runtime</strong> to select the best provider at runtime.
+<li><strong>Local Ollama endpoint for Python agents</strong>: <a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
+</li>
+<li><strong>Embedded .NET inference with llama.cpp (GGUF models)</strong>: <a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>
+</li>
+<li><strong>Security and isolation for local model execution</strong>: <a href="docker-sandbox.html" class="wikilink">docker-sandbox</a>
+</li>
+<li><strong>Broader language runtime context</strong>: <a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
 </ul>
 <hr>
 <h2>References</h2>
 <ul>
+<li>Sources: <code>00_Raw/foundry-local.md</code>
+</li>
 <li><a href="foundry-local.html" class="wikilink">foundry-local</a>
 </li>
+<li><a href="lit-foundry-local.html" class="wikilink">lit-foundry-local</a>
+</li>
 <li><a href="local-agent-environments.html" class="wikilink">local-agent-environments</a>
+</li>
+<li><a href="lm-kit-dotnet.html" class="wikilink">lm-kit-dotnet</a>
+</li>
+<li><a href="docker-sandbox.html" class="wikilink">docker-sandbox</a>
 </li>
 <li><a href="programming-languages-moc.html" class="wikilink">programming-languages-moc</a>
 </li>
@@ -526,12 +585,16 @@
 <li><a href="lit-rust-programming-language.html" class="">lit-rust-programming-language</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
 <li><a href="polyglot-adr-rfc.html" class="">polyglot-adr-rfc</a></li>
 <li><a href="polyglot-platform-adr.html" class="">polyglot-platform-adr</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="docker-sandbox.html" class="">docker-sandbox</a></li>
 <li><a href="foundry-local.html" class="">foundry-local</a></li>
+<li><a href="lit-foundry-local.html" class="">lit-foundry-local</a></li>
+<li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="local-agent-environments.html" class="">local-agent-environments</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 </ul>
