@@ -24,7 +24,7 @@ This map organizes the **Agent Development Kit (ADK)** ecosystem, a code-first t
 ## 🚦 Orchestration & Coordination
 - [[adk-multi-agent-orchestration]] - Hierarchical teams and handoff mechanisms.
 - [[workflow-agents]] - Deterministic control flow (Sequential, Parallel, Loop).
-- [[adk-advanced-capabilities]] - Multimodal, streaming, and Gemini Live integration.
+- [[adk-advanced-capabilities]] - Planning (`ThinkingConfig`), code execution, and streaming/live audio (`Runner.run_live`, `LiveRequestQueue`, native-audio models).
 
 ## 📈 Evaluation & Maintenance
 - [[adk-evaluation-framework]] - Benchmarking and multi-turn dataset creation.

@@ -68,16 +68,40 @@ code_agent = LlmAgent(
 *   **Multi-Part Events:** Code execution can appear as event payloads containing normal text, generated code, and execution results as separate parts.
 *   **Inspection workflow:** In practice, these events are most useful for logging, debugging, and guardrails rather than as a guaranteed stable public reasoning transcript.
 
-## 4. Tradeoffs and Limits
+## 4. Streaming & Live Audio
+
+ADK provides a streaming execution path for real-time, bidirectional voice and audio interactions. It uses different primitives from the standard request-response path.
+
+### Execution model
+- `Runner.run_live()` replaces `Runner.run()` for streaming sessions.
+- `LiveRequestQueue` accepts continuous audio input for bidirectional streaming — the caller pushes audio chunks; the runner emits output events as they arrive.
+- Native-audio models power live sessions; text chat is disabled on native-audio model connections, and not all models support this modality.
+
+### Configuration types
+- `SpeechConfig` / `VoiceConfig` — controls voice output characteristics (pitch, rate, voice identity).
+- `PrebuiltVoiceConfig` — selects from provider-managed voice presets without manual configuration.
+- `Modality` — specifies the interaction modality (audio, text, video) during `RunConfig` setup.
+
+### Design considerations
+- **Turn detection** — live audio sessions must handle speaker overlap and turn boundaries; these are typically managed by the model or the runtime, not by application code.
+- **Testing locally** — the ADK Dev UI (`adk web`) includes a microphone button for voice input; the same session that works as text chat cannot be used with a native-audio model.
+- **Custom audio pipelines** — production deployment requires an explicit audio I/O pipeline (microphone capture, speaker output) or an audio-capable hosting platform; the Dev UI handles this only for local development.
+
+### Telephony via MCP
+For phone call and SMS capabilities — outbound AI calls, autonomous voice agents, SMS threads, call transfer — the ADK ecosystem documents integration with the AgentPhone MCP server (`agentphone-mcp`). This follows the standard `McpToolset` pattern: the telephony capabilities arrive as tool definitions; no new ADK primitives are involved. See [[mcp-server-development]] for the `McpToolset` connection pattern.
+
+## 5. Tradeoffs and Limits
 *   **Token cost:** Planning consumes extra reasoning budget and can increase latency.
 *   **Debug surface:** Exposed thoughts and execution traces can improve observability, but they also create more runtime states to inspect and sanitize.
 *   **Failure modes:** Planning may exhaust its budget without improving the answer, and code execution can fail due to unsupported operations, timeouts, or sandbox limits.
 *   **Security posture:** Treat code execution as an explicitly governed feature, not as a harmless extension of normal text generation.
+*   **Streaming latency budget:** Native-audio models are optimized for low latency; the same underlying LLM running in text mode may respond differently in timing and behavior.
 
 ## See Also
 - [[agent-development-kit]]
 - [[adk-callbacks-and-lifecycle]]
 - [[react-pattern]]
+- [[mcp-server-development]]
 - [[python]]
 - [[lit-adk-documentation]]
 

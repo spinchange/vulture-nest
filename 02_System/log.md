@@ -1,6 +1,21 @@
 # Wiki Log
 
 
+## [2026-05-04] Claude — Telephony/Voice-Agent Evaluation (No New Note)
+
+**Directive**: Fourth lane from [[observability-first-expansion-brief-2026-05-04]] — evaluate whether telephony/voice-agent coverage warrants a new note.
+
+**Evaluation finding**: "AgentPhone" in the raw ADK docs is a third-party commercial MCP server (`agentphone-mcp`) integrated via the standard `McpToolset` pattern. No new ADK primitives, no distinct architectural concept — not sufficient to warrant a dedicated note. The raw corpus also contains real ADK streaming material (`Runner.run_live`, `LiveRequestQueue`, `SpeechConfig`) that `adk-moc` already advertises as covered by `adk-advanced-capabilities`, but that note only covered Planning & Code Execution — a genuine gap.
+
+**Notes Hardened (2, no new notes created):**
+* [[adk-advanced-capabilities]] — Added section 4 "Streaming & Live Audio": `Runner.run_live()` vs `Runner.run()`, `LiveRequestQueue`, `SpeechConfig`/`VoiceConfig`/`PrebuiltVoiceConfig`/`Modality`, turn-detection and Dev UI constraints, custom audio pipeline note, and a bounded telephony-via-MCP paragraph pointing to `mcp-server-development` for the `McpToolset` connection pattern. Renumbered Tradeoffs section to 5, added streaming latency bullet. Updated See Also.
+* [[adk-moc]] — Updated `adk-advanced-capabilities` description to accurately reflect Planning + Code Execution + Streaming/Live Audio (correcting prior claim of "Multimodal, streaming, and Gemini Live integration" which was not in the note).
+
+**Rationale for no new note**: Telephony (AgentPhone) is a `McpToolset` integration — architecturally identical to any MCP tool connection, not a new concept. The streaming/live audio ADK capability is real but belongs as an additional section in the existing ADK capabilities note, not a new permanent note.
+
+**Validation**: `audit-yanp.ps1` — all notes compliant.
+
+
 ## [2026-05-04] Claude — Hardware-Aware Inference Hub Hardening
 
 **Directive**: Third lane from [[observability-first-expansion-brief-2026-05-04]] — harden `hardware-aware-inference` as the local acceleration routing hub.
