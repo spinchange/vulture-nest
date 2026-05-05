@@ -26,7 +26,7 @@ Pydantic turns [[python]] type annotations into runtime parsing, validation, and
 
 `model_json_schema()` emits a JSON Schema object with `type: "object"`, a `properties` map (one entry per field carrying its `description` and type constraints), and a `required` list derived from fields with no default. Three tool surfaces consume this shape directly:
 
-- **Anthropic API** — the `input_schema` field in a tool definition is this object verbatim; Anthropic strict mode (`strict: true`) validates the model's generated arguments against it before execution
+- **Anthropic API** — the `input_schema` field in a tool definition is this object verbatim; when Anthropic strict mode (`strict: true`) is enabled, schema conformance matters more because the host treats that generated shape as the execution contract
 - **MCP / FastMCP** — `@mcp.tool()` introspects Python type hints and generates `inputSchema` through the same path; passing a Pydantic model as the parameter type produces equivalent output
 - **FastAPI** — generates an OpenAPI schema from the Pydantic request model automatically; the `fastapi-mcp` library then reads that OpenAPI spec and registers each route as an MCP tool, meaning a well-described Pydantic model propagates into the MCP tool surface without manual schema translation
 

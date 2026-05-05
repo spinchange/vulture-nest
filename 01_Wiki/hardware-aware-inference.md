@@ -38,6 +38,13 @@ Picking a local inference setup requires two separate decisions that interact:
 
 Choosing a format first narrows the runtime options. Choosing hardware first narrows the formats that perform well on that silicon.
 
+The tables and routing guidance below combine two layers:
+
+- directly sourced facts from [[foundry-local]] and [[lit-foundry-local]] about the Microsoft / ONNX / NPU stack
+- vault-local synthesis about adjacent runtimes such as Ollama and llama.cpp, based on how related notes in this vault divide the local inference ecosystem
+
+Read the runtime-selection matrix as operational guidance, not as a claim that every row comes from one upstream source.
+
 ## Acceleration Backends
 
 **CUDA (NVIDIA)** — industry standard for NVIDIA GPUs. Mature library ecosystem (cuDNN, TensorRT). Best absolute throughput for large models on Linux or Windows. Requires the CUDA toolkit installed on the host.
@@ -61,7 +68,7 @@ Choosing a format first narrows the runtime options. Choosing hardware first nar
 | Cross-platform or NPU-targeted | ONNX Runtime | Foundry Local (managed) or ORT standalone |
 | CPU fallback, small models | x64 / ARM64 | Ollama, llama.cpp, or ORT CPU EP |
 
-**Quantization** affects which hardware tier is required. GGUF Q4 3B–7B models fit in 4–8 GB VRAM and run acceptably on integrated graphics. Q8 70B+ models require 80 GB+. For the NPU and DirectML paths, int4 ONNX models from Microsoft's model catalog are sized for edge-device power and memory envelopes.
+**Quantization** affects which hardware tier is required. In this note, the GGUF Q4 / Q8 guidance is a vault-local rule of thumb for reasoning about memory pressure and deployment fit, not a property documented by the Foundry Local source itself. By contrast, the ONNX / int4 edge-device story is directly aligned with the Foundry Local model-catalog positioning.
 
 ## Where to Go Next
 
