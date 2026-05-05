@@ -65,8 +65,8 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[lora]]: Lightweight adaptation for agentic specialized tasks.
 
 ## Observability & Evaluation
-* [[agent-observability]]: Tracking internal states via Traces and Spans.
-* [[agent-evaluation]]: Offline benchmarking and online production monitoring.
+* [[agent-observability]]: Logs, metrics, and traces — the instrumentation layer that makes production agents legible. Start here for the full signal taxonomy and framework routing.
+* [[agent-evaluation]]: Offline benchmarking and online production monitoring loop.
 * [[llm-as-a-judge]]: Automated grading using separate LLMs.
 * [[gaia-benchmark]]: Prominent benchmark for evaluating general AI assistants.
 

@@ -1,6 +1,24 @@
 # Wiki Log
 
 
+## [2026-05-04] Claude — Agent Observability Hub Hardening
+
+**Directive**: Executed observability-first expansion lane from [[observability-first-expansion-brief-2026-05-04]].
+
+**Notes Hardened (1):**
+* [[agent-observability]] — Expanded from thin definition node into a full routing hub. Added: three-pillar model (logs/metrics/traces), trace/span distinction, observability vs. evaluation vs. replay comparison table, OTel GenAI semantic conventions, framework-specific instrumentation guidance (ADK callbacks, Anthropic streaming events, multi-agent trace correlation), and "Where to Start" navigation routing.
+
+**Literature Note**: `lit-hf-agents-bonus` already covers `00_Raw/hf-agents-bonus2.md` (Bonus Unit 2) — no new literature note created; hardened hub cites the existing source.
+
+**Graph Wired:**
+* [[adk-moc]] — Added `agent-observability` to "Evaluation & Maintenance" section.
+* [[agentic-frameworks-moc]] — Updated observability entry description with routing guidance.
+
+**Validation**: `audit-yanp.ps1` — all notes compliant. No broken links introduced.
+
+**Scope boundary respected**: Observability lane only. Schema normalization (`author`/`sources` list shape) deferred per brief constraints. Schema-driven dev lane (pydantic/python-moc) not started.
+
+
 ## [2026-05-02] Claude — Anthropic Batch 2 Synthesis
 
 **Directive**: Executed [[codex-anthropic-batch-2-synthesis-handoff-2026-05-02]] — synthesized all 30 Batch 2 Anthropic source pages (5 sub-batches) into permanent and literature notes.

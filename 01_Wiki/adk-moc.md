@@ -28,6 +28,7 @@ This map organizes the **Agent Development Kit (ADK)** ecosystem, a code-first t
 
 ## 📈 Evaluation & Maintenance
 - [[adk-evaluation-framework]] - Benchmarking and multi-turn dataset creation.
+- [[agent-observability]] - Traces, spans, and lifecycle hooks for production monitoring.
 - [[lit-adk-documentation]] - Core literature source for ADK.
 
 ---
