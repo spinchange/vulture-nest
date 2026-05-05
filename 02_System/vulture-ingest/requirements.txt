@@ -2,3 +2,4 @@ requests
 trafilatura
 html2text
 playwright
+psycopg2-binary

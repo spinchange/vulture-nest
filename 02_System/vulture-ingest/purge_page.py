@@ -13,8 +13,8 @@ import server
 
 page_id = sys.argv[1]
 print(f"Purging page_id: {page_id}")
-server._supabase_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{page_id}"})
+server._db_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{page_id}"})
 print("  chunks deleted")
-server._supabase_request("DELETE", "/rest/v1/source_pages", params={"id": f"eq.{page_id}"})
+server._db_request("DELETE", "/rest/v1/source_pages", params={"id": f"eq.{page_id}"})
 print("  page deleted")
 print("Done.")

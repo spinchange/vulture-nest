@@ -61,6 +61,8 @@ OPENAI_EMBEDDING_MODEL = os.environ.get("OPENAI_EMBEDDING_MODEL", "text-embeddin
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
 USE_LOCAL_CRAWLER = os.environ.get("USE_LOCAL_CRAWLER", "false").strip().lower() in {"1", "true", "yes", "on"}
+USE_LOCAL_DB = os.environ.get("USE_LOCAL_DB", "false").strip().lower() in {"1", "true", "yes", "on"}
+LOCAL_DB_DSN = os.environ.get("LOCAL_DB_DSN", "postgresql://postgres:postgres@localhost:5432/vulture_ingest")
 POLICY_PATH = Path(os.environ.get("VULTURE_PIPELINE_POLICY_PATH", DEFAULT_POLICY_PATH))
 WIKI_ROOT = Path(os.environ.get("VULTURE_WIKI_ROOT", Path(__file__).resolve().parents[2] / "01_Wiki"))
 RUNTIME_LEDGER = RuntimeLedger()
@@ -317,6 +319,21 @@ def _supabase_request(
     )
 
 
+def _db_request(
+    method: str,
+    path: str,
+    *,
+    payload: dict[str, Any] | list[dict[str, Any]] | None = None,
+    params: dict[str, Any] | None = None,
+    prefer: str | None = None,
+) -> Any:
+    if USE_LOCAL_DB:
+        from db_local import local_db_request
+
+        return local_db_request(method, path, payload=payload, params=params, prefer=prefer)
+    return _supabase_request(method, path, payload=payload, params=params, prefer=prefer)
+
+
 def _embed_texts(texts: list[str]) -> list[list[float]]:
     if not texts:
         return []
@@ -453,7 +470,7 @@ def _validate_provenance_records(provenance_block: dict[str, Any]) -> dict[str, 
     if not chunk_ids:
         raise ValueError("Provenance must include at least one chunk_id.")
 
-    pages = _supabase_request(
+    pages = _db_request(
         "GET",
         "/rest/v1/source_pages",
         params={"select": "id,url,status", "id": f"in.({','.join(source_ids)})"},
@@ -463,7 +480,7 @@ def _validate_provenance_records(provenance_block: dict[str, Any]) -> dict[str, 
         missing = [source_id for source_id in source_ids if source_id not in found]
         raise RuntimeError(f"Provenance references unknown source_record_ids: {missing}")
 
-    chunks = _supabase_request(
+    chunks = _db_request(
         "GET",
         "/rest/v1/source_chunks",
         params={"select": "id,page_id,source_url,chunk_index", "id": f"in.({','.join(chunk_ids)})"},
@@ -688,7 +705,7 @@ def index_crawled_source(
         last_modified=last_modified,
     )
 
-    prior_rows = _supabase_request(
+    prior_rows = _db_request(
         "GET",
         "/rest/v1/source_pages",
         params={"select": "id,content_hash,crawled_at,status", "url": f"eq.{page['url']}"},
@@ -709,7 +726,7 @@ def index_crawled_source(
         "content_hash": page_hash,
         "status": "Indexed",
     }
-    upserted_pages = _supabase_request(
+    upserted_pages = _db_request(
         "POST",
         "/rest/v1/source_pages",
         payload=page_row,
@@ -719,7 +736,7 @@ def index_crawled_source(
     indexed_page = upserted_pages[0]
 
     if prior_row and prior_row["content_hash"] == page_hash:
-        existing_chunks = _supabase_request(
+        existing_chunks = _db_request(
             "GET",
             "/rest/v1/source_chunks",
             params={"select": "id,chunk_index", "page_id": f"eq.{indexed_page['id']}"},
@@ -734,7 +751,7 @@ def index_crawled_source(
             "next_state": "verified",
         }
 
-    _supabase_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{indexed_page['id']}"})
+    _db_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{indexed_page['id']}"})
 
     chunks = chunk_markdown(
         page["markdown"],
@@ -766,7 +783,7 @@ def index_crawled_source(
             }
         )
 
-    inserted_chunks = _supabase_request(
+    inserted_chunks = _db_request(
         "POST",
         "/rest/v1/source_chunks",
         payload=insert_rows,
@@ -800,7 +817,7 @@ def semantic_search_sources(
             raise ValueError("Either query or query_embedding is required.")
         query_embedding = _embed_texts([query])[0]
 
-    results = _supabase_request(
+    results = _db_request(
         "POST",
         "/rest/v1/rpc/match_documents",
         payload={
@@ -846,12 +863,12 @@ def verify_source_index(
         params["id"] = f"eq.{page_id}"
     else:
         params["url"] = f"eq.{url}"
-    pages = _supabase_request("GET", "/rest/v1/source_pages", params=params)
+    pages = _db_request("GET", "/rest/v1/source_pages", params=params)
     if not pages:
         raise RuntimeError("Indexed source page not found.")
     page = pages[0]
 
-    chunks = _supabase_request(
+    chunks = _db_request(
         "GET",
         "/rest/v1/source_chunks",
         params={
@@ -921,7 +938,7 @@ def verify_source_index(
 
     verification_status = "passed" if not any(item["severity"] == "error" for item in findings) else "failed"
     if verification_status == "passed":
-        _supabase_request(
+        _db_request(
             "PATCH",
             "/rest/v1/source_pages",
             payload={"status": "Verified", "verified_at": _isoformat(_utcnow())},
@@ -972,7 +989,7 @@ def promote_synthesis_candidate(
 
     promoted_at = _isoformat(_utcnow())
     for page in validated["pages"]:
-        _supabase_request(
+        _db_request(
             "PATCH",
             "/rest/v1/source_pages",
             payload={

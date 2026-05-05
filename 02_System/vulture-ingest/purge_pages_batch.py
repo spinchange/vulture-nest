@@ -13,7 +13,7 @@ import server
 
 page_ids = sys.argv[1:]
 for page_id in page_ids:
-    server._supabase_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{page_id}"})
-    server._supabase_request("DELETE", "/rest/v1/source_pages", params={"id": f"eq.{page_id}"})
+    server._db_request("DELETE", "/rest/v1/source_chunks", params={"page_id": f"eq.{page_id}"})
+    server._db_request("DELETE", "/rest/v1/source_pages", params={"id": f"eq.{page_id}"})
     print(f"Purged: {page_id}")
 print(f"Done — {len(page_ids)} pages removed.")

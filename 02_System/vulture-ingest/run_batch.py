@@ -223,7 +223,7 @@ def _resolve_chunk_ids(index_result: dict[str, Any]) -> list[str]:
     if chunk_ids:
         return chunk_ids
     page_id = index_result["page_id"]
-    rows = server._supabase_request(  # type: ignore[attr-defined]
+    rows = server._db_request(  # type: ignore[attr-defined]
         "GET",
         "/rest/v1/source_chunks",
         params={"select": "id", "page_id": f"eq.{page_id}", "order": "chunk_index.asc"},
