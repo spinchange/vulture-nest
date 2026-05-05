@@ -30,6 +30,7 @@ try {
     $OutputDirectory = Join-Path $VaultRoot '03_Web/public'
     $LlmsTxtRootPath = Join-Path $VaultRoot 'llms.txt'
     $LlmsTxtPublicPath = Join-Path $OutputDirectory 'llms.txt'
+    $SearchIndexPublicPath = Join-Path $OutputDirectory 'search-index.json'
     $PortalBaseUrl = 'https://spinchange.github.io/vulture-nest'
     $RepoBaseUrl = 'https://github.com/spinchange/vulture-nest'
     $DbPath = $env:POSHWIKI_DB_PATH
@@ -284,6 +285,55 @@ try {
         return ($html -join [Environment]::NewLine)
     }
 
+    function Convert-MarkdownToSearchText {
+        param([string]$Markdown)
+        $text = $Markdown
+        $text = [regex]::Replace($text, '(?s)```.*?```', ' ')
+        $text = [regex]::Replace($text, '\[\[([^\]|]+)\|([^\]]+)\]\]', '$2')
+        $text = [regex]::Replace($text, '\[\[([^\]]+)\]\]', '$1')
+        $text = [regex]::Replace($text, '\[([^\]]+)\]\(([^)]+)\)', '$1')
+        $text = [regex]::Replace($text, '(?m)^\s{0,3}#{1,6}\s*', '')
+        $text = [regex]::Replace($text, '(?m)^\s*[-*+]\s+', '')
+        $text = [regex]::Replace($text, '(?m)^\s*\d+\.\s+', '')
+        $text = $text -replace '\*\*', ''
+        $text = $text -replace '`', ''
+        $text = $text -replace '\|', ' '
+        $text = [System.Net.WebUtility]::HtmlDecode($text)
+        $text = [regex]::Replace($text, '\s+', ' ').Trim()
+        return $text
+    }
+
+    function New-SearchIndexEntry {
+        param(
+            [string]$NoteName,
+            [string]$Title,
+            [hashtable]$Frontmatter,
+            [string]$Body
+        )
+
+        $aliases = @()
+        if ($Frontmatter.Contains('aliases')) {
+            $rawAliases = $Frontmatter['aliases']
+            if ($rawAliases -is [System.Array]) { $aliases = @($rawAliases | ForEach-Object { [string]$_ }) }
+            elseif ($null -ne $rawAliases -and -not [string]::IsNullOrWhiteSpace([string]$rawAliases)) { $aliases = @([string]$rawAliases) }
+        }
+
+        $bodyText = Convert-MarkdownToSearchText -Markdown $Body
+        $excerpt = if ($bodyText.Length -gt 220) { $bodyText.Substring(0, 220) + '…' } else { $bodyText }
+        $searchParts = @($Title, $NoteName, ($aliases -join ' '), $excerpt, $bodyText) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+
+        return [PSCustomObject]@{
+            note    = $NoteName
+            title   = $Title
+            url     = Get-HtmlFileName -NoteName $NoteName
+            aliases = $aliases
+            type    = if ($Frontmatter.Contains('type')) { [string]$Frontmatter['type'] } else { '' }
+            status  = if ($Frontmatter.Contains('status')) { [string]$Frontmatter['status'] } else { '' }
+            excerpt = $excerpt
+            search  = (($searchParts -join ' ') -replace '\s+', ' ').Trim().ToLowerInvariant()
+        }
+    }
+
     function Convert-FrontmatterToHtml {
         param([hashtable]$Frontmatter)
         if (-not $Frontmatter -or $Frontmatter.Count -eq 0) { return '<span class="fm-field"><span class="fm-key">meta</span><span class="fm-val">none</span></span>' }
@@ -407,22 +457,24 @@ try {
     $compiledMarkdownFiles = @($wikiFiles) + @($systemMarkdownFiles)
     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
     $results = New-Object System.Collections.Generic.List[object]
+    $searchEntries = New-Object System.Collections.Generic.List[object]
 
     foreach ($file in $compiledMarkdownFiles) {
         $noteName = $file.BaseName
+        $content = Get-NormalizedContent -Path $file.FullName
+        $parts = Split-Frontmatter -Content $content
+        $title = if ($parts.Frontmatter.Contains('title')) { [string]$parts.Frontmatter['title'] } else { $noteName }
+        $searchEntries.Add((New-SearchIndexEntry -NoteName $noteName -Title $title -Frontmatter $parts.Frontmatter -Body $parts.Body))
+
         $outputPath = Join-Path $OutputDirectory (Get-HtmlFileName -NoteName $noteName)
         if (-not $Force -and (Test-Path $outputPath)) {
             if ($file.LastWriteTime -le (Get-Item $outputPath).LastWriteTime) { continue }
         }
         Write-Host "Compiling $noteName..." -ForegroundColor Gray
-        $content = Get-NormalizedContent -Path $file.FullName
-        $parts = Split-Frontmatter -Content $content
         $bodyHtml = Convert-MarkdownToHtml -Markdown $parts.Body
         $frontmatterHtml = Convert-FrontmatterToHtml -Frontmatter $parts.Frontmatter
         $neighbors = Get-GraphNeighbors -NoteName $noteName
         $graphHtml = Convert-GraphNeighborsToHtml -Incoming $neighbors.Incoming -Outgoing $neighbors.Outgoing
-        
-        $title = if ($parts.Frontmatter.Contains('title')) { [string]$parts.Frontmatter['title'] } else { $noteName }
         $pageHtml = $template.Replace('{{TITLE}}', (ConvertTo-HtmlSafe $title)).Replace('{{CONTENT}}', $bodyHtml).Replace('{{FRONTMATTER}}', $frontmatterHtml).Replace('{{GRAPH_NEIGHBORS}}', $graphHtml)
         [System.IO.File]::WriteAllText($outputPath, $pageHtml, $utf8NoBom)
         $results.Add([PSCustomObject]@{ Note = $noteName; Title = $title; OutputPath = $outputPath; Incoming = $neighbors.Incoming.Count; Outgoing = $neighbors.Outgoing.Count })
@@ -431,9 +483,12 @@ try {
     $llmsTxtContent = New-LlmsTxtContent -WikiFiles $wikiFiles -SystemMarkdownFiles $systemMarkdownFiles
     [System.IO.File]::WriteAllText($LlmsTxtRootPath, $llmsTxtContent, $utf8NoBom)
     [System.IO.File]::WriteAllText($LlmsTxtPublicPath, $llmsTxtContent, $utf8NoBom)
+    $searchIndexJson = [string](ConvertTo-Json -InputObject $searchEntries.ToArray() -Depth 6 -Compress)
+    Set-Content -LiteralPath $SearchIndexPublicPath -Value $searchIndexJson -Encoding utf8
 
     if ($results.Count -gt 0) { Write-Host "Compiled $($results.Count) wiki pages into $OutputDirectory" -ForegroundColor Green }
     else { Write-Host "No HTML changes detected. Portal is up to date." -ForegroundColor Cyan }
     Write-Host "Refreshed llms.txt at repo root and public portal output." -ForegroundColor Green
+    Write-Host "Refreshed static search index at $SearchIndexPublicPath" -ForegroundColor Green
     return $results
 } catch { Write-Error $_; exit 1 }

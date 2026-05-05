@@ -71,6 +71,105 @@
       font-weight: 700;
     }
     .topbar .sep { color: var(--line); }
+    .topbar-search {
+      margin-left: auto;
+      position: relative;
+      min-width: 280px;
+      max-width: 360px;
+      flex: 1 1 280px;
+    }
+
+    /* ── Search ─────────────────────────────────────────────────── */
+    .search-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+    .search-results {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: none;
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+      overflow: hidden;
+    }
+    .search-results.is-open {
+      display: block;
+    }
+    .search-results-header {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .search-results-list {
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .search-result {
+      display: block;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      color: inherit;
+      text-decoration: none;
+    }
+    .search-result:last-child {
+      border-bottom: none;
+    }
+    .search-result:hover,
+    .search-result:focus {
+      text-decoration: none;
+      background: var(--panel-alt);
+    }
+    .search-result-title {
+      display: block;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .search-result-meta {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .search-result-excerpt {
+      display: block;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .search-empty {
+      padding: 14px 12px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
 
     /* ── Metadata Zone ───────────────────────────────────────────── */
     .metadata-zone {
@@ -391,10 +490,21 @@
       .graph-zone {
         position: static;
       }
+      .topbar {
+        flex-wrap: wrap;
+      }
+      .topbar-search {
+        min-width: 100%;
+        max-width: none;
+      }
     }
     @media (max-width: 540px) {
       .shell { padding: 0 14px 40px; }
       .note-title { font-size: 20px; }
+      .search-results {
+        position: static;
+        margin-top: 10px;
+      }
     }
 
     /* ── Print ───────────────────────────────────────────────────── */
@@ -422,6 +532,16 @@
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
       <span>log</span>
+      <div class="topbar-search">
+        <input
+          id="portal-search"
+          class="search-input"
+          type="search"
+          placeholder="Search notes, aliases, and excerpts…"
+          autocomplete="off"
+          aria-label="Search portal notes">
+        <div id="portal-search-results" class="search-results" aria-live="polite"></div>
+      </div>
     </nav>
 
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
@@ -439,6 +559,60 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-04] Claude — Telephony/Voice-Agent Evaluation (No New Note)</h2>
+<p><strong>Directive</strong>: Fourth lane from <a href="observability-first-expansion-brief-2026-05-04.html" class="wikilink">observability-first-expansion-brief-2026-05-04</a> — evaluate whether telephony/voice-agent coverage warrants a new note.</p>
+<p><strong>Evaluation finding</strong>: &quot;AgentPhone&quot; in the raw ADK docs is a third-party commercial MCP server (<code>agentphone-mcp</code>) integrated via the standard <code>McpToolset</code> pattern. No new ADK primitives, no distinct architectural concept — not sufficient to warrant a dedicated note. The raw corpus also contains real ADK streaming material (<code>Runner.run_live</code>, <code>LiveRequestQueue</code>, <code>SpeechConfig</code>) that <code>adk-moc</code> already advertises as covered by <code>adk-advanced-capabilities</code>, but that note only covered Planning &amp; Code Execution — a genuine gap.</p>
+<p><strong>Notes Hardened (2, no new notes created):</strong></p>
+<ul>
+<li><a href="adk-advanced-capabilities.html" class="wikilink">adk-advanced-capabilities</a> — Added section 4 &quot;Streaming &amp; Live Audio&quot;: <code>Runner.run_live()</code> vs <code>Runner.run()</code>, <code>LiveRequestQueue</code>, <code>SpeechConfig</code>/<code>VoiceConfig</code>/<code>PrebuiltVoiceConfig</code>/<code>Modality</code>, turn-detection and Dev UI constraints, custom audio pipeline note, and a bounded telephony-via-MCP paragraph pointing to <code>mcp-server-development</code> for the <code>McpToolset</code> connection pattern. Renumbered Tradeoffs section to 5, added streaming latency bullet. Updated See Also.
+</li>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a> — Updated <code>adk-advanced-capabilities</code> description to accurately reflect Planning + Code Execution + Streaming/Live Audio (correcting prior claim of &quot;Multimodal, streaming, and Gemini Live integration&quot; which was not in the note).
+</li>
+</ul>
+<p><strong>Rationale for no new note</strong>: Telephony (AgentPhone) is a <code>McpToolset</code> integration — architecturally identical to any MCP tool connection, not a new concept. The streaming/live audio ADK capability is real but belongs as an additional section in the existing ADK capabilities note, not a new permanent note.</p>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
+<h2>[2026-05-04] Claude — Hardware-Aware Inference Hub Hardening</h2>
+<p><strong>Directive</strong>: Third lane from <a href="observability-first-expansion-brief-2026-05-04.html" class="wikilink">observability-first-expansion-brief-2026-05-04</a> — harden <code>hardware-aware-inference</code> as the local acceleration routing hub.</p>
+<p><strong>Notes Hardened (2):</strong></p>
+<ul>
+<li><a href="hardware-aware-inference.html" class="wikilink">hardware-aware-inference</a> — Full rewrite from a 3-section definition note into a routing hub. Added: &quot;When to Start Here&quot; entry framing; &quot;The Two Dimensions&quot; section separating hardware-target from runtime+model-format decisions; GGUF vs. ONNX format table with runtime options; expanded acceleration backends covering MLX Unified Memory advantage, DirectML cross-vendor coverage, ONNX Runtime execution providers, and NPU targets (Intel NPU, Apple Neural Engine, Qualcomm Hexagon); selection strategy table with concrete runtimes named per scenario; quantization guidance (Q4/Q8 GGUF, int4 ONNX); &quot;Where to Go Next&quot; routing footer to <code>foundry-local</code>, <code>local-agent-environments</code>, <code>lm-kit-dotnet</code>, <code>docker-sandbox</code>.
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — Updated <code>hardware-aware-inference</code> entry description to reflect the new routing scope (runtimes named, not just backends).
+</li>
+</ul>
+<p><strong>No new notes created</strong>: llama.cpp, quantization, and NPU are contextual concepts within the hub, not atomic vault concepts requiring separate notes.</p>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant. No broken links introduced.</p>
+<h2>[2026-05-04] Claude — Schema-Driven Development Lane Hardening</h2>
+<p><strong>Directive</strong>: Second lane from <a href="observability-first-expansion-brief-2026-05-04.html" class="wikilink">observability-first-expansion-brief-2026-05-04</a> — schema-driven development routing and contract clarity.</p>
+<p><strong>Notes Hardened (3):</strong></p>
+<ul>
+<li><a href="pydantic.html" class="wikilink">pydantic</a> — Added &quot;Schema Pipeline&quot; section: what <code>model_json_schema()</code> emits, how it maps to Anthropic <code>input_schema</code>, MCP <code>inputSchema</code>, and FastAPI OpenAPI; strict-mode correctness implication; V2 <code>@field_validator</code> mention. Added &quot;Where to Start&quot; routing footer pointing toward <code>pydantic-fastapi-agents</code>, <code>mcp-server-development</code>, and <code>anthropic-tool-use</code>. Wired new links: <code><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a></code>, <code><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a></code>, <code><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a></code>.
+</li>
+<li><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a> — Added &quot;When to Start Here&quot; routing header distinguishing schema-definition (start at <code>pydantic</code>) from execution infrastructure (start here). Expanded section 3 into a concrete four-step FastAPI→MCP pipeline showing how a Pydantic model propagates to an MCP <code>inputSchema</code> via <code>fastapi-mcp</code> without manual schema translation. Wired new links: <code><a href="python-moc.html" class="wikilink">python-moc</a></code>, <code><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a></code>.
+</li>
+<li><a href="python-moc.html" class="wikilink">python-moc</a> — Added <code><a href="pydantic-fastapi-agents.html" class="wikilink">pydantic-fastapi-agents</a></code> to &quot;Schema and Validation&quot; section with description framing it as the execution-infrastructure side of schema-driven development.
+</li>
+</ul>
+<p><strong>No new notes created</strong>: all work was additive hardening; no missing bridge concept warranted a new permanent note.</p>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant. <code>check-broken-links.ps1</code> — no broken links.</p>
+<p><strong>Scope boundary respected</strong>: Taxonomy unchanged. <code>author</code>/<code>sources</code> list normalization deferred per brief constraints.</p>
+<h2>[2026-05-04] Claude — Agent Observability Hub Hardening</h2>
+<p><strong>Directive</strong>: Executed observability-first expansion lane from <a href="observability-first-expansion-brief-2026-05-04.html" class="wikilink">observability-first-expansion-brief-2026-05-04</a>.</p>
+<p><strong>Notes Hardened (1):</strong></p>
+<ul>
+<li><a href="agent-observability.html" class="wikilink">agent-observability</a> — Expanded from thin definition node into a full routing hub. Added: three-pillar model (logs/metrics/traces), trace/span distinction, observability vs. evaluation vs. replay comparison table, OTel GenAI semantic conventions, framework-specific instrumentation guidance (ADK callbacks, Anthropic streaming events, multi-agent trace correlation), and &quot;Where to Start&quot; navigation routing.
+</li>
+</ul>
+<p><strong>Literature Note</strong>: <code>lit-hf-agents-bonus</code> already covers <code>00_Raw/hf-agents-bonus2.md</code> (Bonus Unit 2) — no new literature note created; hardened hub cites the existing source.</p>
+<p><strong>Graph Wired:</strong></p>
+<ul>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a> — Added <code>agent-observability</code> to &quot;Evaluation &amp; Maintenance&quot; section.
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — Updated observability entry description with routing guidance.
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant. No broken links introduced.</p>
+<p><strong>Scope boundary respected</strong>: Observability lane only. Schema normalization (<code>author</code>/<code>sources</code> list shape) deferred per brief constraints. Schema-driven dev lane (pydantic/python-moc) not started.</p>
 <h2>[2026-05-02] Claude — Anthropic Batch 2 Synthesis</h2>
 <p><strong>Directive</strong>: Executed <a href="codex-anthropic-batch-2-synthesis-handoff-2026-05-02.html" class="wikilink">codex-anthropic-batch-2-synthesis-handoff-2026-05-02</a> — synthesized all 30 Batch 2 Anthropic source pages (5 sub-batches) into permanent and literature notes.</p>
 <p><strong>Literature Notes Created (5):</strong></p>
@@ -1987,6 +2161,27 @@
 <li><strong>Orchestration:</strong> Strengthened <a href="workflow-agents.html" class="wikilink">workflow-agents</a> and <a href="adk-multi-agent-orchestration.html" class="wikilink">adk-multi-agent-orchestration</a> so ADK&#39;s deterministic controllers, transfer patterns, shared state, and agent-as-tool composition route more directly into the newer execution-topology lane.
 </li>
 </ul>
+<h2>[2026-05-03] codex — llms.txt Generation Wiring</h2>
+<ul>
+<li><strong>Directive:</strong> Replaced the stale hand-maintained <code>llms.txt</code> artifact with a generated one tied to the portal build.
+</li>
+<li><strong>Tooling:</strong> Extended <code>02_System/generate-wiki.ps1</code> so each portal build now regenerates <code>llms.txt</code> at both the repo root and <code>03_Web/public/</code>.
+</li>
+<li><strong>Output Shape:</strong> The generated file now includes live portal URLs, repo URLs, current surface counts, key entry points, major cluster routes, and concise retrieval guidance for external agents and tooling.
+</li>
+</ul>
+<ul>
+<li>2026-05-04 10:00:00: gemini-cli ran vault health audit (Score: 85%). Created <a href="gemini-wiki-health-audit-handoff-2026-05-04.html" class="wikilink">gemini-wiki-health-audit-handoff-2026-05-04</a>.
+</li>
+</ul>
+<ul>
+<li>2026-05-04 10:30:00: gemini-cli completed structural integration. Achieved 100% MOC coverage. Created 5 new MOCs: <a href="handoffs-moc.html" class="wikilink">handoffs-moc</a>, <a href="anthropic-moc.html" class="wikilink">anthropic-moc</a>, <a href="specifications-moc.html" class="wikilink">specifications-moc</a>, <a href="literature-moc.html" class="wikilink">literature-moc</a>, <a href="web-data-ingestion-moc.html" class="wikilink">web-data-ingestion-moc</a>. Identified 4 technical expansion targets.
+</li>
+</ul>
+<ul>
+<li>2026-05-04 10:45:00: gemini-cli created <a href="gemini-content-expansion-handoff-2026-05-04.html" class="wikilink">gemini-content-expansion-handoff-2026-05-04</a> based on content-gap analysis.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -2112,6 +2307,7 @@
 <li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
+<li><a href="gemini-wiki-health-audit-handoff-2026-05-04.html" class="">gemini-wiki-health-audit-handoff-2026-05-04</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="gtd.html" class="">gtd</a></li>
 <li><a href="handoff-firecrawl-openai-agents.html" class="">handoff-firecrawl-openai-agents</a></li>
@@ -2149,6 +2345,7 @@
 <li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
 <li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
 <li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
+<li><a href="llamaindex.html" class="">llamaindex</a></li>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="log.html" class="">log</a></li>
@@ -2219,6 +2416,7 @@
 <li><a href="ps-vault-stats.html" class="">ps-vault-stats</a></li>
 <li><a href="ps-vulture-search.html" class="">ps-vulture-search</a></li>
 <li><a href="ps-yanp-audit.html" class="">ps-yanp-audit</a></li>
+<li><a href="pydantic.html" class="">pydantic</a></li>
 <li><a href="pydantic-fastapi-agents.html" class="">pydantic-fastapi-agents</a></li>
 <li><a href="python.html" class="">python</a></li>
 <li><a href="python-asyncio.html" class="">python-asyncio</a></li>
@@ -2269,6 +2467,7 @@
 <li><a href="wiki-pattern-operations.html" class="">wiki-pattern-operations</a></li>
 <li><a href="wiki-pattern-tooling.html" class="">wiki-pattern-tooling</a></li>
 <li><a href="workbench-codex-runner-handoff.html" class="">workbench-codex-runner-handoff</a></li>
+<li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 <li><a href="wpf-moc.html" class="">wpf-moc</a></li>
 <li><a href="yaml-for-yanp.html" class="">yaml-for-yanp</a></li>
 <li><a href="yanp-for-agentic-workflows.html" class="">yanp-for-agentic-workflows</a></li>
@@ -2282,5 +2481,120 @@
 
     </div>
   </div>
+  <script>
+    (() => {
+      const input = document.getElementById('portal-search');
+      const results = document.getElementById('portal-search-results');
+      if (!input || !results) return;
+
+      let indexPromise = null;
+      let notes = [];
+
+      function ensureIndex() {
+        if (!indexPromise) {
+          indexPromise = fetch('search-index.json')
+            .then(response => {
+              if (!response.ok) throw new Error('search-index fetch failed');
+              return response.json();
+            })
+            .then(data => {
+              notes = Array.isArray(data) ? data : [];
+              return notes;
+            })
+            .catch(() => {
+              notes = [];
+              return notes;
+            });
+        }
+        return indexPromise;
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function scoreNote(note, query) {
+        const title = (note.title || '').toLowerCase();
+        const aliases = Array.isArray(note.aliases) ? note.aliases.join(' ').toLowerCase() : '';
+        const search = (note.search || '').toLowerCase();
+        let score = 0;
+        if (title === query) score += 120;
+        else if (title.startsWith(query)) score += 80;
+        else if (title.includes(query)) score += 50;
+        if (aliases.includes(query)) score += 25;
+        if (search.includes(query)) score += 10;
+        return score;
+      }
+
+      function renderResults(matches, query) {
+        if (!query) {
+          results.classList.remove('is-open');
+          results.innerHTML = '';
+          return;
+        }
+
+        let html = `<div class="search-results-header">${matches.length} result${matches.length === 1 ? '' : 's'}</div>`;
+        if (!matches.length) {
+          html += '<div class="search-empty">No portal notes matched that query.</div>';
+          results.innerHTML = html;
+          results.classList.add('is-open');
+          return;
+        }
+
+        html += '<div class="search-results-list">';
+        for (const note of matches.slice(0, 8)) {
+          const meta = [note.type, note.status].filter(Boolean).join(' / ');
+          html += `
+            <a class="search-result" href="${escapeHtml(note.url)}">
+              <span class="search-result-title">${escapeHtml(note.title || note.note || '')}</span>
+              <span class="search-result-meta">${escapeHtml(meta)}</span>
+              <span class="search-result-excerpt">${escapeHtml(note.excerpt || '')}</span>
+            </a>`;
+        }
+        html += '</div>';
+        results.innerHTML = html;
+        results.classList.add('is-open');
+      }
+
+      async function handleQuery() {
+        const query = input.value.trim().toLowerCase();
+        if (!query) {
+          renderResults([], '');
+          return;
+        }
+        await ensureIndex();
+        const matches = notes
+          .map(note => ({ note, score: scoreNote(note, query) }))
+          .filter(item => item.score > 0)
+          .sort((a, b) => b.score - a.score || (a.note.title || '').localeCompare(b.note.title || ''))
+          .map(item => item.note);
+        renderResults(matches, query);
+      }
+
+      input.addEventListener('focus', () => { void ensureIndex(); });
+      input.addEventListener('input', () => { void handleQuery(); });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === '/' && document.activeElement !== input) {
+          event.preventDefault();
+          input.focus();
+        }
+        if (event.key === 'Escape') {
+          results.classList.remove('is-open');
+        }
+      });
+
+      document.addEventListener('click', event => {
+        if (!results.contains(event.target) && event.target !== input) {
+          results.classList.remove('is-open');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
