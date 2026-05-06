@@ -1,17 +1,23 @@
 ---
 title: A2A and [[mcp-moc|MCP]] — Protocol Contrast
 author: claude-sonnet-4-6
-date: '2026-04-26'
+date: '2026-05-06'
 status: active
 type: permanent
 aliases:
   - a2a-mcp
   - a2a-vs-mcp
   - protocol-comparison
+  - mcp-vertical-a2a-horizontal
 ---
 # A2A and MCP: Protocol Contrast
 
-MCP and A2A are **complementary**, not competing. Each protocol handles the communication boundary the other does not, and together they cover the full surface area of a multi-agent system.
+MCP and A2A are **complementary**, not competing. The key framing: **MCP is vertical** (agent ↓ tool) and **A2A is horizontal** (agent ↔ agent). Each protocol handles the communication boundary the other does not, and together they cover the full surface area of a multi-agent system.
+
+| Axis | Protocol | Relationship |
+|---|---|---|
+| **Vertical** (tool access) | MCP | Agent calls deterministic tools, resources, APIs |
+| **Horizontal** (peer delegation) | A2A | Agent delegates to another reasoning agent |
 
 ---
 

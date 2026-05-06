@@ -18,11 +18,16 @@ The paper identifies **typicality bias** in human preference data as a primary c
 
 ### Typicality Bias & Mode Collapse
 *   **Typicality Bias:** Human annotators tend to favor responses that are familiar, fluent, and predictable (typical), even if they are not the most useful or creative.
-*   **Mode Collapse:** Post-training alignment (RLHF, DPO) sharpens the probability distribution around these typical responses (the "mode"), suppressing the model's inherent diversity and "long-tail" knowledge.
+*   **Mathematical Model:** The reward function $r(x, y)$ is modeled as a combination of true task utility $r_{true}$ and typicality bias:
+    $$r(x, y) = r_{true}(x, y) + \alpha \log \pi_{ref}(y | x) + \epsilon(x)$$
+    where $\alpha$ is the typicality weight.
+*   **Mode Collapse:** RLHF optimization sharpens the reference distribution $\pi_{ref}$ by a factor $\gamma = 1 + \alpha/\beta$, where $\beta$ is the KL coefficient. This compresses probability mass toward typical completions.
 
-### Verbalized Sampling (VS)
-Instead of a direct prompt (e.g., "Tell me a joke"), VS reformulates the prompt to ask for multiple responses with their corresponding probabilities:
-*   **Prompt Pattern:** "Generate 5 responses with their corresponding probabilities... sample at random from the full distribution / tails."
+### Verbalized Sampling (VS) Primitives
+Instead of a direct prompt, VS reformulates the prompt to ask for multiple responses ($k$) with their corresponding probabilities:
+*   **VS-Standard:** Single-turn request for $k$ responses and probabilities.
+*   **VS-CoT:** Combines VS with Chain-of-Thought (e.g., "Think step-by-step, then tell 5 jokes with probabilities"). This often achieves the highest quality/diversity Pareto front.
+*   **VS-Multi:** Elicits responses across multiple turns (e.g., "Tell 5 jokes... then tell 5 more"). This reduces cognitive burden and improves diversity in larger models.
 *   **Mechanism:** Verbalizing probabilities helps the model bypass the collapsed mode of the policy and access the broader distribution learned during pre-training.
 
 ## Specific Treatments
@@ -32,6 +37,12 @@ The paper details a method for **Diversity Tuning** using probability thresholds
 *   **P% Constraint:** Prompting the model to "sample from the tail distribution, where each response/word should be < p%".
 *   **Findings:** Lowering $p$ (e.g., from 1.0 down to 0.001) significantly increases output diversity. Lower thresholds (e.g., $p < 0.01$) can lead to empty outputs in constrained answer spaces (like Open-Ended QA) but are highly effective for creative writing.
 *   **Significance:** This provides a practical, inference-time mechanism for fine-grained diversity control without altering decoding parameters like temperature or top-p.
+
+## Empirical Findings & Ablations
+*   **Scaling:** More capable models (e.g., GPT-4.1, Gemini 2.5 Pro, Claude 4) benefit significantly more from VS than smaller models.
+*   **Orthogonality:** VS performance gains are orthogonal to temperature scaling and decoding strategies like top-p and min-p sampling, allowing them to be combined for further improvement.
+*   **Benchmarks:** Verified across Creative Writing (PoemHunter/BookMIA), Dialogue Simulation (PersuasionForGood), and Open-Ended QA (CoverageQA).
+*   **Synthetic Data:** VS improves downstream math task performance when used for synthetic data generation (mix of correct and diverse incorrect reasoning paths).
 
 ### Mode-Anchored Departure (Approach B)
 *Note: This specific terminology appears to be an implementation-level abstraction (e.g., in `02_System/verbalized-sampling.ps1`) derived from the paper's "Distribution-level prompt" and its treatment of reference distributions.*

@@ -1,6 +1,24 @@
 # Wiki Log
 
 
+## [2026-05-06] Claude — Protocol Stability + Modular RAG + MAK-CHK
+
+**Directive**: Execute [[gemini-orchestration-research-handoff-2026-05-06]] — three priority batches from Gemini's May 2026 research scan.
+
+**Notes Hardened (4):**
+* [[mcp-transport]] — Added MCP v2 (2025-03-26) canonical framing; Streamable HTTP vs legacy SSE deprecation table; MCP v2 Tasks primitive with lifecycle states and JSON example; updated aliases.
+* [[a2a-protocol]] — Updated date; added "Protocol Status: v1.0 (Stable, May 2026)" section with AP2 and Signed Cards callout table; expanded Signed Agent Cards from one-line mention into full subsection (JWS/RFC 7515, RFC 8785 canonicalization, verification flow, trust model); wired `[[ap2-agent-payments]]` into references.
+* [[a2a-mcp-contrast]] — Added Vertical (MCP) / Horizontal (A2A) framing at the top with a two-row summary table; updated date; added `mcp-vertical-a2a-horizontal` alias.
+* [[multi-agent-patterns-moc]] — Wired `[[maker-checker-pattern]]` into Control & Safety section.
+
+**Notes Created (3):**
+* [[ap2-agent-payments]] — New permanent note: AP2 sub-protocol for agent-initiated payments (launched with A2A v1.0). Covers Payment Intent, Authorization Envelope, lattice compliance, lifecycle states, A2A Agent Card integration, and security mitigations.
+* [[maker-checker-pattern]] — New permanent note: MAK-CHK / Debate pattern for hallucination mitigation. Covers three topology variants (Sequential, Debate, Panel), failure modes, relationship to verbalized-sampling and agent-diversity-scaling, and ADK/A2A implementation sketch.
+* [[modular-rag-hub]] — New permanent note: full Modular RAG stack. Covers Adaptive Routing (router types and targets), Self-RAG (decision points, vs Agentic RAG comparison), Hyperbolic Embeddings (Poincaré disk, practical guidance), GraphRAG + agentic planner hybrid. Wired into [[agentic-frameworks-moc]].
+
+**Validation**: `audit-yanp.ps1` — all notes compliant.
+
+
 ## [2026-05-04] Claude — Telephony/Voice-Agent Evaluation (No New Note)
 
 **Directive**: Fourth lane from [[observability-first-expansion-brief-2026-05-04]] — evaluate whether telephony/voice-agent coverage warrants a new note.
@@ -980,3 +998,31 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 
 
 - 2026-05-04 10:45:00: gemini-cli created [[gemini-content-expansion-handoff-2026-05-04]] based on content-gap analysis.
+
+
+## [2026-05-06] Gemini — Research Synthesis: Verbalized Sampling & Diversity Scaling
+
+**Directive**: Content expansion lane — synthesize research on mode collapse mitigation and diversity scaling.
+
+**Notes Created/Hardened:**
+* [[lit-verbalized-sampling-paper]] (Hardened) — Added mathematical reward model, sharpening exponent ($\gamma$), and specific VS-CoT/VS-Multi variants from source `00_Raw/2510.01171v3.pdf`.
+* [[verbalized-sampling]] (Hardened) — Added Technical Implementation patterns (Standard, CoT, P% Constraint) and Scaling & Compatibility sections.
+* [[agent-diversity-scaling]] (New) — Documented the positive correlation between model capability and diversity-recovery effectiveness; proposed the **Sampler-Worker Pattern**.
+* [[multi-agent-patterns-moc]] (Hardened) — Added "Diversity-Aware Orchestration" to the Control & Safety section.
+
+**Key Insight**: Verbalized Sampling is orthogonal to traditional decoding strategies (temperature/top-p) and scales with model capability, making it a critical primitive for high-variance agentic workflows.
+
+**Validation**: YANP compliant. Index updated.
+
+
+## [2026-05-06] Gemini — Global Research Scan & Handoff Creation
+
+**Directive**: Content expansion lane — identify 2026 research priorities and preserve session context.
+
+**Notes Created/Hardened:**
+* [[gemini-orchestration-research-handoff-2026-05-06]] (New) — Summarizes Verbalized Sampling synthesis and Global Research Scan results (MCP v2, A2A v1.0, Modular RAG). Provides prioritized roadmap for the next agent.
+* [[system-index]] (Hardened) — Registered the new handoff.
+
+**Key Discovery**: MCP has transitioned to the Agentic AI Foundation; A2A v1.0 is stable. The industry consensus has settled on **MCP for Tool Access** and **A2A for Peer Delegation**.
+
+**Validation**: YANP compliant. Index updated. This concludes the current research session.

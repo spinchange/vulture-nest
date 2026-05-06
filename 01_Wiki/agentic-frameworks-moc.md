@@ -55,6 +55,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[multi-agent-systems]]: Orchestrating specialized teams of agents.
 * [[orchestration-tradeoffs]]: Comparing Swarm (Freedom) vs. ADK (Control).
 * [[agentic-rag]]: Autonomous retrieval and self-correction.
+* [[modular-rag-hub]]: Adaptive Routing, Self-RAG critique loops, and GraphRAG hybrid patterns — the full Modular RAG stack.
 * [[graph-orchestration]]: Modelling behavior as deterministic workflows.
 * [[chromadb]]: Open-source embedding database for semantic memory.
 

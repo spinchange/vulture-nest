@@ -44,6 +44,7 @@
 - [[project-definition-framework]] - Structured methodology for project initiation.
 - [[software-design-principles]] - Heuristic-based rules for durable system design.
 - [[agentic-tdd-patterns]] - Executable intent protocol for agent-led builds.
+- [[agent-diversity-scaling]] - Architectural implications of scaling laws on agentic diversity.
 
 ## 🛠️ System & Infrastructure
 - [[core-patterns-moc]] - Reusable architectural patterns.
@@ -61,6 +62,7 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
+- [[gemini-orchestration-research-handoff-2026-05-06]] - Handoff for hardening MCP v2, A2A v1.0, and Modular RAG based on 2026 research.
 - [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 

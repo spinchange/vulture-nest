@@ -33,17 +33,34 @@ That makes the method conceptually important:
 - it reframes creativity loss as a byproduct of human preference compression
 - it suggests that prompt-layer control can recover parts of the model's hidden option space
 
-The broader implication is that agent quality cannot be judged only by correctness and harmlessness. For simulation, ideation, synthetic data, or exploratory agents, **variance is part of capability**.
+## Technical Implementation
+
+The paper defines several implementation patterns for eliciting distributions:
+
+### 1. The Standard Prompt
+Request $k$ responses with verbalized probabilities in a structured format (JSON).
+> "Generate 5 responses to the input prompt... Return the responses in JSON format... each includes a <text> and a numeric <probability> relative to the full distribution."
+
+### 2. VS-CoT (Reasoning-Integrated)
+Incorporates Chain-of-Thought before the distribution verbalization.
+> "First, provide a single 'reasoning' field... detailing your step-by-step thought process. Then, return the output in JSON format with 5 responses and probabilities."
+
+### 3. Diversity Tuning (P% Constraint)
+Explicitly constraining the model to sample from low-probability regions.
+> "Randomly sample from the distribution, where the probability of each response must be below [threshold]."
+
+## Scaling & Compatibility
+
+*   **Model Scale Law:** Performance gains from VS are positively correlated with model scale. Larger, more capable models (e.g., GPT-4.1, Claude 4) handle the cognitive burden of probability estimation and structured output better than smaller models.
+*   **Orthogonality:** VS gains are **independent of temperature and top-p**. Combining VS with traditional temperature scaling or min-p sampling creates a superior diversity-quality Pareto front than using either method alone.
 
 ## Why It Fits This Vault
 
 This concept belongs in the vault because it connects agent behavior, evaluation, and workflow engineering:
 
-- prompt design becomes a control surface for capability recovery
-- transcript-driven iteration becomes a way to compare output modes
-- note synthesis can preserve not just conclusions, but alternate framings
-
-The audio series processed here repeatedly converged on the same thesis: a model with huge latent breadth can still behave like a one-lane system if post-training incentives overvalue familiarity.
+- **Prompt design** becomes a control surface for capability recovery.
+- **Multi-agent loops** can use VS to generate diverse plans, mitigating "groupthink" or mode collapse in orchestration.
+- **Synthetic Data** pipelines can use VS to generate diverse "hard negatives" (plausible but incorrect paths) for better model training.
 
 ---
 ## See Also
@@ -53,3 +70,4 @@ The audio series processed here repeatedly converged on the same thesis: a model
 - [[verbalized-sampling-experiment]]
 - [[local-agent-environments]]
 - [[lit-verbalized-sampling-paper]]
+

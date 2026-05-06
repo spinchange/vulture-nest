@@ -35,6 +35,8 @@ These patterns define how orchestration stays bounded, auditable, and interrupti
 - [[pattern-capability-gating]] - Restricting agent access based on validated tokens or lattices.
 - [[pattern-human-in-the-loop]] - Inserting manual approval steps into automated flows.
 - [[pattern-parallel-fan-out]] - Scaling request processing across multiple concurrent workers.
+- [[verbalized-sampling|Diversity-Aware Orchestration]] - Mitigating mode collapse in planning by eliciting a distribution of potential next steps.
+- [[maker-checker-pattern|Maker-Checker / Debate]] - Separating generation and critique into independent agents to mitigate hallucination.
 
 ## Where To Start
 

@@ -1,7 +1,7 @@
 ---
 title: A2A Protocol
 author: claude-sonnet-4-6
-date: '2026-04-26'
+date: '2026-05-06'
 status: active
 type: permanent
 aliases:
@@ -9,12 +9,25 @@ aliases:
   - agent-to-agent
   - agent2agent
   - a2a-spec
+  - a2a-v1
 ---
 # A2A Protocol
 
 **A2A (Agent-to-Agent)** is an open protocol for peer-to-peer communication between autonomous AI agents. Originally developed by Google and now governed by the `a2aproject` organization, it handles the layer [[mcp-moc|MCP]] does not: agent-to-agent delegation and multi-turn collaboration between opaque, stateful peers.
 
 Where MCP standardizes how an agent accesses tools and resources (agent ↔ tool), A2A standardizes how agents communicate with each other as peers (agent ↔ agent). Together they cover the full communication surface of a multi-agent system. See [[a2a-mcp-contrast]].
+
+## Protocol Status: v1.0 (Stable, May 2026)
+
+A2A reached **v1.0 stability** in May 2026. Production deployments can now rely on a stable, versioned specification with backward-compatibility guarantees. Key additions at v1.0:
+
+| Feature | Description |
+|---|---|
+| Signed Agent Cards | JWS-signed manifests for cryptographic agent identity verification |
+| AP2 (Agent Payments) | Sub-protocol for agent-initiated micropayment authorization and settlement |
+| Formal stability pledge | Backward-compatible evolution only; breaking changes require a major version bump |
+
+The `a2aproject` organization governs the spec. The canonical repo is `github.com/a2aproject/a2a-spec`.
 
 ---
 
@@ -67,7 +80,25 @@ Minimal example:
 }
 ```
 
-Cards may be digitally signed (JWS / RFC 7515 with RFC 8785 canonicalization) for authenticity verification. An **extended Agent Card** — with additional private details not suitable for public exposure — can be retrieved via the `GetExtendedAgentCard` RPC after authentication.
+An **extended Agent Card** — with additional private details not suitable for public exposure — can be retrieved via the `GetExtendedAgentCard` RPC after authentication.
+
+### Signed Agent Cards (v1.0)
+
+Agent Cards may be **digitally signed** to provide cryptographic proof of agent identity — critical for cross-organization federation where no shared session context or pre-established trust exists.
+
+**Signing mechanism:**
+- **Standard**: JWS (JSON Web Signature) per RFC 7515
+- **Canonicalization**: RFC 8785 (JSON Canonicalization Scheme) applied to the Agent Card JSON before signing, ensuring deterministic byte sequences regardless of key ordering
+- **Algorithm**: RS256 (RSA + SHA-256) or ES256 (ECDSA + SHA-256) — implementations MUST support ES256
+
+**Verification flow:**
+1. Recipient fetches the Agent Card from `/.well-known/agent-card.json`
+2. Fetches the signing public key from the `jwks_uri` declared in the card (or from a trusted key registry)
+3. Applies RFC 8785 canonicalization to the card body
+4. Verifies the JWS signature over the canonical bytes
+5. Checks that the `iss` (issuer) in the JWS header matches the agent's declared domain
+
+**Trust model:** Signed cards anchor to a PKI-like trust hierarchy. The signing key's certificate chain traces back to an issuing authority — either a public CA, an organization-internal CA, or a trusted key registry operated by the `a2aproject`. Unsigned cards may still be used in closed deployments where trust is established by other means (network topology, mTLS).
 
 ---
 
@@ -286,6 +317,7 @@ If `Required ⊄ Allowed`, the handoff must not proceed. The task should transit
 
 - [[a2a-mcp-contrast]]
 - [[a2a-capability-lattice]]
+- [[ap2-agent-payments]]
 - [[agentic-protocols]]
 - [[community-protocol-trust-substrate]]
 - [[capability-lattice-spec]]
