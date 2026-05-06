@@ -549,12 +549,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Verbalized Sampling</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">hostname</span><span class="fm-val">LYRA</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">vs-sampling, llm-diversity-recovery, mode-collapse-mitigation</span></span>
+<span class="fm-field"><span class="fm-key">hostname</span><span class="fm-val">LYRA</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Verbalized Sampling</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Verbalized Sampling</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
@@ -589,18 +589,31 @@
 <li>it suggests that prompt-layer control can recover parts of the model&#39;s hidden option space
 </li>
 </ul>
-<p>The broader implication is that agent quality cannot be judged only by correctness and harmlessness. For simulation, ideation, synthetic data, or exploratory agents, <strong>variance is part of capability</strong>.</p>
+<h2>Technical Implementation</h2>
+<p>The paper defines several implementation patterns for eliciting distributions:</p>
+<h3>1. The Standard Prompt</h3>
+<p>Request $k$ responses with verbalized probabilities in a structured format (JSON). &gt; &quot;Generate 5 responses to the input prompt... Return the responses in JSON format... each includes a &lt;text&gt; and a numeric &lt;probability&gt; relative to the full distribution.&quot;</p>
+<h3>2. VS-CoT (Reasoning-Integrated)</h3>
+<p>Incorporates Chain-of-Thought before the distribution verbalization. &gt; &quot;First, provide a single &#39;reasoning&#39; field... detailing your step-by-step thought process. Then, return the output in JSON format with 5 responses and probabilities.&quot;</p>
+<h3>3. Diversity Tuning (P% Constraint)</h3>
+<p>Explicitly constraining the model to sample from low-probability regions. &gt; &quot;Randomly sample from the distribution, where the probability of each response must be below [threshold].&quot;</p>
+<h2>Scaling &amp; Compatibility</h2>
+<ul>
+<li><strong>Model Scale Law:</strong> Performance gains from VS are positively correlated with model scale. Larger, more capable models (e.g., GPT-4.1, Claude 4) handle the cognitive burden of probability estimation and structured output better than smaller models.
+</li>
+<li><strong>Orthogonality:</strong> VS gains are <strong>independent of temperature and top-p</strong>. Combining VS with traditional temperature scaling or min-p sampling creates a superior diversity-quality Pareto front than using either method alone.
+</li>
+</ul>
 <h2>Why It Fits This Vault</h2>
 <p>This concept belongs in the vault because it connects agent behavior, evaluation, and workflow engineering:</p>
 <ul>
-<li>prompt design becomes a control surface for capability recovery
+<li><strong>Prompt design</strong> becomes a control surface for capability recovery.
 </li>
-<li>transcript-driven iteration becomes a way to compare output modes
+<li><strong>Multi-agent loops</strong> can use VS to generate diverse plans, mitigating &quot;groupthink&quot; or mode collapse in orchestration.
 </li>
-<li>note synthesis can preserve not just conclusions, but alternate framings
+<li><strong>Synthetic Data</strong> pipelines can use VS to generate diverse &quot;hard negatives&quot; (plausible but incorrect paths) for better model training.
 </li>
 </ul>
-<p>The audio series processed here repeatedly converged on the same thesis: a model with huge latent breadth can still behave like a one-lane system if post-training incentives overvalue familiarity.</p>
 <hr>
 <h2>See Also</h2>
 <ul>
@@ -629,13 +642,17 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="agent-diversity-scaling.html" class="">agent-diversity-scaling</a></li>
 <li><a href="experiment-capture-protocol.html" class="">experiment-capture-protocol</a></li>
 <li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="">gemini-orchestration-research-handoff-2026-05-06</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="maker-checker-pattern.html" class="">maker-checker-pattern</a></li>
 <li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
 <li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
+<li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
 <li><a href="verbalized-sample-skill.html" class="">verbalized-sample-skill</a></li>
 <li><a href="verbalized-sampling-experiment.html" class="">verbalized-sampling-experiment</a></li>
 <li><a href="verbalized-sampling-ps-scripts.html" class="">verbalized-sampling-ps-scripts</a></li>

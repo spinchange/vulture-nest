@@ -549,11 +549,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[mcp-moc|MCP]] Transport</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-stdio, mcp-sse, mcp-http</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">mcp-stdio, mcp-sse, mcp-http, mcp-tasks, mcp-v2-transport</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[mcp-moc|MCP]] Transport</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-06</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
     </header>
@@ -565,40 +565,84 @@
       <main class="content-zone" id="content">
         <h1>MCP Transport</h1>
 <p>The <strong>Transport Layer</strong> in MCP manages how messages are framed and delivered between participants. By abstracting the transport, the same <strong><a href="mcp-architecture.html" class="wikilink">Data Layer</a></strong> (JSON-RPC) can be used across different connection types.</p>
+<h2>MCP v2 Transport Landscape</h2>
+<p>The <strong>2025-03-26</strong> spec revision (MCP v2) canonicalized <strong>Streamable HTTP</strong> as the production transport for all remote connections and deprecated the earlier dedicated SSE endpoint pattern. Any new remote MCP server should implement Streamable HTTP; Stdio remains the correct choice for local in-process servers.</p>
+<table>
+<thead><tr>
+<th>Transport</th>
+<th>Deployment</th>
+<th>MCP v2 Status</th>
+</tr></thead><tbody>
+<tr>
+<td>Stdio</td>
+<td>Same machine, child process</td>
+<td>Production — unchanged</td>
+</tr>
+<tr>
+<td>Streamable HTTP</td>
+<td>Any network boundary</td>
+<td>Production — canonical remote transport</td>
+</tr>
+<tr>
+<td>Legacy HTTP+SSE</td>
+<td>Separate POST + SSE endpoints</td>
+<td>Deprecated in MCP v2</td>
+</tr>
+</tbody>
+</table>
 <h2>Supported Mechanisms</h2>
 <h3>1. Stdio Transport (Local)</h3>
 <p>Uses Standard Input/Output streams for communication between processes on the same machine.</p>
 <ul>
 <li><strong>Mechanism</strong>: The Host spawns the Server as a child process.
 </li>
-<li><strong>Framing</strong>: Messages are typically delimited by newlines. Each line must be a valid JSON-RPC 2.0 object.
+<li><strong>Framing</strong>: Messages are delimited by newlines. Each line must be a valid JSON-RPC 2.0 object.
 </li>
-<li><strong>Constraint</strong>: Servers must <strong>never</strong> log to <code>stdout</code> (standard output) as it corrupts the protocol stream. All logging must be redirected to <code>stderr</code>.
+<li><strong>Constraint</strong>: Servers must <strong>never</strong> log to <code>stdout</code> — it corrupts the protocol stream. All logging goes to <code>stderr</code>.
+</li>
+<li><strong>Auth</strong>: Not required — process isolation is the trust boundary. Use environment variables or embedded credentials.
 </li>
 </ul>
 <h3>2. Streamable HTTP Transport (Remote)</h3>
-<p>Enables communication over a network, allowing the Host and Server to reside on different machines.</p>
+<p>Single-endpoint transport that unifies request/response and server push over HTTP.</p>
 <ul>
-<li><strong>Client-to-Server</strong>: Messages are sent via standard <strong>HTTP POST</strong> requests.
+<li><strong>Client-to-Server</strong>: Messages sent via <strong>HTTP POST</strong> to a single MCP endpoint (e.g., <code>/mcp</code>).
 </li>
-<li><strong>Server-to-Client</strong>: Messages are streamed using <strong>Server-Sent Events (SSE)</strong>. This allows the server to push notifications or results without a preceding request.
+<li><strong>Server-to-Client</strong>: Server can respond with either a standard JSON body (for short operations) or an <strong>SSE stream</strong> (<code>Content-Type: text/event-stream</code>) for incremental results and push notifications.
 </li>
-<li><strong>Security</strong>: Supports standard web authentication (OAuth 2.1, Bearer tokens, API keys).
+<li><strong>Security</strong>: OAuth 2.1 with Bearer tokens is the mandated auth scheme. See <a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>.
+</li>
+<li><strong>Key improvement over legacy SSE</strong>: The server can choose response mode per-request — immediate JSON or streaming SSE — without the client needing a separate subscription endpoint.
 </li>
 </ul>
+<h2>MCP v2 Tasks Primitive</h2>
+<p>MCP v2 introduced a <strong>Tasks</strong> resource type, enabling servers to model long-running operations explicitly rather than forcing callers to poll external state. A tool call may return a <code>task</code> reference instead of an immediate result:</p>
+<pre><code>{
+  &quot;type&quot;: &quot;task&quot;,
+  &quot;id&quot;: &quot;task_abc123&quot;,
+  &quot;status&quot;: &quot;submitted&quot;,
+  &quot;statusUrl&quot;: &quot;https://server.example.com/tasks/task_abc123&quot;
+}</code></pre>
+<p>Task lifecycle states mirror the A2A pattern (see <a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>):</p>
+<pre><code>submitted → working → completed
+                    ↘ failed
+                    ↘ canceled</code></pre>
+<p>The client polls <code>statusUrl</code> or subscribes via SSE for <code>TaskStatusUpdateEvent</code> frames. This closes the gap between MCP&#39;s stateless tool model and real-world long-running operations (batch jobs, file exports, model inference queues) without requiring a separate A2A peer relationship.</p>
 <h2>Message Framing</h2>
-<p>The transport layer ensures that the continuous stream of bytes is correctly parsed into individual JSON-RPC messages. In Stdio, this is line-based; in SSE, it follows the <code>data:</code> prefix and double-newline terminator specified by the SSE standard.</p>
+<p>In Stdio: line-delimited JSON. In Streamable HTTP: standard HTTP body for JSON responses, <code>data:</code> prefix with double-newline terminator for SSE frames. The framing layer is transport-specific; the JSON-RPC payload above it is identical.</p>
 <hr>
 <h2>See Also</h2>
 <ul>
 <li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
 </li>
+<li><a href="mcp-authorization.html" class="wikilink">mcp-authorization</a>
+</li>
 <li><a href="mcp-server-development.html" class="wikilink">mcp-server-development</a>
+</li>
+<li><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a>
 </li>
 <li><a href="agentic-protocols.html" class="wikilink">agentic-protocols</a>
 </li>
-</ul>
-<ul>
 <li><a href="lit-mcp-architecture.html" class="wikilink">lit-mcp-architecture</a>
 </li>
 </ul>
@@ -615,6 +659,7 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="">gemini-orchestration-research-handoff-2026-05-06</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-debugging.html" class="">mcp-debugging</a></li>
@@ -622,12 +667,15 @@
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-remote-connections.html" class="">mcp-remote-connections</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="agentic-protocols.html" class="">agentic-protocols</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
+<li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 </ul>

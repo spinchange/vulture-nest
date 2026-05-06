@@ -549,11 +549,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">verbalized-sampling-paper</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">VERBALIZED SAMPLING: HOW TO MITIGATE MODE COLLAPSE AND UNLOCK LLM DIVERSITY</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-28</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
       </div>
     </header>
@@ -572,13 +572,20 @@
 <ul>
 <li><strong>Typicality Bias:</strong> Human annotators tend to favor responses that are familiar, fluent, and predictable (typical), even if they are not the most useful or creative.
 </li>
-<li><strong>Mode Collapse:</strong> Post-training alignment (RLHF, DPO) sharpens the probability distribution around these typical responses (the &quot;mode&quot;), suppressing the model&#39;s inherent diversity and &quot;long-tail&quot; knowledge.
+<li><strong>Mathematical Model:</strong> The reward function $r(x, y)$ is modeled as a combination of true task utility $r_{true}$ and typicality bias:
+<p>$$r(x, y) = r_{true}(x, y) + \alpha \log \pi_{ref}(y | x) + \epsilon(x)$$ where $\alpha$ is the typicality weight.</p>
+</li>
+<li><strong>Mode Collapse:</strong> RLHF optimization sharpens the reference distribution $\pi_{ref}$ by a factor $\gamma = 1 + \alpha/\beta$, where $\beta$ is the KL coefficient. This compresses probability mass toward typical completions.
 </li>
 </ul>
-<h3>Verbalized Sampling (VS)</h3>
-<p>Instead of a direct prompt (e.g., &quot;Tell me a joke&quot;), VS reformulates the prompt to ask for multiple responses with their corresponding probabilities:</p>
+<h3>Verbalized Sampling (VS) Primitives</h3>
+<p>Instead of a direct prompt, VS reformulates the prompt to ask for multiple responses ($k$) with their corresponding probabilities:</p>
 <ul>
-<li><strong>Prompt Pattern:</strong> &quot;Generate 5 responses with their corresponding probabilities... sample at random from the full distribution / tails.&quot;
+<li><strong>VS-Standard:</strong> Single-turn request for $k$ responses and probabilities.
+</li>
+<li><strong>VS-CoT:</strong> Combines VS with Chain-of-Thought (e.g., &quot;Think step-by-step, then tell 5 jokes with probabilities&quot;). This often achieves the highest quality/diversity Pareto front.
+</li>
+<li><strong>VS-Multi:</strong> Elicits responses across multiple turns (e.g., &quot;Tell 5 jokes... then tell 5 more&quot;). This reduces cognitive burden and improves diversity in larger models.
 </li>
 <li><strong>Mechanism:</strong> Verbalizing probabilities helps the model bypass the collapsed mode of the policy and access the broader distribution learned during pre-training.
 </li>
@@ -592,6 +599,17 @@
 <li><strong>Findings:</strong> Lowering $p$ (e.g., from 1.0 down to 0.001) significantly increases output diversity. Lower thresholds (e.g., $p &lt; 0.01$) can lead to empty outputs in constrained answer spaces (like Open-Ended QA) but are highly effective for creative writing.
 </li>
 <li><strong>Significance:</strong> This provides a practical, inference-time mechanism for fine-grained diversity control without altering decoding parameters like temperature or top-p.
+</li>
+</ul>
+<h2>Empirical Findings &amp; Ablations</h2>
+<ul>
+<li><strong>Scaling:</strong> More capable models (e.g., GPT-4.1, Gemini 2.5 Pro, Claude 4) benefit significantly more from VS than smaller models.
+</li>
+<li><strong>Orthogonality:</strong> VS performance gains are orthogonal to temperature scaling and decoding strategies like top-p and min-p sampling, allowing them to be combined for further improvement.
+</li>
+<li><strong>Benchmarks:</strong> Verified across Creative Writing (PoemHunter/BookMIA), Dialogue Simulation (PersuasionForGood), and Open-Ended QA (CoverageQA).
+</li>
+<li><strong>Synthetic Data:</strong> VS improves downstream math task performance when used for synthetic data generation (mix of correct and diverse incorrect reasoning paths).
 </li>
 </ul>
 <h3>Mode-Anchored Departure (Approach B)</h3>
@@ -639,7 +657,9 @@
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
+<li><a href="agent-diversity-scaling.html" class="">agent-diversity-scaling</a></li>
 <li><a href="experiments-moc.html" class="">experiments-moc</a></li>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="">gemini-orchestration-research-handoff-2026-05-06</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
