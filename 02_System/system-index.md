@@ -19,6 +19,7 @@
 - [[mcp-agent-skills]] - Bridge between MCP tools and agent capabilities.
 - [[mcp-best-practices]] - Operational patterns for discovery, code mode, and security hardening.
 - [[mcp-authorization]] - OAuth 2.1 authorization flow and remote-server consent boundary.
+- [[mcp-transport]] - MCP v2 transport layer: Streamable HTTP, Stdio, and Tasks primitive.
 - [[spec-chatgpt-web-mcp-wrapper]] - Remote MCP wrapper for ChatGPT web access to the vault.
 
 ## 💻 Programming Languages
@@ -39,6 +40,17 @@
 - [[protocol-source-ingestion-runbook]] - Operational protocol for external source ingestion.
 - [[hierarchical-graph-synthesis]] - Spec for automated vault synthesis.
 - [[the-compounding-artifact]] - The core philosophy of the Vulture Nest.
+
+## 🤝 A2A Protocol
+- [[a2a-protocol]] - A2A v1.0 stable spec: Tasks, Signed Agent Cards, delegation, handoffs.
+- [[a2a-mcp-contrast]] - Vertical (MCP) vs Horizontal (A2A) protocol axis.
+- [[ap2-agent-payments]] - AP2 sub-protocol for autonomous agent micropayments.
+- [[maker-checker-pattern]] - MAK-CHK / Debate pattern for hallucination mitigation.
+
+## 🧩 Retrieval & RAG
+- [[modular-rag-hub]] - Adaptive Routing, Self-RAG, Hyperbolic Embeddings, GraphRAG hybrid.
+- [[agentic-rag]] - Autonomous retrieval and self-correction patterns.
+- [[graphrag-concepts]] - Graph-based retrieval and global summarization.
 
 ## 🏗️ Software Methodology
 - [[project-definition-framework]] - Structured methodology for project initiation.
@@ -62,11 +74,11 @@
 - [[rust-type-systems]] - Deep dive into Rust safety and types.
 
 ## 📬 Active Handoffs
-- [[gemini-orchestration-research-handoff-2026-05-06]] - Handoff for hardening MCP v2, A2A v1.0, and Modular RAG based on 2026 research.
 - [[language-root-hardening-plan-2026-05-02]] - Prioritized plan for hardening Rust, Python, PowerShell, and TypeScript hubs.
 - [[wiki-expansion-opportunities-2026-05-02]] - Prioritized roadmap for vault deepening and expansion.
 
 ## 🏁 Completed Handoffs
+- [[gemini-orchestration-research-handoff-2026-05-06]] - Completed: MCP v2, A2A v1.0, Modular RAG, MAK-CHK hardening.
 - [[anthropic-broad-intake-packet-2026-05-02]] - Completed: broad intake packet that defined the Anthropic documentation expansion lane.
 - [[codex-post-anthropic-synthesis-handoff-2026-05-02]] - Completed: maintenance, graph sync, and portal rebuild after the Anthropic advanced-capabilities batch.
 - [[gemini-openai-symphony-spec-research-handoff-2026-05-03]] - Completed: Research and ingestion of the OpenAI Symphony specification.
