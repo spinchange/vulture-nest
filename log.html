@@ -531,6 +531,8 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
+      <a href="sitemap.html">SITEMAP</a>
+      <span class="sep">/</span>
       <span>log</span>
       <div class="topbar-search">
         <input
@@ -559,6 +561,42 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-17] Claude — Session Types Cluster</h2>
+<p><strong>Directive</strong>: Execute <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> — create the session types knowledge cluster identified as highest-priority theoretical gap on 2026-04-26.</p>
+<p><strong>Notes Created (3):</strong></p>
+<ul>
+<li><a href="session-types.html" class="wikilink">session-types</a> — New permanent note: foundational theory. Covers Honda 1993 binary session types, linear vs. affine types (the &quot;exactly once&quot; vs. &quot;at most once&quot; distinction), duality, branching (⊕/&amp;), recursion (μX), Multiparty Session Types (MPST) for N-party protocols, connection to capability lattice, and MCP lifecycle as a session type.
+</li>
+<li><a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> — New permanent note: practical encoding. Covers the phantom type simulation (<code>PhantomData&lt;S&gt;</code> state markers, <code>self</code>-consuming operations), the <code>session-types</code> crate (Honda binary session types, canonical), the <code>dialectic</code> crate (async/Tokio, modern ergonomics), the affine &quot;must complete&quot; limitation and <code>Drop</code> panic workaround, recursive protocols, and a worked MCP-style handshake example.
+</li>
+<li><a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a> — New spec note (<code>status: draft</code>): MCP lifecycle as a binary session type. Covers the three-phase lifecycle formalized as a session type expression, server dual derivation, table of violations currently undetectable at compile time, phantom-typed MCP client SDK sketch (compile-time phase enforcement), orthogonality to the capability lattice, and open questions (MCP v2 Tasks, notification demultiplexing, SDK migration cost).
+</li>
+</ul>
+<p><strong>Index Updated:</strong></p>
+<ul>
+<li><a href="index.html" class="wikilink">index</a> — Added &quot;Session Types&quot; section with all three notes before Protocol Bridges.
+</li>
+</ul>
+<p><strong>Handoff Closed:</strong></p>
+<ul>
+<li><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> — Archived. All deliverables completed. (Updates to <code>capability-lattice-spec</code> &#167;7 and <code>community-protocol-trust-substrate</code> Key Nodes were already present from a prior session — not duplicated.)
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
+<h2>[2026-05-07] Claude — Shared Memory Blackboard Pattern</h2>
+<p><strong>Directive</strong>: Close remaining item from <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> — &quot;RAG-backed Shared Context (Blackboard)&quot; was not completed in the 2026-05-06 session.</p>
+<p><strong>Notes Created (1):</strong></p>
+<ul>
+<li><a href="shared-memory-blackboard.html" class="wikilink">shared-memory-blackboard</a> — New permanent note: classical blackboard architecture mapped onto modern RAG-backed multi-agent coordination. Covers structure (Knowledge Sources / Blackboard / Controller), write/read flow, when to use, contrast table vs. state-transfer/A2A/LangGraph/maker-checker, implementation notes (metadata schema, vector store options), failure modes, and relationship to <a href="memory-spectrum.html" class="wikilink">memory-spectrum</a>.
+</li>
+</ul>
+<p><strong>Graph Wired:</strong></p>
+<ul>
+<li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> — Added &quot;Shared State &amp; Memory&quot; section with <a href="shared-memory-blackboard.html" class="wikilink">shared-memory-blackboard</a> as first entry.
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
+<p><strong>Handoff status</strong>: <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> fully closed.</p>
 <h2>[2026-05-06] Claude — Protocol Stability + Modular RAG + MAK-CHK</h2>
 <p><strong>Directive</strong>: Execute <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> — three priority batches from Gemini&#39;s May 2026 research scan.</p>
 <p><strong>Notes Hardened (4):</strong></p>
@@ -2428,6 +2466,7 @@
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
 <li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
 <li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
 <li><a href="modular-rag-hub.html" class="">modular-rag-hub</a></li>
@@ -2497,7 +2536,10 @@
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
 <li><a href="Session%202026-05-02.html" class="">Session 2026-05-02</a></li>
+<li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
+<li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
+<li><a href="shared-memory-blackboard.html" class="">shared-memory-blackboard</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 <li><a href="software-design-principles.html" class="">software-design-principles</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>

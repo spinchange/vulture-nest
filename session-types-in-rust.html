@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Session Types in [[rust]] — Vulture Portal</title>
+  <title>Session Types in Rust — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -531,7 +531,9 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Session Types in [[rust]]</span>
+      <a href="sitemap.html">SITEMAP</a>
+      <span class="sep">/</span>
+      <span>Session Types in Rust</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -547,14 +549,14 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Session Types in [[rust]]</h1>
+      <h1 class="note-title">Session Types in Rust</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">session-types-rust, phantom-session, dialectic-crate, session-types-crate</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types in [[rust]]</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-17</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types in Rust</span></span>
       </div>
     </header>
 
@@ -564,244 +566,178 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Session Types in Rust</h1>
-<p><strong>Prerequisite:</strong> <a href="session-types.html" class="wikilink">session-types</a> for theory, <a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a> for the Rust type machinery.</p>
-<p>Rust has no native linear type system. It has an <strong>affine</strong> type system: ownership enforces &quot;use at most once&quot; but permits silent drop. Session types require a stricter discipline. This note covers how Rust encodes session types despite this limitation, what the encoding can and cannot enforce, and where the remaining gap lies.</p>
+<p>Rust has no native linear type system — its ownership model is *affine* (use at most once), not *linear* (use exactly once). This means Rust cannot natively enforce session types in the strict Honda sense: a session channel that is dropped mid-protocol will compile without error unless explicitly guarded. Despite this, Rust can encode session types using <strong>phantom types</strong> as state markers, achieving compile-time protocol enforcement for the common cases.</p>
+<p>This note covers the encoding mechanism, the two main crates, the affine limitation and its workaround, and a worked example.</p>
 <hr>
 <h2>1. The Phantom Type Simulation</h2>
-<p>The canonical Rust approach encodes the current protocol state as a phantom type parameter on a channel wrapper struct. Crucially, every operation that advances the session <strong>consumes <code>self</code></strong> (takes ownership) and returns a *new channel value* whose phantom type has been updated to reflect the next protocol state.</p>
-<h3>The mechanism</h3>
+<p>The core technique: represent the *current state* of a session as a phantom type parameter on a channel struct. Each <code>send</code> or <code>recv</code> operation <strong>consumes</strong> the channel (<code>self</code>, not <code>&amp;self</code>) and returns a new channel with an updated phantom type. Because the old channel is moved (consumed), it cannot be used again — enforcing the &quot;at most once&quot; invariant at the type level.</p>
 <pre><code>use std::marker::PhantomData;
+use std::sync::mpsc::{channel, Sender, Receiver};
 
-// The channel wrapper. `S` is the current session type — it is never stored,
-// only used as a compile-time proof that the channel is in state S.
+// Protocol state markers (zero-sized types)
+struct SendState;
+struct RecvState;
+struct Done;
+
+// Session channel — the phantom type S encodes the current protocol state
 struct Chan&lt;S&gt; {
-    inner: /* underlying transport */,
+    tx: Sender&lt;String&gt;,
+    rx: Receiver&lt;String&gt;,
     _state: PhantomData&lt;S&gt;,
 }
 
-// Session type tokens — zero-sized types used as state markers
-struct Send&lt;T, S&gt;(PhantomData&lt;(T, S)&gt;);  // !T.S
-struct Recv&lt;T, S&gt;(PhantomData&lt;(T, S)&gt;);  // ?T.S
-struct End;</code></pre>
-<p>Operations consume the current channel and produce the next one:</p>
-<pre><code>impl&lt;T: Serialize, S&gt; Chan&lt;Send&lt;T, S&gt;&gt; {
-    fn send(self, value: T) -&gt; Chan&lt;S&gt; {
-        // serialize value and write to transport
-        Chan { inner: self.inner, _state: PhantomData }
+impl Chan&lt;SendState&gt; {
+    // Sending consumes Chan&lt;SendState&gt;, returns Chan&lt;RecvState&gt;
+    fn send(self, msg: String) -&gt; Chan&lt;RecvState&gt; {
+        self.tx.send(msg).unwrap();
+        Chan { tx: self.tx, rx: self.rx, _state: PhantomData }
     }
 }
 
-impl&lt;T: DeserializeOwned, S&gt; Chan&lt;Recv&lt;T, S&gt;&gt; {
-    fn recv(self) -&gt; (T, Chan&lt;S&gt;) {
-        // read from transport and deserialize
-        let value: T = /* ... */;
-        (value, Chan { inner: self.inner, _state: PhantomData })
+impl Chan&lt;RecvState&gt; {
+    // Receiving consumes Chan&lt;RecvState&gt;, returns (String, Chan&lt;Done&gt;)
+    fn recv(self) -&gt; (String, Chan&lt;Done&gt;) {
+        let msg = self.rx.recv().unwrap();
+        (msg, Chan { tx: self.tx, rx: self.rx, _state: PhantomData })
     }
 }
 
-impl Chan&lt;End&gt; {
-    fn close(self) { /* send close frame, drop transport */ }
+impl Chan&lt;Done&gt; {
+    fn close(self) { /* channel dropped */ }
 }</code></pre>
-<p>The key property: <code>Chan&lt;Send&lt;T, S&gt;&gt;</code> only has a <code>send</code> method. Calling <code>recv</code> or <code>close</code> on it is a compile-time type error. After <code>send</code>, the channel becomes <code>Chan&lt;S&gt;</code> — the next state. The type checker enforces the sequence.</p>
-<h3>Why <code>self</code> (not <code>&amp;self</code>)</h3>
-<p>Taking <code>self</code> by value is what makes the session linear-ish. Once you call <code>.send(v)</code>, the <code>Chan&lt;Send&lt;T,S&gt;&gt;</code> is moved out of your hands. You cannot call <code>.send</code> again on the original — Rust&#39;s ownership prevents it. This is the affine type system enforcing the &quot;at most once&quot; constraint automatically.</p>
+<p>Calling <code>send</code> on a <code>Chan&lt;RecvState&gt;</code> is a <strong>compile-time type error</strong> — the method simply does not exist in that state. The protocol is enforced without any runtime checks.</p>
 <hr>
 <h2>2. The <code>session-types</code> Crate</h2>
-<p>The canonical Rust implementation of Honda&#39;s binary session types. Published as <code>session-types</code> on crates.io; the academic reference is &quot;Session Types for Rust&quot; (Jespersen, Munksgaard, Larsen, 2015).</p>
-<h3>Basic API</h3>
+<p>The <a href="https://crates.io/crates/session-types"><code>session-types</code></a> crate by Thomas Bracht Laumann Jespersen et al. (&quot;Session Types for Rust&quot;, 2015) is the canonical implementation of Honda&#39;s binary session types in Rust.</p>
+<p><strong>Protocol DSL:</strong></p>
 <pre><code>use session_types::*;
 
-// Define the session type aliases
-type Client = Send&lt;String, Recv&lt;i64, Eps&gt;&gt;;  // !String.?i64.End
-type Server = &lt;Client as HasDual&gt;::Dual;      // ?String.!i64.End
-
-fn client(c: Chan&lt;(), Client&gt;) {
-    let c = c.send(&quot;hello&quot;.to_string());   // Chan&lt;(), Recv&lt;i64, Eps&gt;&gt;
-    let (n, c) = c.recv();                 // Chan&lt;(), Eps&gt;
-    c.close();
-    println!(&quot;Got: {}&quot;, n);
-}
-
-fn server(c: Chan&lt;(), Server&gt;) {
-    let (s, c) = c.recv();                 // Chan&lt;(), Send&lt;i64, Eps&gt;&gt;
-    let c = c.send(s.len() as i64);        // Chan&lt;(), Eps&gt;
+// Protocol: client sends a u32, receives a String, then closes
+type ClientProto = Send&lt;u32, Recv&lt;String, Eps&gt;&gt;;
+// Server dual is derived automatically: Recv&lt;u32, Send&lt;String, Eps&gt;&gt;
+type ServerProto = &lt;ClientProto as HasDual&gt;::Dual;</code></pre>
+<p>The crate provides: <code>Send&lt;T, S&gt;</code>, <code>Recv&lt;T, S&gt;</code>, <code>Eps</code> (end), <code>Offer&lt;S, T&gt;</code> (external choice), <code>Choose&lt;S, T&gt;</code> (internal choice), and <code>Rec&lt;S&gt;</code> (recursive protocol).</p>
+<p><strong>Usage:</strong></p>
+<pre><code>fn client(c: Chan&lt;(), ClientProto&gt;) {
+    let c = c.send(42u32);       // Chan&lt;(), Recv&lt;String, Eps&gt;&gt;
+    let (s, c) = c.recv();       // Chan&lt;(), Eps&gt;
+    println!(&quot;Got: {}&quot;, s);
     c.close();
 }
 
-fn main() {
-    let (client_chan, server_chan) = session_channel();
-    std::thread::spawn(move || server(server_chan));
-    client(client_chan);
+fn server(c: Chan&lt;(), ServerProto&gt;) {
+    let (n, c) = c.recv();       // Chan&lt;(), Send&lt;String, Eps&gt;&gt;
+    let c = c.send(format!(&quot;Got {}&quot;, n));
+    c.close();
 }</code></pre>
-<p><code>session_channel()</code> produces a pair <code>(Chan&lt;(), S&gt;, Chan&lt;(), S::Dual&gt;)</code> — the duality constraint is enforced at construction. You cannot create a mismatched channel pair.</p>
-<h3>Branching</h3>
-<pre><code>type WithChoice = Choose&lt;Send&lt;String, Eps&gt;, Send&lt;i64, Eps&gt;&gt;;  // select string path or int path
-type WithOffer  = Offer&lt;Recv&lt;String, Eps&gt;, Recv&lt;i64, Eps&gt;&gt;;   // offer: other party picks
-
-fn chooser(c: Chan&lt;(), WithChoice&gt;) {
-    // pick the left branch
-    let c = c.sel1();   // Chan&lt;(), Send&lt;String, Eps&gt;&gt;
-    c.send(&quot;left&quot;.to_string()).close();
-}
-
-fn offerer(c: Chan&lt;(), WithOffer&gt;) {
-    offer!(c, {
-        String =&gt; { let (s, c) = c.recv(); c.close(); println!(&quot;String: {s}&quot;); }
-        i64    =&gt; { let (n, c) = c.recv(); c.close(); println!(&quot;i64: {n}&quot;); }
-    });
-}</code></pre>
+<p><strong>Key property:</strong> <code>session_types</code> uses a macro to spawn both ends with matching types, guaranteeing duality at the call site.</p>
 <hr>
 <h2>3. The <code>dialectic</code> Crate</h2>
-<p>A more ergonomic, modern alternative with async support via Tokio. Written by David Thrane Christiansen. The type-level protocol description is expressed as Rust types rather than explicit state machines.</p>
-<h3>Differences from <code>session-types</code></h3>
-<table>
-<thead><tr>
-<th>Feature</th>
-<th><code>session-types</code></th>
-<th><code>dialectic</code></th>
-</tr></thead><tbody>
-<tr>
-<td>Async</td>
-<td>No (blocking channels)</td>
-<td>Yes (Tokio)</td>
-</tr>
-<tr>
-<td>Ergonomics</td>
-<td>Explicit type aliases, verbose</td>
-<td>Procedural macros, terser</td>
-</tr>
-<tr>
-<td>Recursive types</td>
-<td>Supported</td>
-<td>Supported</td>
-</tr>
-<tr>
-<td>Branching syntax</td>
-<td><code>choose!</code> / <code>offer!</code> macros</td>
-<td><code>choose!</code> / <code>offer!</code> macros, improved</td>
-</tr>
-<tr>
-<td>Production readiness</td>
-<td>Academic/experimental</td>
-<td>More actively maintained</td>
-</tr>
-</tbody>
-</table>
-<h3>Example</h3>
+<p><a href="https://crates.io/crates/dialectic"><code>dialectic</code></a> by Cole Lawrence is a modern alternative with async support via Tokio. It is more ergonomic for production use and handles the async executor requirements of contemporary Rust networking code.</p>
+<p><strong>Session type definition:</strong></p>
 <pre><code>use dialectic::prelude::*;
+use dialectic::backend::mpsc;
 
-// Protocol definition via type alias
-type EchoOnce = Session! {
-    send String;
+// Same protocol: send u32, receive String, close
+type ClientProto = Session! {
+    send u32;
     recv String;
-};
-
-async fn echo_client(chan: Chan&lt;EchoOnce, impl Transmit&lt;String&gt; + Receive&lt;String&gt;&gt;) {
-    let chan = chan.send(&quot;hello&quot;.to_string()).await.unwrap();
-    let (msg, chan) = chan.recv().await.unwrap();
-    chan.close();
-    println!(&quot;Echo: {msg}&quot;);
+};</code></pre>
+<p>The <code>Session!</code> macro provides a readable DSL that compiles to the phantom-type encoding. <code>dialectic</code> supports async send/recv natively via <code>tokio::sync::mpsc</code> or user-supplied backends.</p>
+<p><strong>Usage:</strong></p>
+<pre><code>async fn client(c: Chan&lt;ClientProto, mpsc::Sender, mpsc::Receiver&gt;) {
+    let c = c.send(42u32).await.unwrap();
+    let (s, c) = c.recv().await.unwrap();
+    println!(&quot;Got: {}&quot;, s);
+    c.close();
 }</code></pre>
-<p>The <code>Session! { ... }</code> macro translates a readable protocol description into the phantom-type encoding.</p>
+<p><strong>When to choose <code>dialectic</code> over <code>session-types</code>:</strong></p>
+<ul>
+<li>Async/await code (Tokio ecosystem)
+</li>
+<li>More ergonomic protocol DSL for complex branching
+</li>
+<li>Active maintenance and ongoing development
+</li>
+</ul>
 <hr>
-<h2>4. The &quot;Must Complete&quot; Limitation</h2>
-<p>Rust&#39;s affine type system enforces &quot;at most once&quot; — but session types need &quot;exactly once.&quot; The gap: <strong>a <code>Chan&lt;S&gt;</code> can be dropped mid-session without a compile error.</strong></p>
-<pre><code>fn incomplete_client(c: Chan&lt;Send&lt;String, Recv&lt;i64, Eps&gt;&gt;&gt;) {
-    let _c = c.send(&quot;hello&quot;.to_string());
-    // _c goes out of scope here — Recv&lt;i64, Eps&gt; never consumed
-    // Rust: fine. Real session type: type error.
+<h2>4. The &quot;Must Complete&quot; Limitation and the Workaround</h2>
+<p>Rust&#39;s affine ownership means a channel *may* be dropped without being closed. The following code compiles even though the protocol is incomplete:</p>
+<pre><code>fn broken_client(c: Chan&lt;(), ClientProto&gt;) {
+    let c = c.send(42u32);
+    // c is dropped here without calling recv() or close()
+    // This compiles! No error.
 }</code></pre>
-<p>The underlying transport connection may now be in an undefined state on the server side.</p>
-<h3>The standard workaround: panicking <code>Drop</code></h3>
-<p>Both <code>session-types</code> and <code>dialectic</code> implement <code>Drop</code> on the channel type in a way that panics if the session is dropped in any state other than <code>Eps</code>/<code>End</code>:</p>
-<pre><code>impl&lt;S&gt; Drop for Chan&lt;S&gt; {
+<p>In a true linear type system, this would be a type error. In Rust, it is silent.</p>
+<p><strong>Workaround: <code>Drop</code> panic</strong></p>
+<p>Both <code>session-types</code> and <code>dialectic</code> implement <code>Drop</code> on session channels with a panic if the channel is dropped in a non-<code>Eps</code>/non-<code>Done</code> state:</p>
+<pre><code>impl&lt;S: HasDual&gt; Drop for Chan&lt;S&gt; {
     fn drop(&amp;mut self) {
-        // Check if S == Eps (the only valid terminal state).
-        // If not, panic — someone dropped the channel mid-session.
-        if std::any::TypeId::of::&lt;S&gt;() != std::any::TypeId::of::&lt;Eps&gt;() {
-            panic!(&quot;Session channel dropped in non-terminal state&quot;);
+        if TypeId::of::&lt;S&gt;() != TypeId::of::&lt;Eps&gt;() {
+            panic!(&quot;Session channel dropped before protocol completion!&quot;);
         }
     }
 }</code></pre>
-<p>This converts the type-level failure into a runtime panic — better than a silent bug, worse than a compile error. The theoretical gap between affine and linear types cannot be fully closed without language-level linear type support.</p>
+<p>This converts the silent compile-time miss into a loud runtime panic. It is not as strong as a linear type system (the error appears at runtime, not compile time) but catches the bug deterministically in tests and development.</p>
+<p><strong>Practical guidance:</strong> In application code, session channels should always be consumed to <code>Eps</code>/<code>Done</code> at the end of every code path. Treat a <code>Drop</code> panic as a programmer error equivalent to an unwrapped <code>None</code> on a required value.</p>
 <hr>
-<h2>5. Putting It Together: A Typed <a href="mcp-moc.html" class="wikilink">MCP</a> Initialization Handshake</h2>
-<p>The following sketches what an MCP client SDK would look like if it used session types. This is illustrative — a complete implementation is specified in <a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>.</p>
-<pre><code>// Session type aliases for MCP initialization
-type McpInit = Send&lt;Initialize, Recv&lt;InitializeResult, Send&lt;Initialized, McpActive&gt;&gt;&gt;;
+<h2>5. Recursive Protocols</h2>
+<p>Looping protocols use <code>Rec</code> in <code>session-types</code> or <code>loop</code> in <code>dialectic</code>:</p>
+<pre><code>// session-types: server that handles multiple requests
+type ServerLoop = Rec&lt;Recv&lt;String, Send&lt;String, Var&lt;Z&gt;&gt;&gt;&gt;;
 
-// McpActive is recursive: loop over tool calls and notifications until End
-type McpActive = rec!(
-    Offer&lt;
-        Recv&lt;ToolCall, Send&lt;ToolResult, Var&lt;Z&gt;&gt;&gt;,  // server sends tool call, client responds
-        End                                         // close the session
-    &gt;
-);
+// dialectic: equivalent
+type ServerLoop = Session! {
+    loop {
+        recv String;
+        send String;
+    }
+};</code></pre>
+<p><code>Var&lt;Z&gt;</code> in <code>session-types</code> is the recursive variable — a de Bruijn index pointing to the enclosing <code>Rec</code>. Each iteration of the loop consumes and produces a new channel with the looping phantom type.</p>
+<hr>
+<h2>6. Worked Example: MCP-Style Handshake</h2>
+<p>A simplified two-step MCP handshake (Initialize → Active) in <code>dialectic</code>:</p>
+<pre><code>use dialectic::prelude::*;
 
-// A function that can only be called AFTER initialization is complete
-// — because it takes `Chan&lt;McpActive&gt;`, not `Chan&lt;McpInit&gt;`
-async fn call_tool(
-    chan: Chan&lt;McpActive&gt;,
-    call: ToolCall,
-) -&gt; (ToolResult, Chan&lt;McpActive&gt;) {
+// Handshake: client sends InitRequest, receives InitResult, then enters active loop
+type McpHandshake = Session! {
+    send InitRequest;
+    recv InitResult;
+    loop {
+        choose {
+            0 =&gt; { send ToolCall; recv ToolResult; }
+            1 =&gt; { recv Notification; }
+            2 =&gt; {}  // close
+        }
+    }
+};
+
+async fn mcp_client(mut c: Chan&lt;McpHandshake, /* ... */&gt;) {
+    let c = c.send(InitRequest::default()).await.unwrap();
+    let (result, c) = c.recv().await.unwrap();
+    assert!(result.ok);
+    // Now in the active loop — can only send ToolCall or receive Notification
+    // Attempting to send InitRequest here is a compile-time error
+    let c = c.choose::&lt;0&gt;().await.unwrap();  // choose tool call branch
+    let c = c.send(ToolCall { name: &quot;readFile&quot;.into(), args: json!({}) }).await.unwrap();
+    let (result, c) = c.recv().await.unwrap();
     // ...
-}
-
-// Calling call_tool with a Chan&lt;McpInit&gt; is a type error — enforced at compile time.</code></pre>
+}</code></pre>
+<p>The full, rigorous MCP lifecycle mapping — including the Initialize/Active/Closed phases — is developed in <a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>.</p>
 <hr>
-<h2>6. Summary</h2>
-<table>
-<thead><tr>
-<th>Property</th>
-<th>What Rust enforces</th>
-<th>What remains a gap</th>
-</tr></thead><tbody>
-<tr>
-<td>Correct message type at each step</td>
-<td>Yes — phantom type on channel</td>
-<td>—</td>
-</tr>
-<tr>
-<td>Correct sequence of send/recv</td>
-<td>Yes — consuming <code>self</code> prevents reuse</td>
-<td>—</td>
-</tr>
-<tr>
-<td>Duality between two ends</td>
-<td>Yes — <code>session_channel()</code> enforces it</td>
-<td>—</td>
-</tr>
-<tr>
-<td>Protocol must be completed</td>
-<td>No — <code>Drop</code> panic is runtime, not compile</td>
-<td>Requires linear types</td>
-</tr>
-<tr>
-<td>Async protocol execution</td>
-<td>Yes (via <code>dialectic</code>)</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<p>Session types in Rust provide strong, compile-time protocol conformance with one known gap: incomplete sessions fail at runtime via panic rather than at compile time. For most agent infrastructure purposes, the compile-time guarantees are the valuable part — the runtime panic is still a significant improvement over silent protocol violations.</p>
-<hr>
-<h2>References</h2>
+<h2>See Also</h2>
 <ul>
-<li>Jespersen, T.B.L., Munksgaard, P., Larsen, K.F. (2015). &quot;Session Types for Rust.&quot; 11th ACM SIGPLAN Workshop on Generic Programming.
+<li><a href="session-types.html" class="wikilink">session-types</a> — The foundational theory: Honda 1993, linear vs. affine, MPST, duality
 </li>
-<li>Christiansen, D.T. <code>dialectic</code> crate documentation: docs.rs/dialectic.
+<li><a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a> — MCP lifecycle as a session type (spec, status: draft)
 </li>
-<li><code>session-types</code> crate: crates.io/crates/session-types.
+<li><a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a> — The <code>PhantomData&lt;T&gt;</code> mechanism underlying the encoding
 </li>
-<li><a href="session-types.html" class="wikilink">session-types</a>
+<li><a href="rust-affine-types.html" class="wikilink">rust-affine-types</a> — Why Rust&#39;s ownership is affine, not linear; the precise safety gap
 </li>
-<li><a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a>
+<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a> — Ownership and move semantics — the enforcement mechanism
 </li>
-<li><a href="rust-generics-and-traits.html" class="wikilink">rust-generics-and-traits</a>
-</li>
-<li><a href="rust-ownership.html" class="wikilink">rust-ownership</a>
-</li>
-<li><a href="rust-affine-types.html" class="wikilink">rust-affine-types</a>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> — The capability existence complement; &#167;7 on sequencing
 </li>
 </ul>
       </main>
@@ -818,6 +754,7 @@ async fn call_tool(
 <ul>
 <li><a href="claude-rust-type-system-handoff.html" class="">claude-rust-type-system-handoff</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
@@ -825,11 +762,10 @@ async fn call_tool(
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="rust.html" class="">rust</a></li>
+<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="rust-affine-types.html" class="">rust-affine-types</a></li>
-<li><a href="rust-generics-and-traits.html" class="">rust-generics-and-traits</a></li>
 <li><a href="rust-ownership.html" class="">rust-ownership</a></li>
+<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
 </ul>

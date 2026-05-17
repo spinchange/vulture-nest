@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Session Types — [[mcp-moc|MCP]] Lifecycle Mapping — Vulture Portal</title>
+  <title>Session Types — MCP Lifecycle Mapping — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -531,7 +531,9 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
-      <span>Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</span>
+      <a href="sitemap.html">SITEMAP</a>
+      <span class="sep">/</span>
+      <span>Session Types — MCP Lifecycle Mapping</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -547,14 +549,14 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</h1>
+      <h1 class="note-title">Session Types — MCP Lifecycle Mapping</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-17</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types — [[mcp-moc|MCP]] Lifecycle Mapping</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-draft">draft</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Session Types — MCP Lifecycle Mapping</span></span>
       </div>
     </header>
 
@@ -563,236 +565,171 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Session Types: MCP Lifecycle Mapping</h1>
-<p>&gt; <strong>Status: draft.</strong> This note applies session types formalism to MCP&#39;s lifecycle. The theory is established (see <a href="session-types.html" class="wikilink">session-types</a>); the specific mapping to MCP and the phantom-type client sketch are speculative-but-grounded — they are not yet an implemented library or a published proposal. Treat as a design argument, not a reference.</p>
-<p><strong>Context:</strong> <a href="mcp-architecture.html" class="wikilink">mcp-architecture</a> documents MCP&#39;s three-phase stateful lifecycle. <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> covers the phantom-type encoding. This note bridges the two: expressing MCP&#39;s lifecycle as a session type, identifying what violations the current protocol cannot prevent, and sketching what a typed MCP SDK would look like.</p>
+        <h1>Session Types — MCP Lifecycle Mapping</h1>
+<p><strong>Status: DRAFT.</strong> This note makes a novel claim — that MCP&#39;s connection lifecycle can be expressed as a binary session type and that encoding it in the SDK would catch a class of protocol violations at compile time. The claim is grounded in the MCP specification and in established session type theory (<a href="session-types.html" class="wikilink">session-types</a>, <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a>), but the specific encoding and the phantom-typed SDK sketch are not established in the MCP or Rust literature. Treat as speculative-but-grounded.</p>
 <hr>
-<h2>1. MCP&#39;s Lifecycle as a Session Type</h2>
-<p>MCP defines three connection phases:</p>
-<ol>
-<li><strong>Initialize</strong>: client sends <code>initialize</code> (with protocol version, client capabilities), server replies <code>InitializeResult</code> (with server capabilities), client sends <code>notifications/initialized</code>.
-</li>
-<li><strong>Active session</strong>: arbitrary interleaving of tool calls, resource reads, and lifecycle notifications.
-</li>
-<li><strong>Shutdown</strong>: client sends <code>shutdown</code> (or simply closes the transport).
-</li>
-</ol>
-<p>This is a textbook session type. Expressed formally (client&#39;s perspective):</p>
-<pre><code>McpClient =
-    !Initialize .
-    ?InitializeResult .
-    !Initialized .
-    ActiveClient
-
-ActiveClient = rec α .
-    ( !ToolsCall  . ?ToolsResult  . α           -- client-initiated tool invocation
-    ⊕ !ResourcesRead . ?ResourcesResult . α     -- client-initiated resource read
-    ⊕ ?ToolsListChanged . α                     -- server-pushed notification
-    ⊕ ?ResourcesListChanged . α                 -- server-pushed notification
-    ⊕ End )                                      -- client initiates shutdown</code></pre>
-<p>The server&#39;s session type is the dual:</p>
-<pre><code>McpServer =
-    ?Initialize .
-    !InitializeResult .
-    ?Initialized .
-    ActiveServer
-
-ActiveServer = rec α .
-    ( ?ToolsCall  . !ToolsResult  . α
-    &amp; ?ResourcesRead . !ResourcesResult . α
-    &amp; !ToolsListChanged . α
-    &amp; !ResourcesListChanged . α
-    &amp; End )</code></pre>
-<p><strong>Notation:</strong> <code>!T</code> = send, <code>?T</code> = receive, <code>⊕</code> = internal choice (sender selects), <code>&amp;</code> = external choice (receiver waits for sender&#39;s selection), <code>rec α . S</code> = recursive session with loop variable <code>α</code>, <code>End</code> = session terminated. See <a href="session-types.html" class="wikilink">session-types</a> &#167;2 for the full grammar.</p>
-<h3>Reading the client type</h3>
-<p>The client type says, in sequence: send <code>Initialize</code>, receive <code>InitializeResult</code>, send <code>Initialized</code>, then enter a loop. In the loop the client either:</p>
-<ul>
-<li>Initiates a tool call (<code>⊕</code>-branches 1–2, internal choice: client decides)
-</li>
-<li>Receives a server-pushed notification (<code>?ToolsListChanged</code>, <code>?ResourcesListChanged</code> — but note: these arrive asynchronously, which complicates strict binary session sequencing; see &#167;3)
-</li>
-<li>Closes the session
-</li>
-</ul>
-<p>The server type is the dual: every <code>!</code> becomes <code>?</code> and every <code>⊕</code> becomes <code>&amp;</code>.</p>
+<h2>1. MCP&#39;s Stateful Lifecycle</h2>
+<p>MCP connections move through three phases defined in the specification (see <a href="mcp-transport.html" class="wikilink">mcp-transport</a>):</p>
+<p><strong>Phase 1 — Initialize</strong> The client sends <code>initialize</code> with its protocol version and client info. The server responds with <code>InitializeResult</code> (server info, capabilities, protocol version). The client then sends <code>notifications/initialized</code>. Only after this exchange is the session fully established.</p>
+<p><strong>Phase 2 — Active</strong> The session is operational. The client may invoke tools (<code>tools/call</code>), list capabilities (<code>tools/list</code>, <code>resources/list</code>), read resources, make prompts, subscribe to changes, and receive server notifications. Tool calls and responses may interleave with notifications.</p>
+<p><strong>Phase 3 — Closed</strong> Either party may close the connection. The session is terminal.</p>
+<p>The protocol violation MCP cannot currently prevent statically: a client that calls <code>tools/call</code> before sending <code>notifications/initialized</code> is in Phase 1 still. The server may reject it at runtime, or may not — depending on implementation. The MCP SDK types do not prevent the call.</p>
 <hr>
-<h2>2. Protocol Violations the Current Implementation Cannot Prevent</h2>
-<p>MCP is implemented as a JSON-RPC 2.0 layer over stdio or HTTP/SSE. Neither transport nor the protocol library enforces state ordering. The following violations are currently possible at runtime:</p>
-<h3>Violation A: Tool call before <code>initialized</code></h3>
-<p>A client implementation that calls <code>tools/call</code> before sending <code>notifications/initialized</code> is a protocol error (MCP spec &#167;4.2: &quot;Clients MUST NOT send requests other than <code>initialize</code> before receiving the result and sending <code>notifications/initialized</code>&quot;). The spec says this, but no type in any current MCP SDK makes it a compile error. The SDK&#39;s <code>tools/call</code> method is available on the client object from the moment it is constructed.</p>
-<p><strong>Session type diagnosis:</strong> <code>tools/call</code> belongs to <code>ActiveClient</code>, which is only reachable after the <code>!Initialized</code> step. A channel typed at <code>McpClient</code> has no <code>call_tool</code> method — only <code>send_initialize</code>. The method doesn&#39;t exist until the session has advanced.</p>
-<h3>Violation B: Double initialization</h3>
-<p>A client that sends <code>initialize</code> twice on the same connection sends a message that the server has no valid response for after the first handshake completes. Current SDKs do not prevent this.</p>
-<p><strong>Session type diagnosis:</strong> <code>!Initialize</code> appears exactly once in <code>McpClient</code> (not under <code>rec</code>). After <code>send_initialize</code> is called, the channel type advances to <code>Recv&lt;InitializeResult, ...&gt;</code>, which has no <code>send_initialize</code> method. Attempting to call it a second time is a type error — the channel doesn&#39;t exist in a state where it&#39;s valid.</p>
-<h3>Violation C: Continuing after <code>End</code></h3>
-<p>A client that sends further requests after issuing <code>shutdown</code> is violating the protocol. Current SDK: no enforcement.</p>
-<p><strong>Session type diagnosis:</strong> <code>close()</code> (the <code>End</code> operation) consumes the channel by value. After <code>c.close()</code>, <code>c</code> is gone — the compiler prevents any further use.</p>
-<h3>Violation D: Notifications sent during initialization</h3>
-<p>The MCP spec prohibits certain server notifications until after the initialization handshake is complete. A server that pushes <code>notifications/tools/list_changed</code> before the client has sent <code>notifications/initialized</code> is out of sequence.</p>
-<p><strong>Session type diagnosis:</strong> <code>!ToolsListChanged</code> only appears in <code>ActiveServer</code>, not in the initialization prefix. A server channel typed at <code>McpServer</code> has no <code>send_tools_list_changed</code> method until it reaches <code>ActiveServer</code>.</p>
-<hr>
-<h2>3. Complication: Asynchronous Notifications</h2>
-<p>MCP allows server-pushed notifications (<code>tools/list_changed</code>, <code>resources/list_changed</code>) to arrive at any point during <code>ActiveClient</code>. Binary session types as formulated by Honda 1993 are <strong>synchronous</strong> — each step in the session is a sequential send or receive. Asynchronous, server-initiated notifications do not fit naturally into the binary sequential model.</p>
-<p>Two approaches exist:</p>
-<p><strong>Option A: Model notifications as interleaved external choices.</strong> The <code>ActiveClient</code> loop treats each iteration as an external choice: either the client initiates a request, or the server sends a notification. This requires the client to begin each iteration by waiting for a server message, which does not match MCP&#39;s request/response structure.</p>
-<p><strong>Option B: Separate channels for requests vs. notifications.</strong> Model the MCP session as two concurrent channels — one for the request/response protocol (strictly typed), one for the server-pushed notification stream (a separate session type). This matches MCP&#39;s actual implementation (HTTP+SSE uses separate streams for requests and notifications).</p>
-<pre><code>McpSession = (RequestChannel, NotificationChannel)
+<h2>2. The Session Type</h2>
+<p>Using the notation from <a href="session-types.html" class="wikilink">session-types</a> &#167;1–5, MCP&#39;s lifecycle expressed as a binary session type from the <strong>client&#39;s perspective</strong>:</p>
+<pre><code>McpSession =
+    !Initialize.
+    ?InitializeResult.
+    !Initialized.
+    ActiveSession
 
-RequestChannel =
-    !Initialize . ?InitializeResult . !Initialized .
-    rec α . ( !AnyRequest . ?AnyResponse . α ) ⊕ End
-
-NotificationChannel = rec α . ?AnyNotification . α</code></pre>
-<p>The two channels are created simultaneously at connection time but typed independently. This is multiparty session types with two participants plus a server-push channel, expressible in MPST (see <a href="session-types.html" class="wikilink">session-types</a> &#167;6).</p>
-<p>For the phantom-type encoding in &#167;4 below, Option B is used: separate channel structs for the request protocol and the notification stream.</p>
-<hr>
-<h2>4. Sketch: A Phantom-Type MCP Client SDK</h2>
-<p>This is what an MCP client library would look like if it used the session-type encoding from <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a>. The method set available on the client changes at compile time as the session progresses.</p>
-<pre><code>use std::marker::PhantomData;
-
-// Protocol state markers (zero-sized, never instantiated)
-struct Uninit;         // Before send_initialize
-struct AwaitingResult; // After send_initialize, before recv_initialize_result
-struct AwaitingNotif;  // After recv_initialize_result, before send_initialized
-struct Active;         // After send_initialized — tool calls valid here
-struct Closed;         // After close() — no methods available
-
-// The MCP client handle, parameterized by protocol state
-struct McpClient&lt;S&gt; {
-    transport: Transport,
-    _state: PhantomData&lt;S&gt;,
-}
-
-// Phase 1: Only send_initialize is available
-impl McpClient&lt;Uninit&gt; {
-    pub fn new(transport: Transport) -&gt; Self {
-        McpClient { transport, _state: PhantomData }
-    }
-
-    pub async fn send_initialize(self, params: Initialize)
-        -&gt; Result&lt;McpClient&lt;AwaitingResult&gt;, McpError&gt;
-    {
-        self.transport.send_request(&quot;initialize&quot;, params).await?;
-        Ok(McpClient { transport: self.transport, _state: PhantomData })
-    }
-    // No call_tool(), no send_initialized() — they don&#39;t exist yet
-}
-
-// Phase 2: Wait for InitializeResult
-impl McpClient&lt;AwaitingResult&gt; {
-    pub async fn recv_initialize_result(self)
-        -&gt; Result&lt;(InitializeResult, McpClient&lt;AwaitingNotif&gt;), McpError&gt;
-    {
-        let result = self.transport.recv_response::&lt;InitializeResult&gt;().await?;
-        Ok((result, McpClient { transport: self.transport, _state: PhantomData }))
-    }
-}
-
-// Phase 3: Send initialized notification
-impl McpClient&lt;AwaitingNotif&gt; {
-    pub async fn send_initialized(self)
-        -&gt; Result&lt;McpClient&lt;Active&gt;, McpError&gt;
-    {
-        self.transport.send_notification(&quot;notifications/initialized&quot;, ()).await?;
-        Ok(McpClient { transport: self.transport, _state: PhantomData })
-    }
-}
-
-// Phase 4: Active session — tool calls and resource reads are now valid
-impl McpClient&lt;Active&gt; {
-    pub async fn call_tool(
-        &amp;self,                          // Note: &amp;self, not self — Active loops
-        params: CallToolParams,
-    ) -&gt; Result&lt;CallToolResult, McpError&gt; {
-        self.transport.send_request(&quot;tools/call&quot;, params).await
-    }
-
-    pub async fn read_resource(
-        &amp;self,
-        params: ReadResourceParams,
-    ) -&gt; Result&lt;ReadResourceResult, McpError&gt; {
-        self.transport.send_request(&quot;resources/read&quot;, params).await
-    }
-
-    pub fn close(self) -&gt; McpClient&lt;Closed&gt; {
-        drop(self.transport); // sends close frame
-        McpClient { transport: /* closed */, _state: PhantomData }
-    }
-}
-
-// Closed state: no methods — compiler prevents any further use
-impl McpClient&lt;Closed&gt; {}</code></pre>
-<h3>What this enforces at compile time</h3>
-<pre><code>// This compiles:
-async fn correct_usage(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
-    let client = McpClient::new(transport);
-    let client = client.send_initialize(init_params).await?;
-    let (result, client) = client.recv_initialize_result().await?;
-    let client = client.send_initialized().await?;
-    let tool_result = client.call_tool(tool_params).await?;
-    client.close();
-    Ok(())
-}
-
-// This does NOT compile — call_tool on McpClient&lt;Uninit&gt; has no such method:
-async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
-    let client = McpClient::new(transport);
-    let result = client.call_tool(tool_params).await?;  // error[E0599]
-    Ok(())
+ActiveSession = μX. ⊕{
+    toolCall:    !ToolCall.?ToolResult.X,
+    listTools:   !ListToolsRequest.?ListToolsResult.X,
+    readResource: !ReadResourceRequest.?ReadResourceResult.X,
+    receiveNote: ?ServerNotification.X,
+    close:       End
 }</code></pre>
-<p>The error message would be: <code>no method named &#39;call_tool&#39; found for struct &#39;McpClient&lt;Uninit&gt;&#39;</code>. The type checker rejects it before any network connection is made.</p>
+<p><strong>Key:</strong> <code>!T</code> = send, <code>?T</code> = receive, <code>μX</code> = recursive protocol variable, <code>⊕</code> = internal choice (client chooses which branch to take).</p>
+<p>The <strong>server&#39;s dual</strong> (derived automatically via duality rules):</p>
+<pre><code>McpSession̄ =
+    ?Initialize.
+    !InitializeResult.
+    ?Initialized.
+    ActiveSession̄
+
+ActiveSession̄ = μX. &amp;{
+    toolCall:    ?ToolCall.!ToolResult.X,
+    listTools:   ?ListToolsRequest.!ListToolsResult.X,
+    readResource: ?ReadResourceRequest.!ReadResourceResult.X,
+    receiveNote: !ServerNotification.X,
+    close:       End
+}</code></pre>
+<p>The client&#39;s <code>⊕</code> (internal choice — &quot;I decide which message to send next&quot;) dualizes to the server&#39;s <code>&amp;</code> (external choice — &quot;I handle whatever the client sends next&quot;).</p>
 <hr>
-<h2>5. Relationship to the Capability Lattice</h2>
-<p>The <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> and session types answer orthogonal questions that together constitute the full trust guarantee:</p>
+<h2>3. What Current MCP Clients Cannot Enforce</h2>
+<p>Given the session type above, the following violations are detectable at compile time if the type is encoded in the SDK, but are currently only detectable at runtime (if at all):</p>
 <table>
 <thead><tr>
-<th>Question</th>
-<th>Mechanism</th>
-<th>Spec</th>
+<th>Violation</th>
+<th>Session type enforcement</th>
+<th>Current state</th>
 </tr></thead><tbody>
 <tr>
-<td>Is <code>tools/call</code> a registered capability?</td>
-<td>Capability lattice: <code>tools/call ∈ Caps(server)</code></td>
-<td><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> &#167;4</td>
+<td><code>tools/call</code> before <code>notifications/initialized</code></td>
+<td>Type error — channel is in <code>!Initialized</code> state, <code>toolCall</code> branch does not exist yet</td>
+<td>Runtime only, server-dependent</td>
 </tr>
 <tr>
-<td>Is <code>tools/call</code> valid *right now*?</td>
-<td>Session type: current state ∈ <code>ActiveClient</code></td>
-<td>This note</td>
+<td>Second <code>initialize</code> after handshake complete</td>
+<td>Type error — <code>ActiveSession</code> has no <code>!Initialize</code> branch</td>
+<td>Runtime only</td>
+</tr>
+<tr>
+<td>Using a closed channel</td>
+<td>Type error — <code>End</code> has no operations</td>
+<td>Panics or returns error depending on transport</td>
+</tr>
+<tr>
+<td>Calling <code>listTools</code> after <code>close</code> branch taken</td>
+<td>Type error — channel is in <code>End</code> state</td>
+<td>Undefined behavior / silent</td>
 </tr>
 </tbody>
 </table>
-<p>An agent that has <code>tools/call</code> in its capability set but calls it in the <code>Uninit</code> state violates the protocol despite having the capability. The lattice alone cannot catch this. Only the session type can.</p>
-<p>The composition of the two:</p>
-<pre><code>Safe(agent, operation, state) iff
-    operation ∈ Caps(agent)          ← capability lattice
-    AND state → operation is valid    ← session type</code></pre>
-<p>Both conditions must hold. The lattice is the static capability map; the session type is the dynamic permission slice that is valid in the current state.</p>
 <hr>
-<h2>6. Next Steps for This Spec</h2>
-<p>This note is <code>status: draft</code> because the phantom-type SDK (&#167;4) does not yet exist as a library. To move to <code>active</code>:</p>
-<ol>
-<li>Implement the <code>McpClient&lt;S&gt;</code> state machine as a published <a href="rust.html" class="wikilink">rust</a> crate.
-</li>
-<li>Handle the async notification channel (Option B from &#167;3) explicitly.
-</li>
-<li>Handle the branching in <code>ActiveClient</code> — currently <code>call_tool</code> and <code>read_resource</code> both use <code>&amp;self</code> (stateless, can be called in any order), which elides the loop structure. A strict session encoding would use <code>self</code> and return the next state after each call.
-</li>
-<li>Validate against an actual MCP server (e.g., the reference implementation) that the compiled client cannot send out-of-order messages.
-</li>
-</ol>
+<h2>4. Phantom-Typed MCP Client Sketch</h2>
+<p>Using the <code>dialectic</code>-style encoding from <a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a>, a session-typed MCP client library would expose methods only valid in the current phase. The type of the channel changes as the protocol progresses.</p>
+<pre><code>use dialectic::prelude::*;
+use serde_json::Value;
+
+// MCP protocol phases as zero-sized state markers
+struct Uninitialized;
+struct Initializing;   // after sending Initialize, before receiving InitializeResult
+struct Established;    // active session
+struct Closed;
+
+// MCP session channel — phantom type encodes current phase
+struct McpChannel&lt;Phase&gt; {
+    inner: transport::Channel,
+    _phase: PhantomData&lt;Phase&gt;,
+}
+
+impl McpChannel&lt;Uninitialized&gt; {
+    /// Start the MCP handshake. Only callable in the Uninitialized state.
+    async fn initialize(
+        self,
+        req: InitializeRequest,
+    ) -&gt; Result&lt;McpChannel&lt;Initializing&gt;, McpError&gt; {
+        self.inner.send_request(&quot;initialize&quot;, req).await?;
+        Ok(McpChannel { inner: self.inner, _phase: PhantomData })
+    }
+}
+
+impl McpChannel&lt;Initializing&gt; {
+    /// Receive the server&#39;s response. Only callable after sending Initialize.
+    async fn receive_result(
+        self,
+    ) -&gt; Result&lt;(InitializeResult, McpChannel&lt;Established&gt;), McpError&gt; {
+        let result = self.inner.recv_response::&lt;InitializeResult&gt;().await?;
+        // Send the required notifications/initialized
+        self.inner.send_notification(&quot;notifications/initialized&quot;, ()).await?;
+        Ok((result, McpChannel { inner: self.inner, _phase: PhantomData }))
+    }
+}
+
+impl McpChannel&lt;Established&gt; {
+    /// Call a tool. Only callable in the Established state.
+    async fn tool_call(
+        &amp;self,
+        name: &amp;str,
+        args: Value,
+    ) -&gt; Result&lt;ToolResult, McpError&gt; {
+        self.inner.send_request(&quot;tools/call&quot;, ToolCallParams { name, arguments: args }).await?;
+        self.inner.recv_response::&lt;ToolResult&gt;().await
+    }
+
+    /// Close the session. Consumes the channel and returns the terminal state.
+    async fn close(self) -&gt; McpChannel&lt;Closed&gt; {
+        let _ = self.inner.close().await;
+        McpChannel { inner: self.inner, _phase: PhantomData }
+    }
+}
+
+// McpChannel&lt;Closed&gt; has no methods — protocol is terminal.
+// McpChannel&lt;Uninitialized&gt; has no tool_call method — compile error if attempted.</code></pre>
+<p>With this encoding, the following code <strong>does not compile:</strong></p>
+<pre><code>// Error: method `tool_call` not found for type `McpChannel&lt;Uninitialized&gt;`
+let result = channel.tool_call(&quot;readFile&quot;, json!({&quot;path&quot;: &quot;/etc/passwd&quot;})).await;</code></pre>
+<p>The error appears at compile time, before the code ever runs.</p>
 <hr>
-<h2>References</h2>
+<h2>5. Orthogonality to the Capability Lattice</h2>
+<p>The <a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> answers: &quot;Is this tool in the agent&#39;s registered capability set?&quot;</p>
+<p>This note answers: &quot;Is this tool callable *right now* given the current connection phase?&quot;</p>
+<p>The two are independent but compose:</p>
+<pre><code>Safe(client, operation, state) iff
+    operation ∈ Caps(client)              ← capability lattice
+    AND state →operation is valid         ← session type (this spec)</code></pre>
+<p>An agent could have <code>tools/call</code> in its capability set but be in <code>Uninitialized</code> state — the lattice says &quot;allowed&quot;, the session type says &quot;not right now.&quot; Both checks are needed for a complete trust guarantee.</p>
+<hr>
+<h2>6. Limitations and Open Questions</h2>
+<p><strong>MCP v2 complexity:</strong> MCP v2 (2025-03-26) added the Tasks primitive with its own lifecycle states (submitted, working, completed, canceled, failed — see <a href="mcp-transport.html" class="wikilink">mcp-transport</a>). A complete session type for MCP v2 would need to encode <code>Task</code> state alongside the connection phase. The mapping above covers MCP v2&#39;s connection lifecycle; Task state management is a separate (nested) session type not developed here.</p>
+<p><strong>Notifications are not strictly ordered:</strong> MCP servers can send <code>notifications/tools/list_changed</code> at any point in the active session, interleaved with tool call responses. The session type models this as a <code>receiveNote</code> branch but real implementations need to demultiplex notification messages from response messages on the same transport. This is a transport-layer concern the session type does not fully resolve.</p>
+<p><strong>SDK adoption gap:</strong> Implementing phantom-typed channels in a shipping MCP SDK (the TypeScript SDK, the Python SDK, or the Rust SDK) would require breaking changes. The encoding is sound but the migration cost is non-trivial. The value is highest in a greenfield Rust MCP client.</p>
+<hr>
+<h2>See Also</h2>
 <ul>
-<li><a href="session-types.html" class="wikilink">session-types</a>
+<li><a href="session-types.html" class="wikilink">session-types</a> — Foundational theory; notation used in &#167;2 is defined there
 </li>
-<li><a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a>
+<li><a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> — The phantom type encoding; <code>dialectic</code> crate
 </li>
-<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a> — The orthogonal capability existence check; &#167;7 defers to this note for sequencing
 </li>
-<li><a href="mcp-architecture.html" class="wikilink">mcp-architecture</a>
+<li><a href="mcp-transport.html" class="wikilink">mcp-transport</a> — MCP v2 lifecycle specification; the concrete source for the session type in &#167;2
 </li>
-<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a>
+<li><a href="rust-phantom-types.html" class="wikilink">rust-phantom-types</a> — The <code>PhantomData&lt;T&gt;</code> mechanism in &#167;4
+</li>
+<li><a href="community-protocol-trust-substrate.html" class="wikilink">community-protocol-trust-substrate</a> — The motivating architecture argument
 </li>
 </ul>
       </main>
@@ -809,6 +746,8 @@ async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
 <ul>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="claude-session-types-handoff.html" class="">claude-session-types-handoff</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
@@ -818,9 +757,8 @@ async fn premature_call(transport: Transport) -&gt; Result&lt;(), McpError&gt; {
 <ul>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
 <li><a href="community-protocol-trust-substrate.html" class="">community-protocol-trust-substrate</a></li>
-<li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
-<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
-<li><a href="rust.html" class="">rust</a></li>
+<li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="rust-phantom-types.html" class="">rust-phantom-types</a></li>
 <li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
 </ul>
