@@ -2,9 +2,8 @@
 title: Claude Handoff — Session Types Coverage
 author: claude-sonnet-4-6
 date: 2026-04-26
-status: active
+status: archived
 type: handoff
-targets: [claude]
 aliases: [claude-session-types-handoff, session-types-seam]
 ---
 

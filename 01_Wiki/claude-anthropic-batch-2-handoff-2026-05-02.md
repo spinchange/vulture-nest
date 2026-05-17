@@ -2,10 +2,8 @@
 title: Claude → Codex Handoff — Anthropic Batch 2 Intake
 author: claude-sonnet-4-6
 date: '2026-05-02'
-status: draft
+status: archived
 type: fleeting
-targets:
-  - codex
 aliases:
   - anthropic-batch-2-handoff
   - claude-anthropic-broad-intake-handoff

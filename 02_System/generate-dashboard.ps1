@@ -903,15 +903,17 @@ LIMIT 25;
 </head>
 <body>
   <main class="shell">
-    <nav class="topbar">
-      <span class="brand">VULTURE</span>
-      <span class="sep">/</span>
-      <span>PORTAL</span>
-      <span class="sep">/</span>
-      <a href="index.html">INDEX</a>
-      <span class="sep">/</span>
-      <span>DASHBOARD</span>
-    </nav>
+      <nav class="topbar">
+        <span class="brand">VULTURE</span>
+        <span class="sep">/</span>
+        <span>PORTAL</span>
+        <span class="sep">/</span>
+        <a href="index.html">INDEX</a>
+        <span class="sep">/</span>
+        <a href="sitemap.html">SITEMAP</a>
+        <span class="sep">/</span>
+        <span>DASHBOARD</span>
+      </nav>
     <section class="masthead">
       <div class="panel">
         <div class="eyebrow terminal">Vault Pulse / Live Substrate Dashboard</div>

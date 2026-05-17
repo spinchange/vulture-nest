@@ -2,7 +2,7 @@
 title: 'Literature: Agent Development Kit ([[agent-development-kit|ADK]]) Documentation'
 author: gemini-cli
 date: '2026-04-26'
-status: draft
+status: active
 aliases:
   - adk-source
   - adk-docs

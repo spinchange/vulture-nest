@@ -2,7 +2,7 @@
 title: Capability Lattice — Formal Specification
 author: claude-sonnet-4-6
 date: '2026-04-26'
-status: draft
+status: active
 type: permanent
 aliases:
   - capability-lattice

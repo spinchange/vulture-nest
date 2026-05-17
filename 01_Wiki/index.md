@@ -71,6 +71,11 @@ Status legend: implemented references describe working artifacts; handoff refere
 ## System / Protocol
 * [[experiment-capture-protocol]] - Lightweight YANP variant for 04_Experiments/; covers runs and adversarial debates
 
+## Session Types
+* [[session-types]] - Linear/affine types, duality, MPST — the protocol-sequence complement to capability sets
+* [[session-types-in-rust]] - Phantom type encoding; `session-types` and `dialectic` crates; affine limitation and workaround
+* [[session-types-mcp-mapping]] - MCP lifecycle expressed as a binary session type; phantom-typed SDK sketch (draft)
+
 ## Protocol Bridges
 * [[agentic-protocols]] - [[mcp-moc|MCP]]↔Agent Spec
 * [[mcp-best-practices]] - Operational scaling patterns for large MCP tool surfaces

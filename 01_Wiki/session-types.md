@@ -1,195 +1,169 @@
 ---
-title: Session Types — Foundational Reference
+title: Session Types
 author: claude-sonnet-4-6
-date: 2026-04-26
+date: 2026-05-17
 status: active
 type: permanent
-aliases: [session-types, linear-types, affine-types, dyadic-interaction]
+aliases:
+  - session-types
+  - linear-types
+  - multiparty-session-types
+  - mpst
+  - honda-session-types
 ---
 # Session Types
 
-**Origin:** Kohei Honda, "Types for Dyadic Interaction" (CONCUR 1993). Extended to N-party protocols by Honda, Yoshida, and Carbone, "Multiparty Asynchronous Session Types" (POPL 2008).
+A **session type** is a type assigned to a communication channel that encodes the *entire legal sequence of messages* that may flow over it — not merely which messages are possible, but in what order, in which direction, and with what types at each step. Violating the protocol is a type error, detectable at compile time.
+
+Session types were introduced by Kohei Honda in "Types for Dyadic Interaction" (1993) as a discipline for concurrent programs. Their relevance to multi-agent systems is direct: every structured agent interaction — tool invocation, handoff, orchestration handshake — is a protocol, and session types are the formalism that makes protocols first-class types.
 
 ---
 
-## 1. Core Definition
+## 1. The Core Idea
 
-A **session type** is the type of a communication channel. Where an ordinary type describes the shape of a value (e.g., `String`, `i64`), a session type describes the *entire legal sequence of messages* that may flow over a channel — what is sent, what is received, in what order, and in which direction. Violating the protocol is a type error.
+A session type is written as a *sequence of actions* on a channel:
 
-Session types make protocol conformance a static, compile-time property. A program that calls `tools/call` before completing the initialization handshake is not a runtime bug to be caught by a guard — it is a type error, rejected before the program runs.
+```
+!T.S    — send a value of type T, then continue as session S
+?T.S    — receive a value of type T, then continue as session S
+End     — close the channel (protocol complete)
+```
+
+Example — a simple request/response channel:
+
+```
+Client side:  !Request.?Response.End
+Server side:  ?Request.!Response.End
+```
+
+The client sends a `Request`, then waits to receive a `Response`, then closes. The server receives a `Request`, sends a `Response`, then closes. These two types are *dual*: if one end sends, the other receives, at every step. Duality is how session types prove that two participants are talking the same protocol.
 
 ---
 
-## 2. Notation
+## 2. Linear Types — The Foundation
 
-Binary session types use a small grammar. From the perspective of one party:
+Session types rest on **linear types**, a type discipline from linear logic (Girard, 1987). A linear value must be used *exactly once* — it cannot be dropped or duplicated.
 
-| Expression | Meaning |
-|---|---|
-| `!T.S` | Send a value of type `T`, then continue with session type `S` |
-| `?T.S` | Receive a value of type `T`, then continue with session type `S` |
-| `S₁ ⊕ S₂` | **Internal choice**: this party selects which branch to take |
-| `S₁ & S₂` | **External choice**: the other party selects the branch |
-| `End` | Session is complete; channel may be closed |
-| `rec α. S` | Recursive session: `α` is a type variable bound to the whole expression, allowing loops |
+Applied to channels: a session channel is linear. It must be driven through every step of its protocol to completion. Abandoning it mid-session — dropping the channel after the first send without performing the required receive — is a type error.
 
-### Example: Simple RPC
+This "must complete" property is what gives session types their safety guarantee: if the program type-checks, the protocol is guaranteed to terminate correctly from both ends.
 
-```
-Client = !Request.?Response.End
-```
-
-The client sends a `Request`, receives a `Response`, then the session ends. This is binary, two-message, no branching.
-
-### Example: Stateful protocol with loop
-
-```
-Client = !Init.?Ack.Loop
-Loop   = rec α. (?Query.!Result.α) ⊕ End
-```
-
-The client initializes, waits for acknowledgment, then enters a loop: it either sends a `Query` and receives a `Result` (repeating), or terminates.
+**Affine types** (Rust's ownership model) are the relaxation: use *at most once*. A value may be dropped without using it. Rust is an affine type system, not a linear one. The practical consequence for session types in Rust is documented in [[session-types-in-rust]].
 
 ---
 
-## 3. Linear Types vs. Affine Types
+## 3. Duality
 
-Session types are built on **linear types**, which are the foundation of the "use exactly once" guarantee.
+For every session type `S` on one end of a channel, there is a unique *dual* type `S̄` on the other end:
 
-| Type discipline | Rule | What it prevents |
-|---|---|---|
-| **Linear** | Each value must be used *exactly once* — no drop, no copy | Abandoning a session mid-protocol (compiler error); prevents resource leaks and unclosed channels |
-| **Affine** | Each value may be used *at most once* — may be dropped, may not be copied | Double-use; but *silent drop is allowed* |
-| **Unrestricted** | A value may be used any number of times | Nothing; standard types in most languages |
+```
+!T.S  dualizes to  ?T.S̄
+?T.S  dualizes to  !T.S̄
+End   dualizes to  End
+```
 
-A **session channel is a linear type on a channel**: the channel must be driven through every step of its declared protocol to `End`. Abandoning it mid-session — closing the connection before completing the handshake — is a type error in a fully linear type system.
-
-**[[rust]] is affine, not linear.** Rust's ownership system enforces "at most once" (you cannot move a value twice) but allows silent drop (you may simply not use a value). This means Rust can encode session types but cannot natively enforce the "must complete" constraint. See [[session-types-in-rust]] for the workaround.
+Duality is enforced by the type system: if the two ends of a channel do not have dual types, the program does not type-check. This eliminates an entire class of protocol errors — mismatched message types, missing responses, reversed send/receive directions — at compile time.
 
 ---
 
-## 4. Duality
+## 4. Branching and Choice
 
-In a two-party session, the two ends of a channel must have *complementary* types. The **dual** of a session type flips every send into a receive and every receive into a send:
-
-```
-dual(!T.S)      = ?T.dual(S)
-dual(?T.S)      = !T.dual(S)
-dual(S₁ ⊕ S₂) = dual(S₁) & dual(S₂)   ← internal choice becomes external
-dual(S₁ & S₂) = dual(S₁) ⊕ dual(S₂)   ← external becomes internal
-dual(End)       = End
-dual(rec α. S)  = rec α. dual(S)
-```
-
-Duality is the type-level enforcement of protocol agreement. If the client has type `!Request.?Response.End`, the server *must* have type `?Request.!Response.End` — its dual. A type system that checks duality at the point where the two ends of a channel are connected catches mismatched protocol implementations at compile time.
-
-### Duality and [[mcp-moc|MCP]]
-
-In MCP's initialization handshake:
+Real protocols involve choices. Session types extend to branching with `⊕` (internal choice, the sender decides) and `&` (external choice, the receiver decides):
 
 ```
-Client = !Initialize.?InitializeResult.!Initialized.ActiveClient
-Server = ?Initialize.!InitializeResult.?Initialized.ActiveServer
+⊕{ ok: !Result.End, err: !Error.End }   — sender chooses between ok and err branches
+&{ ok: ?Result.End, err: ?Error.End }   — receiver handles either branch
 ```
 
-These are duals. The type system can verify this at the point where an MCP client connects to an MCP server — before any messages are sent.
+The dual of `⊕` is `&` and vice versa. Together, branching session types can express any finite-state protocol.
 
 ---
 
-## 5. Recursion and Choice
+## 5. Recursion
 
-Real protocols are not always linear sequences. Session types handle both loops and branching:
-
-### Recursion
+Protocols that loop (e.g., a server handling multiple requests) are expressed with recursive session types:
 
 ```
-EchoServer = rec α. (?String.!String.α) & End
+μX. ?Request.!Response.X    — server loop: receive, respond, repeat
 ```
 
-The server repeatedly receives a `String` and echoes it back (`α` recurses), until the client signals `End` (external choice for the server; internal choice for the client).
-
-### Branching
-
-Internal choice (`⊕`) means *this party* decides:
-
-```
-Client = !Query.(?Success.End ⊕ ?Error.End)
-```
-
-Wait — this is wrong. The choice here is made by whoever sends the tagged message after `!Query`. Correct reading: the server's response determines the branch, so from the client's view this is external choice (`&`):
-
-```
-Client = !Query.(?Success.End & ?Error.End)
-```
-
-The distinction matters: internal choice means you choose and notify; external choice means you wait to learn which branch the other party chose.
+`μX` binds the type variable `X`, and `X` appears as a continuation, enabling the recursion. This is the type-level analogue of a state machine with a looping state.
 
 ---
 
 ## 6. Multiparty Session Types (MPST)
 
-Binary session types govern two-party channels. **Multiparty session types** (Honda, Yoshida, Carbone 2008) extend the formalism to N-party protocols. The key addition is the **global type**: a single type that describes the complete protocol as seen from above, naming each participant.
+Binary session types (Honda 1993) cover two-party protocols. **Multiparty Session Types** (Honda, Yoshida, Carbone, 2008) extend the formalism to N-party protocols — directly applicable to multi-agent orchestration where more than two agents participate in a workflow.
 
-### Global type notation
-
-```
-A → B: T . G
-```
-
-"Party `A` sends a value of type `T` to party `B`, then protocol `G` continues."
-
-### Example: Three-party agent workflow
+In MPST, a **global type** describes the entire protocol from a bird's-eye view:
 
 ```
-G = Orchestrator → Worker: Task .
-    Worker → Validator: Result .
-    Validator → Orchestrator: ValidationReport .
-    End
+A → B: Request.
+B → C: Forward.
+C → B: Result.
+B → A: Response.
+End
 ```
 
-This global type is then **projected** onto each participant, producing their local (binary) session type:
+The global type specifies who sends what to whom at each step. From it, the type system derives a **local type** for each participant — the session type seen from that participant's perspective. If all local types are projections of the same global type, the N-party protocol is *coherent*: no deadlocks, no message mismatches, no orphaned sends.
 
-```
-Orchestrator_local = !Task.?ValidationReport.End
-Worker_local       = ?Task.!Result.End
-Validator_local    = ?Result.!ValidationReport.End
-```
-
-Projection is automatic and guaranteed to produce dual-consistent local types. If any participant's implementation does not match its local projection, it is a type error.
-
-### Why MPST matters for agents
-
-Multi-agent orchestration is exactly the N-party problem MPST was designed for. An orchestrator that delegates to two subagents, where one subagent's output feeds the other's input, is a three-party session. MPST provides the machinery to:
-
-1. Specify the full workflow protocol as a global type (a design artifact).
-2. Derive each agent's required behavior as a local type (a compile target).
-3. Verify that each agent implementation satisfies its local type (static analysis).
+MPST is directly applicable to multi-agent workflows: each agent is a participant, the orchestration protocol is the global type, and each agent's local type is the sequence of messages it must send and receive.
 
 ---
 
-## 7. Connection to Capability Sets and the Trust Substrate
+## 7. Why This Matters for Agents
 
-Session types and the [[capability-lattice-spec]] are **orthogonal but complementary**:
+### 7.1 Protocol Completeness
 
-| Dimension | Mechanism | Question answered |
-|---|---|---|
-| **What** tools exist | Capability lattice (set of tools in the manifest) | "Is this tool registered?" |
-| **When** tools may be called | Session type (protocol state machine) | "Is calling this tool legal *right now*?" |
+An agent framework that does not use session types can only check capability *existence* (whether a tool is registered). Session types check capability *sequencing* (whether this tool may be called *right now* given the current protocol state). The two are orthogonal — see [[capability-lattice-spec]] §7.
 
-The lattice establishes which operations are in the capability set. The session type establishes which operations are reachable in the current protocol state. Both are needed for the full "trust-by-construction" guarantee that [[community-protocol-trust-substrate]] argues for: a tool that is in the capability set but called out of sequence is still a protocol violation — only session types catch it.
+```
+Safe(agent, operation, state) iff
+    operation ∈ Caps(agent)          ← capability lattice
+    AND state →operation is valid    ← session type
+```
 
-Concretely for MCP: the capability lattice proves that `tools/call` is a registered operation. The session type proves that `tools/call` is only callable *after* the `initialized` notification has been sent. See [[session-types-mcp-mapping]] for the full mapping.
+### 7.2 MCP's Lifecycle is a Session Type
+
+MCP's connection lifecycle is a textbook binary session type:
+
+```
+McpSession = !Initialize.?InitializeResult.!Initialized.ActiveSession
+ActiveSession = μX. (&{ toolCall:   ?ToolCall.!ToolResult.X,
+                         listChange: ?Notification.X,
+                         close:      End })
+```
+
+A client that calls `tools/call` before completing the handshake is attempting to call a method in the wrong phase. With session types encoded in the SDK, this is a compile-time type error. Without them, it is a runtime protocol violation — detectable only if the server validates state, silent otherwise. The full mapping is developed in [[session-types-mcp-mapping]].
+
+### 7.3 Handoffs as Session Types
+
+The [[inter-agent-handoff-protocol]] and [[pattern-progressive-handoff]] patterns describe structured multi-agent ownership transfers. Each handoff is a three-phase protocol (acknowledge, transfer, confirm). An MPST global type for this protocol would make a dropped handoff — an agent that acknowledges but never transfers — a type error, not a silent failure.
 
 ---
 
-## References
+## 8. Relationship to the Capability Lattice
 
-- Honda, K. (1993). "Types for Dyadic Interaction." CONCUR '93, LNCS 715.
-- Honda, K., Yoshida, N., Carbone, M. (2008). "Multiparty Asynchronous Session Types." POPL '08.
-- Yoshida, N., Vasconcelos, V.T. (2007). "Language Primitives and Type Discipline for Structured Communication-Based Programming." ESOP '07.
-- [[capability-lattice-spec]]
-- [[session-types-in-rust]]
-- [[session-types-mcp-mapping]]
-- [[community-protocol-trust-substrate]]
-- [[mcp-architecture]]
+The capability lattice ([[capability-lattice-spec]]) and session types are complementary, not competing:
 
+| Dimension | Mechanism |
+|---|---|
+| What tools exist | Capability lattice — static set of registered operations |
+| When a tool may be called | Session type — dynamic permission slice for current protocol state |
+| Delegation safety | Lattice (you cannot grant what you don't possess) |
+| Handshake correctness | Session type (you cannot skip the initialization phase) |
+
+A fully type-safe agent platform needs both: the lattice for capability governance and session types for protocol sequencing.
+
+---
+
+## See Also
+
+- [[session-types-in-rust]] — Practical encoding using phantom types; `session-types` and `dialectic` crates
+- [[session-types-mcp-mapping]] — MCP lifecycle expressed as a session type (spec, status: draft)
+- [[capability-lattice-spec]] — The capability existence complement; §7 explicitly defers to session types for sequencing
+- [[community-protocol-trust-substrate]] — The community-level argument for trust-by-construction
+- [[rust-phantom-types]] — The Rust mechanism used to simulate session types
+- [[rust-affine-types]] — Why Rust's ownership is affine (not linear) and what this means for session channel safety
+- [[mcp-transport]] — MCP's three-phase stateful lifecycle, the concrete target for [[session-types-mcp-mapping]]
+- [[agentic-protocols]] — A2A and MCP as protocol specifications amenable to session type analysis

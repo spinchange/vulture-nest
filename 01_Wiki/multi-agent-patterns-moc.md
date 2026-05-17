@@ -29,6 +29,11 @@ These patterns define how work moves across agent boundaries.
 - [[pattern-progressive-handoff]] - Gradual transfer of context and control.
 - [[pattern-state-transfer]] - Methods for passing `context_variables` and state across handoffs.
 
+## 🗄️ Shared State & Memory
+These patterns define how agents share knowledge across boundaries without direct coupling.
+
+- [[shared-memory-blackboard|Shared Memory Blackboard]] - RAG-backed store where agents coordinate by writing and retrieving semantically; the modern form of the classical blackboard architecture.
+
 ## 🛡️ Control & Safety
 These patterns define how orchestration stays bounded, auditable, and interruptible.
 

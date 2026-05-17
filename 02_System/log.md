@@ -1,6 +1,39 @@
 # Wiki Log
 
 
+## [2026-05-17] Claude — Session Types Cluster
+
+**Directive**: Execute [[claude-session-types-handoff]] — create the session types knowledge cluster identified as highest-priority theoretical gap on 2026-04-26.
+
+**Notes Created (3):**
+* [[session-types]] — New permanent note: foundational theory. Covers Honda 1993 binary session types, linear vs. affine types (the "exactly once" vs. "at most once" distinction), duality, branching (⊕/&), recursion (μX), Multiparty Session Types (MPST) for N-party protocols, connection to capability lattice, and MCP lifecycle as a session type.
+* [[session-types-in-rust]] — New permanent note: practical encoding. Covers the phantom type simulation (`PhantomData<S>` state markers, `self`-consuming operations), the `session-types` crate (Honda binary session types, canonical), the `dialectic` crate (async/Tokio, modern ergonomics), the affine "must complete" limitation and `Drop` panic workaround, recursive protocols, and a worked MCP-style handshake example.
+* [[session-types-mcp-mapping]] — New spec note (`status: draft`): MCP lifecycle as a binary session type. Covers the three-phase lifecycle formalized as a session type expression, server dual derivation, table of violations currently undetectable at compile time, phantom-typed MCP client SDK sketch (compile-time phase enforcement), orthogonality to the capability lattice, and open questions (MCP v2 Tasks, notification demultiplexing, SDK migration cost).
+
+**Index Updated:**
+* [[index]] — Added "Session Types" section with all three notes before Protocol Bridges.
+
+**Handoff Closed:**
+* [[claude-session-types-handoff]] — Archived. All deliverables completed. (Updates to `capability-lattice-spec` §7 and `community-protocol-trust-substrate` Key Nodes were already present from a prior session — not duplicated.)
+
+**Validation**: `audit-yanp.ps1` — all notes compliant.
+
+
+## [2026-05-07] Claude — Shared Memory Blackboard Pattern
+
+**Directive**: Close remaining item from [[gemini-orchestration-research-handoff-2026-05-06]] — "RAG-backed Shared Context (Blackboard)" was not completed in the 2026-05-06 session.
+
+**Notes Created (1):**
+* [[shared-memory-blackboard]] — New permanent note: classical blackboard architecture mapped onto modern RAG-backed multi-agent coordination. Covers structure (Knowledge Sources / Blackboard / Controller), write/read flow, when to use, contrast table vs. state-transfer/A2A/LangGraph/maker-checker, implementation notes (metadata schema, vector store options), failure modes, and relationship to [[memory-spectrum]].
+
+**Graph Wired:**
+* [[multi-agent-patterns-moc]] — Added "Shared State & Memory" section with [[shared-memory-blackboard]] as first entry.
+
+**Validation**: `audit-yanp.ps1` — all notes compliant.
+
+**Handoff status**: [[gemini-orchestration-research-handoff-2026-05-06]] fully closed.
+
+
 ## [2026-05-06] Claude — Protocol Stability + Modular RAG + MAK-CHK
 
 **Directive**: Execute [[gemini-orchestration-research-handoff-2026-05-06]] — three priority batches from Gemini's May 2026 research scan.

@@ -2,9 +2,8 @@
 title: Claude Handoff — Portal Breadcrumbs and Table Rendering
 author: codex
 date: 2026-04-25
-status: active
+status: archived
 type: permanent
-targets: [claude]
 aliases: [claude-portal-nav-handoff, portal-breadcrumbs-handoff, table-rendering-handoff]
 ---
 

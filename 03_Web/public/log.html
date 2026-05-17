@@ -531,6 +531,8 @@
       <span class="sep">/</span>
       <a href="index.html">INDEX</a>
       <span class="sep">/</span>
+      <a href="sitemap.html">SITEMAP</a>
+      <span class="sep">/</span>
       <span>log</span>
       <div class="topbar-search">
         <input
@@ -559,6 +561,65 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-17] Claude — Session Types Cluster</h2>
+<p><strong>Directive</strong>: Execute <a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> — create the session types knowledge cluster identified as highest-priority theoretical gap on 2026-04-26.</p>
+<p><strong>Notes Created (3):</strong></p>
+<ul>
+<li><a href="session-types.html" class="wikilink">session-types</a> — New permanent note: foundational theory. Covers Honda 1993 binary session types, linear vs. affine types (the &quot;exactly once&quot; vs. &quot;at most once&quot; distinction), duality, branching (⊕/&amp;), recursion (μX), Multiparty Session Types (MPST) for N-party protocols, connection to capability lattice, and MCP lifecycle as a session type.
+</li>
+<li><a href="session-types-in-rust.html" class="wikilink">session-types-in-rust</a> — New permanent note: practical encoding. Covers the phantom type simulation (<code>PhantomData&lt;S&gt;</code> state markers, <code>self</code>-consuming operations), the <code>session-types</code> crate (Honda binary session types, canonical), the <code>dialectic</code> crate (async/Tokio, modern ergonomics), the affine &quot;must complete&quot; limitation and <code>Drop</code> panic workaround, recursive protocols, and a worked MCP-style handshake example.
+</li>
+<li><a href="session-types-mcp-mapping.html" class="wikilink">session-types-mcp-mapping</a> — New spec note (<code>status: draft</code>): MCP lifecycle as a binary session type. Covers the three-phase lifecycle formalized as a session type expression, server dual derivation, table of violations currently undetectable at compile time, phantom-typed MCP client SDK sketch (compile-time phase enforcement), orthogonality to the capability lattice, and open questions (MCP v2 Tasks, notification demultiplexing, SDK migration cost).
+</li>
+</ul>
+<p><strong>Index Updated:</strong></p>
+<ul>
+<li><a href="index.html" class="wikilink">index</a> — Added &quot;Session Types&quot; section with all three notes before Protocol Bridges.
+</li>
+</ul>
+<p><strong>Handoff Closed:</strong></p>
+<ul>
+<li><a href="claude-session-types-handoff.html" class="wikilink">claude-session-types-handoff</a> — Archived. All deliverables completed. (Updates to <code>capability-lattice-spec</code> &#167;7 and <code>community-protocol-trust-substrate</code> Key Nodes were already present from a prior session — not duplicated.)
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
+<h2>[2026-05-07] Claude — Shared Memory Blackboard Pattern</h2>
+<p><strong>Directive</strong>: Close remaining item from <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> — &quot;RAG-backed Shared Context (Blackboard)&quot; was not completed in the 2026-05-06 session.</p>
+<p><strong>Notes Created (1):</strong></p>
+<ul>
+<li><a href="shared-memory-blackboard.html" class="wikilink">shared-memory-blackboard</a> — New permanent note: classical blackboard architecture mapped onto modern RAG-backed multi-agent coordination. Covers structure (Knowledge Sources / Blackboard / Controller), write/read flow, when to use, contrast table vs. state-transfer/A2A/LangGraph/maker-checker, implementation notes (metadata schema, vector store options), failure modes, and relationship to <a href="memory-spectrum.html" class="wikilink">memory-spectrum</a>.
+</li>
+</ul>
+<p><strong>Graph Wired:</strong></p>
+<ul>
+<li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> — Added &quot;Shared State &amp; Memory&quot; section with <a href="shared-memory-blackboard.html" class="wikilink">shared-memory-blackboard</a> as first entry.
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
+<p><strong>Handoff status</strong>: <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> fully closed.</p>
+<h2>[2026-05-06] Claude — Protocol Stability + Modular RAG + MAK-CHK</h2>
+<p><strong>Directive</strong>: Execute <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> — three priority batches from Gemini&#39;s May 2026 research scan.</p>
+<p><strong>Notes Hardened (4):</strong></p>
+<ul>
+<li><a href="mcp-transport.html" class="wikilink">mcp-transport</a> — Added MCP v2 (2025-03-26) canonical framing; Streamable HTTP vs legacy SSE deprecation table; MCP v2 Tasks primitive with lifecycle states and JSON example; updated aliases.
+</li>
+<li><a href="a2a-protocol.html" class="wikilink">a2a-protocol</a> — Updated date; added &quot;Protocol Status: v1.0 (Stable, May 2026)&quot; section with AP2 and Signed Cards callout table; expanded Signed Agent Cards from one-line mention into full subsection (JWS/RFC 7515, RFC 8785 canonicalization, verification flow, trust model); wired <code><a href="ap2-agent-payments.html" class="wikilink">ap2-agent-payments</a></code> into references.
+</li>
+<li><a href="a2a-mcp-contrast.html" class="wikilink">a2a-mcp-contrast</a> — Added Vertical (MCP) / Horizontal (A2A) framing at the top with a two-row summary table; updated date; added <code>mcp-vertical-a2a-horizontal</code> alias.
+</li>
+<li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> — Wired <code><a href="maker-checker-pattern.html" class="wikilink">maker-checker-pattern</a></code> into Control &amp; Safety section.
+</li>
+</ul>
+<p><strong>Notes Created (3):</strong></p>
+<ul>
+<li><a href="ap2-agent-payments.html" class="wikilink">ap2-agent-payments</a> — New permanent note: AP2 sub-protocol for agent-initiated payments (launched with A2A v1.0). Covers Payment Intent, Authorization Envelope, lattice compliance, lifecycle states, A2A Agent Card integration, and security mitigations.
+</li>
+<li><a href="maker-checker-pattern.html" class="wikilink">maker-checker-pattern</a> — New permanent note: MAK-CHK / Debate pattern for hallucination mitigation. Covers three topology variants (Sequential, Debate, Panel), failure modes, relationship to verbalized-sampling and agent-diversity-scaling, and ADK/A2A implementation sketch.
+</li>
+<li><a href="modular-rag-hub.html" class="wikilink">modular-rag-hub</a> — New permanent note: full Modular RAG stack. Covers Adaptive Routing (router types and targets), Self-RAG (decision points, vs Agentic RAG comparison), Hyperbolic Embeddings (Poincar&#233; disk, practical guidance), GraphRAG + agentic planner hybrid. Wired into <a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>.
+</li>
+</ul>
+<p><strong>Validation</strong>: <code>audit-yanp.ps1</code> — all notes compliant.</p>
 <h2>[2026-05-04] Claude — Telephony/Voice-Agent Evaluation (No New Note)</h2>
 <p><strong>Directive</strong>: Fourth lane from <a href="observability-first-expansion-brief-2026-05-04.html" class="wikilink">observability-first-expansion-brief-2026-05-04</a> — evaluate whether telephony/voice-agent coverage warrants a new note.</p>
 <p><strong>Evaluation finding</strong>: &quot;AgentPhone&quot; in the raw ADK docs is a third-party commercial MCP server (<code>agentphone-mcp</code>) integrated via the standard <code>McpToolset</code> pattern. No new ADK primitives, no distinct architectural concept — not sufficient to warrant a dedicated note. The raw corpus also contains real ADK streaming material (<code>Runner.run_live</code>, <code>LiveRequestQueue</code>, <code>SpeechConfig</code>) that <code>adk-moc</code> already advertises as covered by <code>adk-advanced-capabilities</code>, but that note only covered Planning &amp; Code Execution — a genuine gap.</p>
@@ -2182,6 +2243,32 @@
 <li>2026-05-04 10:45:00: gemini-cli created <a href="gemini-content-expansion-handoff-2026-05-04.html" class="wikilink">gemini-content-expansion-handoff-2026-05-04</a> based on content-gap analysis.
 </li>
 </ul>
+<h2>[2026-05-06] Gemini — Research Synthesis: Verbalized Sampling &amp; Diversity Scaling</h2>
+<p><strong>Directive</strong>: Content expansion lane — synthesize research on mode collapse mitigation and diversity scaling.</p>
+<p><strong>Notes Created/Hardened:</strong></p>
+<ul>
+<li><a href="lit-verbalized-sampling-paper.html" class="wikilink">lit-verbalized-sampling-paper</a> (Hardened) — Added mathematical reward model, sharpening exponent ($\gamma$), and specific VS-CoT/VS-Multi variants from source <code>00_Raw/2510.01171v3.pdf</code>.
+</li>
+<li><a href="verbalized-sampling.html" class="wikilink">verbalized-sampling</a> (Hardened) — Added Technical Implementation patterns (Standard, CoT, P% Constraint) and Scaling &amp; Compatibility sections.
+</li>
+<li><a href="agent-diversity-scaling.html" class="wikilink">agent-diversity-scaling</a> (New) — Documented the positive correlation between model capability and diversity-recovery effectiveness; proposed the <strong>Sampler-Worker Pattern</strong>.
+</li>
+<li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a> (Hardened) — Added &quot;Diversity-Aware Orchestration&quot; to the Control &amp; Safety section.
+</li>
+</ul>
+<p><strong>Key Insight</strong>: Verbalized Sampling is orthogonal to traditional decoding strategies (temperature/top-p) and scales with model capability, making it a critical primitive for high-variance agentic workflows.</p>
+<p><strong>Validation</strong>: YANP compliant. Index updated.</p>
+<h2>[2026-05-06] Gemini — Global Research Scan &amp; Handoff Creation</h2>
+<p><strong>Directive</strong>: Content expansion lane — identify 2026 research priorities and preserve session context.</p>
+<p><strong>Notes Created/Hardened:</strong></p>
+<ul>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> (New) — Summarizes Verbalized Sampling synthesis and Global Research Scan results (MCP v2, A2A v1.0, Modular RAG). Provides prioritized roadmap for the next agent.
+</li>
+<li><a href="system-index.html" class="wikilink">system-index</a> (Hardened) — Registered the new handoff.
+</li>
+</ul>
+<p><strong>Key Discovery</strong>: MCP has transitioned to the Agentic AI Foundation; A2A v1.0 is stable. The industry consensus has settled on <strong>MCP for Tool Access</strong> and <strong>A2A for Peer Delegation</strong>.</p>
+<p><strong>Validation</strong>: YANP compliant. Index updated. This concludes the current research session.</p>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -2206,16 +2293,20 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="a2a-mcp-contrast.html" class="">a2a-mcp-contrast</a></li>
 <li><a href="a2a-protocol.html" class="">a2a-protocol</a></li>
 <li><a href="actionable-vs-reference.html" class="">actionable-vs-reference</a></li>
+<li><a href="adk-advanced-capabilities.html" class="">adk-advanced-capabilities</a></li>
 <li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
 <li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
+<li><a href="adk-moc.html" class="">adk-moc</a></li>
 <li><a href="adk-multi-agent-orchestration.html" class="">adk-multi-agent-orchestration</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-actions.html" class="">agent-actions</a></li>
 <li><a href="agent-actions-unit.html" class="">agent-actions-unit</a></li>
 <li><a href="agent-configuration-sync-strategy.html" class="">agent-configuration-sync-strategy</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agent-diversity-scaling.html" class="">agent-diversity-scaling</a></li>
 <li><a href="agent-evaluation.html" class="">agent-evaluation</a></li>
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
 <li><a href="agent-note-conventions.html" class="">agent-note-conventions</a></li>
@@ -2235,11 +2326,14 @@
 <li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
 <li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
 <li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
 <li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
 <li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
 <li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="anti-ai-aesthetic.html" class="">anti-ai-aesthetic</a></li>
+<li><a href="ap2-agent-payments.html" class="">ap2-agent-payments</a></li>
 <li><a href="augmenting-human-intellect.html" class="">augmenting-human-intellect</a></li>
 <li><a href="bun-vs-deno.html" class="">bun-vs-deno</a></li>
 <li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
@@ -2301,9 +2395,11 @@
 <li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="gaia-benchmark.html" class="">gaia-benchmark</a></li>
 <li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="gemini-content-expansion-handoff-2026-05-04.html" class="">gemini-content-expansion-handoff-2026-05-04</a></li>
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
 <li><a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="">gemini-language-root-hardening-research-handoff-2026-05-02</a></li>
 <li><a href="gemini-openai-symphony-completion-2026-05-03.html" class="">gemini-openai-symphony-completion-2026-05-03</a></li>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="">gemini-orchestration-research-handoff-2026-05-06</a></li>
 <li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
 <li><a href="gemini-wiki-expansion-research-handoff-2026-05-02.html" class="">gemini-wiki-expansion-research-handoff-2026-05-02</a></li>
@@ -2311,6 +2407,7 @@
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="gtd.html" class="">gtd</a></li>
 <li><a href="handoff-firecrawl-openai-agents.html" class="">handoff-firecrawl-openai-agents</a></li>
+<li><a href="handoffs-moc.html" class="">handoffs-moc</a></li>
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
@@ -2345,10 +2442,12 @@
 <li><a href="lit-supabase-flask-quickstart.html" class="">lit-supabase-flask-quickstart</a></li>
 <li><a href="lit-typescript-handbook.html" class="">lit-typescript-handbook</a></li>
 <li><a href="lit-verbalized-sampling-paper.html" class="">lit-verbalized-sampling-paper</a></li>
+<li><a href="literature-moc.html" class="">literature-moc</a></li>
 <li><a href="llamaindex.html" class="">llamaindex</a></li>
 <li><a href="llm-wiki-pattern.html" class="">llm-wiki-pattern</a></li>
 <li><a href="lm-kit-dotnet.html" class="">lm-kit-dotnet</a></li>
 <li><a href="log.html" class="">log</a></li>
+<li><a href="maker-checker-pattern.html" class="">maker-checker-pattern</a></li>
 <li><a href="mcp-agent-skills.html" class="">mcp-agent-skills</a></li>
 <li><a href="mcp-architecture.html" class="">mcp-architecture</a></li>
 <li><a href="mcp-authorization.html" class="">mcp-authorization</a></li>
@@ -2367,8 +2466,10 @@
 <li><a href="mcp-server-development.html" class="">mcp-server-development</a></li>
 <li><a href="mcp-server-features.html" class="">mcp-server-features</a></li>
 <li><a href="mcp-transport.html" class="">mcp-transport</a></li>
+<li><a href="memory-spectrum.html" class="">memory-spectrum</a></li>
 <li><a href="microsoft-data-sqlite-agent-patterns.html" class="">microsoft-data-sqlite-agent-patterns</a></li>
 <li><a href="mode-anchored-departure.html" class="">mode-anchored-departure</a></li>
+<li><a href="modular-rag-hub.html" class="">modular-rag-hub</a></li>
 <li><a href="ms-learn-aspnet-core-overview.html" class="">ms-learn-aspnet-core-overview</a></li>
 <li><a href="ms-learn-csharp-overview.html" class="">ms-learn-csharp-overview</a></li>
 <li><a href="ms-learn-dotnet-fundamentals.html" class="">ms-learn-dotnet-fundamentals</a></li>
@@ -2376,6 +2477,7 @@
 <li><a href="ms-repo-poshwiki.html" class="">ms-repo-poshwiki</a></li>
 <li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="observability-first-expansion-brief-2026-05-04.html" class="">observability-first-expansion-brief-2026-05-04</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
 <li><a href="openai-symphony.html" class="">openai-symphony</a></li>
@@ -2434,7 +2536,10 @@
 <li><a href="rust-tier-0-patterns.html" class="">rust-tier-0-patterns</a></li>
 <li><a href="rust-type-systems.html" class="">rust-type-systems</a></li>
 <li><a href="Session%202026-05-02.html" class="">Session 2026-05-02</a></li>
+<li><a href="session-types.html" class="">session-types</a></li>
 <li><a href="session-types-in-rust.html" class="">session-types-in-rust</a></li>
+<li><a href="session-types-mcp-mapping.html" class="">session-types-mcp-mapping</a></li>
+<li><a href="shared-memory-blackboard.html" class="">shared-memory-blackboard</a></li>
 <li><a href="smolagents.html" class="">smolagents</a></li>
 <li><a href="software-design-principles.html" class="">software-design-principles</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
@@ -2443,6 +2548,7 @@
 <li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
 <li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
 <li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
+<li><a href="specifications-moc.html" class="">specifications-moc</a></li>
 <li><a href="synthesis-intelligence-layer.html" class="">synthesis-intelligence-layer</a></li>
 <li><a href="system-index.html" class="">system-index</a></li>
 <li><a href="tauri.html" class="">tauri</a></li>
@@ -2461,6 +2567,7 @@
 <li><a href="vault-audit-tool-spec.html" class="">vault-audit-tool-spec</a></li>
 <li><a href="vault-systems.html" class="">vault-systems</a></li>
 <li><a href="verbalized-sampling.html" class="">verbalized-sampling</a></li>
+<li><a href="web-data-ingestion-moc.html" class="">web-data-ingestion-moc</a></li>
 <li><a href="wiki-as-codebase.html" class="">wiki-as-codebase</a></li>
 <li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
 <li><a href="wiki-pattern-architecture.html" class="">wiki-pattern-architecture</a></li>

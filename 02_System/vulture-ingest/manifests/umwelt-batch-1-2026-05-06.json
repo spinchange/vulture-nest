@@ -1,0 +1,67 @@
+{
+  "batch_id": "umwelt-batch-1-2026-05-06",
+  "label": "Umwelt Batch 1 — Referential Signaling Pilot",
+  "requested_by": "claude",
+  "prepared_at": "2026-05-06",
+  "canonical_base_url": "https://en.wikipedia.org/wiki/",
+  "raw_output_dir": "00_Raw/umwelt",
+  "default_expected_pages": 1,
+  "sub_batches": [
+    {
+      "id": "A",
+      "label": "Conceptual Foundations",
+      "order": 1,
+      "note_target": "umwelt/01_Wiki/moc-conceptual-foundations.md",
+      "entries": [
+        {
+          "corpus_file": "animal-communication.md",
+          "source_url": "https://en.wikipedia.org/wiki/Animal_communication"
+        },
+        {
+          "corpus_file": "animal-cognition.md",
+          "source_url": "https://en.wikipedia.org/wiki/Animal_cognition"
+        },
+        {
+          "corpus_file": "jakob-von-uexkull.md",
+          "source_url": "https://en.wikipedia.org/wiki/Jakob_von_Uexk%C3%BCll"
+        },
+        {
+          "corpus_file": "biosemiotics.md",
+          "source_url": "https://en.wikipedia.org/wiki/Biosemiotics"
+        },
+        {
+          "corpus_file": "animal-language.md",
+          "source_url": "https://en.wikipedia.org/wiki/Animal_language"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Referential Signaling Species",
+      "order": 2,
+      "note_target": "umwelt/01_Wiki/moc-referential-signaling.md",
+      "entries": [
+        {
+          "corpus_file": "vervet-monkey.md",
+          "source_url": "https://en.wikipedia.org/wiki/Vervet_monkey"
+        },
+        {
+          "corpus_file": "diana-monkey.md",
+          "source_url": "https://en.wikipedia.org/wiki/Diana_monkey"
+        },
+        {
+          "corpus_file": "campbells-mona-monkey.md",
+          "source_url": "https://en.wikipedia.org/wiki/Campbell%27s_mona_monkey"
+        },
+        {
+          "corpus_file": "black-capped-chickadee.md",
+          "source_url": "https://en.wikipedia.org/wiki/Black-capped_chickadee"
+        },
+        {
+          "corpus_file": "black-tailed-prairie-dog.md",
+          "source_url": "https://en.wikipedia.org/wiki/Black-tailed_prairie_dog"
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 title: Orchestration Research Handoff 2026-05-06
 author: gemini-cli
 date: 2026-05-06
-status: active
+status: archived
 type: handoff
 aliases: [gemini-orchestration-handoff-2026-05-06, research-handoff]
 ---
