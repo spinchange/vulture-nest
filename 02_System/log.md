@@ -1,6 +1,70 @@
 # Wiki Log
 
 
+## [2026-05-18] Hermes — Hermes Source Layer & Navigation
+
+**Directive**: Extend the Hermes cluster beyond permanent conceptual notes by adding a dedicated MOC, source-grounded literature coverage, and a runtime-oriented spec note; then commit and push all outstanding vault work, including Gemini's uncommitted changes.
+
+**Notes Created (3):**
+* [[hermes-moc]] — New permanent map organizing Hermes foundations, runtime surfaces, background systems, literature, and specs.
+* [[lit-hermes-architecture]] — New literature note synthesizing Hermes official docs on architecture, the shared agent loop, slash-command control surfaces, and built-in tools.
+* [[spec-hermes-agent-loop]] — New descriptive spec note formalizing Hermes turn stages, message alternation, tool-dispatch semantics, persistence layers, and surface overlays.
+
+**Graph Wired:**
+* [[index]] — Expanded Hermes section to include the Hermes MOC plus the new literature and spec notes.
+* [[agentic-frameworks-moc]] — Added Hermes MOC and the runtime-spec note into framework and operational-pattern sections.
+* [[literature-moc]] — Registered the new Hermes literature note under agentic frameworks literature.
+* [[specifications-moc]] — Registered the Hermes runtime spec under orchestration and automation.
+* [[system-index]] — Added Hermes MOC, Hermes literature, and Hermes runtime spec entries.
+* [[hermes-agent]] — Added explicit links to the Hermes MOC, literature note, and runtime spec.
+
+**Cross-session cleanup:**
+* [[pattern-schema-driven-tools]] — Normalized the frontmatter date to `2026-05-18` so it remains YANP-compliant when included in the same commit batch as Gemini's work.
+
+**Validation target:**
+* Run `audit-yanp.ps1` and `check-broken-links.ps1`, then rebuild generated web artifacts before commit.
+
+
+## [2026-05-18] Hermes — Hermes Coverage Hardening
+
+**Directive**: Extend the initial Hermes note cluster until the vault's Hermes coverage is robust across identity, procedure, scheduling, delegation, and durable multi-agent coordination.
+
+**Notes Created (5):**
+* [[hermes-profiles]] — New permanent note: profiles as separate Hermes home directories that isolate config, memory, sessions, skills, gateway state, and cron jobs.
+* [[hermes-skills-system]] — New permanent note: `SKILL.md` as progressive-disclosure procedural memory, agent-managed skills, hub distribution, and contrast with bounded memory.
+* [[hermes-cron]] — New permanent note: gateway-backed scheduled task layer, fresh-session runs, delivery semantics, no-agent mode, and chained automation pipelines.
+* [[hermes-subagent-delegation]] — New permanent note: `delegate_task` as isolated in-turn child-agent branching, parallel fan-out, and non-durable multi-agent reasoning.
+* [[hermes-kanban]] — New permanent note: durable SQLite-backed multi-agent board for named profiles, resumable handoffs, and dispatcher-mediated coordination.
+
+**Graph Wired:**
+* [[hermes-agent]] — Expanded the hub note to point at the new Hermes subcluster and to distinguish delegation, cron, and kanban as separate collaboration modes.
+* [[index]] — Expanded the Hermes Agent section from 3 notes to 8 notes.
+* [[agentic-frameworks-moc]] — Added Hermes profiles, skills, cron, delegation, and kanban into framework and operational-pattern sections.
+* [[multi-agent-patterns-moc]] — Added Hermes delegation and kanban as concrete pattern instances under collaboration and shared-state sections.
+
+**Validation**:
+* `audit-yanp.ps1` — all notes compliant.
+* `check-broken-links.ps1` — no broken links; graph integrity remains 100%.
+
+
+## [2026-05-18] Hermes — Hermes Coverage Expansion
+
+**Directive**: Expand Vulture Nest coverage of Hermes itself with durable permanent notes, not just abstract references to skills/memory/gateway ideas.
+
+**Notes Created (3):**
+* [[hermes-agent]] — New permanent hub note: Hermes as a full agent environment spanning conversation surfaces, execution substrate, context layer, and durable background systems.
+* [[hermes-bounded-memory]] — New permanent note: built-in prompt-resident memory model (`MEMORY.md` + `USER.md`), frozen snapshot behavior, session-search complement, and relationship to skills.
+* [[hermes-gateway]] — New permanent note: messaging daemon / transport layer, distinction from the Nous Tool Gateway, and multi-platform service semantics.
+
+**Graph Wired:**
+* [[index]] — Added a new "Hermes Agent" section with the three Hermes notes.
+* [[agentic-frameworks-moc]] — Added `hermes-agent` under Frameworks & toolkits and wired `hermes-bounded-memory` + `hermes-gateway` into Advanced operational patterns.
+
+**Validation**:
+* `audit-yanp.ps1` — all notes compliant.
+* `check-broken-links.ps1` — no broken links; graph integrity remains 100%.
+
+
 ## [2026-05-17] Claude — Session Types Cluster
 
 **Directive**: Execute [[claude-session-types-handoff]] — create the session types knowledge cluster identified as highest-priority theoretical gap on 2026-04-26.
@@ -1059,3 +1123,46 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 **Key Discovery**: MCP has transitioned to the Agentic AI Foundation; A2A v1.0 is stable. The industry consensus has settled on **MCP for Tool Access** and **A2A for Peer Delegation**.
 
 **Validation**: YANP compliant. Index updated. This concludes the current research session.
+
+
+## [2026-05-18] gemini-cli — Ingestion: Telephony & Voice Agents
+* **Directive**: Execute Recommendation 1 from [[gemini-content-expansion-handoff-2026-05-04]] — Ingest AgentPhone and voice agent specs.
+* **Source**: `00_Raw/adk-documentation.md`.
+* **Notes Created**:
+    * [[lit-adk-telephony]] (Literature: AgentPhone MCP & ADK Streaming).
+    * [[telephony-agents]] (Permanent: Architecture, ADK implementation, and tradeoffs).
+* **Index Updated**: Added **Telephony & Voice** to [[system-index]].
+* **MOCs Updated**:
+    * [[adk-moc]] (Capabilities & Tools).
+    * [[agentic-frameworks-moc]] (Advanced operational patterns).
+* **Status**: Telephony coverage gap closed.
+
+
+## [2026-05-18] gemini-cli — Hardened: Agent Observability
+* **Directive**: Execute Recommendation 2 from [[gemini-content-expansion-handoff-2026-05-04]] — Harden Observability.
+* **Source**: `00_Raw/adk-documentation.md`, `00_Raw/hf-agents-bonus2.md`, and external research.
+* **Notes Created**:
+    * [[lit-otel-genai]] (Literature: Standardized `gen_ai` semantic conventions).
+    * [[lit-agentops-adk]] (Literature: ADK patching and hierarchical span mapping).
+    * [[lit-arize-ax]] (Literature: Span-level evaluation and Arize AX implementation).
+* **Notes Hardened**:
+    * [[agent-observability]] (Integrated OTel pillars, AgentOps hierarchies, and Arize AX evaluations).
+* **Index Updated**: Added new literature notes to [[system-index]].
+* **Status**: Observability domain hardened with industry-standard conventions.
+
+
+## [2026-05-18] gemini-cli — Pattern Created: Schema-Driven Tool Development
+* **Directive**: Execute Recommendation 3 from [[gemini-content-expansion-handoff-2026-05-04]] — Schema-Driven Development.
+* **Source**: `00_Raw/adk-documentation.md` and existing vault patterns.
+* **Notes Created**:
+    * [[pattern-schema-driven-tools]] (The core methodology of LLM-centric schema design).
+* **Notes Updated**:
+    * [[python-moc]] (Added link to the new pattern).
+    * [[core-patterns-moc]] (Added to Wiki Architecture / Development section).
+* **Index Updated**: Added **Schema-Driven Development** to [[system-index]].
+* **Status**: Roadmap Recommendation 3 complete.
+
+
+## [2026-05-18] gemini-cli — Maintenance: YANP Type Correction
+* **Action**: Corrected `type: pattern` to `type: permanent` in [[pattern-schema-driven-tools]] to meet strict YANP compliance standards.
+* **Status**: Vault compliance restored to 100%.

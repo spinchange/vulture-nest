@@ -57,6 +57,19 @@ Status legend: implemented references describe working artifacts; handoff refere
 * [[adk-go-implementation]] - Native Performance Reference
 * [[code-agents]] - When agents execute generated code instead of narrow tool schemas
 
+## Hermes Agent
+* [[hermes-moc]] - Dedicated navigation map for the Hermes cluster, including conceptual notes, source-grounded literature, and runtime specs
+* [[hermes-agent]] - Provider-agnostic agent environment spanning CLI, gateway, skills, memory, and durable background systems
+* [[hermes-bounded-memory]] - Small prompt-resident memory paired with session search and optional external providers
+* [[hermes-gateway]] - Messaging-platform daemon layer that exposes the same agent across Telegram, Discord, Slack, and more
+* [[hermes-profiles]] - Separate Hermes home directories that isolate config, memory, sessions, skills, gateway state, and cron jobs into distinct long-lived agents
+* [[hermes-skills-system]] - On-demand procedural knowledge layer built around `SKILL.md`, progressive disclosure, and agent-managed skills
+* [[hermes-cron]] - Gateway-backed scheduler for fresh-session autonomous runs, delivery routing, script-only jobs, and chained pipelines
+* [[hermes-subagent-delegation]] - In-turn isolated child-agent branching via `delegate_task`, with explicit context passing and parallel fan-out
+* [[hermes-kanban]] - Durable SQLite-backed coordination board for named Hermes profiles, resumable task handoffs, and multi-agent workflows
+* [[lit-hermes-architecture]] - Literature: official Hermes docs on architecture, agent loop, slash-command surfaces, and built-in tools
+* [[spec-hermes-agent-loop]] - Descriptive spec: shared turn loop, message alternation, tool dispatch, and persistence invariants across Hermes surfaces
+
 ## Multi-Agent Pattern Language
 * [[pattern-supabase-flask-integration]] - Flask + Supabase: module-level singleton, RLS as auth layer, method-chain query API
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)

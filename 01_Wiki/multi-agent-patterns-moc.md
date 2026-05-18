@@ -26,6 +26,7 @@ These patterns define the stable topology of a multi-agent system.
 These patterns define how work moves across agent boundaries.
 
 - [[pattern-dynamic-delegation]] - LLM-driven runtime decision to delegate to a peer.
+- [[hermes-subagent-delegation]] - Hermes's concrete in-turn child-agent implementation of isolated delegation and fan-out.
 - [[pattern-progressive-handoff]] - Gradual transfer of context and control.
 - [[pattern-state-transfer]] - Methods for passing `context_variables` and state across handoffs.
 
@@ -33,6 +34,7 @@ These patterns define how work moves across agent boundaries.
 These patterns define how agents share knowledge across boundaries without direct coupling.
 
 - [[shared-memory-blackboard|Shared Memory Blackboard]] - RAG-backed store where agents coordinate by writing and retrieving semantically; the modern form of the classical blackboard architecture.
+- [[hermes-kanban]] - Durable SQLite-backed task board where named Hermes profiles coordinate through tasks, comments, links, and dispatcher state.
 
 ## 🛡️ Control & Safety
 These patterns define how orchestration stays bounded, auditable, and interruptible.

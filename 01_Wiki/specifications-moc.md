@@ -28,6 +28,7 @@ This map organizes the formal specifications, Requests for Comments (RFCs), and 
 - [[note-hardening-pattern-rfc-2026-05-03]] - **Active RFC** for graduating fleeting notes.
 
 ## 🤖 Orchestration & Automation
+- [[spec-hermes-agent-loop]] - Descriptive spec for Hermes turn execution, tool dispatch, message alternation, compression, and persistence.
 - [[spec-agentic-source-orchestrator]] - The "Knowledge Compiler" v1.
 - [[spec-agentic-source-orchestrator-v2]] - Architecture for automated ingestion.
 - [[spec-agentic-source-orchestrator-v3]] - Advanced ingestion and synthesis pipeline.

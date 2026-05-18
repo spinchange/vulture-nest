@@ -22,6 +22,7 @@ This map organizes the Python foundation most relevant to agent systems, tool ex
 
 ## Schema and Validation
 - [[pydantic]]: Runtime parsing, validation, and JSON Schema emission for tool inputs.
+- [[pattern-schema-driven-tools]]: The core methodology of using Pydantic as a source of truth for agent capabilities.
 - [[pydantic-fastapi-agents]]: Wiring Pydantic models into FastAPI routes and MCP tool surfaces — the execution infrastructure side of schema-driven development.
 
 ## Standard Library Hubs

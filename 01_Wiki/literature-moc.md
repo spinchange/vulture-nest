@@ -13,6 +13,7 @@ This map organizes the external knowledge ingested into the **vulture-nest**, in
 
 ## 🤖 Agentic Frameworks Literature
 - [[lit-adk-documentation]] - Core documentation for the Agent Development Kit.
+- [[lit-hermes-architecture]] - Official Hermes docs on architecture, control surfaces, and built-in runtime/tool structure.
 - [[lit-langgraph]] - Literature on stateful graph-based orchestration.
 - [[lit-openai-agents-sdk]] - Production-grade OpenAI agent patterns.
 - [[lit-openai-swarm]] - Experimental handoff-based multi-agent patterns.

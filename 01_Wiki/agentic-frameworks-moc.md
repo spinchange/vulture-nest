@@ -41,6 +41,10 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[yanp-for-agentic-workflows]]: Why strict metadata is required for agentic parsing.
 
 ## Frameworks & toolkits
+* [[hermes-moc]]: Dedicated map for the Hermes cluster — foundations, literature, and derived runtime specs.
+* [[hermes-agent]]: Full agent environment spanning tools, skills, memory, gateway surfaces, and durable background execution.
+* [[hermes-profiles]]: Identity partitioning layer for running multiple independent Hermes agents on one install.
+* [[hermes-skills-system]]: On-demand procedural knowledge substrate built around `SKILL.md` and progressive disclosure.
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
 * [[openai-swarm]]: Experimental multi-agent orchestration pattern centered on handoffs.
 * [[openai-symphony]]: Service specification for background coding-agent orchestration.
@@ -58,8 +62,16 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[modular-rag-hub]]: Adaptive Routing, Self-RAG critique loops, and GraphRAG hybrid patterns — the full Modular RAG stack.
 * [[graph-orchestration]]: Modelling behavior as deterministic workflows.
 * [[chromadb]]: Open-source embedding database for semantic memory.
+* [[hermes-bounded-memory]]: Practical bounded-memory pattern — tiny always-on prompt memory plus transcript retrieval.
+* [[hermes-gateway]]: Messaging-daemon pattern that exposes the same agent runtime across many platforms.
+* [[spec-hermes-agent-loop]]: Derived execution contract for Hermes turns — prompt assembly, tool loops, memory snapshot semantics, and surface overlays.
+* [[hermes-cron]]: Scheduled autonomous execution layer for fresh-session agent runs and script-only watchdogs.
+* [[hermes-subagent-delegation]]: Isolated child-agent fan-out inside a single parent turn.
+* [[hermes-kanban]]: Durable multi-agent board for named profiles, resumable handoffs, and cross-time collaboration.
 
 * [[community-report-generator]]: Automated synthesis of emergent communities via embedding-link hybrid weighting.
+- [[telephony-agents]]: Autonomous interactions with PSTN and mobile networks; AgentPhone and streaming voice patterns.
+
 ## Training & Fine-Tuning
 * [[function-calling]]: Moving from prompted to learned native agency.
 * [[anthropic-prompt-caching]]: Provider-specific context reuse for repeated prompt prefixes.

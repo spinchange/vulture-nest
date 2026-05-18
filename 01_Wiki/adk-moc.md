@@ -36,3 +36,8 @@ This map organizes the **Agent Development Kit (ADK)** ecosystem, a code-first t
 - [[agentic-frameworks-moc]]
 - [[graph-orchestration]]
 - [[multi-agent-systems]]
+
+
+## Capabilities & Features
+- [[telephony-agents]] - Autonomous telephony via AgentPhone and streaming voice interactions.
+- [[lit-adk-telephony]] - Technical specifications for AgentPhone MCP and Gemini Live streaming.

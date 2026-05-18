@@ -2,6 +2,7 @@
 
 ## 🤖 Agentic Frameworks
 - [[agentic-frameworks-moc]] - Central hub for agent architectures and frameworks.
+- [[hermes-moc]] - Dedicated Hermes cluster map spanning concepts, literature, and runtime specs.
 - [[multi-agent-patterns-moc]] - Unifying patterns for ADK, Swarm, and A2A.
 - [[agent-development-kit]] - Google's Agent Development Kit (ADK) integration.
 - [[code-agents]] - Code-executing agent pattern and its security tradeoffs.
@@ -12,6 +13,11 @@
 - [[hf-agents-course-moc]] - Hugging Face Agents Course curriculum.
 - [[workflow-agents]] - Deterministic orchestration patterns.
 - [[type-safety-spectrum-debate]] - Codex vs Claude debate on type safety.
+
+
+## 📞 Telephony & Voice
+- [[telephony-agents]] - Autonomous interactions with PSTN and mobile networks.
+- [[lit-adk-telephony]] - ADK specifications for AgentPhone and streaming voice.
 
 ## 🔌 MCP Ecosystem
 - [[mcp-moc]] - Model Context Protocol standards and implementations.
@@ -57,6 +63,10 @@
 - [[software-design-principles]] - Heuristic-based rules for durable system design.
 - [[agentic-tdd-patterns]] - Executable intent protocol for agent-led builds.
 - [[agent-diversity-scaling]] - Architectural implications of scaling laws on agentic diversity.
+
+
+## 🏗️ Schema-Driven Development
+- [[pattern-schema-driven-tools]] - Using strongly-typed code as a source of truth for agent capabilities.
 
 ## 🛠️ System & Infrastructure
 - [[core-patterns-moc]] - Reusable architectural patterns.
@@ -149,3 +159,12 @@
 - [[web-data-ingestion-moc]] - Tools and protocols for web scraping and data intake.
 ## Knowledge Management (PKM)
 - [[literature-moc]] - Index of external research, papers, and technical documentation.
+
+## Literature & Sources
+- [[lit-hermes-architecture]] - Official Hermes docs on architecture, agent loop, commands, and tool/runtime surfaces.
+- [[lit-otel-genai]] - OpenTelemetry GenAI semantic conventions for standardized tracing.
+- [[lit-agentops-adk]] - AgentOps integration patterns for hierarchical ADK monitoring.
+- [[lit-arize-ax]] - Span-level evaluation and LLM-as-a-judge patterns with Arize AX.
+
+## Hermes Runtime Specs
+- [[spec-hermes-agent-loop]] - Descriptive runtime spec for Hermes turn flow, tool dispatch, and persistence invariants.

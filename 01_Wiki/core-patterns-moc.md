@@ -56,3 +56,7 @@ Shared standards for multi-agent collaboration and memory.
 ## Design Aesthetic
 * [[plain-plus-design]]: Minimalist, text-first UI.
 * [[anti-ai-aesthetic]]: Resisting "generated-looking" content in favor of dense, high-signal knowledge.
+
+
+## Wiki Architecture & Methodology
+- [[pattern-schema-driven-tools]]: methodology for using strongly-typed code as a source of truth for agent capabilities.
