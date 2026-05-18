@@ -551,11 +551,11 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Wiki Index</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">community</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-25</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Wiki Index</span></span>
       </div>
     </header>
 
@@ -656,6 +656,31 @@
 <li><a href="adk-go-implementation.html" class="wikilink">adk-go-implementation</a> - Native Performance Reference
 </li>
 <li><a href="code-agents.html" class="wikilink">code-agents</a> - When agents execute generated code instead of narrow tool schemas
+</li>
+</ul>
+<h2>Hermes Agent</h2>
+<ul>
+<li><a href="hermes-moc.html" class="wikilink">hermes-moc</a> - Dedicated navigation map for the Hermes cluster, including conceptual notes, source-grounded literature, and runtime specs
+</li>
+<li><a href="hermes-agent.html" class="wikilink">hermes-agent</a> - Provider-agnostic agent environment spanning CLI, gateway, skills, memory, and durable background systems
+</li>
+<li><a href="hermes-bounded-memory.html" class="wikilink">hermes-bounded-memory</a> - Small prompt-resident memory paired with session search and optional external providers
+</li>
+<li><a href="hermes-gateway.html" class="wikilink">hermes-gateway</a> - Messaging-platform daemon layer that exposes the same agent across Telegram, Discord, Slack, and more
+</li>
+<li><a href="hermes-profiles.html" class="wikilink">hermes-profiles</a> - Separate Hermes home directories that isolate config, memory, sessions, skills, gateway state, and cron jobs into distinct long-lived agents
+</li>
+<li><a href="hermes-skills-system.html" class="wikilink">hermes-skills-system</a> - On-demand procedural knowledge layer built around <code>SKILL.md</code>, progressive disclosure, and agent-managed skills
+</li>
+<li><a href="hermes-cron.html" class="wikilink">hermes-cron</a> - Gateway-backed scheduler for fresh-session autonomous runs, delivery routing, script-only jobs, and chained pipelines
+</li>
+<li><a href="hermes-subagent-delegation.html" class="wikilink">hermes-subagent-delegation</a> - In-turn isolated child-agent branching via <code>delegate_task</code>, with explicit context passing and parallel fan-out
+</li>
+<li><a href="hermes-kanban.html" class="wikilink">hermes-kanban</a> - Durable SQLite-backed coordination board for named Hermes profiles, resumable task handoffs, and multi-agent workflows
+</li>
+<li><a href="lit-hermes-architecture.html" class="wikilink">lit-hermes-architecture</a> - Literature: official Hermes docs on architecture, agent loop, slash-command surfaces, and built-in tools
+</li>
+<li><a href="spec-hermes-agent-loop.html" class="wikilink">spec-hermes-agent-loop</a> - Descriptive spec: shared turn loop, message alternation, tool dispatch, and persistence invariants across Hermes surfaces
 </li>
 </ul>
 <h2>Multi-Agent Pattern Language</h2>
@@ -1078,6 +1103,15 @@
 <li><a href="github-deployment.html" class="">github-deployment</a></li>
 <li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-bounded-memory.html" class="">hermes-bounded-memory</a></li>
+<li><a href="hermes-cron.html" class="">hermes-cron</a></li>
+<li><a href="hermes-gateway.html" class="">hermes-gateway</a></li>
+<li><a href="hermes-kanban.html" class="">hermes-kanban</a></li>
+<li><a href="hermes-moc.html" class="">hermes-moc</a></li>
+<li><a href="hermes-profiles.html" class="">hermes-profiles</a></li>
+<li><a href="hermes-skills-system.html" class="">hermes-skills-system</a></li>
+<li><a href="hermes-subagent-delegation.html" class="">hermes-subagent-delegation</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
@@ -1093,6 +1127,7 @@
 <li><a href="lit-anthropic-thinking-capabilities.html" class="">lit-anthropic-thinking-capabilities</a></li>
 <li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
 <li><a href="lit-chatgpt-web-mcp-guidance.html" class="">lit-chatgpt-web-mcp-guidance</a></li>
+<li><a href="lit-hermes-architecture.html" class="">lit-hermes-architecture</a></li>
 <li><a href="lit-llm-wiki.html" class="">lit-llm-wiki</a></li>
 <li><a href="lit-mcp-architecture.html" class="">lit-mcp-architecture</a></li>
 <li><a href="lit-mcp-authorization.html" class="">lit-mcp-authorization</a></li>
@@ -1139,6 +1174,7 @@
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
 <li><a href="spec-chatgpt-web-mcp-wrapper.html" class="">spec-chatgpt-web-mcp-wrapper</a></li>
 <li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
+<li><a href="spec-hermes-agent-loop.html" class="">spec-hermes-agent-loop</a></li>
 <li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
 <li><a href="spec-memory-mcp.html" class="">spec-memory-mcp</a></li>
 <li><a href="spec-visual-vault-language.html" class="">spec-visual-vault-language</a></li>
