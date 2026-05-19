@@ -561,6 +561,37 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Wiki Log</h1>
+<h2>[2026-05-18] Hermes — Third Pass: Runtime Internals</h2>
+<p><strong>Directive</strong>: Execute the third Hermes pass by documenting repo-internal implementation layers that sit beneath the existing conceptual, literature, and runtime-spec coverage.</p>
+<p><strong>Notes Created (4):</strong></p>
+<ul>
+<li><a href="hermes-provider-abstraction.html" class="wikilink">hermes-provider-abstraction</a> — New permanent note: declarative provider profiles, <code>api_mode</code> transport contracts, auxiliary routing, live model switching, and provider-leakage guardrails.
+</li>
+<li><a href="hermes-prompt-assembly.html" class="wikilink">hermes-prompt-assembly</a> — New permanent note: system-prompt construction from identity, memory guidance, environment hints, cached skill indexes, and prioritized context files.
+</li>
+<li><a href="hermes-context-compression.html" class="wikilink">hermes-context-compression</a> — New permanent note: compression as a lineage-preserving session boundary with memory hooks, summary fallbacks, and session rollover semantics.
+</li>
+<li><a href="hermes-tool-registry.html" class="wikilink">hermes-tool-registry</a> — New permanent note: self-registering tool modules, toolset policy, dynamic schema shaping, and MCP-discovered tool integration.
+</li>
+</ul>
+<p><strong>Graph Wired:</strong></p>
+<ul>
+<li><a href="hermes-moc.html" class="wikilink">hermes-moc</a> — Added a new &quot;Repo-internal runtime layers&quot; section for the four implementation notes.
+</li>
+<li><a href="index.html" class="wikilink">index</a> — Expanded the Hermes Agent section from 11 to 15 Hermes-linked notes.
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a> — Added the new Hermes implementation-layer notes under both framework and advanced operational pattern sections.
+</li>
+<li><a href="lit-hermes-architecture.html" class="wikilink">lit-hermes-architecture</a> — Added explicit links from the source-grounded literature note down into the new repo-internal implementation notes.
+</li>
+<li><a href="spec-hermes-agent-loop.html" class="wikilink">spec-hermes-agent-loop</a> — Added the four notes to See Also so the execution contract now links to the concrete lower-level runtime layers.
+</li>
+</ul>
+<p><strong>Validation target:</strong></p>
+<ul>
+<li>Run <code>audit-yanp.ps1</code> and <code>check-broken-links.ps1</code>, regenerate wiki/dashboard artifacts, and record a new seam before commit.
+</li>
+</ul>
 <h2>[2026-05-18] Hermes — Hermes Source Layer &amp; Navigation</h2>
 <p><strong>Directive</strong>: Extend the Hermes cluster beyond permanent conceptual notes by adding a dedicated MOC, source-grounded literature coverage, and a runtime-oriented spec note; then commit and push all outstanding vault work, including Gemini&#39;s uncommitted changes.</p>
 <p><strong>Notes Created (3):</strong></p>
@@ -2615,13 +2646,17 @@
 <li><a href="hardware-aware-inference.html" class="">hardware-aware-inference</a></li>
 <li><a href="hermes-agent.html" class="">hermes-agent</a></li>
 <li><a href="hermes-bounded-memory.html" class="">hermes-bounded-memory</a></li>
+<li><a href="hermes-context-compression.html" class="">hermes-context-compression</a></li>
 <li><a href="hermes-cron.html" class="">hermes-cron</a></li>
 <li><a href="hermes-gateway.html" class="">hermes-gateway</a></li>
 <li><a href="hermes-kanban.html" class="">hermes-kanban</a></li>
 <li><a href="hermes-moc.html" class="">hermes-moc</a></li>
 <li><a href="hermes-profiles.html" class="">hermes-profiles</a></li>
+<li><a href="hermes-prompt-assembly.html" class="">hermes-prompt-assembly</a></li>
+<li><a href="hermes-provider-abstraction.html" class="">hermes-provider-abstraction</a></li>
 <li><a href="hermes-skills-system.html" class="">hermes-skills-system</a></li>
 <li><a href="hermes-subagent-delegation.html" class="">hermes-subagent-delegation</a></li>
+<li><a href="hermes-tool-registry.html" class="">hermes-tool-registry</a></li>
 <li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
 <li><a href="hitl-ui-patterns.html" class="">hitl-ui-patterns</a></li>
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>

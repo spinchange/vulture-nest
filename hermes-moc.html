@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Hermes Agent MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-18</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hermes Agent MOC</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-18</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
       </div>
     </header>
 
@@ -583,6 +583,17 @@
 <li><a href="hermes-skills-system.html" class="wikilink">hermes-skills-system</a> - <code>SKILL.md</code> as procedural memory, progressive disclosure, and agent-maintained workflow capture.
 </li>
 <li><a href="hermes-profiles.html" class="wikilink">hermes-profiles</a> - Long-lived identity partitions with isolated config, memory, skills, sessions, and gateway state.
+</li>
+</ul>
+<h2>Repo-internal runtime layers</h2>
+<ul>
+<li><a href="hermes-provider-abstraction.html" class="wikilink">hermes-provider-abstraction</a> - Declarative provider profiles, api-mode transport contracts, auxiliary routing, and live model switching.
+</li>
+<li><a href="hermes-prompt-assembly.html" class="wikilink">hermes-prompt-assembly</a> - System-prompt construction from identity, memory guidance, environment hints, skills indexes, and context files.
+</li>
+<li><a href="hermes-context-compression.html" class="wikilink">hermes-context-compression</a> - Bounded-context rollover with lineage-preserving session rotation and memory/context-engine hooks.
+</li>
+<li><a href="hermes-tool-registry.html" class="wikilink">hermes-tool-registry</a> - Registry + toolset architecture that unifies built-ins, dynamic schemas, and MCP-discovered tools.
 </li>
 </ul>
 <h2>Runtime surfaces</h2>
@@ -663,12 +674,16 @@
 <li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
 <li><a href="hermes-agent.html" class="">hermes-agent</a></li>
 <li><a href="hermes-bounded-memory.html" class="">hermes-bounded-memory</a></li>
+<li><a href="hermes-context-compression.html" class="">hermes-context-compression</a></li>
 <li><a href="hermes-cron.html" class="">hermes-cron</a></li>
 <li><a href="hermes-gateway.html" class="">hermes-gateway</a></li>
 <li><a href="hermes-kanban.html" class="">hermes-kanban</a></li>
 <li><a href="hermes-profiles.html" class="">hermes-profiles</a></li>
+<li><a href="hermes-prompt-assembly.html" class="">hermes-prompt-assembly</a></li>
+<li><a href="hermes-provider-abstraction.html" class="">hermes-provider-abstraction</a></li>
 <li><a href="hermes-skills-system.html" class="">hermes-skills-system</a></li>
 <li><a href="hermes-subagent-delegation.html" class="">hermes-subagent-delegation</a></li>
+<li><a href="hermes-tool-registry.html" class="">hermes-tool-registry</a></li>
 <li><a href="lit-hermes-architecture.html" class="">lit-hermes-architecture</a></li>
 <li><a href="literature-moc.html" class="">literature-moc</a></li>
 <li><a href="spec-hermes-agent-loop.html" class="">spec-hermes-agent-loop</a></li>
