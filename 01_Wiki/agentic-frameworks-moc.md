@@ -43,6 +43,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 ## Frameworks & toolkits
 * [[hermes-moc]]: Dedicated map for the Hermes cluster — foundations, literature, and derived runtime specs.
 * [[hermes-agent]]: Full agent environment spanning tools, skills, memory, gateway surfaces, and durable background execution.
+* [[hermes-vs-adk-openai-agents-langgraph]]: Comparative positioning note for when the question is not "what can agents do?" but "what category of system is Hermes relative to ADK, OpenAI Agents SDK, and LangGraph?"
 * [[hermes-provider-abstraction]]: Provider-agnostic substrate layer — declarative provider profiles, runtime switching, and auxiliary routing.
 * [[hermes-prompt-assembly]]: Prompt-control plane that compiles identity, environment, skill, and project context into the live system prompt.
 * [[hermes-profiles]]: Identity partitioning layer for running multiple independent Hermes agents on one install.
@@ -66,6 +67,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[chromadb]]: Open-source embedding database for semantic memory.
 * [[hermes-bounded-memory]]: Practical bounded-memory pattern — tiny always-on prompt memory plus transcript retrieval.
 * [[hermes-gateway]]: Messaging-daemon pattern that exposes the same agent runtime across many platforms.
+* [[hermes-command-control-plane]]: Operator grammar for steering the runtime itself through slash commands, gateway controls, and dynamic command registration.
 * [[hermes-context-compression]]: Lineage-preserving compaction protocol that rotates session IDs while keeping a logical conversation continuous.
 * [[hermes-tool-registry]]: Registry/toolset/MCP integration layer that governs which tools the model can actually see and call.
 * [[spec-hermes-agent-loop]]: Derived execution contract for Hermes turns — prompt assembly, tool loops, memory snapshot semantics, and surface overlays.

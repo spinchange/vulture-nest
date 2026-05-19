@@ -31,6 +31,7 @@ This map organizes the **Hermes Agent** cluster in the Vulture Nest. It separate
 
 ## Runtime surfaces
 - [[hermes-gateway]] - Messaging daemon that exposes the same agent through Telegram, Discord, Slack, and other platforms.
+- [[hermes-command-control-plane]] - Shared slash-command control vocabulary for steering the runtime across CLI and gateway surfaces.
 - [[spec-hermes-agent-loop]] - Common execution contract shared by CLI, gateway, and cron surfaces.
 
 ## Background and multi-agent systems
@@ -40,6 +41,7 @@ This map organizes the **Hermes Agent** cluster in the Vulture Nest. It separate
 
 ## Comparative neighbors
 - [[agentic-frameworks-moc]] - Wider framework map containing Hermes, ADK, Swarm, LangGraph, and related systems.
+- [[hermes-vs-adk-openai-agents-langgraph]] - Comparative positioning note: Hermes as persistent agent environment versus toolkit/SDK/graph neighbors.
 - [[adk-moc]] - Useful contrast: toolkit/framework view rather than full agent environment.
 - [[anthropic-moc]] - Provider-specific ecosystem map, contrasting with Hermes as provider-agnostic substrate.
 - [[agent-knowledge-vault]] - Passive knowledge layer that complements Hermes's active skill and memory layers.

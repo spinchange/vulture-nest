@@ -38,6 +38,9 @@ Hermes keeps a small always-on memory in prompt and pairs it with searchable ses
 ### 3. Same agent across many interfaces
 The same Hermes instance can answer in a terminal, a Telegram thread, or another gateway surface while preserving the same tools and long-term context. See [[hermes-gateway]].
 
+### 3.5. A real operator control plane
+Hermes does not force runtime management through natural-language chat alone. It exposes a structured slash-command layer for session control, model switching, background runs, gateway administration, and runtime steering. See [[hermes-command-control-plane]].
+
 ### 4. Durable background execution
 Hermes is not limited to foreground chat. It can schedule work, spawn background tasks, run daemonized gateways, and maintain isolated profiles. This gives it a lifecycle closer to infrastructure than to a one-off assistant process. See [[hermes-cron]], [[hermes-profiles]], and [[hermes-kanban]].
 
@@ -78,6 +81,8 @@ Start at [[hermes-agent]] when the question is:
 - [[hermes-cron]]
 - [[hermes-subagent-delegation]]
 - [[hermes-kanban]]
+- [[hermes-command-control-plane]]
+- [[hermes-vs-adk-openai-agents-langgraph]]
 - [[lit-hermes-architecture]]
 - [[spec-hermes-agent-loop]]
 - [[agent-knowledge-vault]]

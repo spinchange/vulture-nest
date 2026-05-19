@@ -1,6 +1,25 @@
 # Wiki Log
 
 
+## [2026-05-18] Hermes — Fourth Pass: Commands & Comparisons
+
+**Directive**: Extend Hermes coverage with both the operator-facing slash-command/control layer and a comparative positioning note for Hermes versus ADK, OpenAI Agents SDK, and LangGraph.
+
+**Notes Created (2):**
+* [[hermes-command-control-plane]] — New permanent note: the slash-command registry as Hermes's operator control plane across CLI and gateway surfaces, including surface-specific command policy and dynamic extension through skills/quick commands.
+* [[hermes-vs-adk-openai-agents-langgraph]] — New permanent note: comparative positioning of Hermes as a persistent agent environment relative to ADK's toolkit/services model, OpenAI Agents SDK's runner/handoff model, and LangGraph's graph-centric orchestration model.
+
+**Graph Wired:**
+* [[hermes-moc]] — Added the command-control note under runtime surfaces and the comparison note under comparative neighbors.
+* [[index]] — Expanded the Hermes Agent section with the new command-surface and comparison entries.
+* [[agentic-frameworks-moc]] — Added Hermes comparison positioning under frameworks and the command-control layer under advanced operational patterns.
+* [[hermes-agent]] — Added explicit control-plane framing plus links to both new notes.
+* [[lit-hermes-architecture]] — Linked the source-grounded literature note down to the new command-control note.
+
+**Validation target:**
+* Run `audit-yanp.ps1` and `check-broken-links.ps1`, regenerate wiki/dashboard artifacts, and record a new Seam before commit.
+
+
 ## [2026-05-18] Hermes — Third Pass: Runtime Internals
 
 **Directive**: Execute the third Hermes pass by documenting repo-internal implementation layers that sit beneath the existing conceptual, literature, and runtime-spec coverage.

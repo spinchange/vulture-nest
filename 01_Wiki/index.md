@@ -65,12 +65,14 @@ Status legend: implemented references describe working artifacts; handoff refere
 * [[hermes-provider-abstraction]] - Declarative provider profiles, api-mode transport contracts, auxiliary routing, and live model switching across a stable agent shell
 * [[hermes-prompt-assembly]] - System-prompt construction layer covering environment grounding, skill-index caching, and prioritized context-file injection
 * [[hermes-context-compression]] - Compression as a lineage-preserving session boundary with memory hooks, summary fallbacks, and explicit rollover semantics
+* [[hermes-command-control-plane]] - Operator-facing slash-command layer that manages sessions, models, tools, gateway state, and background runtime behavior across CLI and messaging
 * [[hermes-profiles]] - Separate Hermes home directories that isolate config, memory, sessions, skills, gateway state, and cron jobs into distinct long-lived agents
 * [[hermes-skills-system]] - On-demand procedural knowledge layer built around `SKILL.md`, progressive disclosure, and agent-managed skills
 * [[hermes-cron]] - Gateway-backed scheduler for fresh-session autonomous runs, delivery routing, script-only jobs, and chained pipelines
 * [[hermes-subagent-delegation]] - In-turn isolated child-agent branching via `delegate_task`, with explicit context passing and parallel fan-out
 * [[hermes-kanban]] - Durable SQLite-backed coordination board for named Hermes profiles, resumable task handoffs, and multi-agent workflows
 * [[hermes-tool-registry]] - Central registry, toolset policy layer, dynamic schemas, and MCP-discovered tools unified into one callable surface
+* [[hermes-vs-adk-openai-agents-langgraph]] - Comparative note positioning Hermes as a persistent agent environment relative to ADK, OpenAI Agents SDK, and LangGraph
 * [[lit-hermes-architecture]] - Literature: official Hermes docs on architecture, agent loop, slash-command surfaces, and built-in tools
 * [[spec-hermes-agent-loop]] - Descriptive spec: shared turn loop, message alternation, tool dispatch, and persistence invariants across Hermes surfaces
 
