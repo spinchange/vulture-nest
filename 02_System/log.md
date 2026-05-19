@@ -1,6 +1,27 @@
 # Wiki Log
 
 
+## [2026-05-18] Hermes — Third Pass: Runtime Internals
+
+**Directive**: Execute the third Hermes pass by documenting repo-internal implementation layers that sit beneath the existing conceptual, literature, and runtime-spec coverage.
+
+**Notes Created (4):**
+* [[hermes-provider-abstraction]] — New permanent note: declarative provider profiles, `api_mode` transport contracts, auxiliary routing, live model switching, and provider-leakage guardrails.
+* [[hermes-prompt-assembly]] — New permanent note: system-prompt construction from identity, memory guidance, environment hints, cached skill indexes, and prioritized context files.
+* [[hermes-context-compression]] — New permanent note: compression as a lineage-preserving session boundary with memory hooks, summary fallbacks, and session rollover semantics.
+* [[hermes-tool-registry]] — New permanent note: self-registering tool modules, toolset policy, dynamic schema shaping, and MCP-discovered tool integration.
+
+**Graph Wired:**
+* [[hermes-moc]] — Added a new "Repo-internal runtime layers" section for the four implementation notes.
+* [[index]] — Expanded the Hermes Agent section from 11 to 15 Hermes-linked notes.
+* [[agentic-frameworks-moc]] — Added the new Hermes implementation-layer notes under both framework and advanced operational pattern sections.
+* [[lit-hermes-architecture]] — Added explicit links from the source-grounded literature note down into the new repo-internal implementation notes.
+* [[spec-hermes-agent-loop]] — Added the four notes to See Also so the execution contract now links to the concrete lower-level runtime layers.
+
+**Validation target:**
+* Run `audit-yanp.ps1` and `check-broken-links.ps1`, regenerate wiki/dashboard artifacts, and record a new seam before commit.
+
+
 ## [2026-05-18] Hermes — Hermes Source Layer & Navigation
 
 **Directive**: Extend the Hermes cluster beyond permanent conceptual notes by adding a dedicated MOC, source-grounded literature coverage, and a runtime-oriented spec note; then commit and push all outstanding vault work, including Gemini's uncommitted changes.

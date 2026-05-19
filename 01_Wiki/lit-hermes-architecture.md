@@ -89,6 +89,10 @@ This makes Hermes a concrete example of how to balance **always-on context**, **
 - [[hermes-agent]] - top-level Hermes environment concept
 - [[hermes-moc]] - cluster navigation map for Hermes-specific notes
 - [[spec-hermes-agent-loop]] - distilled execution spec derived from these sources
+- [[hermes-provider-abstraction]] - repo-internal model/provider layer beneath the shared runtime
+- [[hermes-prompt-assembly]] - prompt-building control plane described abstractly in the docs and concretized in source
+- [[hermes-context-compression]] - session rollover and compaction layer beneath the bounded-context story
+- [[hermes-tool-registry]] - registry/toolset/MCP layer underlying the documented capability surface
 - [[hermes-bounded-memory]] - hot memory layer
 - [[hermes-skills-system]] - procedural memory layer
 - [[hermes-gateway]] - messaging surface

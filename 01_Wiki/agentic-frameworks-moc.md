@@ -43,6 +43,8 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 ## Frameworks & toolkits
 * [[hermes-moc]]: Dedicated map for the Hermes cluster — foundations, literature, and derived runtime specs.
 * [[hermes-agent]]: Full agent environment spanning tools, skills, memory, gateway surfaces, and durable background execution.
+* [[hermes-provider-abstraction]]: Provider-agnostic substrate layer — declarative provider profiles, runtime switching, and auxiliary routing.
+* [[hermes-prompt-assembly]]: Prompt-control plane that compiles identity, environment, skill, and project context into the live system prompt.
 * [[hermes-profiles]]: Identity partitioning layer for running multiple independent Hermes agents on one install.
 * [[hermes-skills-system]]: On-demand procedural knowledge substrate built around `SKILL.md` and progressive disclosure.
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
@@ -64,6 +66,8 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[chromadb]]: Open-source embedding database for semantic memory.
 * [[hermes-bounded-memory]]: Practical bounded-memory pattern — tiny always-on prompt memory plus transcript retrieval.
 * [[hermes-gateway]]: Messaging-daemon pattern that exposes the same agent runtime across many platforms.
+* [[hermes-context-compression]]: Lineage-preserving compaction protocol that rotates session IDs while keeping a logical conversation continuous.
+* [[hermes-tool-registry]]: Registry/toolset/MCP integration layer that governs which tools the model can actually see and call.
 * [[spec-hermes-agent-loop]]: Derived execution contract for Hermes turns — prompt assembly, tool loops, memory snapshot semantics, and surface overlays.
 * [[hermes-cron]]: Scheduled autonomous execution layer for fresh-session agent runs and script-only watchdogs.
 * [[hermes-subagent-delegation]]: Isolated child-agent fan-out inside a single parent turn.

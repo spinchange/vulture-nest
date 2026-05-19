@@ -23,6 +23,12 @@ This map organizes the **Hermes Agent** cluster in the Vulture Nest. It separate
 - [[hermes-skills-system]] - `SKILL.md` as procedural memory, progressive disclosure, and agent-maintained workflow capture.
 - [[hermes-profiles]] - Long-lived identity partitions with isolated config, memory, skills, sessions, and gateway state.
 
+## Repo-internal runtime layers
+- [[hermes-provider-abstraction]] - Declarative provider profiles, api-mode transport contracts, auxiliary routing, and live model switching.
+- [[hermes-prompt-assembly]] - System-prompt construction from identity, memory guidance, environment hints, skills indexes, and context files.
+- [[hermes-context-compression]] - Bounded-context rollover with lineage-preserving session rotation and memory/context-engine hooks.
+- [[hermes-tool-registry]] - Registry + toolset architecture that unifies built-ins, dynamic schemas, and MCP-discovered tools.
+
 ## Runtime surfaces
 - [[hermes-gateway]] - Messaging daemon that exposes the same agent through Telegram, Discord, Slack, and other platforms.
 - [[spec-hermes-agent-loop]] - Common execution contract shared by CLI, gateway, and cron surfaces.
