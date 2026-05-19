@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anthropic Agentic Loop — Vulture Portal</title>
+  <title>Hermes Command Control Plane — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Anthropic Agentic Loop</span>
+      <span>Hermes Command Control Plane</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,15 +549,14 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Anthropic Agentic Loop</h1>
+      <h1 class="note-title">Hermes Command Control Plane</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-18</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic Agentic Loop</span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-tool-use-depth]]</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hermes Command Control Plane</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
       </div>
     </header>
 
@@ -566,102 +565,176 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Anthropic Agentic Loop</h1>
-<p>The <strong>agentic loop</strong> is the execution pattern that powers multi-step tool use in Claude. Its shape — and who drives it — depends on where tools run.</p>
-<h2>The Tool-Use Contract</h2>
-<p>Tool use is a contract between application and model. You specify schemas; Claude decides when and how to call them. Claude never executes code directly — it emits a structured request, and either your application or Anthropic&#39;s servers runs the operation and feeds the result back.</p>
-<h2>Tool Execution Categories</h2>
-<p>Every Anthropic tool falls into one of three execution buckets:</p>
-<table>
-<thead><tr>
-<th>Category</th>
-<th>Who runs the code</th>
-<th>Response indicator</th>
-<th>Your responsibility</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>User-defined client tools</strong></td>
-<td>Your application</td>
-<td><code>tool_use</code> block, <code>stop_reason: &quot;tool_use&quot;</code></td>
-<td>Define schema, execute, return <code>tool_result</code></td>
-</tr>
-<tr>
-<td><strong>Anthropic-schema client tools</strong></td>
-<td>Your application</td>
-<td><code>tool_use</code> block</td>
-<td>Execute using Anthropic&#39;s published schema (<code>bash</code>, <code>text_editor</code>, <code>computer</code>, <code>memory</code>)</td>
-</tr>
-<tr>
-<td><strong>Server-executed tools</strong></td>
-<td>Anthropic infrastructure</td>
-<td><code>server_tool_use</code> block</td>
-<td>Enable in request; read final answer</td>
-</tr>
-</tbody>
-</table>
-<p>Anthropic-schema tools (<code>bash</code>, <code>text_editor</code>, etc.) use trained-in schemas. Claude calls them more reliably than equivalent custom tools because the schema is part of its training distribution.</p>
-<h2>The Client-Side Loop</h2>
-<p>Client-executed tools (both user-defined and Anthropic-schema) require the application to drive a <code>while</code> loop:</p>
-<ol>
-<li>Send request with <code>tools</code> array and user message.
-</li>
-<li>Claude responds with <code>stop_reason: &quot;tool_use&quot;</code> and one or more <code>tool_use</code> blocks.
-</li>
-<li>Execute each tool. Wrap outputs in <code>tool_result</code> blocks.
-</li>
-<li>Send a new request: original messages + assistant response + <code>tool_result</code> user message.
-</li>
-<li>Repeat while <code>stop_reason == &quot;tool_use&quot;</code>.
-</li>
-</ol>
-<p>The loop exits when <code>stop_reason</code> is <code>&quot;end_turn&quot;</code>, <code>&quot;max_tokens&quot;</code>, <code>&quot;stop_sequence&quot;</code>, or <code>&quot;refusal&quot;</code>. Each is a distinct signal:</p>
+        <h1>Hermes Command Control Plane</h1>
+<p><a href="hermes-command-control-plane.html" class="wikilink">hermes-command-control-plane</a> describes the layer that lets humans steer Hermes *as a runtime* rather than only talking to it as a model. The key idea is that Hermes exposes an <strong>operator control plane</strong> alongside its model-facing tool plane.</p>
+<h2>Core idea</h2>
+<p>Many agent systems give the user one main steering surface: the next chat message. Hermes adds a second surface made of slash commands that directly manipulate the session, model, tools, gateway, and background systems.</p>
+<p>That means Hermes has two distinct interfaces:</p>
 <ul>
-<li><code>end_turn</code> — Claude has a complete final answer.
+<li><strong>tool surface</strong> — what the model can call
 </li>
-<li><code>max_tokens</code> — Hit the output ceiling; increase <code>max_tokens</code> or restructure.
-</li>
-<li><code>stop_sequence</code> — A configured stop sequence was emitted.
-</li>
-<li><code>refusal</code> — Claude declined to continue; inspect the response and handle upstream.
+<li><strong>command surface</strong> — what the human operator can reconfigure or trigger
 </li>
 </ul>
-<h2>The Server-Side Loop</h2>
-<p>Server-executed tools (<code>web_search</code>, <code>web_fetch</code>, <code>code_execution</code>, <code>tool_search</code>) run inside Anthropic&#39;s infrastructure. A single API request may trigger several tool invocations before a response arrives. Your application does not participate in that inner loop.</p>
-<p>If the model is still iterating when it hits the server-side iteration cap, the response arrives with <code>stop_reason: &quot;pause_turn&quot;</code>. Resume by re-sending the full conversation (including the paused response) — this lets Claude continue from exactly where it stopped.</p>
-<p>The client-side loop and server-side loop are independent. A single conversation turn can involve both: server tools run internally, client tools require a round-trip.</p>
-<h2>When Tools Are the Right Choice</h2>
-<p>Tools fit when the task requires something the model cannot do from text alone:</p>
+<p>This is one reason Hermes feels like an environment rather than a library.</p>
+<h2>Central registry rather than scattered commands</h2>
+<p>The architecture note in <code>hermes_cli/commands.py</code> is explicit: <code>COMMAND_REGISTRY</code> is the single source of truth for slash commands.</p>
+<p>From that registry, Hermes derives:</p>
 <ul>
-<li>Side-effecting actions (write a file, send a request, update a record)
+<li>CLI help text
 </li>
-<li>Fresh or external data not in training (current prices, database records)
+<li>gateway help text
 </li>
-<li>Guaranteed-shape structured output enforced by a schema
+<li>autocomplete
 </li>
-<li>Calls into existing application systems
+<li>Telegram bot command menus
+</li>
+<li>Slack subcommand mappings
+</li>
+<li>alias resolution
 </li>
 </ul>
-<p><strong>Tell that you need tools:</strong> if you&#39;re writing regex to extract a decision from model output, that decision should have been a tool call. Parsing free-form text to recover structured intent is a sign the structure belongs in the schema.</p>
-<p>Tools do not fit for:</p>
+<p>So the command surface is not just a collection of ad hoc handlers. It is a <strong>registered control vocabulary</strong> shared across surfaces.</p>
+<h2>Command categories reveal the runtime model</h2>
+<p>The built-in categories in the registry show what Hermes considers first-class runtime concerns:</p>
 <ul>
-<li>One-shot Q&amp;A answerable from training — no round-trip needed
+<li><strong>Session</strong> — <code>/new</code>, <code>/resume</code>, <code>/background</code>, <code>/queue</code>, <code>/steer</code>, <code>/goal</code>, <code>/compress</code>, <code>/rollback</code>
 </li>
-<li>Cases where tool-call latency exceeds the benefit of the operation
+<li><strong>Configuration</strong> — <code>/model</code>, <code>/reasoning</code>, <code>/voice</code>, <code>/fast</code>, <code>/yolo</code>, <code>/footer</code>
+</li>
+<li><strong>Tools &amp; Skills</strong> — <code>/tools</code>, <code>/toolsets</code>, <code>/skills</code>, <code>/cron</code>, <code>/kanban</code>, <code>/reload-mcp</code>, <code>/reload-skills</code>
+</li>
+<li><strong>Info</strong> — <code>/usage</code>, <code>/insights</code>, <code>/platforms</code>, <code>/profile</code>, <code>/debug</code>
+</li>
+<li><strong>Gateway-only controls</strong> — <code>/approve</code>, <code>/deny</code>, <code>/sethome</code>, <code>/topic</code>, <code>/restart</code>, <code>/update</code>
 </li>
 </ul>
-<h2>Thinking Integration</h2>
-<p>When adaptive thinking is active, Claude reasons between tool calls (interleaved thinking) rather than only before the first one. This is automatic on Opus 4.7 and Mythos Preview, and on Opus 4.6/Sonnet 4.6 with adaptive mode. The thinking blocks produced between tool calls must be preserved and passed back in subsequent requests.</p>
-<h2>See also</h2>
+<p>This is a strong clue about Hermes&#39;s self-concept: it is operating not just a prompt loop but a <strong>persistent agent substrate with operator-facing lifecycle hooks</strong>.</p>
+<h2>Cross-surface parity with deliberate asymmetry</h2>
+<p>The slash-command reference makes an important distinction: the CLI and messaging gateway share one registry, but not every command is available everywhere.</p>
+<p>Examples:</p>
 <ul>
-<li><a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a>
+<li><code>/tools</code>, <code>/skills</code>, <code>/browser</code>, <code>/statusbar</code>, and <code>/handoff</code> are CLI-specific.
 </li>
-<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
+<li><code>/sethome</code>, <code>/approve</code>, <code>/deny</code>, <code>/topic</code>, and <code>/restart</code> are gateway-specific.
 </li>
-<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>
+<li><code>/model</code>, <code>/background</code>, <code>/queue</code>, <code>/steer</code>, <code>/goal</code>, <code>/rollback</code>, and <code>/reload-mcp</code> work on both surfaces.
 </li>
-<li><a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a>
+</ul>
+<p>So Hermes aims for <strong>shared command semantics where possible, surface-specific affordances where necessary</strong>.</p>
+<h2>Commands as live control, not static configuration</h2>
+<p>Several Hermes commands act on an already-running runtime rather than merely editing config files.</p>
+<p>Examples:</p>
+<ul>
+<li><code>/steer</code> injects guidance after the next tool call without creating a new user turn.
 </li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="wikilink">lit-anthropic-tool-use-depth</a>
+<li><code>/goal</code> establishes a standing continuation objective across turns.
+</li>
+<li><code>/background</code> launches a separate session that continues independently.
+</li>
+<li><code>/compress</code> manually triggers context compaction.
+</li>
+<li><code>/reload-mcp</code> refreshes external tool servers without leaving chat.
+</li>
+<li><code>/approve</code> and <code>/deny</code> resolve pending dangerous-command gates in messaging.
+</li>
+</ul>
+<p>This makes the command surface a <strong>runtime control plane</strong>, not just a settings menu.</p>
+<h2>The registry also encodes policy</h2>
+<p><code>CommandDef</code> includes fields such as:</p>
+<ul>
+<li>category
+</li>
+<li>aliases
+</li>
+<li>argument hints
+</li>
+<li>subcommands
+</li>
+<li><code>cli_only</code>
+</li>
+<li><code>gateway_only</code>
+</li>
+<li>optional config gates
+</li>
+</ul>
+<p>So the registry does more than list names. It defines:</p>
+<ul>
+<li>discoverability
+</li>
+<li>availability by surface
+</li>
+<li>operator ergonomics
+</li>
+<li>help-text generation
+</li>
+<li>partial command governance
+</li>
+</ul>
+<p>In other words, it is both a command index and a <strong>policy schema for human control</strong>.</p>
+<h2>Dynamic extension via skills and quick commands</h2>
+<p>Hermes extends its command surface in two ways:</p>
+<ul>
+<li>installed skills can appear as dynamic slash commands
+</li>
+<li>user-defined quick commands can map a short slash command to a shell command or another slash command
+</li>
+</ul>
+<p>That means the command layer is open-ended. Hermes can grow a personalized operator grammar without changing the core registry for every customization.</p>
+<h2>Why this matters architecturally</h2>
+<p><a href="hermes-command-control-plane.html" class="wikilink">hermes-command-control-plane</a> explains how Hermes avoids a common agent UX trap: forcing every operational action to be phrased as natural-language chat.</p>
+<p>Instead, Hermes separates:</p>
+<ul>
+<li><strong>conversation content</strong> — passed through the model loop
+</li>
+<li><strong>runtime control</strong> — applied directly through registered commands
+</li>
+</ul>
+<p>That separation improves:</p>
+<ul>
+<li>predictability
+</li>
+<li>recoverability
+</li>
+<li>surface parity
+</li>
+<li>operator trust
+</li>
+<li>long-running session management
+</li>
+</ul>
+<h2>Architectural consequence</h2>
+<p>The command surface is a major reason Hermes belongs in the same conversation as shells, IDEs, and long-lived daemons, not only agent frameworks. It gives the user a structured way to manage the runtime itself while leaving the model free to manage task reasoning inside that runtime.</p>
+<h2>See Also</h2>
+<ul>
+<li><a href="hermes-agent.html" class="wikilink">hermes-agent</a>
+</li>
+<li><a href="hermes-moc.html" class="wikilink">hermes-moc</a>
+</li>
+<li><a href="hermes-gateway.html" class="wikilink">hermes-gateway</a>
+</li>
+<li><a href="hermes-cron.html" class="wikilink">hermes-cron</a>
+</li>
+<li><a href="hermes-kanban.html" class="wikilink">hermes-kanban</a>
+</li>
+<li><a href="hermes-tool-registry.html" class="wikilink">hermes-tool-registry</a>
+</li>
+<li><a href="spec-hermes-agent-loop.html" class="wikilink">spec-hermes-agent-loop</a>
+</li>
+<li><a href="lit-hermes-architecture.html" class="wikilink">lit-hermes-architecture</a>
+</li>
+<li><a href="daemon-design-pattern.html" class="wikilink">daemon-design-pattern</a>
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li>Source: <code>C:\Users\executor\AppData\Local\hermes\hermes-agent\website\docs\reference\slash-commands.md</code>
+</li>
+<li>Source: <code>C:\Users\executor\AppData\Local\hermes\hermes-agent\hermes_cli\commands.py</code>
+</li>
+<li>Source: <code>C:\Users\executor\AppData\Local\hermes\hermes-agent\cli.py</code>
+</li>
+<li>Source: <code>C:\Users\executor\AppData\Local\hermes\hermes-agent\gateway\run.py</code>
 </li>
 </ul>
       </main>
@@ -677,21 +750,26 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
-<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-command-control-plane.html" class="">hermes-command-control-plane</a></li>
+<li><a href="hermes-moc.html" class="">hermes-moc</a></li>
+<li><a href="hermes-vs-adk-openai-agents-langgraph.html" class="">hermes-vs-adk-openai-agents-langgraph</a></li>
 <li><a href="index.html" class="">index</a></li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
+<li><a href="lit-hermes-architecture.html" class="">lit-hermes-architecture</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="spec-hermes-agent-loop.html" class="">spec-hermes-agent-loop</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
-<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
-<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
+<li><a href="daemon-design-pattern.html" class="">daemon-design-pattern</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-command-control-plane.html" class="">hermes-command-control-plane</a></li>
+<li><a href="hermes-cron.html" class="">hermes-cron</a></li>
+<li><a href="hermes-gateway.html" class="">hermes-gateway</a></li>
+<li><a href="hermes-kanban.html" class="">hermes-kanban</a></li>
+<li><a href="hermes-moc.html" class="">hermes-moc</a></li>
+<li><a href="hermes-tool-registry.html" class="">hermes-tool-registry</a></li>
+<li><a href="lit-hermes-architecture.html" class="">lit-hermes-architecture</a></li>
+<li><a href="spec-hermes-agent-loop.html" class="">spec-hermes-agent-loop</a></li>
 </ul>
           </div>
         </div>

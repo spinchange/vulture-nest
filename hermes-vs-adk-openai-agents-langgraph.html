@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anthropic Agentic Loop — Vulture Portal</title>
+  <title>Hermes vs ADK, OpenAI Agents, and LangGraph — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Anthropic Agentic Loop</span>
+      <span>Hermes vs ADK, OpenAI Agents, and LangGraph</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,15 +549,14 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Anthropic Agentic Loop</h1>
+      <h1 class="note-title">Hermes vs ADK, OpenAI Agents, and LangGraph</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-18</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic Agentic Loop</span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-tool-use-depth]]</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Hermes vs ADK, OpenAI Agents, and LangGraph</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
       </div>
     </header>
 
@@ -566,102 +565,179 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Anthropic Agentic Loop</h1>
-<p>The <strong>agentic loop</strong> is the execution pattern that powers multi-step tool use in Claude. Its shape — and who drives it — depends on where tools run.</p>
-<h2>The Tool-Use Contract</h2>
-<p>Tool use is a contract between application and model. You specify schemas; Claude decides when and how to call them. Claude never executes code directly — it emits a structured request, and either your application or Anthropic&#39;s servers runs the operation and feeds the result back.</p>
-<h2>Tool Execution Categories</h2>
-<p>Every Anthropic tool falls into one of three execution buckets:</p>
-<table>
-<thead><tr>
-<th>Category</th>
-<th>Who runs the code</th>
-<th>Response indicator</th>
-<th>Your responsibility</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>User-defined client tools</strong></td>
-<td>Your application</td>
-<td><code>tool_use</code> block, <code>stop_reason: &quot;tool_use&quot;</code></td>
-<td>Define schema, execute, return <code>tool_result</code></td>
-</tr>
-<tr>
-<td><strong>Anthropic-schema client tools</strong></td>
-<td>Your application</td>
-<td><code>tool_use</code> block</td>
-<td>Execute using Anthropic&#39;s published schema (<code>bash</code>, <code>text_editor</code>, <code>computer</code>, <code>memory</code>)</td>
-</tr>
-<tr>
-<td><strong>Server-executed tools</strong></td>
-<td>Anthropic infrastructure</td>
-<td><code>server_tool_use</code> block</td>
-<td>Enable in request; read final answer</td>
-</tr>
-</tbody>
-</table>
-<p>Anthropic-schema tools (<code>bash</code>, <code>text_editor</code>, etc.) use trained-in schemas. Claude calls them more reliably than equivalent custom tools because the schema is part of its training distribution.</p>
-<h2>The Client-Side Loop</h2>
-<p>Client-executed tools (both user-defined and Anthropic-schema) require the application to drive a <code>while</code> loop:</p>
-<ol>
-<li>Send request with <code>tools</code> array and user message.
-</li>
-<li>Claude responds with <code>stop_reason: &quot;tool_use&quot;</code> and one or more <code>tool_use</code> blocks.
-</li>
-<li>Execute each tool. Wrap outputs in <code>tool_result</code> blocks.
-</li>
-<li>Send a new request: original messages + assistant response + <code>tool_result</code> user message.
-</li>
-<li>Repeat while <code>stop_reason == &quot;tool_use&quot;</code>.
-</li>
-</ol>
-<p>The loop exits when <code>stop_reason</code> is <code>&quot;end_turn&quot;</code>, <code>&quot;max_tokens&quot;</code>, <code>&quot;stop_sequence&quot;</code>, or <code>&quot;refusal&quot;</code>. Each is a distinct signal:</p>
+        <h1>Hermes vs ADK, OpenAI Agents, and LangGraph</h1>
+<p><a href="hermes-vs-adk-openai-agents-langgraph.html" class="wikilink">hermes-vs-adk-openai-agents-langgraph</a> positions Hermes against three neighboring systems in this vault: <a href="agent-development-kit.html" class="wikilink">ADK</a>, <a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>, and <a href="langgraph.html" class="wikilink">langgraph</a>. The short version is that Hermes sits *closer to a user-facing agent environment*, while the others sit *closer to libraries or orchestration frameworks*.</p>
+<h2>The core distinction</h2>
+<p>All four systems support agents, tools, and some form of orchestration. The difference is <strong>which layer each one treats as primary</strong>.</p>
 <ul>
-<li><code>end_turn</code> — Claude has a complete final answer.
+<li><a href="hermes-agent.html" class="wikilink">hermes-agent</a> prioritizes the *persistent operating environment* around the agent.
 </li>
-<li><code>max_tokens</code> — Hit the output ceiling; increase <code>max_tokens</code> or restructure.
+<li><a href="agent-development-kit.html" class="wikilink">ADK</a> prioritizes the *code-first runtime and service architecture* for building agents.
 </li>
-<li><code>stop_sequence</code> — A configured stop sequence was emitted.
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a> prioritizes the *production agent loop, handoffs, and guardrails* inside an application.
 </li>
-<li><code>refusal</code> — Claude declined to continue; inspect the response and handle upstream.
+<li><a href="langgraph.html" class="wikilink">langgraph</a> prioritizes the *explicit control-flow graph* and durable state transitions.
 </li>
 </ul>
-<h2>The Server-Side Loop</h2>
-<p>Server-executed tools (<code>web_search</code>, <code>web_fetch</code>, <code>code_execution</code>, <code>tool_search</code>) run inside Anthropic&#39;s infrastructure. A single API request may trigger several tool invocations before a response arrives. Your application does not participate in that inner loop.</p>
-<p>If the model is still iterating when it hits the server-side iteration cap, the response arrives with <code>stop_reason: &quot;pause_turn&quot;</code>. Resume by re-sending the full conversation (including the paused response) — this lets Claude continue from exactly where it stopped.</p>
-<p>The client-side loop and server-side loop are independent. A single conversation turn can involve both: server tools run internally, client tools require a round-trip.</p>
-<h2>When Tools Are the Right Choice</h2>
-<p>Tools fit when the task requires something the model cannot do from text alone:</p>
+<p>So Hermes should not be read as &quot;better handoffs&quot; or &quot;another graph library.&quot; Its distinctive move is to package runtime surfaces, memory, skills, tools, sessions, and operator controls into one deployable shell.</p>
+<h2>Comparison dimensions</h2>
+<h3>1. Primary abstraction</h3>
 <ul>
-<li>Side-effecting actions (write a file, send a request, update a record)
+<li><strong>Hermes</strong> — persistent agent shell
 </li>
-<li>Fresh or external data not in training (current prices, database records)
+<li><strong>ADK</strong> — event-driven agent toolkit with services
 </li>
-<li>Guaranteed-shape structured output enforced by a schema
+<li><strong>OpenAI Agents SDK</strong> — production multi-agent SDK with runner/handoffs/guardrails
 </li>
-<li>Calls into existing application systems
+<li><strong>LangGraph</strong> — stateful graph orchestration framework
 </li>
 </ul>
-<p><strong>Tell that you need tools:</strong> if you&#39;re writing regex to extract a decision from model output, that decision should have been a tool call. Parsing free-form text to recover structured intent is a sign the structure belongs in the schema.</p>
-<p>Tools do not fit for:</p>
+<h3>2. Human control surface</h3>
 <ul>
-<li>One-shot Q&amp;A answerable from training — no round-trip needed
+<li><strong>Hermes</strong> exposes a full operator grammar through slash commands, gateway commands, profiles, cron, and background sessions.
 </li>
-<li>Cases where tool-call latency exceeds the benefit of the operation
+<li><strong>ADK</strong> expects the developer to provide the app surface around the runner and services.
+</li>
+<li><strong>OpenAI Agents SDK</strong> exposes Python APIs, hooks, and tracing rather than a built-in operator shell.
+</li>
+<li><strong>LangGraph</strong> expects graph authorship, not an end-user runtime control plane.
 </li>
 </ul>
-<h2>Thinking Integration</h2>
-<p>When adaptive thinking is active, Claude reasons between tool calls (interleaved thinking) rather than only before the first one. This is automatic on Opus 4.7 and Mythos Preview, and on Opus 4.6/Sonnet 4.6 with adaptive mode. The thinking blocks produced between tool calls must be preserved and passed back in subsequent requests.</p>
-<h2>See also</h2>
+<p>This is where <a href="hermes-command-control-plane.html" class="wikilink">hermes-command-control-plane</a> becomes decisive.</p>
+<h3>3. Persistence model</h3>
 <ul>
-<li><a href="anthropic-server-tools.html" class="wikilink">anthropic-server-tools</a>
+<li><strong>Hermes</strong> persists sessions, profile state, hot memory, skills, gateway bindings, and cron jobs as part of one user environment.
 </li>
-<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
+<li><strong>ADK</strong> offers explicit services for session, artifacts, and long-term memory.
 </li>
-<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>
+<li><strong>OpenAI Agents SDK</strong> supports resumable runs and tracing, but the surrounding environment remains largely application-defined.
 </li>
-<li><a href="anthropic-mcp-connector.html" class="wikilink">anthropic-mcp-connector</a>
+<li><strong>LangGraph</strong> persists graph state/checkpoints to enable durable execution and time travel.
 </li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="wikilink">lit-anthropic-tool-use-depth</a>
+</ul>
+<p>Hermes is strongest when the persistence target is *the whole agent persona and workspace*, not only one workflow run.</p>
+<h3>4. Orchestration style</h3>
+<ul>
+<li><strong>Hermes</strong> mixes free-form agent turns with operational subsystems such as delegation, cron, kanban, and gateway routing.
+</li>
+<li><strong>ADK</strong> cleanly separates LLM agents from deterministic workflow agents and service-backed orchestration.
+</li>
+<li><strong>OpenAI Agents SDK</strong> centers a runner loop where tools and handoffs are first-class.
+</li>
+<li><strong>LangGraph</strong> makes control flow explicit in nodes, edges, interrupts, and shared state.
+</li>
+</ul>
+<p>If you want the graph itself to be the main artifact, LangGraph leads. If you want the user-facing environment to be the main artifact, Hermes leads.</p>
+<h3>5. Tool integration philosophy</h3>
+<ul>
+<li><strong>Hermes</strong> unifies built-in tools, toolsets, MCP servers, and dynamic schemas into one registered surface visible to the model.
+</li>
+<li><strong>ADK</strong> treats tools as capabilities inside a broader service/runtime architecture.
+</li>
+<li><strong>OpenAI Agents SDK</strong> supports tool invocation and native MCP, but leaves much of the surrounding capability governance to the application.
+</li>
+<li><strong>LangGraph</strong> can incorporate tools, but tools are subordinate to the graph topology.
+</li>
+</ul>
+<h3>6. Intended audience</h3>
+<ul>
+<li><strong>Hermes</strong> fits power users, operator-builders, and people who want to *live inside* an agent environment.
+</li>
+<li><strong>ADK</strong> fits system builders who want clear architectural primitives and workflow controllers.
+</li>
+<li><strong>OpenAI Agents SDK</strong> fits developers building production agent applications around OpenAI&#39;s runner abstractions.
+</li>
+<li><strong>LangGraph</strong> fits engineers who want deterministic stateful orchestration with explicit execution graphs.
+</li>
+</ul>
+<h2>Practical routing rule</h2>
+<p>Choose Hermes when the question sounds like:</p>
+<ul>
+<li>&quot;How do I keep one agent alive across terminal, Telegram, and background jobs?&quot;
+</li>
+<li>&quot;How do memory, skills, slash commands, and tools fit into one long-lived agent?&quot;
+</li>
+<li>&quot;What does an agent operating environment look like rather than just an SDK?&quot;
+</li>
+</ul>
+<p>Choose ADK when the question sounds like:</p>
+<ul>
+<li>&quot;How do I architect services around agents, workflows, and event streams?&quot;
+</li>
+</ul>
+<p>Choose OpenAI Agents SDK when the question sounds like:</p>
+<ul>
+<li>&quot;How do I implement production handoffs, guardrails, and tracing inside a Python app?&quot;
+</li>
+</ul>
+<p>Choose LangGraph when the question sounds like:</p>
+<ul>
+<li>&quot;How do I model the workflow itself as durable explicit state transitions?&quot;
+</li>
+</ul>
+<h2>Deeper claim</h2>
+<p>Hermes&#39;s strongest comparison advantage is not any single primitive. It is the fact that it <strong>bundles multiple agent concerns into one coherent lived runtime</strong>:</p>
+<ul>
+<li>prompt assembly
+</li>
+<li>provider switching
+</li>
+<li>tool governance
+</li>
+<li>command control
+</li>
+<li>memory and session search
+</li>
+<li>gateway transport
+</li>
+<li>background execution
+</li>
+<li>cross-profile collaboration
+</li>
+</ul>
+<p>The other three systems are usually stronger if you want to embed agent behavior inside your own product architecture. Hermes is stronger if you want the *agent environment itself* to be the product.</p>
+<h2>Architectural consequence</h2>
+<p><a href="hermes-vs-adk-openai-agents-langgraph.html" class="wikilink">hermes-vs-adk-openai-agents-langgraph</a> helps prevent a category error. Comparing Hermes to ADK, OpenAI Agents SDK, or LangGraph only at the level of &quot;agent loop&quot; misses what Hermes is doing. Hermes competes less as a loop abstraction and more as a <strong>persistent user-facing agent substrate</strong>.</p>
+<h2>See Also</h2>
+<ul>
+<li><a href="hermes-agent.html" class="wikilink">hermes-agent</a>
+</li>
+<li><a href="hermes-command-control-plane.html" class="wikilink">hermes-command-control-plane</a>
+</li>
+<li><a href="hermes-moc.html" class="wikilink">hermes-moc</a>
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
+</li>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a>
+</li>
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>
+</li>
+<li><a href="langgraph.html" class="wikilink">langgraph</a>
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+</li>
+<li><a href="orchestration-tradeoffs.html" class="wikilink">orchestration-tradeoffs</a>
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="hermes-agent.html" class="wikilink">hermes-agent</a>
+</li>
+<li><a href="lit-hermes-architecture.html" class="wikilink">lit-hermes-architecture</a>
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
+</li>
+<li><a href="adk-moc.html" class="wikilink">adk-moc</a>
+</li>
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>
+</li>
+<li><a href="lit-openai-agents-sdk.html" class="wikilink">lit-openai-agents-sdk</a>
+</li>
+<li><a href="langgraph.html" class="wikilink">langgraph</a>
+</li>
+<li><a href="lit-langgraph.html" class="wikilink">lit-langgraph</a>
 </li>
 </ul>
       </main>
@@ -677,21 +753,28 @@
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
-<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-moc.html" class="">hermes-moc</a></li>
+<li><a href="hermes-vs-adk-openai-agents-langgraph.html" class="">hermes-vs-adk-openai-agents-langgraph</a></li>
 <li><a href="index.html" class="">index</a></li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="spec-hermes-agent-loop.html" class="">spec-hermes-agent-loop</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
-<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
-<li><a href="anthropic-server-tools.html" class="">anthropic-server-tools</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
-<li><a href="lit-anthropic-tool-use-depth.html" class="">lit-anthropic-tool-use-depth</a></li>
+<li><a href="adk-moc.html" class="">adk-moc</a></li>
+<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-command-control-plane.html" class="">hermes-command-control-plane</a></li>
+<li><a href="hermes-moc.html" class="">hermes-moc</a></li>
+<li><a href="hermes-vs-adk-openai-agents-langgraph.html" class="">hermes-vs-adk-openai-agents-langgraph</a></li>
+<li><a href="langgraph.html" class="">langgraph</a></li>
+<li><a href="lit-hermes-architecture.html" class="">lit-hermes-architecture</a></li>
+<li><a href="lit-langgraph.html" class="">lit-langgraph</a></li>
+<li><a href="lit-openai-agents-sdk.html" class="">lit-openai-agents-sdk</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
+<li><a href="orchestration-tradeoffs.html" class="">orchestration-tradeoffs</a></li>
 </ul>
           </div>
         </div>
