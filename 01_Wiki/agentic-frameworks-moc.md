@@ -51,7 +51,11 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 * [[smolagents]]: Hugging Face's code-first agent library (Freedom).
 * [[openai-swarm]]: Experimental multi-agent orchestration pattern centered on handoffs.
 * [[openai-symphony]]: Service specification for background coding-agent orchestration.
+* [[openai-symphony-orchestration-state-machine]]: Internal claim states, retries, reconciliation, and bounded worker attempts.
+* [[openai-symphony-workflow-contract]]: `WORKFLOW.md` as repository-owned control artifact for prompt, config, hooks, and policy.
+* [[openai-symphony-trust-boundary]]: Trusted-environment framing, implementation-defined safety posture, and harness hardening guidance.
 * [[openai-agents-sdk]]: Production-oriented OpenAI agent SDK for scalable orchestration.
+* [[hermes-vs-openai-symphony]]: Comparative note contrasting tracker-native orchestration with Hermes's persistent agent environment.
 - [[adk-moc]] - Google's code-first toolkit for complex agent systems ([[agent-development-kit|ADK]]).
 * [[llamaindex]]: Data-oriented agent toolkit with strong retrieval and workflow support (Retrieval).
 * [[langgraph]]: Stateful orchestration framework with explicit control-flow graphs (Control).

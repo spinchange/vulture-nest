@@ -24,8 +24,11 @@ aliases: [agent-collaboration, orchestrator-worker, specialized-agents]
 *   **smolagents:** Uses `ManagedAgent` to wrap workers.
 *   **LlamaIndex:** Uses `AgentWorkflow` to handle multi-agent loops and handoffs.
 *   **[[openai-symphony]]**: A service spec where the orchestrator manages coding-agent workspaces and issue lifecycle.
+*   **[[openai-symphony-orchestration-state-machine]]**: Clarifies that Symphony's internal claim states and retry semantics are distinct from external tracker workflow states.
+*   **[[openai-symphony-workflow-contract]]**: Shows how Symphony pushes orchestration policy into a repository-owned `WORKFLOW.md` artifact rather than only application code.
 
 ## See Also
 * [[agentic-frameworks-moc]]
 * [[smolagents]]
 * [[llamaindex]]
+* [[hermes-vs-openai-symphony]]

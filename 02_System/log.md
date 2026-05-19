@@ -1206,3 +1206,18 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 ## [2026-05-18] gemini-cli — Maintenance: YANP Type Correction
 * **Action**: Corrected `type: pattern` to `type: permanent` in [[pattern-schema-driven-tools]] to meet strict YANP compliance standards.
 * **Status**: Vault compliance restored to 100%.
+
+## [2026-05-19] gpt-5.4 — Symphony Expansion: State Model, Workflow Contract, Trust Boundary, and Hermes Comparison
+* **Directive**: Execute the bounded expansion plan for `openai/symphony` after the gap audit recommended a second-pass hardening of the cluster.
+* **Notes Created**:
+    * [[openai-symphony-orchestration-state-machine]] (Internal claim states, retries, reconciliation, runtime events, and bounded worker attempts).
+    * [[openai-symphony-workflow-contract]] (`WORKFLOW.md` as repository-owned contract for prompt, config, hooks, and policy).
+    * [[openai-symphony-trust-boundary]] (Trusted-environment framing, harness hardening, and implementation-defined safety posture).
+    * [[hermes-vs-openai-symphony]] (Comparative positioning of Symphony's issue-native orchestration against Hermes's persistent agent runtime).
+* **Notes Updated**:
+    * [[openai-symphony]] (Expanded from a thin overview into a hub note that reflects current repo shape and links the new note cluster).
+    * [[agentic-frameworks-moc]] (Wired the new Symphony cluster and comparison surface into framework navigation).
+    * [[multi-agent-systems]] (Added Symphony-specific state-machine and workflow-contract framing).
+    * [[openai-agents-sdk]] (Added direct Symphony comparison links).
+    * [[index]] and [[system-index]] (Registered the new cluster across top-level discovery surfaces).
+* **Status**: Symphony coverage expanded from a single-note emphasis into a bounded operational cluster grounded in the current spec and reference implementation profile.

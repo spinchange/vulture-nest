@@ -76,6 +76,16 @@ Status legend: implemented references describe working artifacts; handoff refere
 * [[lit-hermes-architecture]] - Literature: official Hermes docs on architecture, agent loop, slash-command surfaces, and built-in tools
 * [[spec-hermes-agent-loop]] - Descriptive spec: shared turn loop, message alternation, tool dispatch, and persistence invariants across Hermes surfaces
 
+## OpenAI Orchestration
+* [[openai-swarm]] - Experimental handoff-oriented multi-agent framework centered on conversational routing.
+* [[openai-agents-sdk]] - Production Python SDK for runner loops, guardrails, tracing, and multi-agent handoffs.
+* [[openai-symphony]] - Tracker-native service specification for background coding-agent orchestration.
+* [[openai-symphony-orchestration-state-machine]] - Internal claim states, retries, reconciliation, and bounded worker attempts.
+* [[openai-symphony-workflow-contract]] - `WORKFLOW.md` as repository-owned control artifact for config, hooks, and prompt policy.
+* [[openai-symphony-trust-boundary]] - Trusted-environment framing, implementation-defined safety posture, and harness hardening guidance.
+* [[lit-openai-symphony-spec]] - Literature: announcement + SPEC grounding for the Symphony service model.
+* [[hermes-vs-openai-symphony]] - Contrast between issue-native orchestration and Hermes's persistent agent environment.
+
 ## Multi-Agent Pattern Language
 * [[pattern-supabase-flask-integration]] - Flask + Supabase: module-level singleton, RLS as auth layer, method-chain query API
 * [[pattern-dynamic-delegation]] - Agent A calls Agent B, waits for result (delegation primitive)

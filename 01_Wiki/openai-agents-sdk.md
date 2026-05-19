@@ -143,3 +143,7 @@ Interrupted runs (e.g., human-in-the-loop pauses) are resumed by passing a `RunS
 
 ---
 *Source: [[lit-openai-agents-sdk]]*
+
+## See Also
+- [[openai-symphony]]
+- [[hermes-vs-openai-symphony]]

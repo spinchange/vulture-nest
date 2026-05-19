@@ -10,6 +10,10 @@
 - [[verbalized-sample-skill]] - Operational protocol for distribution-aware reasoning.
 - [[openai-swarm]] - Experimental multi-agent orchestration.
 - [[openai-symphony]] - Service specification for background coding-agent orchestration.
+- [[openai-symphony-orchestration-state-machine]] - Internal claim states, retries, reconciliation, and bounded worker attempts.
+- [[openai-symphony-workflow-contract]] - `WORKFLOW.md` as repository-owned control artifact for prompt, config, hooks, and policy.
+- [[openai-symphony-trust-boundary]] - Trusted-environment framing and implementation-defined harness hardening posture.
+- [[hermes-vs-openai-symphony]] - Contrast between Symphony's issue-native orchestration service and Hermes's persistent agent environment.
 - [[hf-agents-course-moc]] - Hugging Face Agents Course curriculum.
 - [[workflow-agents]] - Deterministic orchestration patterns.
 - [[type-safety-spectrum-debate]] - Codex vs Claude debate on type safety.
@@ -140,6 +144,10 @@
 - [[pattern-supabase-flask-integration]]: Permanent note — Flask+Supabase pattern (singleton client, RLS auth layer, method-chain API).
 
 - [[lit-openai-symphony-spec]]: Official specification for the Symphony orchestration service.
+- [[openai-symphony-orchestration-state-machine]]: Permanent note — claim-state model, retries, reconciliation, and worker lifecycle.
+- [[openai-symphony-workflow-contract]]: Permanent note — `WORKFLOW.md` as checked-in control artifact for runtime policy.
+- [[openai-symphony-trust-boundary]]: Permanent note — trusted-environment framing and harness hardening implications.
+- [[hermes-vs-openai-symphony]]: Permanent note — comparative positioning of Symphony and Hermes.
 
 
 ## Active Handoffs
