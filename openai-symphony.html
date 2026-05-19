@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">OpenAI Symphony</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-03</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Symphony</span></span>
+        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Symphony</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
       </div>
     </header>
 
@@ -566,101 +566,120 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>OpenAI Symphony</h1>
-<p><strong>OpenAI Symphony</strong> is an open-source service specification for orchestrating coding agents around project work items rather than interactive sessions. It shifts the unit of coordination from individual chat messages to <strong>Issues/Work Items</strong> (e.g., tickets in Linear).</p>
+<p><strong>OpenAI Symphony</strong> is an open-source service specification for orchestrating coding agents around project work items rather than interactive sessions. It shifts the unit of coordination from chat turns and merged pull requests to the <strong>issue lifecycle</strong> itself.</p>
 <h2>What It Is</h2>
-<p>Symphony is a <strong>scheduler, runner, and tracker reader</strong>. It acts as an autonomous background daemon that:</p>
+<p>Symphony is a <strong>scheduler, runner, and tracker reader</strong>. In the current repository shape, that means:</p>
 <ol>
-<li>Polls an issue tracker for work.
+<li>polling an issue tracker such as Linear for active work
 </li>
-<li>Creates isolated, per-issue workspaces.
+<li>creating an isolated workspace per issue
 </li>
-<li>Runs a coding agent guided by a repository-owned <code>WORKFLOW.md</code> file.
+<li>rendering a repository-owned <code>WORKFLOW.md</code> contract into a coding-agent prompt
 </li>
-<li>Manages retries and terminal state transitions (e.g., moving a ticket to &quot;Human Review&quot;).
+<li>launching the coding agent as a subordinate worker process
+</li>
+<li>retrying, reconciling, and releasing work until the issue reaches a workflow-defined terminal boundary
 </li>
 </ol>
+<p>The result is an <strong>always-on coding-work orchestrator</strong>: engineers manage work items and review outcomes rather than supervising every agent turn.</p>
 <h2>Core Model</h2>
-<p>The Symphony model is built on <strong>Always-On Orchestration</strong>. Instead of a user initiating a session, the service ensures that every active task in the tracker has an agent assigned to it.</p>
+<p>The Symphony model is built around three strong claims.</p>
 <ul>
-<li><strong>Unit of Work:</strong> The <strong>Issue</strong> (Work Item).
+<li><strong>Unit of work:</strong> the <strong>issue</strong> or work item, not the interactive session
 </li>
-<li><strong>Control Plane:</strong> The <strong>Issue Tracker</strong> (e.g., Linear). Ticket statuses drive the orchestrator&#39;s state machine.
+<li><strong>Control plane:</strong> the <strong>issue tracker</strong>, whose states determine when work is eligible, active, or terminal
 </li>
-<li><strong>Contract:</strong> The <code>WORKFLOW.md</code> file stored in the codebase repository.
+<li><strong>Repository contract:</strong> the in-repo <code>WORKFLOW.md</code> file, which binds prompt, runtime settings, hooks, tracker config, and agent policy into one versioned artifact
 </li>
 </ul>
+<p>This makes Symphony a service-layer orchestration substrate rather than a chat framework.</p>
+<h2>Current Repository Shape</h2>
+<p>The live <code>openai/symphony</code> repository presents Symphony as three related artifacts:</p>
+<ul>
+<li><strong><code>SPEC.md</code></strong> — the normative language-agnostic service specification
+</li>
+<li><strong><code>README.md</code></strong> — the operator-facing framing: trusted environments, harness engineering, and proof-of-work outcomes
+</li>
+<li><strong><code>elixir/</code></strong> — the experimental reference implementation, including the current Elixir/OTP service and its setup guidance
+</li>
+</ul>
+<p>So Symphony should be read as both a <strong>specification</strong> and a <strong>reference implementation profile</strong>, not as a polished end-user product.</p>
 <h2>Main Components</h2>
+<p>The spec centers the following components:</p>
 <ul>
-<li><strong>Orchestrator:</strong> The central loop managing concurrency and dispatching issues.
+<li><strong>Orchestrator</strong> — owns the poll tick, claims, retries, and in-memory runtime state
 </li>
-<li><strong>Issue Tracker Client:</strong> Interface for polling and updating external trackers.
+<li><strong>Issue Tracker Client</strong> — fetches candidate issues and refreshes their current tracker state
 </li>
-<li><strong>Workspace Manager:</strong> Handles filesystem isolation and population (cloning/syncing) for each issue.
+<li><strong>Workspace Manager</strong> — maps issue IDs to workspaces, applies hooks, and enforces isolation boundaries
 </li>
-<li><strong>Agent Runner:</strong> Prepares the rendered prompt from <code>WORKFLOW.md</code> and executes the agent subprocess.
+<li><strong>Agent Runner</strong> — launches the coding agent, streams events, and maps worker outcomes back into orchestration state
 </li>
-<li><strong>Workflow Loader:</strong> Parses the in-repo configuration and instructions.
+<li><strong>Workflow Loader / Config Layer</strong> — parses <code>WORKFLOW.md</code> into typed configuration and prompt material
+</li>
+<li><strong>Observability Surface</strong> — optional dashboards, logs, and status APIs that help operators inspect the service without being required for correctness
 </li>
 </ul>
-<h2>Workflow Contract (<code>WORKFLOW.md</code>)</h2>
-<p>The <code>WORKFLOW.md</code> file serves as the versioned &quot;brain&quot; of the agent for a specific repository.</p>
+<h2>Key Subsystems</h2>
+<p>Symphony is easier to reason about as a cluster of related concepts than as one overloaded overview note.</p>
 <ul>
-<li><strong>Front Matter (YAML):</strong> Configuration for polling intervals, concurrency, and workspace hooks.
+<li><a href="openai-symphony-orchestration-state-machine.html" class="wikilink">openai-symphony-orchestration-state-machine</a> — internal claim states, retries, reconciliation, and worker lifecycle
 </li>
-<li><strong>Body (Markdown):</strong> The <strong>Prompt Template</strong>, rendered with issue metadata (title, description) before being sent to the agent.
+<li><a href="openai-symphony-workflow-contract.html" class="wikilink">openai-symphony-workflow-contract</a> — why <code>WORKFLOW.md</code> is the real repository-owned control artifact
+</li>
+<li><a href="openai-symphony-trust-boundary.html" class="wikilink">openai-symphony-trust-boundary</a> — trusted-environment framing, implementation-defined safety posture, and harness hardening
+</li>
+<li><a href="hermes-vs-openai-symphony.html" class="wikilink">hermes-vs-openai-symphony</a> — contrast between Symphony&#39;s issue-native orchestration service and Hermes&#39;s broader persistent agent environment
 </li>
 </ul>
-<h2>Safety and Trust Boundary</h2>
-<ul>
-<li><strong>Isolation:</strong> Mandatory per-issue workspace isolation. Agents are restricted to a specific <code>cwd</code>.
-</li>
-<li><strong>Normative vs. Implementation-Defined:</strong> The spec mandates *how* components interact but leaves the <strong>trust posture</strong> (sandboxing depth, approval levels) to the implementation. It can operate in &quot;high-trust&quot; (fully autonomous) or &quot;low-trust&quot; (human-in-the-loop) environments.
-</li>
-</ul>
-<h2>How It Differs From Interactive Agent Use</h2>
-<table>
-<thead><tr>
-<th>Feature</th>
-<th>Interactive Use</th>
-<th>OpenAI Symphony</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Bottleneck</strong></td>
-<td>Human attention (steering)</td>
-<td>Project work capacity</td>
-</tr>
-<tr>
-<td><strong>Trigger</strong></td>
-<td>User prompt</td>
-<td>Issue tracker state change</td>
-</tr>
-<tr>
-<td><strong>Persistence</strong></td>
-<td>Session-based</td>
-<td>Task-based (Issue lifecycle)</td>
-</tr>
-<tr>
-<td><strong>Supervision</strong></td>
-<td>Step-by-step</td>
-<td>High-level (Reviewing results)</td>
-</tr>
-</tbody>
-</table>
+<h2>What Makes Symphony Distinctive</h2>
+<h3>1. Tracker-native orchestration</h3>
+<p>Symphony does not treat the issue tracker as a notification source layered on top of a chat system. The tracker is the <strong>control plane</strong>. Issue state determines candidate selection, active work ownership, retries, and release.</p>
+<h3>2. <code>WORKFLOW.md</code> is load-bearing</h3>
+<p><code>WORKFLOW.md</code> is not a decorative prompt file. It carries configuration, workspace hooks, tracker selection, runtime policy, and the prompt template itself. That makes repository policy versioned with the codebase the agent is modifying.</p>
+<h3>3. The coding agent is a subordinate worker, not a peer agent</h3>
+<p>Symphony is a centralized orchestrator pattern. The coding agent runs as a worker subprocess inside an issue-specific workspace. This is not an A2A-style peer delegation fabric.</p>
+<h3>4. Trust posture is intentionally left open</h3>
+<p>The spec defines how the pieces relate, but leaves approval and sandbox posture to the implementation. Symphony can run in a permissive trusted environment or a more restrictive human-reviewed one, as long as the implementation states the chosen boundary clearly.</p>
 <h2>Relationship To Existing Vault Notes</h2>
 <ul>
-<li><strong><a href="openai-swarm.html" class="wikilink">openai-swarm</a></strong>: Swarm is a lightweight framework for *ephemeral, chat-driven handoffs*. Symphony is a *service spec* for *background, task-driven orchestration*.
+<li><strong><a href="openai-swarm.html" class="wikilink">openai-swarm</a></strong> — Swarm is an ephemeral, session-oriented handoff framework. Symphony is a persistent, issue-oriented orchestration service.
 </li>
-<li><strong><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a></strong>: The SDK provides the tools to build agents; Symphony provides the *platform* to run them autonomously at scale.
+<li><strong><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a></strong> — the SDK provides primitives for building agents and agent runs; Symphony provides a tracker-native platform for continuously assigning project work to coding-agent workers.
 </li>
-<li><strong><a href="workflow-agents.html" class="wikilink">workflow-agents</a></strong>: While ADK&#39;s workflow agents are *deterministic code controllers*, Symphony externalizes the &quot;workflow&quot; into a repository-owned Markdown file and uses an external tracker for state.
+<li><strong><a href="workflow-agents.html" class="wikilink">workflow-agents</a></strong> — ADK workflow agents keep workflow logic in code. Symphony externalizes much of the workflow contract into a repository-owned Markdown artifact.
 </li>
-<li><strong><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a></strong>: Symphony implements a pure <strong>Orchestrator/Manager Pattern</strong>, where the Symphony service is the Manager and the Coding Agent is a specialized Worker.
+<li><strong><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a></strong> — Symphony is a strong example of the <strong>Orchestrator/Manager</strong> pattern where the manager owns issue state, workspace lifecycle, and retry policy.
 </li>
-<li><strong><a href="agent-development-kit.html" class="wikilink">ADK</a></strong>: Symphony aligns with the ADK philosophy of &quot;Agents-as-Code,&quot; but focuses on the service-layer orchestration of those agents.
+<li><strong><a href="hermes-agent.html" class="wikilink">hermes-agent</a></strong> — Hermes is a broader persistent agent environment spanning conversations, tools, memory, gateway surfaces, cron, and delegation. Symphony is much narrower and more issue-native.
 </li>
 </ul>
-<hr>
-<p>*Source: <a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a>*</p>
+<h2>See Also</h2>
+<ul>
+<li><a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a>
+</li>
+<li><a href="openai-swarm.html" class="wikilink">openai-swarm</a>
+</li>
+<li><a href="openai-agents-sdk.html" class="wikilink">openai-agents-sdk</a>
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
+</li>
+<li><a href="agentic-frameworks-moc.html" class="wikilink">agentic-frameworks-moc</a>
+</li>
+<li><a href="hermes-vs-openai-symphony.html" class="wikilink">hermes-vs-openai-symphony</a>
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a>
+</li>
+<li><code>README.md</code> in <code>openai/symphony</code>
+</li>
+<li><code>SPEC.md</code> in <code>openai/symphony</code>
+</li>
+<li><code>elixir/README.md</code> in <code>openai/symphony</code>
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -678,19 +697,30 @@
 <li><a href="claude-symphony-graph-handoff-2026-05-03.html" class="">claude-symphony-graph-handoff-2026-05-03</a></li>
 <li><a href="gemini-openai-symphony-spec-research-handoff-2026-05-03.html" class="">gemini-openai-symphony-spec-research-handoff-2026-05-03</a></li>
 <li><a href="hermes-cron.html" class="">hermes-cron</a></li>
+<li><a href="hermes-vs-openai-symphony.html" class="">hermes-vs-openai-symphony</a></li>
+<li><a href="index.html" class="">index</a></li>
 <li><a href="lit-openai-symphony-spec.html" class="">lit-openai-symphony-spec</a></li>
 <li><a href="log.html" class="">log</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="openai-symphony-orchestration-state-machine.html" class="">openai-symphony-orchestration-state-machine</a></li>
+<li><a href="openai-symphony-trust-boundary.html" class="">openai-symphony-trust-boundary</a></li>
+<li><a href="openai-symphony-workflow-contract.html" class="">openai-symphony-workflow-contract</a></li>
 <li><a href="system-index.html" class="">system-index</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="hermes-agent.html" class="">hermes-agent</a></li>
+<li><a href="hermes-vs-openai-symphony.html" class="">hermes-vs-openai-symphony</a></li>
 <li><a href="lit-openai-symphony-spec.html" class="">lit-openai-symphony-spec</a></li>
 <li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
 <li><a href="openai-agents-sdk.html" class="">openai-agents-sdk</a></li>
 <li><a href="openai-swarm.html" class="">openai-swarm</a></li>
+<li><a href="openai-symphony-orchestration-state-machine.html" class="">openai-symphony-orchestration-state-machine</a></li>
+<li><a href="openai-symphony-trust-boundary.html" class="">openai-symphony-trust-boundary</a></li>
+<li><a href="openai-symphony-workflow-contract.html" class="">openai-symphony-workflow-contract</a></li>
 <li><a href="workflow-agents.html" class="">workflow-agents</a></li>
 </ul>
           </div>

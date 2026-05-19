@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenAI Symphony Orchestration State Machine — Vulture Portal</title>
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      --bg:          #121212;
+      --panel:       #1a1a1a;
+      --panel-alt:   #1e1e1e;
+      --panel-deep:  #161616;
+      --text:        #d4d4d4;
+      --text-dim:    #9ca3af;
+      --muted:       #52595f;
+      --line:        #2a2a2a;
+      --accent:      #00ff00;
+      --accent-bg:   rgba(0, 255, 0, 0.06);
+      --accent-glow: rgba(0, 255, 0, 0.18);
+      --danger:      #ff5555;
+      --warn:        #ffcc00;
+      --mono: "Cascadia Code", "JetBrains Mono", "IBM Plex Mono", "Fira Code",
+              "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+      --radius: 6px;
+      --shell-max: 1380px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout shell ────────────────────────────────────────────── */
+    .shell {
+      max-width: var(--shell-max);
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .topbar .brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .topbar .sep { color: var(--line); }
+    .topbar-search {
+      margin-left: auto;
+      position: relative;
+      min-width: 280px;
+      max-width: 360px;
+      flex: 1 1 280px;
+    }
+
+    /* ── Search ─────────────────────────────────────────────────── */
+    .search-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+    .search-results {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: none;
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+      overflow: hidden;
+    }
+    .search-results.is-open {
+      display: block;
+    }
+    .search-results-header {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .search-results-list {
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .search-result {
+      display: block;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      color: inherit;
+      text-decoration: none;
+    }
+    .search-result:last-child {
+      border-bottom: none;
+    }
+    .search-result:hover,
+    .search-result:focus {
+      text-decoration: none;
+      background: var(--panel-alt);
+    }
+    .search-result-title {
+      display: block;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .search-result-meta {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .search-result-excerpt {
+      display: block;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .search-empty {
+      padding: 14px 12px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* ── Metadata Zone ───────────────────────────────────────────── */
+    .metadata-zone {
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .note-title {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin: 0 0 18px;
+      letter-spacing: -0.01em;
+    }
+    .note-title::before {
+      content: "# ";
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    /* Frontmatter pills */
+    .frontmatter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .fm-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 3px 9px;
+    }
+    .fm-key {
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .fm-val {
+      color: var(--text);
+    }
+    .fm-val.status-active   { color: var(--accent); }
+    .fm-val.status-draft    { color: var(--warn); }
+    .fm-val.status-archived { color: var(--muted); }
+
+    /* ── Main layout grid ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      grid-template-areas: "content graph";
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Content Zone ────────────────────────────────────────────── */
+    .content-zone {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    /* Prose typography */
+    .content-zone h1,
+    .content-zone h2,
+    .content-zone h3,
+    .content-zone h4,
+    .content-zone h5,
+    .content-zone h6 {
+      font-family: var(--mono);
+      color: var(--text);
+      margin: 1.8em 0 0.5em;
+      line-height: 1.25;
+    }
+    .content-zone h1 { font-size: 1.7em; color: var(--accent); }
+    .content-zone h2 { font-size: 1.3em; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    .content-zone h3 { font-size: 1.1em; }
+    .content-zone h4 { font-size: 1em; color: var(--text-dim); }
+    .content-zone h5,
+    .content-zone h6 { font-size: 0.9em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .content-zone p { margin: 0 0 1em; max-width: 74ch; }
+
+    .content-zone ul,
+    .content-zone ol {
+      margin: 0 0 1em;
+      padding-left: 1.5em;
+    }
+    .content-zone li { margin-bottom: 0.3em; }
+    .content-zone li > ul,
+    .content-zone li > ol { margin-top: 0.3em; margin-bottom: 0; }
+
+    .content-zone blockquote {
+      margin: 1.2em 0;
+      padding: 10px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-bg);
+      color: var(--text-dim);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .content-zone blockquote p { margin: 0; max-width: none; }
+
+    .content-zone code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .content-zone pre {
+      background: var(--panel-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 1em 0;
+      font-family: var(--mono);
+      font-size: 0.86em;
+      line-height: 1.55;
+    }
+    .content-zone pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+
+    .content-zone table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-size: 0.9em;
+    }
+    .content-zone th {
+      font-family: var(--mono);
+      text-align: left;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .content-zone td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .content-zone tr:last-child td { border-bottom: none; }
+    .content-zone tr:hover td { background: var(--panel-alt); }
+
+    .content-zone hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2em 0;
+    }
+
+    .content-zone strong { color: var(--text); font-weight: 600; }
+    .content-zone em { color: var(--text-dim); font-style: italic; }
+
+    /* Wikilinks injected by engine */
+    .content-zone a.wikilink {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent-bg);
+    }
+    .content-zone a.wikilink:hover {
+      background: var(--accent-bg);
+      border-bottom-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Graph Discovery Zone ────────────────────────────────────── */
+    .graph-zone {
+      grid-area: graph;
+      position: sticky;
+      top: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .graph-header .graph-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .graph-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .graph-body {
+      padding: 10px 0;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+    .graph-body::-webkit-scrollbar { width: 4px; }
+    .graph-body::-webkit-scrollbar-track { background: transparent; }
+    .graph-body::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+    /* Nodes injected by engine — expect a <ul> or raw <a> tags */
+    .graph-neighbors {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .graph-neighbors ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .graph-neighbors li {
+      border-bottom: 1px solid var(--line);
+    }
+    .graph-neighbors li:last-child { border-bottom: none; }
+    .graph-neighbors a,
+    .graph-neighbors li {
+      display: block;
+      padding: 7px 14px;
+      color: var(--text-dim);
+      transition: background 0.1s, color 0.1s;
+    }
+    .graph-neighbors a {
+      text-decoration: none;
+    }
+    .graph-neighbors a:hover,
+    .graph-neighbors li:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .graph-neighbors a::before {
+      content: "→ ";
+      color: var(--muted);
+    }
+    .graph-neighbors a:hover::before { color: var(--accent); }
+
+    /* Section dividers within graph (e.g. "Links To" / "Links From") */
+    .graph-neighbors .graph-section-label {
+      display: block;
+      padding: 8px 14px 4px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-deep);
+    }
+    .graph-neighbors .graph-section-label::before { content: none; }
+
+    /* Empty state */
+    .graph-empty {
+      padding: 16px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Log Entries ────────────────────────────────────────────── */
+    .log-entry {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 140px;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-dim);
+      flex-grow: 1;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 820px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "content"
+          "graph";
+      }
+      .graph-zone {
+        position: static;
+      }
+      .topbar {
+        flex-wrap: wrap;
+      }
+      .topbar-search {
+        min-width: 100%;
+        max-width: none;
+      }
+    }
+    @media (max-width: 540px) {
+      .shell { padding: 0 14px 40px; }
+      .note-title { font-size: 20px; }
+      .search-results {
+        position: static;
+        margin-top: 10px;
+      }
+    }
+
+    /* ── Print ───────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .graph-zone { display: none; }
+      .topbar { display: none; }
+      .note-title { color: #111; }
+      .note-title::before { color: #555; }
+      a { color: #0066cc; }
+      .content-zone code { background: #f4f4f4; border-color: #ccc; color: #111; }
+      .content-zone pre { background: #f4f4f4; border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- ── Topbar ─────────────────────────────────────────────── -->
+    <nav class="topbar">
+      <span class="brand">VULTURE</span>
+      <span class="sep">/</span>
+      <span>PORTAL</span>
+      <span class="sep">/</span>
+      <a href="index.html">INDEX</a>
+      <span class="sep">/</span>
+      <a href="sitemap.html">SITEMAP</a>
+      <span class="sep">/</span>
+      <span>OpenAI Symphony Orchestration State Machine</span>
+      <div class="topbar-search">
+        <input
+          id="portal-search"
+          class="search-input"
+          type="search"
+          placeholder="Search notes, aliases, and excerpts…"
+          autocomplete="off"
+          aria-label="Search portal notes">
+        <div id="portal-search-results" class="search-results" aria-live="polite"></div>
+      </div>
+    </nav>
+
+    <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
+    <header class="metadata-zone">
+      <div class="kicker">NOTE</div>
+      <h1 class="note-title">OpenAI Symphony Orchestration State Machine</h1>
+      <div class="frontmatter">
+        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">OpenAI Symphony Orchestration State Machine</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+      </div>
+    </header>
+
+    <!-- ── Zones 2 + 3: Content + Graph (grid) ─────────────────── -->
+    <div class="layout">
+
+      <!-- Zone 2: Content -->
+      <main class="content-zone" id="content">
+        <h1>OpenAI Symphony Orchestration State Machine</h1>
+<p><a href="openai-symphony.html" class="wikilink">openai-symphony</a> becomes much clearer once its internal claim logic is separated from the external tracker workflow. The tracker may say <code>Todo</code>, <code>In Progress</code>, or <code>Done</code>; Symphony itself separately tracks whether an issue is <strong>claimed</strong>, <strong>running</strong>, or <strong>queued for retry</strong>.</p>
+<h2>Two distinct state layers</h2>
+<p>Symphony has two state systems that must not be conflated.</p>
+<h3>1. Tracker workflow state</h3>
+<p>This is the project-management view exposed by Linear or another tracker:</p>
+<ul>
+<li>active states such as <code>Todo</code> and <code>In Progress</code>
+</li>
+<li>terminal states such as <code>Done</code>, <code>Closed</code>, or <code>Cancelled</code>
+</li>
+<li>workflow-defined intermediate handoff states such as <code>Human Review</code>
+</li>
+</ul>
+<p>This state answers: <strong>Should this work item still exist as live project work?</strong></p>
+<h3>2. Symphony orchestration state</h3>
+<p>This is the service&#39;s internal claim state:</p>
+<ul>
+<li><strong><code>Unclaimed</code></strong> — no worker is running and no retry is scheduled
+</li>
+<li><strong><code>Claimed</code></strong> — the orchestrator has reserved the issue to prevent duplicate dispatch
+</li>
+<li><strong><code>Running</code></strong> — a worker task exists and the issue is present in the running map
+</li>
+<li><strong><code>RetryQueued</code></strong> — no worker is active, but a retry timer exists
+</li>
+</ul>
+<p>This state answers: <strong>What is the orchestrator currently doing with this issue?</strong></p>
+<h2>Why the split matters</h2>
+<p>This split keeps Symphony from confusing project status with execution status.</p>
+<p>An issue can remain tracker-active while Symphony transitions through several internal execution states:</p>
+<p><code>Unclaimed -&gt; Claimed -&gt; Running -&gt; RetryQueued -&gt; Running -&gt; terminal cleanup</code></p>
+<p>The tracker owns the work item&#39;s business meaning. Symphony owns the worker lifecycle.</p>
+<h2>The poll-and-dispatch loop</h2>
+<p>At the top level, Symphony is a continuous orchestration tick:</p>
+<ol>
+<li>poll the tracker for candidate issues
+</li>
+<li>exclude issues that are already claimed or otherwise ineligible
+</li>
+<li>claim selected issues to prevent duplicate dispatch
+</li>
+<li>create or reuse the workspace
+</li>
+<li>launch the worker attempt
+</li>
+<li>react to worker outcomes and tracker changes
+</li>
+<li>release, retry, or clean up
+</li>
+</ol>
+<p>The orchestrator is therefore not just a launcher. It is the <strong>durability and coordination layer</strong> around repeated worker attempts.</p>
+<h2>Run attempts as bounded worker episodes</h2>
+<p>A Symphony issue may require multiple attempts before it leaves the active workflow. Each attempt is a bounded episode consisting of:</p>
+<ul>
+<li>workspace preparation
+</li>
+<li>prompt rendering from <code>WORKFLOW.md</code>
+</li>
+<li>coding-agent startup
+</li>
+<li>streamed runtime events back to the orchestrator
+</li>
+<li>a terminal outcome such as success, failure, cancellation, stall, or retry scheduling
+</li>
+</ul>
+<p>This makes the issue, not the single worker process, the durable unit of work.</p>
+<h2>Reconciliation is first-class, not cleanup glue</h2>
+<p>The spec gives reconciliation a central role.</p>
+<h3>Stall detection</h3>
+<p>For each running issue, Symphony computes elapsed time since either:</p>
+<ul>
+<li>the last Codex event timestamp, or
+</li>
+<li>the run start time if no event has yet been seen
+</li>
+</ul>
+<p>If the elapsed time exceeds <code>codex.stall_timeout_ms</code>, the worker is terminated and a retry is queued. If stall timeout is disabled, stall detection is skipped entirely.</p>
+<h3>Tracker refresh</h3>
+<p>Every tick, Symphony refreshes tracker state for running issue IDs.</p>
+<ul>
+<li>if the tracker state is now terminal, Symphony terminates the worker and cleans the workspace
+</li>
+<li>if the tracker state is still active, Symphony updates the in-memory issue snapshot
+</li>
+</ul>
+<p>This means runtime truth is continuously checked against project-system truth.</p>
+<h2>Runtime events as state-machine inputs</h2>
+<p>The agent runner emits structured events upstream to the orchestrator, including examples such as:</p>
+<ul>
+<li><code>session_started</code>
+</li>
+<li><code>startup_failed</code>
+</li>
+<li><code>turn_completed</code>
+</li>
+<li><code>turn_failed</code>
+</li>
+<li><code>turn_cancelled</code>
+</li>
+</ul>
+<p>These events are not just logs. They are <strong>inputs to orchestration decisions</strong> about liveness, retry, progress tracking, and operator visibility.</p>
+<h2>Recovery and idempotency</h2>
+<p>The Symphony state machine is designed for long-running service conditions rather than one-shot script execution.</p>
+<p>Important consequences:</p>
+<ul>
+<li>startup can include terminal-workspace cleanup
+</li>
+<li>active runs are reconciled repeatedly, not trusted blindly
+</li>
+<li>retries are scheduled explicitly rather than inferred from worker exit alone
+</li>
+<li>issue claims prevent duplicate dispatch when the poller sees the same candidate again
+</li>
+</ul>
+<p>This gives Symphony the character of a <strong>service-owned execution ledger</strong>, even when some state is in-memory.</p>
+<h2>Architectural significance</h2>
+<p>Symphony&#39;s main contribution is not merely &quot;run Codex for issues.&quot; It is the claim that coding-agent orchestration should be treated like a durable control loop with:</p>
+<ul>
+<li>explicit claim semantics
+</li>
+<li>bounded worker attempts
+</li>
+<li>reconciliation against an external control plane
+</li>
+<li>retry scheduling as a native state transition
+</li>
+</ul>
+<p>That is why it feels closer to a workflow service than to a multi-agent chat runtime.</p>
+<h2>See Also</h2>
+<ul>
+<li><a href="openai-symphony.html" class="wikilink">openai-symphony</a>
+</li>
+<li><a href="openai-symphony-workflow-contract.html" class="wikilink">openai-symphony-workflow-contract</a>
+</li>
+<li><a href="openai-symphony-trust-boundary.html" class="wikilink">openai-symphony-trust-boundary</a>
+</li>
+<li><a href="multi-agent-systems.html" class="wikilink">multi-agent-systems</a>
+</li>
+<li><a href="graph-orchestration.html" class="wikilink">graph-orchestration</a>
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="lit-openai-symphony-spec.html" class="wikilink">lit-openai-symphony-spec</a>
+</li>
+<li><code>SPEC.md</code> &#167;7–&#167;10, <code>openai/symphony</code>
+</li>
+</ul>
+      </main>
+
+      <!-- Zone 3: Graph Discovery -->
+      <aside class="graph-zone" aria-label="Connected nodes">
+        <div class="graph-header">
+          <span class="graph-dot"></span>
+          <span class="graph-label">Connected Nodes</span>
+        </div>
+        <div class="graph-body">
+          <div class="graph-neighbors">
+            <span class="graph-section-label">Links To This Note</span>
+<ul>
+<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="log.html" class="">log</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="openai-symphony.html" class="">openai-symphony</a></li>
+<li><a href="openai-symphony-trust-boundary.html" class="">openai-symphony-trust-boundary</a></li>
+<li><a href="openai-symphony-workflow-contract.html" class="">openai-symphony-workflow-contract</a></li>
+<li><a href="system-index.html" class="">system-index</a></li>
+</ul>
+<span class="graph-section-label">Links From This Note</span>
+<ul>
+<li><a href="graph-orchestration.html" class="">graph-orchestration</a></li>
+<li><a href="lit-openai-symphony-spec.html" class="">lit-openai-symphony-spec</a></li>
+<li><a href="multi-agent-systems.html" class="">multi-agent-systems</a></li>
+<li><a href="openai-symphony.html" class="">openai-symphony</a></li>
+<li><a href="openai-symphony-trust-boundary.html" class="">openai-symphony-trust-boundary</a></li>
+<li><a href="openai-symphony-workflow-contract.html" class="">openai-symphony-workflow-contract</a></li>
+</ul>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+  <script>
+    (() => {
+      const input = document.getElementById('portal-search');
+      const results = document.getElementById('portal-search-results');
+      if (!input || !results) return;
+
+      let indexPromise = null;
+      let notes = [];
+
+      function ensureIndex() {
+        if (!indexPromise) {
+          indexPromise = fetch('search-index.json')
+            .then(response => {
+              if (!response.ok) throw new Error('search-index fetch failed');
+              return response.json();
+            })
+            .then(data => {
+              notes = Array.isArray(data) ? data : [];
+              return notes;
+            })
+            .catch(() => {
+              notes = [];
+              return notes;
+            });
+        }
+        return indexPromise;
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function scoreNote(note, query) {
+        const title = (note.title || '').toLowerCase();
+        const aliases = Array.isArray(note.aliases) ? note.aliases.join(' ').toLowerCase() : '';
+        const search = (note.search || '').toLowerCase();
+        let score = 0;
+        if (title === query) score += 120;
+        else if (title.startsWith(query)) score += 80;
+        else if (title.includes(query)) score += 50;
+        if (aliases.includes(query)) score += 25;
+        if (search.includes(query)) score += 10;
+        return score;
+      }
+
+      function renderResults(matches, query) {
+        if (!query) {
+          results.classList.remove('is-open');
+          results.innerHTML = '';
+          return;
+        }
+
+        let html = `<div class="search-results-header">${matches.length} result${matches.length === 1 ? '' : 's'}</div>`;
+        if (!matches.length) {
+          html += '<div class="search-empty">No portal notes matched that query.</div>';
+          results.innerHTML = html;
+          results.classList.add('is-open');
+          return;
+        }
+
+        html += '<div class="search-results-list">';
+        for (const note of matches.slice(0, 8)) {
+          const meta = [note.type, note.status].filter(Boolean).join(' / ');
+          html += `
+            <a class="search-result" href="${escapeHtml(note.url)}">
+              <span class="search-result-title">${escapeHtml(note.title || note.note || '')}</span>
+              <span class="search-result-meta">${escapeHtml(meta)}</span>
+              <span class="search-result-excerpt">${escapeHtml(note.excerpt || '')}</span>
+            </a>`;
+        }
+        html += '</div>';
+        results.innerHTML = html;
+        results.classList.add('is-open');
+      }
+
+      async function handleQuery() {
+        const query = input.value.trim().toLowerCase();
+        if (!query) {
+          renderResults([], '');
+          return;
+        }
+        await ensureIndex();
+        const matches = notes
+          .map(note => ({ note, score: scoreNote(note, query) }))
+          .filter(item => item.score > 0)
+          .sort((a, b) => b.score - a.score || (a.note.title || '').localeCompare(b.note.title || ''))
+          .map(item => item.note);
+        renderResults(matches, query);
+      }
+
+      input.addEventListener('focus', () => { void ensureIndex(); });
+      input.addEventListener('input', () => { void handleQuery(); });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === '/' && document.activeElement !== input) {
+          event.preventDefault();
+          input.focus();
+        }
+        if (event.key === 'Escape') {
+          results.classList.remove('is-open');
+        }
+      });
+
+      document.addEventListener('click', event => {
+        if (!results.contains(event.target) && event.target !== input) {
+          results.classList.remove('is-open');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
