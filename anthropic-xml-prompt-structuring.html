@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chat Templates — Vulture Portal</title>
+  <title>Anthropic XML Prompt Structuring — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Chat Templates</span>
+      <span>Anthropic XML Prompt Structuring</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,14 +549,15 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Chat Templates</h1>
+      <h1 class="note-title">Anthropic XML Prompt Structuring</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Chat Templates</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic XML Prompt Structuring</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-prompt-engineering]]</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">jinja-templates, conversational-roles, system-user-assistant</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-20</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
       </div>
     </header>
 
@@ -565,30 +566,81 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Chat Templates</h1>
-<p><strong>Chat Templates</strong> are the bridge between a human-readable list of messages and the raw, model-specific token stream required by an LLM.</p>
-<h2>Conversational Roles</h2>
-<p>Standard chat templates use three primary roles:</p>
+        <h1>Anthropic XML Prompt Structuring</h1>
+<p><strong>Anthropic XML prompt structuring</strong> is the practice of using lightweight XML-like tags to separate prompt regions such as instructions, context, inputs, and examples so Claude can parse mixed prompt material with less ambiguity.</p>
+<h2>Core idea</h2>
+<p>The tags are not the payload; they are the <strong>boundary markers</strong> around the payload.</p>
+<p>A prompt that mixes many roles — what the model should do, what background it should use, what examples it should imitate, and what live input it should transform — becomes easier for Claude to interpret when each region is explicitly labeled.</p>
+<h2>What problem it solves</h2>
+<p>Without separators, prompts often blur together:</p>
 <ul>
-<li><strong>System</strong>: Persistent instructions that define the agent&#39;s identity, tone, and available tools.
+<li>instructions can look like examples
 </li>
-<li><strong>User</strong>: The human-provided query or instruction.
+<li>examples can look like fresh user input
 </li>
-<li><strong>Assistant</strong>: The model&#39;s reasoning, tool calls, and final responses.
+<li>reference material can be mistaken for authoritative directions
 </li>
-<li><strong>Tool</strong>: (Introduced in <a href="function-calling.html" class="wikilink">function-calling</a>) The role used to feed the output of a tool back into the conversation.
+<li>repeated documents can collapse into one undifferentiated blob
 </li>
 </ul>
-<h2>Technical Implementation</h2>
-<p>Most modern frameworks (like <code>transformers</code> or <code>smolagents</code>) use <strong>Jinja2</strong> templates to wrap messages with special tokens (e.g., <code>&lt;|im_start|&gt;</code>, <code>[INST]</code>) that the model was trained on. This ensures the model correctly identifies who said what.</p>
-<hr>
-<h2>References</h2>
+<p>XML-style tags reduce that confusion by making region boundaries explicit.</p>
+<h2>Typical pattern</h2>
+<pre><code>&lt;instructions&gt;
+Return a concise extraction of the claims.
+&lt;/instructions&gt;
+
+&lt;context&gt;
+The source may contain quoted objections and cited counterarguments.
+&lt;/context&gt;
+
+&lt;examples&gt;
+  &lt;example&gt;
+    &lt;input&gt;...&lt;/input&gt;
+    &lt;output&gt;...&lt;/output&gt;
+  &lt;/example&gt;
+&lt;/examples&gt;
+
+&lt;input&gt;
+...
+&lt;/input&gt;</code></pre>
+<p>The exact tag vocabulary is flexible. Anthropic&#39;s durable recommendation is to choose <strong>descriptive names</strong> and use them <strong>consistently</strong>.</p>
+<h2>Hierarchy mirrors task structure</h2>
+<p>When the task itself is hierarchical, the prompt wrapper should be hierarchical too.</p>
+<p>Anthropic&#39;s own example pattern — <code>&lt;documents&gt;</code> containing repeated <code>&lt;document index=&quot;n&quot;&gt;</code> items — suggests a general rule: represent collections as containers and members as repeated child blocks. This is especially useful for document comparison, retrieval synthesis, and multi-example prompting.</p>
+<h2>Tagged examples are a separate pattern</h2>
+<p>A specific sub-pattern is wrapping demonstrations in <code>&lt;example&gt;</code> / <code>&lt;examples&gt;</code> tags. This separates instructional examples from the actual live task and reduces the chance that Claude confuses demonstrations with operative input.</p>
+<h2>What this is not</h2>
 <ul>
-<li>Source: <code>00_Raw/hf-agents-course-unit1.md</code>
+<li>It is <strong>not</strong> an API-native schema contract like JSON Schema for tools.
 </li>
-<li><a href="hf-agents-course-moc.html" class="wikilink">hf-agents-course-moc</a>
+<li>It is <strong>not</strong> a requirement that the prompt be valid XML.
 </li>
-<li><a href="function-calling.html" class="wikilink">function-calling</a>
+<li>It is <strong>not</strong> a substitute for clear instructions or relevant examples.
+</li>
+</ul>
+<p>So the right mental model is <strong>semantic markup for model legibility</strong>, not machine-checked markup for strict parsing.</p>
+<h2>Why it belongs in the Anthropic cluster</h2>
+<p>Anthropic&#39;s direct API is block-structured at the message level, but much prompt complexity still lives *inside* text blocks. XML-style prompt structuring is one of the provider&#39;s explicit techniques for organizing that internal text-layer complexity.</p>
+<p>That makes it adjacent to:</p>
+<ul>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> for the outer transport contract
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> for structured capability calls
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> for stable prompt-prefix reuse
+</li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="lit-anthropic-prompt-engineering.html" class="wikilink">lit-anthropic-prompt-engineering</a>
+</li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>
+</li>
+<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
+</li>
+<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a>
+</li>
+<li><a href="chat-templates.html" class="wikilink">chat-templates</a>
 </li>
 </ul>
       </main>
@@ -605,13 +657,18 @@
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
-<li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
-<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
+<li><a href="index.html" class="">index</a></li>
+<li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
+<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="function-calling.html" class="">function-calling</a></li>
-<li><a href="hf-agents-course-moc.html" class="">hf-agents-course-moc</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
+<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
+<li><a href="chat-templates.html" class="">chat-templates</a></li>
+<li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
 </ul>
           </div>
         </div>

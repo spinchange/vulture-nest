@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Long-Term Memory</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Long-Term Memory</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -567,83 +567,151 @@
       <main class="content-zone" id="content">
         <h1>ADK Long-Term Memory</h1>
 <p>While <a href="adk-session-service.html" class="wikilink">Session State</a> manages short-term conversational context, the <strong>Memory Service</strong> in <a href="agent-development-kit.html" class="wikilink">ADK</a> provides agents with long-term recall across multiple sessions. It acts as a searchable archive of past interactions and external knowledge.</p>
+<hr>
 <h2>1. Core Concepts</h2>
 <ul>
-<li><strong>Long-Term Knowledge:</strong> Information that persists even after a session is closed.
+<li><strong>Long-Term Knowledge:</strong> Information that persists after a session is closed.
 </li>
-<li><strong>Semantic Search:</strong> The ability to retrieve past context based on meaning (using embeddings) rather than just keyword matching.
+<li><strong>Semantic Search:</strong> Retrieval based on meaning (embeddings) rather than keyword matching.
 </li>
-<li><strong>Memory Integration:</strong> Like other services, a <code>MemoryService</code> is provided to the <code>Runner</code> at initialization.
+<li><strong>Integration Point:</strong> A <code>MemoryService</code> is provided to the <code>Runner</code> at initialization, like other ADK services.
 </li>
 </ul>
+<hr>
 <h2>2. Service Implementations</h2>
 <h3><code>InMemoryMemoryService</code></h3>
-<p>Stores memory in the application&#39;s RAM.</p>
+<p>Stores memory in application RAM.</p>
 <ul>
-<li><strong>Search Method:</strong> Basic keyword matching.
+<li><strong>Search Method:</strong> Basic keyword matching
 </li>
-<li><strong>Use Case:</strong> Prototyping and simple local testing.
+<li><strong>Use Case:</strong> Prototyping and simple local testing
 </li>
-<li><strong>Persistence:</strong> Data is lost on restart.
+<li><strong>Persistence:</strong> Data is lost on restart
 </li>
 </ul>
 <h3><code>VertexAiMemoryBankService</code></h3>
-<p>A production-grade service using Google Cloud&#39;s Vertex AI.</p>
+<p>Production-grade service backed by Google Cloud&#39;s Vertex AI Agent Engine.</p>
 <ul>
-<li><strong>Search Method:</strong> Semantic (vector) search using embeddings.
+<li><strong>Search Method:</strong> Semantic (vector) search using embeddings
 </li>
-<li><strong>Use Case:</strong> Applications requiring robust, persistent, and &quot;intelligent&quot; recall across thousands of sessions.
+<li><strong>Use Case:</strong> Applications requiring robust, persistent, and semantically intelligent recall across thousands of sessions
+</li>
+<li><strong>Config:</strong> Requires <code>agent_engine_id</code> (Reasoning Engine ID); project/location not required in express mode
 </li>
 </ul>
+<pre><code>from google.adk.memory import VertexAiMemoryBankService
+
+APP_ID = &quot;your-reasoning-engine-id&quot;
+memory_service = VertexAiMemoryBankService(agent_engine_id=APP_ID)</code></pre>
 <h3><code>DatabaseMemoryService</code></h3>
-<p>A community-supported persistent memory service for <a href="python.html" class="wikilink">python</a> (backed by SQLAlchemy/Postgres).</p>
+<p>Community-supported persistent memory backed by SQLAlchemy (Postgres, MySQL, SQLite).</p>
+<ul>
+<li><strong>Search Method:</strong> Keyword matching (JSON index on <code>(app_name, user_id)</code>)
+</li>
+<li><strong>Storage Schema:</strong> Creates a single <code>adk_memory_entries</code> table on first write
+<ul>
+<li>JSON content stored as <code>JSONB</code> on PostgreSQL, <code>LONGTEXT</code> on MySQL, <code>TEXT</code> on SQLite
+</li>
+</ul>
+</li>
+<li><strong>Use Case:</strong> Self-hosted production environments where Vertex AI is not in scope
+</li>
+</ul>
+<pre><code>from google.adk.memory import DatabaseMemoryService
+
+memory = DatabaseMemoryService(db_url=&quot;postgresql://user:pass@host/db&quot;)</code></pre>
+<hr>
 <h2>3. The Memory Lifecycle</h2>
 <h3>Saving to Memory</h3>
-<p>When a session concludes, it can be &quot;committed&quot; to long-term memory.</p>
-<pre><code># Python Example
-await memory_service.add_session_to_memory(completed_session)</code></pre>
+<p>When a session concludes, commit it to long-term memory. The service indexes every event in the completed session.</p>
+<pre><code># Index all events from a completed session
+await memory_service.add_session_to_memory(completed_session)
+
+# Index an explicit slice of events (streaming ingestion)
+await memory_service.add_events_to_memory(
+    app_name=&quot;my_app&quot;,
+    user_id=&quot;user_123&quot;,
+    events=event_slice,
+)</code></pre>
 <h3>Retrieving from Memory</h3>
-<p>Agents (or tools) can search memory during an active turn.</p>
-<ul>
-<li><strong>Input:</strong> A query string.
-</li>
-<li><strong>Output:</strong> A list of <code>MemoryResult</code> objects, containing relevant event snippets or session data.
-</li>
-</ul>
-<h2>4. State vs. Memory</h2>
+<p>Agents or tools search memory during an active turn.</p>
+<pre><code>results = await memory_service.search_memory(
+    app_name=&quot;my_app&quot;,
+    user_id=&quot;user_123&quot;,
+    query=&quot;what did we decide about the pricing model?&quot;,
+)
+# Returns list of MemoryEntry objects with relevant event snippets</code></pre>
+<h3>Full API Surface</h3>
 <table>
 <thead><tr>
-<th>Feature</th>
-<th>Session State</th>
-<th>Memory Service</th>
+<th>Method</th>
+<th>Description</th>
 </tr></thead><tbody>
 <tr>
-<td><strong>Duration</strong></td>
-<td>Single Session</td>
-<td>Cross-Session</td>
+<td><code>add_session_to_memory(session)</code></td>
+<td>Index every event in a completed session</td>
 </tr>
 <tr>
-<td><strong>Scope</strong></td>
-<td>Current conversation</td>
-<td>Archive of all past conversations</td>
+<td><code>add_events_to_memory(app_name, user_id, events, ...)</code></td>
+<td>Index an explicit event slice (streaming ingestion)</td>
 </tr>
 <tr>
-<td><strong>Access</strong></td>
-<td>Direct Key/Value (<code>context.state</code>)</td>
-<td>Searchable (<code>memory_service.search</code>)</td>
-</tr>
-<tr>
-<td><strong>Storage</strong></td>
-<td>Volatile (Session Service)</td>
-<td>Persistent (Memory Service)</td>
+<td><code>search_memory(app_name, user_id, query)</code></td>
+<td>Return <code>MemoryEntry</code> objects scoped to app + user</td>
 </tr>
 </tbody>
 </table>
 <hr>
+<h2>4. State vs. Memory</h2>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>[[adk-session-service\</th>
+<th>Session State]]</th>
+<th>Memory Service</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Duration</strong></td>
+<td>Single session (or scoped by prefix)</td>
+<td>Cross-session archive</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Current conversation</td>
+<td>All past conversations for a user</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>Direct key-value (<code>context.state</code>)</td>
+<td>Searchable (<code>search_memory</code>)</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Session Service</td>
+<td>Memory Service (persistent)</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Working memory, pipeline data handoff</td>
+<td>User recall, long-horizon personalization</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>5. Choosing a Service</h2>
+<pre><code>Local development / testing    → InMemoryMemoryService
+Self-hosted / open-source      → DatabaseMemoryService (SQLAlchemy)
+Production + Google Cloud      → VertexAiMemoryBankService</code></pre>
+<p><code>VertexAiMemoryBankService</code> is the only option with semantic (embedding) search; the others use keyword matching. For most production workloads requiring cross-session recall, the Vertex AI service is the correct choice.</p>
+<hr>
 <p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>*</p>
 <h2>Related</h2>
 <ul>
+<li><a href="adk-session-service.html" class="wikilink">adk-session-service</a>
+</li>
 <li><a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a>
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
 </li>
 </ul>
       </main>
@@ -660,6 +728,7 @@ await memory_service.add_session_to_memory(completed_session)</code></pre>
 <ul>
 <li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
 <li><a href="adk-moc.html" class="">adk-moc</a></li>
+<li><a href="adk-session-service.html" class="">adk-session-service</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="agent-knowledge-vault.html" class="">agent-knowledge-vault</a></li>
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
@@ -673,9 +742,9 @@ await memory_service.add_session_to_memory(completed_session)</code></pre>
 <ul>
 <li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
 <li><a href="adk-session-service.html" class="">adk-session-service</a></li>
+<li><a href="adk-session-service%5C.html" class="">adk-session-service\</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
-<li><a href="python.html" class="">python</a></li>
 </ul>
           </div>
         </div>

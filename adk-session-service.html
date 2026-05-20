@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">[[agent-development-kit|ADK]] Session Service</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-26</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">[[agent-development-kit|ADK]] Session Service</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -569,69 +569,161 @@
 <p>The <strong>Session Service</strong> in the <a href="agent-development-kit.html" class="wikilink">ADK</a> is responsible for managing the lifecycle of an agent&#39;s interaction, including its conversation history and short-term working memory.</p>
 <h2>Core Responsibilities</h2>
 <ul>
-<li><strong>Conversation History:</strong> Tracks <code>Events</code> (user messages, agent replies, tool calls).
+<li><strong>Conversation History:</strong> Tracks <code>Events</code> (user messages, agent replies, tool calls) in chronological order.
 </li>
-<li><strong>State Management:</strong> Manages the <code>State</code> object—a key-value store used as the agent&#39;s short-term working memory within a single session.
+<li><strong>State Management:</strong> Manages the <code>State</code> object — a key-value store used as the agent&#39;s short-term working memory within and across sessions (via prefix scoping).
 </li>
 <li><strong>Persistence:</strong> Provides the interface for saving and loading session data.
 </li>
 </ul>
+<hr>
 <h2>Key Concepts</h2>
 <h3>Session</h3>
 <p>A <code>Session</code> object contains:</p>
 <ul>
-<li><code>appName</code>, <code>userId</code>, <code>sessionId</code>: Unique identifiers.
+<li><code>appName</code>, <code>userId</code>, <code>sessionId</code>: Unique identifiers
 </li>
-<li><code>events</code>: A chronological list of interactions.
+<li><code>events</code>: Chronological list of interactions
 </li>
-<li><code>state</code>: The current working memory.
+<li><code>state</code>: Current working memory (key-value)
 </li>
 </ul>
+<p>&gt; <code>getSession()</code> returns a <strong>copy</strong> of the session; direct modification of the returned object does not persist. State changes must go through <code>state_delta</code> in an <code>EventAction</code> or through a <code>ToolContext</code> / <code>CallbackContext</code>.</p>
 <h3>State</h3>
-<p><code>State</code> is used to store data that persists across turns in a single session.</p>
-<ul>
-<li><strong>Access:</strong> Agents read state via <code>context.state</code>.
-</li>
-<li><strong>Updates:</strong> State is typically updated via <code>state_delta</code> in an <code>EventAction</code>.
-</li>
-<li><strong>Note:</strong> <code>getSession()</code> returns a <strong>copy</strong> of the session; direct modification of the returned object does not persist changes to the service.
-</li>
-</ul>
+<p><code>State</code> is a key-value store scoped by namespace prefix. Agents read state via <code>context.state</code>; tools update it through the <code>ToolContext</code>.</p>
+<h4>State Prefix Scoping</h4>
+<table>
+<thead><tr>
+<th>Prefix</th>
+<th>Scope</th>
+<th>Example Use</th>
+</tr></thead><tbody>
+<tr>
+<td><code>app:</code></td>
+<td>Shared across <strong>all users</strong> of the application</td>
+<td>Feature flags, app-wide config</td>
+</tr>
+<tr>
+<td><code>user:</code></td>
+<td>Shared across <strong>all sessions</strong> for a given user</td>
+<td>User preferences, long-lived personalization</td>
+</tr>
+<tr>
+<td>*(no prefix)*</td>
+<td>Current session only</td>
+<td>Per-conversation working memory</td>
+</tr>
+<tr>
+<td><code>temp:</code></td>
+<td>Current invocation only — not persisted</td>
+<td>Passing data between sub-agents in a single turn</td>
+</tr>
+</tbody>
+</table>
+<pre><code># Reading and writing scoped state in a tool
+def my_tool(tool_context: ToolContext):
+    # App-wide preference
+    app_mode = tool_context.state.get(&quot;app:mode&quot;, &quot;default&quot;)
+    # User preference (persists across sessions)
+    unit = tool_context.state.get(&quot;user:temperature_unit&quot;, &quot;Celsius&quot;)
+    # Session scratch
+    tool_context.state[&quot;last_city_checked&quot;] = &quot;London&quot;
+    # Ephemeral in-turn pass-through (not saved)
+    tool_context.state[&quot;temp:raw_result&quot;] = raw_data</code></pre>
+<p>&gt; <code>temp:</code> and <code>secret:</code> prefixed keys are automatically redacted in structured logging (e.g., BigQuery plugin) — never persisted in audit trails.</p>
+<h4>Initializing State at Session Creation</h4>
+<pre><code>initial_state = {&quot;user_preference_temperature_unit&quot;: &quot;Celsius&quot;}
+session = await session_service.create_session(
+    app_name=APP_NAME,
+    user_id=USER_ID,
+    session_id=SESSION_ID,
+    state=initial_state,
+)</code></pre>
+<hr>
+<h2>Key Access Patterns</h2>
+<h3>ToolContext (Primary)</h3>
+<p>Tools accept a <code>ToolContext</code> object (automatically provided by ADK if declared as the last argument). This gives direct access to <code>tool_context.state</code>.</p>
+<pre><code>async def get_weather_stateful(city: str, tool_context: ToolContext) -&gt; dict:
+    unit = tool_context.state.get(&quot;user:temperature_unit&quot;, &quot;Celsius&quot;)
+    tool_context.state[&quot;last_city_checked&quot;] = city
+    return fetch_weather(city, unit)</code></pre>
+<h3><code>output_key</code> (Auto-Save Agent Response)</h3>
+<p>An <code>LlmAgent</code> configured with <code>output_key=&quot;some_key&quot;</code> will automatically save its final textual response to <code>session.state[&quot;some_key&quot;]</code> after each turn. This is the idiomatic way to pipe agent output downstream in a <code>SequentialAgent</code> pipeline.</p>
+<pre><code>root_agent = LlmAgent(
+    ...,
+    output_key=&quot;last_weather_report&quot;,  # auto-saved to state
+)</code></pre>
+<h3>Shared <code>InvocationContext</code> &amp; <code>temp:</code> Namespace</h3>
+<p>When a parent agent invokes a sub-agent, both share the same <code>InvocationContext</code>. The <code>temp:</code> state namespace is ideal for passing data that is only relevant for the current turn — it propagates through the sub-agent tree without being committed to durable session storage.</p>
+<hr>
 <h2>Service Implementations</h2>
-<h3>1. <code>InMemorySessionService</code></h3>
+<h3><code>InMemorySessionService</code></h3>
 <p>Stores session data in local memory.</p>
 <ul>
-<li><strong>Best For:</strong> Development, testing, and transient sessions.
+<li><strong>Best For:</strong> Development, testing, transient sessions
 </li>
-<li><strong>Note:</strong> Data is lost when the application process stops.
+<li><strong>Note:</strong> Data is lost when the process stops
+</li>
+<li><strong>Direct access for testing:</strong> <code>session_service.sessions[APP][USER][SESSION_ID]</code> (implementation detail, not stable API)
 </li>
 </ul>
-<h3>2. <code>VertexAiSessionService</code></h3>
-<p>Integrates with Google Cloud&#39;s Vertex AI for persistent session management.</p>
+<pre><code>session_service = InMemorySessionService()
+session = await session_service.create_session(
+    app_name=&quot;my_app&quot;, user_id=&quot;user_123&quot;, session_id=&quot;session_abc&quot;
+)</code></pre>
+<h3><code>VertexAiSessionService</code></h3>
+<p>Integrates with Google Cloud&#39;s Vertex AI Agent Engine for persistent session management.</p>
 <ul>
-<li><strong>Best For:</strong> Production applications requiring durability and scalability.
+<li><strong>Best For:</strong> Production applications requiring durability and scalability
+</li>
+<li><strong>Note:</strong> Requires Vertex AI credentials; tied to a Reasoning Engine / Agent Engine instance
 </li>
 </ul>
-<h2>Basic Usage (Go)</h2>
-<pre><code>// Create the service
+<pre><code>// Go Example
 sessionService := session.InMemoryService()
-
-// Initialize a session
-sessionInstance, err := sessionService.Create(ctx, &amp;session.CreateRequest{
-    AppName:   &quot;my_app&quot;,
-    UserId:    &quot;user_123&quot;,
-    SessionId: &quot;session_abc&quot;,
-})
-
-// Provide to Runner
 runnerConfig := &amp;launcher.Config{
     SessionService: sessionService,
 }</code></pre>
+<hr>
+<h2>State vs. Memory</h2>
+<table>
+<thead><tr>
+<th>Feature</th>
+<th>Session State</th>
+<th>[[adk-long-term-memory</th>
+<th>Memory Service]]</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Duration</strong></td>
+<td>Single session (or scoped by prefix)</td>
+<td>Cross-session</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>Direct key-value (<code>context.state</code>)</td>
+<td>Searchable (<code>memory_service.search_memory</code>)</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Session Service</td>
+<td>Memory Service</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Working memory, pipeline data handoff</td>
+<td>Recall across conversation history</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <p>*Source: <a href="lit-adk-documentation.html" class="wikilink">lit-adk-documentation</a>*</p>
 <h2>Related</h2>
 <ul>
 <li><a href="adk-artifact-service.html" class="wikilink">adk-artifact-service</a>
+</li>
+<li><a href="adk-long-term-memory.html" class="wikilink">adk-long-term-memory</a>
+</li>
+<li><a href="agent-development-kit.html" class="wikilink">agent-development-kit</a>
 </li>
 </ul>
       </main>
@@ -663,6 +755,7 @@ runnerConfig := &amp;launcher.Config{
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="adk-artifact-service.html" class="">adk-artifact-service</a></li>
+<li><a href="adk-long-term-memory.html" class="">adk-long-term-memory</a></li>
 <li><a href="agent-development-kit.html" class="">agent-development-kit</a></li>
 <li><a href="lit-adk-documentation.html" class="">lit-adk-documentation</a></li>
 </ul>

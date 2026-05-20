@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Modular RAG Hub</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">modular-rag, adaptive-rag, self-rag, agentic-retrieval-hub</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-06</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Modular RAG Hub</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">modular-rag, adaptive-rag, self-rag, agentic-retrieval-hub</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -719,6 +719,44 @@
 <p><strong>Key advantage over pure GraphRAG:</strong> The planner can mix graph and dense retrieval strategies within a single answer — using the graph for relational reasoning and chunk retrieval for supporting quotations. Pure GraphRAG forces all reasoning through the graph, which is slow for simple semantic queries.</p>
 <p><strong>Key advantage over pure Agentic RAG:</strong> The graph&#39;s pre-computed structure lets the planner issue precise relational queries (e.g., &quot;all papers that cite X and also cite Y&quot;) that would require multiple uncertain LLM steps in a purely chunk-based retrieval system.</p>
 <hr>
+<h2>MCP as a Retrieval Protocol Interface</h2>
+<p><a href="mcp-moc.html" class="wikilink">MCP</a> (Model Context Protocol) provides a standardized tool/resource protocol that maps cleanly onto the Modular RAG retrieval layer. Each retriever type in the stack above can be exposed as an MCP server, giving the router a unified <code>tools/call</code> interface regardless of the backend.</p>
+<h3>MCP Primitives in a RAG Context</h3>
+<table>
+<thead><tr>
+<th>MCP Primitive</th>
+<th>RAG Role</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Retrieval actions: <code>dense_search</code>, <code>sparse_search</code>, <code>graph_traverse</code>, <code>sql_query</code></td>
+</tr>
+<tr>
+<td><strong>Resources</strong></td>
+<td>Pre-indexed corpora, schema documents, ontology files available as static context</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>Reusable few-shot templates for query reformulation or reranking judgment calls</td>
+</tr>
+</tbody>
+</table>
+<h3>MCP Tasks (Experimental)</h3>
+<p>The MCP spec includes an experimental <strong>Tasks</strong> primitive for durable, deferred-result execution. This maps to async retrieval operations — expensive graph traversals or batch embedding runs — where the router dispatches a retrieval job and polls for completion rather than blocking the generation step.</p>
+<h3>Practical Wiring</h3>
+<p>For a Modular RAG stack backed by MCP servers:</p>
+<ol>
+<li><strong>Router</strong> issues <code>tools/list</code> to enumerate available retrievers and their capability declarations.
+</li>
+<li><strong>Adaptive Router</strong> selects one or more tools and calls them with the query.
+</li>
+<li><strong>Reranker</strong> calls an LLM-as-judge tool over the merged result set.
+</li>
+<li><strong>Self-RAG loop</strong> reformulates the query and re-calls the same tool interface — the retrieval backend is opaque to the loop logic.
+</li>
+</ol>
+<p>See <a href="mcp-moc.html" class="wikilink">mcp-moc</a> for protocol details and <a href="web-data-ingestion-moc.html" class="wikilink">web-data-ingestion-moc</a> for the vault&#39;s Firecrawl-based ingestion tooling that feeds the retrieval backends.</p>
+<hr>
 <h2>Where to Start</h2>
 <ul>
 <li><strong>Dense + Sparse only, small corpus</strong> → <a href="agentic-rag.html" class="wikilink">agentic-rag</a> patterns; <a href="llamaindex.html" class="wikilink">llamaindex</a> <code>QueryEngineTool</code>
@@ -730,6 +768,8 @@
 <li><strong>Hierarchical knowledge (taxonomies, ontologies)</strong> → Evaluate Hyperbolic Embeddings
 </li>
 <li><strong>Relational multi-hop questions</strong> → <a href="graphrag-concepts.html" class="wikilink">GraphRAG</a> + planner hybrid
+</li>
+<li><strong>Standardized retrieval backends</strong> → Expose retrievers as MCP tool servers
 </li>
 </ul>
 <hr>
@@ -744,6 +784,10 @@
 <li><a href="llamaindex.html" class="wikilink">llamaindex</a>
 </li>
 <li><a href="llm-as-a-judge.html" class="wikilink">llm-as-a-judge</a>
+</li>
+<li><a href="mcp-moc.html" class="wikilink">mcp-moc</a>
+</li>
+<li><a href="web-data-ingestion-moc.html" class="wikilink">web-data-ingestion-moc</a>
 </li>
 <li><a href="multi-agent-patterns-moc.html" class="wikilink">multi-agent-patterns-moc</a>
 </li>
@@ -776,7 +820,9 @@
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
 <li><a href="llamaindex.html" class="">llamaindex</a></li>
 <li><a href="llm-as-a-judge.html" class="">llm-as-a-judge</a></li>
+<li><a href="mcp-moc.html" class="">mcp-moc</a></li>
 <li><a href="multi-agent-patterns-moc.html" class="">multi-agent-patterns-moc</a></li>
+<li><a href="web-data-ingestion-moc.html" class="">web-data-ingestion-moc</a></li>
 </ul>
           </div>
         </div>

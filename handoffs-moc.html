@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Handoffs &amp; Session History MOC</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">handoff-moc, session-history, agent-handoffs</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-04</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
 <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Handoffs &amp; Session History MOC</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">handoff-moc, session-history, agent-handoffs</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-19</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
       </div>
     </header>
 
@@ -578,6 +578,8 @@
 </ul>
 <h2>&#129302; Gemini Handoffs</h2>
 <ul>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a> - Research scan identifying MCP v2, A2A v1.0, Modular RAG, and MAK-CHK as 2026 production-readiness priorities.
+</li>
 <li><a href="gemini-wiki-health-audit-handoff-2026-05-04.html" class="wikilink">gemini-wiki-health-audit-handoff-2026-05-04</a> - Recent health audit (85% score) and remediation plan.
 </li>
 <li><a href="gemini-openai-symphony-spec-research-handoff-2026-05-03.html" class="wikilink">gemini-openai-symphony-spec-research-handoff-2026-05-03</a> - Symphony spec ingestion and verification.
@@ -683,6 +685,42 @@
 </li>
 </ul>
 <hr>
+<h2>&#128269; Cross-Fleet Pattern Chronicle</h2>
+<p>A synthesized view of recurring patterns across handoff generations (2026-04-27 → 2026-05-06). This chronicle surfaces structural lessons from the three key handoffs: <a href="gemini-orchestration-research-handoff-2026-05-06.html" class="wikilink">gemini-orchestration-research-handoff-2026-05-06</a>, <a href="claude-openai-symphony-synthesis-handoff-2026-05-03.html" class="wikilink">claude-openai-symphony-synthesis-handoff-2026-05-03</a>, and <a href="codex-orchestrator-integration-handoff-2026-04-30.html" class="wikilink">codex-orchestrator-integration-handoff-2026-04-30</a>.</p>
+<h3>Pattern 1 — Research → Prioritization → Synthesis (Gemini-led)</h3>
+<p>Gemini&#39;s research handoffs encode a consistent three-phase structure:</p>
+<ol>
+<li><strong>Scan</strong>: Web or document research to identify emergent 2026 updates (MCP v2, A2A v1.0, Modular RAG, MAK-CHK).
+</li>
+<li><strong>Prioritize</strong>: Batch the findings into ranked work lanes (Protocol Stability &gt; Advanced Retrieval &gt; Coordination Hardening).
+</li>
+<li><strong>Seam</strong>: Pass the ranked plan to the downstream agent with scoped, bounded instructions.
+</li>
+</ol>
+<p>This prevents scope creep by making each handoff a *bounded work envelope*, not an open-ended directive.</p>
+<h3>Pattern 2 — Evidence-Bounded Synthesis (Claude-led)</h3>
+<p>Claude handoffs (e.g., the Symphony synthesis seam from Codex to Claude) enforce a strict <strong>no-new-sourcing</strong> constraint: the indexed source set is declared in the handoff, and the synthesis agent may not broaden it. This produces literature notes grounded in verifiable provenance, not speculative aggregation.</p>
+<p>Key sub-patterns:</p>
+<ul>
+<li><strong>Required claims to verify</strong> are enumerated explicitly to anticipate synthesis failure points.
+</li>
+<li><strong>Stop conditions</strong> are stated so the agent knows when to commit rather than expand.
+</li>
+<li><strong>Commit boundary</strong> is narrowed to the synthesis artifact only.
+</li>
+</ul>
+<h3>Pattern 3 — Infrastructure-First, Intelligence-Second (Codex/Claude split)</h3>
+<p>Orchestrator-scale work consistently follows a two-phase division:</p>
+<ul>
+<li><strong>Codex</strong> owns the infrastructure layer: tool implementation, chunking, indexing, Supabase integration, state-machine mechanics.
+</li>
+<li><strong>Claude</strong> owns the intelligence layer: epistemic gates, synthesis rubrics, conflict detection, provenance validation.
+</li>
+</ul>
+<p>The handoffs between these phases are explicit state-machine transitions (<code>Crawled → Indexed → Synthesized → Promoted</code>) rather than implicit &quot;continue the work&quot; seams.</p>
+<h3>Pattern 4 — Bounded Commit Discipline</h3>
+<p>All three handoffs enforce narrow commit scope. The Symphony synthesis handoff specifies one commit (<code>feat(wiki): ground openai symphony literature note</code>) and prohibits mixing graph-integration work. The orchestrator handoffs keep infrastructure commits separate from intelligence commits. This discipline keeps <code>git log</code> interpretable and roll-back boundaries clean.</p>
+<hr>
 <h2>References</h2>
 <ul>
 <li><a href="index.html" class="wikilink">index</a>
@@ -690,6 +728,8 @@
 <li><a href="agent-note-conventions.html" class="wikilink">agent-note-conventions</a>
 </li>
 <li><a href="core-patterns-moc.html" class="wikilink">core-patterns-moc</a>
+</li>
+<li><a href="inter-agent-handoff-protocol.html" class="wikilink">inter-agent-handoff-protocol</a>
 </li>
 </ul>
 <h2>Gemini Handoffs</h2>
@@ -760,6 +800,7 @@
 <li><a href="gemini-core-protocol-framework-depth-handoff-2026-05-02.html" class="">gemini-core-protocol-framework-depth-handoff-2026-05-02</a></li>
 <li><a href="gemini-language-root-hardening-research-handoff-2026-05-02.html" class="">gemini-language-root-hardening-research-handoff-2026-05-02</a></li>
 <li><a href="gemini-openai-symphony-spec-research-handoff-2026-05-03.html" class="">gemini-openai-symphony-spec-research-handoff-2026-05-03</a></li>
+<li><a href="gemini-orchestration-research-handoff-2026-05-06.html" class="">gemini-orchestration-research-handoff-2026-05-06</a></li>
 <li><a href="gemini-orchestrator-test-handoff-2026-04-30.html" class="">gemini-orchestrator-test-handoff-2026-04-30</a></li>
 <li><a href="gemini-post-synthesis-librarian-handoff-2026-05-01.html" class="">gemini-post-synthesis-librarian-handoff-2026-05-01</a></li>
 <li><a href="gemini-roadmap-sprint-handoff-2026-04-27.html" class="">gemini-roadmap-sprint-handoff-2026-04-27</a></li>
