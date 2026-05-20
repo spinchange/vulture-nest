@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anthropic Messages API — Vulture Portal</title>
+  <title>Literature: Anthropic Prompt Engineering Best Practices — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Anthropic Messages API</span>
+      <span>Literature: Anthropic Prompt Engineering Best Practices</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,15 +549,15 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Anthropic Messages API</h1>
+      <h1 class="note-title">Literature: Anthropic Prompt Engineering Best Practices</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-messages-api]]</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Literature: Anthropic Prompt Engineering Best Practices</span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-20</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-02</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic Messages API</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">literature</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">00_Raw/anthropic/prompt-engineering-best-practices.md</span></span>
       </div>
     </header>
 
@@ -566,92 +566,49 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Anthropic Messages API</h1>
-<p>The <strong>Anthropic Messages API</strong> is the direct Claude API surface for prompt-response interactions. It is a stateless, block-structured interface built around <code>POST /v1/messages</code>, not a server-maintained chat session.</p>
-<h2>Request contract</h2>
+        <h1>Literature: Anthropic Prompt Engineering Best Practices</h1>
+<p>Synthesis of Anthropic&#39;s current prompt-engineering documentation, with emphasis on the official guidance for <strong>XML tags as prompt-structure delimiters</strong>.</p>
+<h2>Source scope</h2>
+<p>Primary canonical pages captured in <code>00_Raw/anthropic/prompt-engineering-best-practices.md</code>:</p>
 <ul>
-<li>Direct requests require <code>x-api-key</code>, <code>anthropic-version</code>, and <code>content-type: application/json</code>.
+<li>Prompt engineering overview
 </li>
-<li>The minimal useful request shape is <code>model</code>, <code>max_tokens</code>, and a <code>messages</code> array.
+<li>Prompting best practices
 </li>
-<li>Message history is caller-owned state. Each request resends the full conversation history needed for the next step.
+<li>Best-practices subsections on XML tags and examples
 </li>
 </ul>
-<h2>Message model</h2>
+<p>The local Anthropic raw corpus also contains a related tool-use note (<code>tool-use-define-tools.md</code>) that references <code>&lt;examples&gt;</code> in prompts.</p>
+<h2>Durable findings</h2>
+<p><strong>XML tags are an official Claude prompting technique, not a community superstition.</strong> Anthropic&#39;s prompt-engineering overview explicitly lists *XML structuring* alongside clarity, examples, role prompting, thinking, and prompt chaining. That places tag-based structure inside the provider&#39;s mainstream guidance rather than in an unofficial cookbook corner.</p>
+<p><strong>Anthropic frames XML tags as ambiguity reducers.</strong> The core claim is not that Claude expects valid XML, but that tagged regions help it parse mixed prompt components — instructions, context, examples, and variable inputs — without confusing one for another.</p>
+<p><strong>The operational role of tags is boundary-marking.</strong> The examples Anthropic gives (<code>&lt;instructions&gt;</code>, <code>&lt;context&gt;</code>, <code>&lt;input&gt;</code>) show that tags are being used as semantic separators. The value comes from making prompt regions legible to the model, not from machine-validated markup.</p>
+<p><strong>Hierarchy matters when the source material is nested.</strong> Anthropic explicitly recommends nested tags where the content is naturally hierarchical, such as <code>&lt;documents&gt;</code> containing repeated <code>&lt;document index=&quot;n&quot;&gt;</code> blocks. This implies a prompt-design pattern: mirror the structure of the task domain in the prompt wrapper.</p>
+<p><strong>Examples should be tagged too.</strong> Anthropic&#39;s best-practices page recommends wrapping few-shot examples in <code>&lt;example&gt;</code> tags and grouping them under <code>&lt;examples&gt;</code>. This keeps demonstrations separate from instructions, reducing contamination between &quot;what to do&quot; and &quot;what prior examples look like.&quot;</p>
+<p><strong>Consistency matters more than any special vocabulary.</strong> The docs recommend using consistent, descriptive tag names. The durable lesson is not &quot;use these exact tags,&quot; but &quot;maintain stable semantic boundaries across the whole prompt.&quot;</p>
+<h2>Non-findings / important limits</h2>
 <ul>
-<li>Each message has a <code>role</code> and <code>content</code>.
+<li>Anthropic does <strong>not</strong> present XML tags as an API-level schema feature.
 </li>
-<li>Content is block-oriented rather than plain text only, which lets Anthropic use text, image, <code>tool_use</code>, and <code>tool_result</code> blocks within the same high-level structure.
+<li>The guidance does <strong>not</strong> require valid XML documents or parser-grade well-formedness.
 </li>
-<li>Prior <code>assistant</code> turns may be synthetic, which supports controlled prefills and state reconstruction.
+<li>The docs do <strong>not</strong> imply that arbitrary tagging substitutes for clear instructions; tags are one structuring technique within a broader prompting discipline.
 </li>
 </ul>
-<h2>Response model</h2>
-<ul>
-<li>Responses return a top-level <code>message</code> object with <code>content</code>, <code>stop_reason</code>, <code>stop_sequence</code>, and <code>usage</code>.
-</li>
-<li><code>stop_reason</code> is operationally important. <code>end_turn</code> means normal completion, while <code>tool_use</code> means the caller should execute one or more requested tools and continue the loop.
-</li>
-<li>Usage accounting is returned with the response and should be treated as the billing and observability source of truth for the request.
-</li>
-</ul>
-<h2>Content Block Types</h2>
-<p>The API supports multiple content block types beyond text:</p>
-<ul>
-<li><code>text</code> — standard text content
-</li>
-<li><code>image</code> — inline or file-referenced images
-</li>
-<li><code>document</code> — PDF, plain text, or file-referenced documents
-</li>
-<li><code>tool_use</code> — Claude&#39;s tool call (in assistant turns)
-</li>
-<li><code>tool_result</code> — tool execution result (in user turns)
-</li>
-<li><code>thinking</code> — extended thinking summary or signature (in assistant turns when thinking is enabled)
-</li>
-<li><code>redacted_thinking</code> — safety-redacted thinking block (opaque; must be round-tripped unchanged)
-</li>
-</ul>
-<h2>Token Counting</h2>
-<p>The <code>POST /v1/messages/count_tokens</code> endpoint counts tokens for a planned request without executing it. It accepts the same parameters as the Messages endpoint and supports tools, images, documents, and system prompts. Use it before long or expensive calls to verify you are within context limits.</p>
-<pre><code>count = client.messages.count_tokens(
-    model=&quot;claude-opus-4-7&quot;,
-    system=&quot;You are a helpful assistant.&quot;,
-    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}],
-)
-print(count.input_tokens)</code></pre>
-<p>Token counting is especially valuable when building multi-turn conversations with thinking blocks, since thinking tokens from previous turns count as input tokens on Opus 4.5+ and Sonnet 4.6+.</p>
-<h2>Implementation Implications</h2>
-<ul>
-<li>Anthropic&#39;s API shape makes conversation state an application concern.
-</li>
-<li>Message construction should be treated as an explicit serialization step, especially when mixing text, images, tool content blocks, and thinking blocks.
-</li>
-<li>Provider-specific model behaviors such as prefill support can vary by model family; verify feature support against current docs before depending on them in production.
-</li>
-<li>When using extended thinking or large documents, use the token counting endpoint before calls to avoid context overflow errors.
-</li>
-</ul>
+<h2>Relationship to other Anthropic notes</h2>
+<p>This note fills a gap in the vault&#39;s Anthropic cluster: existing notes cover Messages, tool use, streaming, thinking, prompt caching, and managed agents, but not the provider&#39;s explicit guidance for prompt <strong>internal structure</strong>.</p>
+<p>The pre-existing local raw note on tool use already hinted at this by recommending <code>&lt;examples&gt;</code> in prompts. The new prompt-engineering source turns that hint into an explicit design pattern.</p>
 <h2>See also</h2>
 <ul>
 <li><a href="anthropic-xml-prompt-structuring.html" class="wikilink">anthropic-xml-prompt-structuring</a>
 </li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>
+</li>
 <li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
 </li>
-<li><a href="anthropic-streaming-patterns.html" class="wikilink">anthropic-streaming-patterns</a>
+<li><a href="lit-anthropic-messages-api.html" class="wikilink">lit-anthropic-messages-api</a>
 </li>
-<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a>
-</li>
-<li><a href="anthropic-adaptive-thinking.html" class="wikilink">anthropic-adaptive-thinking</a>
-</li>
-<li><a href="anthropic-files-api.html" class="wikilink">anthropic-files-api</a>
-</li>
-<li><a href="anthropic-claude-4-model-family.html" class="wikilink">anthropic-claude-4-model-family</a>
-</li>
-<li><a href="chat-templates.html" class="wikilink">chat-templates</a>
-</li>
-<li><a href="function-calling.html" class="wikilink">function-calling</a>
+<li><a href="anthropic-moc.html" class="wikilink">anthropic-moc</a>
 </li>
 </ul>
       </main>
@@ -666,37 +623,16 @@ print(count.input_tokens)</code></pre>
           <div class="graph-neighbors">
             <span class="graph-section-label">Links To This Note</span>
 <ul>
-<li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
-<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
-<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
-<li><a href="anthropic-managed-agents-model.html" class="">anthropic-managed-agents-model</a></li>
-<li><a href="anthropic-mcp-connector.html" class="">anthropic-mcp-connector</a></li>
-<li><a href="anthropic-message-batches.html" class="">anthropic-message-batches</a></li>
 <li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
-<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
-<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
-<li><a href="anthropic-tool-runner-sdk.html" class="">anthropic-tool-runner-sdk</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
-<li><a href="claude-anthropic-advanced-capabilities-handoff-2026-05-02.html" class="">claude-anthropic-advanced-capabilities-handoff-2026-05-02</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
-<li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
-<li><a href="log.html" class="">log</a></li>
-<li><a href="wiki-expansion-opportunities-2026-05-02.html" class="">wiki-expansion-opportunities-2026-05-02</a></li>
+<li><a href="literature-moc.html" class="">literature-moc</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="anthropic-adaptive-thinking.html" class="">anthropic-adaptive-thinking</a></li>
-<li><a href="anthropic-claude-4-model-family.html" class="">anthropic-claude-4-model-family</a></li>
-<li><a href="anthropic-files-api.html" class="">anthropic-files-api</a></li>
-<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
-<li><a href="anthropic-streaming-patterns.html" class="">anthropic-streaming-patterns</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
 <li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
 <li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
-<li><a href="chat-templates.html" class="">chat-templates</a></li>
-<li><a href="function-calling.html" class="">function-calling</a></li>
 <li><a href="lit-anthropic-messages-api.html" class="">lit-anthropic-messages-api</a></li>
 </ul>
           </div>

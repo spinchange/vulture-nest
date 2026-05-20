@@ -27,6 +27,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 ## Anthropic & Claude Ecosystem
 - [[anthropic-moc]] - Comprehensive guide to the Anthropic platform and agentic features.
 - [[anthropic-messages-api]]: Direct Claude API request/response semantics and token counting.
+* [[anthropic-xml-prompt-structuring]]: XML-style prompt boundary markers for separating instructions, context, examples, and live input inside Claude text prompts.
 * [[anthropic-tool-use]]: Anthropic-specific client/server tool loop behavior.
 * [[anthropic-agentic-loop]]: Higher-level loop model: client tools, server tools, and `pause_turn`.
 * [[anthropic-server-tools]]: Server-executed web, fetch, code-execution, and tool-search behavior.
@@ -38,6 +39,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 
 ## Communication & Formatting
 * [[chat-templates]]: Managing System, User, and Assistant roles.
+* [[anthropic-xml-prompt-structuring]]: Provider-specific prompt markup pattern for making mixed prompt regions legible to Claude.
 * [[yanp-for-agentic-workflows]]: Why strict metadata is required for agentic parsing.
 
 ## Frameworks & toolkits

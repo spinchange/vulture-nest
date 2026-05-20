@@ -67,6 +67,7 @@ Token counting is especially valuable when building multi-turn conversations wit
 
 ## See also
 
+- [[anthropic-xml-prompt-structuring]]
 - [[anthropic-tool-use]]
 - [[anthropic-streaming-patterns]]
 - [[anthropic-prompt-caching]]

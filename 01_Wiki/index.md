@@ -159,6 +159,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[anthropic-broad-intake-packet-2026-05-02]] - Intake packet that defined the broader Anthropic documentation expansion lane
 * [[codex-anthropic-docs-ingestion-handoff-2026-05-02]] - Execution seam for the first bounded Anthropic ingestion batch
 * [[gemini-anthropic-docs-ingestion-handoff-2026-05-02]] - Librarian/ingester seam for the same first Anthropic batch
+* [[lit-anthropic-prompt-engineering]] - Literature: official prompt-engineering guidance, including XML tags as structural delimiters and tagged few-shot examples
 * [[lit-anthropic-messages-api]] - Literature: direct Claude API fundamentals, streaming, tool use, and context caching
 * [[lit-anthropic-advanced-capabilities]] - Literature: adaptive thinking, batch execution, files API, tool extensions, managed agents
 * [[lit-anthropic-sdk-service-2026]] - Literature: Batch 2 sub-batch E — SDKs, model lineup, service tiers, versioning, beta headers, context editing
@@ -167,6 +168,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-anthropic-async-data-apis]] - Literature: Batch 2 sub-batch C — batch processing, Files API, token counting, Models API
 * [[lit-anthropic-managed-agents]] - Literature: Batch 2 sub-batch D — Managed Agents quickstart, agent setup, sessions, environments, tools, events
 * [[anthropic-messages-api]] - Direct Messages API request/response model and token counting
+* [[anthropic-xml-prompt-structuring]] - XML-style prompt markup as boundary markers for instructions, context, examples, and inputs inside Claude text prompts
 * [[anthropic-tool-use]] - Client/server tool execution loop
 * [[anthropic-streaming-patterns]] - SSE event flow, streamed tool arguments, and thinking block streaming
 * [[anthropic-error-handling]] - Errors, request-size limits, and rate-limit behavior

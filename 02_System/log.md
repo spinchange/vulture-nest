@@ -1,6 +1,36 @@
 # Wiki Log
 
 
+## [2026-05-20] Chronicler — Anthropic XML Prompt Structuring
+
+**Directive**: Confirm whether the vault already contained Claude/Anthropic documentation-sourced guidance on XML tags in prompts; if not, locate the current official source and add grounded coverage.
+
+**Sources confirmed:**
+* Current Anthropic Claude API Docs:
+  * `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview`
+  * `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#structure-prompts-with-xml-tags`
+* Existing local Anthropic raw note: `00_Raw/anthropic/tool-use-define-tools.md` (contains `<examples>` guidance)
+
+**Raw source added (1):**
+* `00_Raw/anthropic/prompt-engineering-best-practices.md` — local capture of the relevant prompt-engineering overview + XML/examples guidance
+
+**Notes Created (2):**
+* [[lit-anthropic-prompt-engineering]] — New literature note synthesizing Anthropic's current prompt-engineering guidance, emphasizing XML tags as official prompt-structure delimiters rather than an unofficial trick.
+* [[anthropic-xml-prompt-structuring]] — New permanent note formalizing XML-style prompt tags as semantic boundary markers for instructions, context, examples, and live inputs.
+
+**Graph Wired:**
+* [[anthropic-moc]] — added both the new literature note and the permanent XML-structuring note
+* [[index]] — expanded Anthropic API section with both notes
+* [[literature-moc]] — registered the new Anthropic literature note
+* [[agentic-frameworks-moc]] — wired XML prompt structuring into both Anthropic ecosystem and Communication & Formatting sections
+* [[anthropic-messages-api]] — added [[anthropic-xml-prompt-structuring]] to See also
+
+**Validation / regeneration:**
+* `audit-yanp.ps1` — all notes compliant
+* `check-broken-links.ps1` — no broken links; graph integrity remains 100%
+* `generate-wiki.ps1` — portal/search artifacts refreshed; generated pages include `lit-anthropic-prompt-engineering.html` and `anthropic-xml-prompt-structuring.html`
+* `generate-dashboard.ps1` — dashboard regenerated successfully
+
 ## [2026-05-19] Chronicler — ADK Depth, Modular RAG Hardening, Handoff Chronicle
 
 **Directive**: Three-task synthesis session: (1) depth expansion of ADK service notes from raw documentation, (2) hardening of the Modular RAG Hub with MCP protocol integration, (3) cross-fleet handoff chronicle synthesis from three key seams.
@@ -1243,3 +1273,31 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
     * [[openai-agents-sdk]] (Added direct Symphony comparison links).
     * [[index]] and [[system-index]] (Registered the new cluster across top-level discovery surfaces).
 * **Status**: Symphony coverage expanded from a single-note emphasis into a bounded operational cluster grounded in the current spec and reference implementation profile.
+
+## [2026-05-19] Codex — Vulture Search Fusion, Tier-2 Experiment Hardening, and Agentic Provenance Expansion
+* **Directive**: Upgrade `vulture-search.ps1`, harden Tier-2 scaffolding for `04_Experiments/`, and expand `vulture-ingest` provenance tracking.
+* **System Changes**:
+    * `02_System/vulture-search.ps1` now fuses lexical rank with embedding similarity so semantic matches influence seed selection and graph expansion instead of living in a detached appendix.
+    * `02_System/test-tier-compliance.ps1` now audits Tier-2 scripts in both `02_System/` and `04_Experiments/`.
+    * `02_System/new-experiment.ps1` can scaffold a compliant `run.ps1` harness via `-IncludeScript`.
+* **Ingest Changes**:
+    * `02_System/vulture-ingest/schema.sql` now tracks lifecycle provenance fields on `source_pages` and adds append-only `source_events`.
+    * `02_System/vulture-ingest/server.py` and `db_local.py` now write/read the expanded provenance surface, including indexing, verification, and promotion actors.
+* **Docs Updated**:
+    * [[ps-vulture-search]]
+    * [[vault-audit-tool-spec]]
+    * [[spec-agentic-source-orchestrator]]
+    * [[experiment-capture-protocol]]
+* **Status**: Infrastructure updated; verification pending targeted script and pytest runs.
+
+
+## [2026-05-20] Gemini CLI — Wiki Maintenance & Validation
+
+**Directive**: Finalize maintenance for the 2026-05-19 ADK/RAG synthesis batch.
+
+**Actions**:
+* Run `audit-yanp.ps1` — Confirmed 100% compliance across 428 notes.
+* Run `check-broken-links.ps1` — Confirmed 0 broken links; graph integrity verified.
+* Run `generate-wiki.ps1` and `generate-dashboard.ps1` — Portal artifacts and metrics refreshed.
+
+**Status**: ADK/RAG updates verified and published to the portal.

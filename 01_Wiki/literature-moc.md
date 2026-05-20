@@ -35,6 +35,7 @@ This map organizes the external knowledge ingested into the **vulture-nest**, in
 
 ## 📂 Anthropic-Specific Literature
 *(Linked for completeness; primary organization in [[anthropic-moc]])*
+- [[lit-anthropic-prompt-engineering]]
 - [[lit-anthropic-advanced-capabilities]]
 - [[lit-anthropic-thinking-capabilities]]
 - [[lit-anthropic-tool-use-depth]]

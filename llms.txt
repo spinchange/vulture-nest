@@ -2,7 +2,7 @@
 
 > A YANP-compliant knowledge vault and multi-agent engineering substrate with a compiled wiki, operational scripts, and a static portal.
 
-Generated: 2026-05-19T22:11:19Z
+Generated: 2026-05-20T23:43:47Z
 Repository: https://github.com/spinchange/vulture-nest
 Portal: https://spinchange.github.io/vulture-nest/index.html
 Machine-readable file: https://spinchange.github.io/vulture-nest/llms.txt
@@ -13,10 +13,10 @@ The vault treats notes as audited technical artifacts rather than loose prose. P
 
 ## Current Surface
 
-- Wiki notes: 428
+- Wiki notes: 430
 - System markdown surfaces: 5
-- Total markdown surfaces in compiled portal scope: 433
-- Public HTML pages currently generated: 438
+- Total markdown surfaces in compiled portal scope: 435
+- Public HTML pages currently generated: 440
 
 ## Start Here
 

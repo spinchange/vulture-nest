@@ -18,6 +18,7 @@ This map organizes the **Anthropic** model family (Claude), its specific agentic
 
 ## 🛠️ Core APIs & Features
 - [[anthropic-messages-api]] - The primary entry point for agentic interactions.
+- [[anthropic-xml-prompt-structuring]] - XML-style boundary marking for instructions, context, examples, and inputs inside prompt text.
 - [[anthropic-tool-use]] - Native tool-calling semantics and loop behavior.
 - [[anthropic-adaptive-thinking]] - Model-driven reasoning allocation via `effort`.
 - [[anthropic-prompt-caching]] - Context reuse and cost optimization.
@@ -32,6 +33,7 @@ This map organizes the **Anthropic** model family (Claude), its specific agentic
 - [[anthropic-error-handling]] - Handling overloaded, rate-limited, and malformed turns.
 
 ## 📚 Literature & Research
+- [[lit-anthropic-prompt-engineering]]
 - [[lit-anthropic-advanced-capabilities]]
 - [[lit-anthropic-thinking-capabilities]]
 - [[lit-anthropic-tool-use-depth]]
