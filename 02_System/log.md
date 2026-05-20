@@ -1,6 +1,28 @@
 # Wiki Log
 
 
+## [2026-05-19] Chronicler — ADK Depth, Modular RAG Hardening, Handoff Chronicle
+
+**Directive**: Three-task synthesis session: (1) depth expansion of ADK service notes from raw documentation, (2) hardening of the Modular RAG Hub with MCP protocol integration, (3) cross-fleet handoff chronicle synthesis from three key seams.
+
+**Notes Updated (5):**
+
+* [[adk-session-service]] — Materially expanded: added State Prefix Scoping table (`app:`, `user:`, no prefix, `temp:`), ToolContext access pattern, `output_key` auto-save pattern, state initialization at session creation, and shared `InvocationContext`/`temp:` namespace through sub-agents. Source: `00_Raw/adk-documentation.md`.
+* [[adk-long-term-memory]] — Materially expanded: added `DatabaseMemoryService` (SQLAlchemy, `adk_memory_entries` table, JSON storage per backend), `VertexAiMemoryBankService` init pattern, `add_events_to_memory` streaming ingestion method, full API surface table, and service selection guide. Source: `00_Raw/adk-documentation.md`.
+* [[agent-development-kit]] — Author/date refreshed to reflect depth synthesis pass (2026-05-19).
+* [[modular-rag-hub]] — Added **MCP as a Retrieval Protocol Interface** section: MCP primitives mapped to retrieval roles (Tools → retrieval actions, Resources → corpora, Prompts → reformulation templates), MCP Tasks (experimental) for async retrieval, practical wiring walkthrough. Added `web-data-ingestion-moc` and `mcp-moc` to References.
+* [[handoffs-moc]] — Added `gemini-orchestration-research-handoff-2026-05-06` to Gemini Handoffs. Added **Cross-Fleet Pattern Chronicle** section synthesizing four structural patterns from the three key handoffs: Research→Prioritization→Synthesis, Evidence-Bounded Synthesis, Infrastructure-First/Intelligence-Second, and Bounded Commit Discipline.
+
+**Graph Wired:**
+* [[modular-rag-hub]] now links [[mcp-moc]] and [[web-data-ingestion-moc]]
+* [[handoffs-moc]] now links [[inter-agent-handoff-protocol]] and includes the chronicle section
+* [[adk-session-service]] cross-links [[adk-long-term-memory]] bidirectionally
+* [[adk-long-term-memory]] cross-links [[adk-session-service]] and [[adk-artifact-service]]
+
+**Validation target:**
+* Run `audit-yanp.ps1` and `check-broken-links.ps1`, then regenerate wiki/dashboard artifacts and commit.
+
+
 ## [2026-05-18] Hermes — Fourth Pass: Commands & Comparisons
 
 **Directive**: Extend Hermes coverage with both the operator-facing slash-command/control layer and a comparative positioning note for Hermes versus ADK, OpenAI Agents SDK, and LangGraph.

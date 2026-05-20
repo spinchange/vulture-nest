@@ -47,10 +47,10 @@ Status legend: implemented references describe working artifacts; handoff refere
 
 ## Agent Development Kit (ADK)
 * [[agent-development-kit]] - Core Overview
-* [[adk-session-service]] - Session Management & State Persistence
+* [[adk-session-service]] - Session Management, State Prefix Scoping & ToolContext Patterns *(depth-expanded 2026-05-19)*
 * [[adk-artifact-service]] - Binary & File Data Lifecycle
 * [[adk-callbacks-and-lifecycle]] - Hooking into Agent Execution
-* [[adk-long-term-memory]] - Vector Search & Cross-Session Recall
+* [[adk-long-term-memory]] - In-Memory / Database / VertexAI Memory Services & Cross-Session Recall *(depth-expanded 2026-05-19)*
 * [[adk-multi-agent-orchestration]] - Hierarchical & Parallel Patterns
 * [[adk-evaluation-framework]] - Trajectory-Based Assessment
 * [[adk-advanced-capabilities]] - Planning, Thinking, & Code Execution

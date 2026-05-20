@@ -1,7 +1,7 @@
 ---
 title: Handoffs & Session History MOC
-author: gemini-cli
-date: 2026-05-04
+author: claude-sonnet-4-6
+date: 2026-05-19
 status: active
 type: permanent
 aliases: [handoff-moc, session-history, agent-handoffs]
@@ -17,6 +17,7 @@ This map organizes the operational history of the **vulture-nest**, tracking the
 - [[rfc-agent-orchestration-handoff]] - Proposal for formalizing inter-agent communication.
 
 ## 🤖 Gemini Handoffs
+- [[gemini-orchestration-research-handoff-2026-05-06]] - Research scan identifying MCP v2, A2A v1.0, Modular RAG, and MAK-CHK as 2026 production-readiness priorities.
 - [[gemini-wiki-health-audit-handoff-2026-05-04]] - Recent health audit (85% score) and remediation plan.
 - [[gemini-openai-symphony-spec-research-handoff-2026-05-03]] - Symphony spec ingestion and verification.
 - [[gemini-wiki-expansion-research-handoff-2026-05-02]] - Research for the 2026-05-02 expansion cycle.
@@ -72,10 +73,48 @@ This map organizes the operational history of the **vulture-nest**, tracking the
 - [[workbench-integration]] - Workbench tool integration state.
 
 ---
+
+## 🔍 Cross-Fleet Pattern Chronicle
+
+A synthesized view of recurring patterns across handoff generations (2026-04-27 → 2026-05-06). This chronicle surfaces structural lessons from the three key handoffs: [[gemini-orchestration-research-handoff-2026-05-06]], [[claude-openai-symphony-synthesis-handoff-2026-05-03]], and [[codex-orchestrator-integration-handoff-2026-04-30]].
+
+### Pattern 1 — Research → Prioritization → Synthesis (Gemini-led)
+
+Gemini's research handoffs encode a consistent three-phase structure:
+1. **Scan**: Web or document research to identify emergent 2026 updates (MCP v2, A2A v1.0, Modular RAG, MAK-CHK).
+2. **Prioritize**: Batch the findings into ranked work lanes (Protocol Stability > Advanced Retrieval > Coordination Hardening).
+3. **Seam**: Pass the ranked plan to the downstream agent with scoped, bounded instructions.
+
+This prevents scope creep by making each handoff a *bounded work envelope*, not an open-ended directive.
+
+### Pattern 2 — Evidence-Bounded Synthesis (Claude-led)
+
+Claude handoffs (e.g., the Symphony synthesis seam from Codex to Claude) enforce a strict **no-new-sourcing** constraint: the indexed source set is declared in the handoff, and the synthesis agent may not broaden it. This produces literature notes grounded in verifiable provenance, not speculative aggregation.
+
+Key sub-patterns:
+- **Required claims to verify** are enumerated explicitly to anticipate synthesis failure points.
+- **Stop conditions** are stated so the agent knows when to commit rather than expand.
+- **Commit boundary** is narrowed to the synthesis artifact only.
+
+### Pattern 3 — Infrastructure-First, Intelligence-Second (Codex/Claude split)
+
+Orchestrator-scale work consistently follows a two-phase division:
+- **Codex** owns the infrastructure layer: tool implementation, chunking, indexing, Supabase integration, state-machine mechanics.
+- **Claude** owns the intelligence layer: epistemic gates, synthesis rubrics, conflict detection, provenance validation.
+
+The handoffs between these phases are explicit state-machine transitions (`Crawled → Indexed → Synthesized → Promoted`) rather than implicit "continue the work" seams.
+
+### Pattern 4 — Bounded Commit Discipline
+
+All three handoffs enforce narrow commit scope. The Symphony synthesis handoff specifies one commit (`feat(wiki): ground openai symphony literature note`) and prohibits mixing graph-integration work. The orchestrator handoffs keep infrastructure commits separate from intelligence commits. This discipline keeps `git log` interpretable and roll-back boundaries clean.
+
+---
+
 ## References
 - [[index]]
 - [[agent-note-conventions]]
 - [[core-patterns-moc]]
+- [[inter-agent-handoff-protocol]]
 
 
 ## Gemini Handoffs

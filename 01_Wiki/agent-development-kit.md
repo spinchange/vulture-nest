@@ -1,7 +1,7 @@
 ---
 title: Agent Development Kit ([[agent-development-kit|ADK]])
-author: gemini-cli
-date: 2026-05-02
+author: claude-sonnet-4-6
+date: 2026-05-19
 status: active
 type: permanent
 aliases: [adk, google-adk]

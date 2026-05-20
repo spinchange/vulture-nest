@@ -1,7 +1,7 @@
 ---
 title: Modular RAG Hub
 author: claude-sonnet-4-6
-date: 2026-05-06
+date: 2026-05-19
 status: active
 type: permanent
 aliases: [modular-rag, adaptive-rag, self-rag, agentic-retrieval-hub]
@@ -124,6 +124,34 @@ Planner Agent
 
 ---
 
+## MCP as a Retrieval Protocol Interface
+
+[[mcp-moc|MCP]] (Model Context Protocol) provides a standardized tool/resource protocol that maps cleanly onto the Modular RAG retrieval layer. Each retriever type in the stack above can be exposed as an MCP server, giving the router a unified `tools/call` interface regardless of the backend.
+
+### MCP Primitives in a RAG Context
+
+| MCP Primitive | RAG Role |
+|---|---|
+| **Tools** | Retrieval actions: `dense_search`, `sparse_search`, `graph_traverse`, `sql_query` |
+| **Resources** | Pre-indexed corpora, schema documents, ontology files available as static context |
+| **Prompts** | Reusable few-shot templates for query reformulation or reranking judgment calls |
+
+### MCP Tasks (Experimental)
+
+The MCP spec includes an experimental **Tasks** primitive for durable, deferred-result execution. This maps to async retrieval operations — expensive graph traversals or batch embedding runs — where the router dispatches a retrieval job and polls for completion rather than blocking the generation step.
+
+### Practical Wiring
+
+For a Modular RAG stack backed by MCP servers:
+1. **Router** issues `tools/list` to enumerate available retrievers and their capability declarations.
+2. **Adaptive Router** selects one or more tools and calls them with the query.
+3. **Reranker** calls an LLM-as-judge tool over the merged result set.
+4. **Self-RAG loop** reformulates the query and re-calls the same tool interface — the retrieval backend is opaque to the loop logic.
+
+See [[mcp-moc]] for protocol details and [[web-data-ingestion-moc]] for the vault's Firecrawl-based ingestion tooling that feeds the retrieval backends.
+
+---
+
 ## Where to Start
 
 - **Dense + Sparse only, small corpus** → [[agentic-rag]] patterns; [[llamaindex]] `QueryEngineTool`
@@ -131,6 +159,7 @@ Planner Agent
 - **Factual accuracy is critical** → Add Self-RAG critique loop
 - **Hierarchical knowledge (taxonomies, ontologies)** → Evaluate Hyperbolic Embeddings
 - **Relational multi-hop questions** → [[graphrag-concepts|GraphRAG]] + planner hybrid
+- **Standardized retrieval backends** → Expose retrievers as MCP tool servers
 
 ---
 
@@ -141,5 +170,7 @@ Planner Agent
 - [[hybrid-retrieval-spec]]
 - [[llamaindex]]
 - [[llm-as-a-judge]]
+- [[mcp-moc]]
+- [[web-data-ingestion-moc]]
 - [[multi-agent-patterns-moc]]
 - [[agentic-frameworks-moc]]
