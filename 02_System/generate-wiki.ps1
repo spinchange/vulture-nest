@@ -390,6 +390,15 @@ try {
             @{ Name = 'Execution Topology'; PortalNote = 'graph-orchestration'; Description = 'When to use explicit workflow control, deterministic orchestration, and code-execution agents.' }
         )
 
+        $taskEntrypoints = @(
+            @{ Task = 'Broad conceptual navigation'; Surface = 'Wiki Index'; Url = (Get-PortalUrl -NoteName 'index'); Description = 'Best first stop for MOCs, root notes, and cluster discovery.' }
+            @{ Task = 'Tooling, maintenance, and operational scripts'; Surface = 'System Index'; Url = (Get-PortalUrl -NoteName 'system-index'); Description = 'Use this before diving into individual PowerShell scripts or maintenance lanes.' }
+            @{ Task = 'Collaboration constraints and write rules'; Surface = 'Visitor Directives'; Url = (Get-PortalUrl -NoteName 'visitor-directives'); Description = 'Canonical contract for how agents should behave in the vault.' }
+            @{ Task = 'Source ingestion and evidence pipeline'; Surface = 'Source Ingestion Runbook'; Url = (Get-PortalUrl -NoteName 'protocol-source-ingestion-runbook'); Description = 'Operational playbook for crawl, index, verify, and handoff.' }
+            @{ Task = 'Schema install and live DB upgrades'; Surface = 'Supabase Schema Ingestion'; Url = (Get-PortalUrl -NoteName 'codex-supabase-schema-ingestion'); Description = 'Explains fresh-install schema application versus incremental migrations.' }
+            @{ Task = 'System health and recent repo motion'; Surface = 'Dashboard'; Url = "$PortalBaseUrl/dashboard.html"; Description = 'Shows graph health, recent log actions, session activity, and recent commits.' }
+        )
+
         $lines = New-Object System.Collections.Generic.List[string]
         $lines.Add('# vulture-nest')
         $lines.Add('')
@@ -431,12 +440,22 @@ try {
         $lines.Add('- Notes in `01_Wiki/` require YAML frontmatter with at least `title`, `author`, `date`, `status`, `type`, and `aliases`.')
         $lines.Add('- Graph integrity and note compliance are enforced by PowerShell maintenance scripts rather than by convention alone.')
         $lines.Add('')
+        $lines.Add('## Best Entrypoints By Task')
+        $lines.Add('')
+        foreach ($entrypoint in $taskEntrypoints) {
+            $lines.Add("- $($entrypoint.Task): [$($entrypoint.Surface)]($($entrypoint.Url)) — $($entrypoint.Description)")
+        }
+        $lines.Add('')
         $lines.Add('## Key Source And Repo Surfaces')
         $lines.Add('')
         $lines.Add("- [README]($(Get-RepoBlobUrl -RelativePath 'README.md')): high-level project framing and live portal links.")
         $lines.Add("- [Wiki Index Source]($(Get-RepoBlobUrl -RelativePath '01_Wiki/index.md')): source markdown for the main navigation hub.")
         $lines.Add("- [System Index Source]($(Get-RepoBlobUrl -RelativePath '02_System/system-index.md')): source markdown for operational and tooling navigation.")
         $lines.Add("- [Visitor Directives Source]($(Get-RepoBlobUrl -RelativePath '02_System/visitor-directives.md')): collaboration contract for guest agents.")
+        $lines.Add("- [Ingest Schema Baseline]($(Get-RepoBlobUrl -RelativePath '02_System/vulture-ingest/schema.sql')): canonical schema for fresh ingest databases.")
+        $lines.Add("- [Ingest Migration Runner]($(Get-RepoBlobUrl -RelativePath '02_System/vulture-ingest/apply-migration.ps1')): applies sorted migration files and records them in `schema_migrations`.")
+        $lines.Add("- [Migration Directory]($(Get-RepoBlobUrl -RelativePath '02_System/vulture-ingest/migrations/README.md')): convention and upgrade path for live ingest databases.")
+        $lines.Add("- [Dashboard Generator]($(Get-RepoBlobUrl -RelativePath '02_System/generate-dashboard.ps1')): emits the operational dashboard and commit-strip telemetry.")
         $lines.Add("- [Portal Generator]($(Get-RepoBlobUrl -RelativePath '02_System/generate-wiki.ps1')): static site compiler for wiki and system markdown.")
         $lines.Add('')
         $lines.Add('## Retrieval Guidance')
@@ -444,6 +463,14 @@ try {
         $lines.Add('- Use the portal index for broad navigation and the system index for tooling and maintenance tasks.')
         $lines.Add('- Start from root hubs (`rust`, `python`, `powershell`, `typescript`, `agent-development-kit`, `mcp-moc`) before dropping into narrow subnotes.')
         $lines.Add('- Prefer literature notes (`lit-*`) when you need source-grounded summaries, and permanent notes when you need vault-local synthesis or decision rules.')
+        $lines.Add('- Treat `02_System/log.md` and `02_System/poshwiki-pages/Session *.md` as operational history, not as the primary source for stable conceptual knowledge.')
+        $lines.Add('- For ingest or schema work, prefer the runbook and migration notes before inferring behavior from raw SQL or generated portal output.')
+        $lines.Add('')
+        $lines.Add('## Canonicality Notes')
+        $lines.Add('')
+        $lines.Add('- Canonical conceptual knowledge lives primarily in `01_Wiki/` permanent and literature notes.')
+        $lines.Add('- Canonical operational contracts live in `02_System/` markdown surfaces such as `visitor-directives.md`, `system-index.md`, `tool-registry.md`, and `log.md`.')
+        $lines.Add('- Generated HTML and `llms.txt` are publication artifacts; when they disagree with source markdown or scripts, prefer the source files in the repository.')
         return ($lines -join [Environment]::NewLine) + [Environment]::NewLine
     }
 

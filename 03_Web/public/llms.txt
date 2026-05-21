@@ -2,7 +2,7 @@
 
 > A YANP-compliant knowledge vault and multi-agent engineering substrate with a compiled wiki, operational scripts, and a static portal.
 
-Generated: 2026-05-21T00:30:20Z
+Generated: 2026-05-21T00:44:13Z
 Repository: https://github.com/spinchange/vulture-nest
 Portal: https://spinchange.github.io/vulture-nest/index.html
 Machine-readable file: https://spinchange.github.io/vulture-nest/llms.txt
@@ -42,12 +42,25 @@ The vault treats notes as audited technical artifacts rather than loose prose. P
 - Notes in `01_Wiki/` require YAML frontmatter with at least `title`, `author`, `date`, `status`, `type`, and `aliases`.
 - Graph integrity and note compliance are enforced by PowerShell maintenance scripts rather than by convention alone.
 
+## Best Entrypoints By Task
+
+- Broad conceptual navigation: [Wiki Index](https://spinchange.github.io/vulture-nest/index.html) — Best first stop for MOCs, root notes, and cluster discovery.
+- Tooling, maintenance, and operational scripts: [System Index](https://spinchange.github.io/vulture-nest/system-index.html) — Use this before diving into individual PowerShell scripts or maintenance lanes.
+- Collaboration constraints and write rules: [Visitor Directives](https://spinchange.github.io/vulture-nest/visitor-directives.html) — Canonical contract for how agents should behave in the vault.
+- Source ingestion and evidence pipeline: [Source Ingestion Runbook](https://spinchange.github.io/vulture-nest/protocol-source-ingestion-runbook.html) — Operational playbook for crawl, index, verify, and handoff.
+- Schema install and live DB upgrades: [Supabase Schema Ingestion](https://spinchange.github.io/vulture-nest/codex-supabase-schema-ingestion.html) — Explains fresh-install schema application versus incremental migrations.
+- System health and recent repo motion: [Dashboard](https://spinchange.github.io/vulture-nest/dashboard.html) — Shows graph health, recent log actions, session activity, and recent commits.
+
 ## Key Source And Repo Surfaces
 
 - [README](https://github.com/spinchange/vulture-nest/blob/main/README.md): high-level project framing and live portal links.
 - [Wiki Index Source](https://github.com/spinchange/vulture-nest/blob/main/01_Wiki/index.md): source markdown for the main navigation hub.
 - [System Index Source](https://github.com/spinchange/vulture-nest/blob/main/02_System/system-index.md): source markdown for operational and tooling navigation.
 - [Visitor Directives Source](https://github.com/spinchange/vulture-nest/blob/main/02_System/visitor-directives.md): collaboration contract for guest agents.
+- [Ingest Schema Baseline](https://github.com/spinchange/vulture-nest/blob/main/02_System/vulture-ingest/schema.sql): canonical schema for fresh ingest databases.
+- [Ingest Migration Runner](https://github.com/spinchange/vulture-nest/blob/main/02_System/vulture-ingest/apply-migration.ps1): applies sorted migration files and records them in schema_migrations.
+- [Migration Directory](https://github.com/spinchange/vulture-nest/blob/main/02_System/vulture-ingest/migrations/README.md): convention and upgrade path for live ingest databases.
+- [Dashboard Generator](https://github.com/spinchange/vulture-nest/blob/main/02_System/generate-dashboard.ps1): emits the operational dashboard and commit-strip telemetry.
 - [Portal Generator](https://github.com/spinchange/vulture-nest/blob/main/02_System/generate-wiki.ps1): static site compiler for wiki and system markdown.
 
 ## Retrieval Guidance
@@ -55,3 +68,11 @@ The vault treats notes as audited technical artifacts rather than loose prose. P
 - Use the portal index for broad navigation and the system index for tooling and maintenance tasks.
 - Start from root hubs (`rust`, `python`, `powershell`, `typescript`, `agent-development-kit`, `mcp-moc`) before dropping into narrow subnotes.
 - Prefer literature notes (`lit-*`) when you need source-grounded summaries, and permanent notes when you need vault-local synthesis or decision rules.
+- Treat `02_System/log.md` and `02_System/poshwiki-pages/Session *.md` as operational history, not as the primary source for stable conceptual knowledge.
+- For ingest or schema work, prefer the runbook and migration notes before inferring behavior from raw SQL or generated portal output.
+
+## Canonicality Notes
+
+- Canonical conceptual knowledge lives primarily in `01_Wiki/` permanent and literature notes.
+- Canonical operational contracts live in `02_System/` markdown surfaces such as `visitor-directives.md`, `system-index.md`, `tool-registry.md`, and `log.md`.
+- Generated HTML and `llms.txt` are publication artifacts; when they disagree with source markdown or scripts, prefer the source files in the repository.
