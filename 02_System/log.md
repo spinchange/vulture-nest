@@ -1320,3 +1320,19 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
 * Run `generate-wiki.ps1` and `generate-dashboard.ps1` — Portal artifacts and metrics refreshed.
 
 **Status**: ADK/RAG updates verified and published to the portal.
+
+## [2026-05-20] Codex — Vulture Ingest Migration Path Added
+* **Directive**: Add a real migration path for existing ingest databases after the agentic provenance schema expansion.
+* **Changes**:
+    * Created `02_System/vulture-ingest/migrations/2026-05-20_agentic_provenance.sql` with additive `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` updates for `source_pages` plus `source_events` creation.
+    * Added `02_System/vulture-ingest/apply-migration.ps1` to apply versioned SQL through the same RPC or `psql` paths already used for schema application.
+    * Updated [[spec-agentic-source-orchestrator]] to declare `schema.sql` as the fresh-install baseline and `migrations/` as the in-place upgrade contract.
+* **Status**: Existing ingest DBs now have an explicit additive upgrade path for the provenance expansion.
+
+## [2026-05-20] Codex — Migration Ledger Added
+* **Directive**: Extend the new migration path with durable tracking for repeated and future ingest upgrades.
+* **Changes**:
+    * `02_System/vulture-ingest/apply-migration.ps1` now applies all sorted `migrations/*.sql` files instead of a single hard-coded file.
+    * The runner now bootstraps and writes to `schema_migrations` so applied upgrades are recorded.
+    * Added `02_System/vulture-ingest/migrations/README.md` to define the migration convention.
+* **Status**: The ingest sidecar now has a lightweight migration ledger instead of a one-off migration runner.
