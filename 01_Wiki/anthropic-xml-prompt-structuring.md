@@ -86,6 +86,7 @@ That makes it adjacent to:
 ## See also
 
 - [[lit-anthropic-prompt-engineering]]
+- [[anthropic-xml-tags-cheat-sheet]]
 - [[anthropic-messages-api]]
 - [[anthropic-tool-use]]
 - [[anthropic-prompt-caching]]

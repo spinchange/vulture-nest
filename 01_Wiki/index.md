@@ -169,6 +169,7 @@ Session seams are bounded resume points that capture current state, immediate ne
 * [[lit-anthropic-managed-agents]] - Literature: Batch 2 sub-batch D — Managed Agents quickstart, agent setup, sessions, environments, tools, events
 * [[anthropic-messages-api]] - Direct Messages API request/response model and token counting
 * [[anthropic-xml-prompt-structuring]] - XML-style prompt markup as boundary markers for instructions, context, examples, and inputs inside Claude text prompts
+* [[anthropic-xml-tags-cheat-sheet]] - Compact reference with canonical tag skeletons, few-shot wrappers, and multi-document layouts for Claude prompts
 * [[anthropic-tool-use]] - Client/server tool execution loop
 * [[anthropic-streaming-patterns]] - SSE event flow, streamed tool arguments, and thinking block streaming
 * [[anthropic-error-handling]] - Errors, request-size limits, and rate-limit behavior

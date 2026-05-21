@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anthropic XML Prompt Structuring — Vulture Portal</title>
+  <title>Anthropic XML Tags Cheat Sheet — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Anthropic XML Prompt Structuring</span>
+      <span>Anthropic XML Tags Cheat Sheet</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,13 +549,13 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Anthropic XML Prompt Structuring</h1>
+      <h1 class="note-title">Anthropic XML Tags Cheat Sheet</h1>
       <div class="frontmatter">
         <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
 <span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-prompt-engineering]]</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-20</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic XML Prompt Structuring</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic XML Tags Cheat Sheet</span></span>
 <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
 <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
       </div>
@@ -566,81 +566,124 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Anthropic XML Prompt Structuring</h1>
-<p><strong>Anthropic XML prompt structuring</strong> is the practice of using lightweight XML-like tags to separate prompt regions such as instructions, context, inputs, and examples so Claude can parse mixed prompt material with less ambiguity.</p>
-<h2>Core idea</h2>
-<p>The tags are not the payload; they are the <strong>boundary markers</strong> around the payload.</p>
-<p>A prompt that mixes many roles — what the model should do, what background it should use, what examples it should imitate, and what live input it should transform — becomes easier for Claude to interpret when each region is explicitly labeled.</p>
-<h2>What problem it solves</h2>
-<p>Without separators, prompts often blur together:</p>
-<ul>
-<li>instructions can look like examples
-</li>
-<li>examples can look like fresh user input
-</li>
-<li>reference material can be mistaken for authoritative directions
-</li>
-<li>repeated documents can collapse into one undifferentiated blob
-</li>
-</ul>
-<p>XML-style tags reduce that confusion by making region boundaries explicit.</p>
-<h2>Typical pattern</h2>
+        <h1>Anthropic XML Tags Cheat Sheet</h1>
+<p>A compact reference for using <strong>XML-style prompt tags</strong> with Claude.</p>
+<h2>Canonical skeleton</h2>
 <pre><code>&lt;instructions&gt;
-Return a concise extraction of the claims.
+State exactly what Claude should do.
 &lt;/instructions&gt;
 
 &lt;context&gt;
-The source may contain quoted objections and cited counterarguments.
+Background facts, constraints, or domain assumptions.
 &lt;/context&gt;
 
 &lt;examples&gt;
   &lt;example&gt;
-    &lt;input&gt;...&lt;/input&gt;
-    &lt;output&gt;...&lt;/output&gt;
+    &lt;input&gt;Example input&lt;/input&gt;
+    &lt;output&gt;Example output&lt;/output&gt;
   &lt;/example&gt;
 &lt;/examples&gt;
 
 &lt;input&gt;
+The live task or source material.
+&lt;/input&gt;</code></pre>
+<h2>Recommended tag roles</h2>
+<ul>
+<li><code>&lt;instructions&gt;</code> — operative directions
+</li>
+<li><code>&lt;context&gt;</code> — non-operative background
+</li>
+<li><code>&lt;examples&gt;</code> — container for demonstrations
+</li>
+<li><code>&lt;example&gt;</code> — one demonstration pair or case
+</li>
+<li><code>&lt;input&gt;</code> — the live item Claude should process
+</li>
+<li><code>&lt;documents&gt;</code> / <code>&lt;document&gt;</code> — repeated source documents
+</li>
+</ul>
+<p>The exact names are flexible. Anthropic&#39;s stable recommendation is to use <strong>descriptive tags consistently</strong>.</p>
+<h2>Good default patterns</h2>
+<h3>Single task</h3>
+<pre><code>&lt;instructions&gt;
+Summarize the argument in 5 bullets.
+&lt;/instructions&gt;
+
+&lt;input&gt;
 ...
 &lt;/input&gt;</code></pre>
-<p>The exact tag vocabulary is flexible. Anthropic&#39;s durable recommendation is to choose <strong>descriptive names</strong> and use them <strong>consistently</strong>.</p>
-<h2>Hierarchy mirrors task structure</h2>
-<p>When the task itself is hierarchical, the prompt wrapper should be hierarchical too.</p>
-<p>Anthropic&#39;s own example pattern — <code>&lt;documents&gt;</code> containing repeated <code>&lt;document index=&quot;n&quot;&gt;</code> items — suggests a general rule: represent collections as containers and members as repeated child blocks. This is especially useful for document comparison, retrieval synthesis, and multi-example prompting.</p>
-<h2>Tagged examples are a separate pattern</h2>
-<p>A specific sub-pattern is wrapping demonstrations in <code>&lt;example&gt;</code> / <code>&lt;examples&gt;</code> tags. This separates instructional examples from the actual live task and reduces the chance that Claude confuses demonstrations with operative input.</p>
-<h2>What this is not</h2>
+<h3>Task with background constraints</h3>
+<pre><code>&lt;instructions&gt;
+Extract safety-relevant claims only.
+&lt;/instructions&gt;
+
+&lt;context&gt;
+Ignore marketing language and rhetorical flourishes.
+&lt;/context&gt;
+
+&lt;input&gt;
+...
+&lt;/input&gt;</code></pre>
+<h3>Few-shot prompting</h3>
+<pre><code>&lt;instructions&gt;
+Rewrite each passage in plain language.
+&lt;/instructions&gt;
+
+&lt;examples&gt;
+  &lt;example&gt;
+    &lt;input&gt;The physician commenced the procedure.&lt;/input&gt;
+    &lt;output&gt;The doctor began the procedure.&lt;/output&gt;
+  &lt;/example&gt;
+&lt;/examples&gt;
+
+&lt;input&gt;
+The committee rendered its determination.
+&lt;/input&gt;</code></pre>
+<h3>Multi-document prompting</h3>
+<pre><code>&lt;instructions&gt;
+Compare the documents and list disagreements.
+&lt;/instructions&gt;
+
+&lt;documents&gt;
+  &lt;document index=&quot;1&quot;&gt;
+    ...
+  &lt;/document&gt;
+  &lt;document index=&quot;2&quot;&gt;
+    ...
+  &lt;/document&gt;
+&lt;/documents&gt;</code></pre>
+<h2>Do / don&#39;t</h2>
+<p><strong>Do</strong></p>
 <ul>
-<li>It is <strong>not</strong> an API-native schema contract like JSON Schema for tools.
+<li>keep each region semantically distinct
 </li>
-<li>It is <strong>not</strong> a requirement that the prompt be valid XML.
+<li>use nested tags when the source material is naturally nested
 </li>
-<li>It is <strong>not</strong> a substitute for clear instructions or relevant examples.
+<li>separate examples from live input
+</li>
+<li>keep tag names stable throughout the prompt
 </li>
 </ul>
-<p>So the right mental model is <strong>semantic markup for model legibility</strong>, not machine-checked markup for strict parsing.</p>
-<h2>Why it belongs in the Anthropic cluster</h2>
-<p>Anthropic&#39;s direct API is block-structured at the message level, but much prompt complexity still lives *inside* text blocks. XML-style prompt structuring is one of the provider&#39;s explicit techniques for organizing that internal text-layer complexity.</p>
-<p>That makes it adjacent to:</p>
+<p><strong>Don&#39;t</strong></p>
 <ul>
-<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a> for the outer transport contract
+<li>rely on tags to replace unclear instructions
 </li>
-<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a> for structured capability calls
+<li>mix demonstrations and live data in the same block
 </li>
-<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a> for stable prompt-prefix reuse
+<li>treat this as a strict parser contract
+</li>
+<li>assume the prompt must be valid XML
 </li>
 </ul>
+<h2>Mental model</h2>
+<p>Think of XML tags here as <strong>legibility markup for the model</strong>, not as a machine-validated schema. The goal is to make prompt boundaries obvious so Claude does not confuse instructions, context, examples, and live input.</p>
 <h2>See also</h2>
 <ul>
 <li><a href="lit-anthropic-prompt-engineering.html" class="wikilink">lit-anthropic-prompt-engineering</a>
 </li>
-<li><a href="anthropic-xml-tags-cheat-sheet.html" class="wikilink">anthropic-xml-tags-cheat-sheet</a>
+<li><a href="anthropic-xml-prompt-structuring.html" class="wikilink">anthropic-xml-prompt-structuring</a>
 </li>
 <li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>
-</li>
-<li><a href="anthropic-tool-use.html" class="wikilink">anthropic-tool-use</a>
-</li>
-<li><a href="anthropic-prompt-caching.html" class="wikilink">anthropic-prompt-caching</a>
 </li>
 <li><a href="chat-templates.html" class="wikilink">chat-templates</a>
 </li>
@@ -658,19 +701,14 @@ The source may contain quoted objections and cited counterarguments.
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
 <li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
-<li><a href="anthropic-xml-tags-cheat-sheet.html" class="">anthropic-xml-tags-cheat-sheet</a></li>
+<li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
 <li><a href="index.html" class="">index</a></li>
-<li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
-<li><a href="log.html" class="">log</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
 <li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
-<li><a href="anthropic-prompt-caching.html" class="">anthropic-prompt-caching</a></li>
-<li><a href="anthropic-tool-use.html" class="">anthropic-tool-use</a></li>
-<li><a href="anthropic-xml-tags-cheat-sheet.html" class="">anthropic-xml-tags-cheat-sheet</a></li>
+<li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
 <li><a href="chat-templates.html" class="">chat-templates</a></li>
 <li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
 </ul>

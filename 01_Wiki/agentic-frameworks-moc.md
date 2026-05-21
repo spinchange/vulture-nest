@@ -40,6 +40,7 @@ Parenthetical tags such as `Freedom`, `Control`, `Handoffs`, and `Retrieval` are
 ## Communication & Formatting
 * [[chat-templates]]: Managing System, User, and Assistant roles.
 * [[anthropic-xml-prompt-structuring]]: Provider-specific prompt markup pattern for making mixed prompt regions legible to Claude.
+* [[anthropic-xml-tags-cheat-sheet]]: Compact prompt-authoring reference for Claude XML-tag layouts, few-shot wrappers, and multi-document containers.
 * [[yanp-for-agentic-workflows]]: Why strict metadata is required for agentic parsing.
 
 ## Frameworks & toolkits

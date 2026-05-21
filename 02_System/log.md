@@ -28,8 +28,27 @@
 **Validation / regeneration:**
 * `audit-yanp.ps1` — all notes compliant
 * `check-broken-links.ps1` — no broken links; graph integrity remains 100%
-* `generate-wiki.ps1` — portal/search artifacts refreshed; generated pages include `lit-anthropic-prompt-engineering.html` and `anthropic-xml-prompt-structuring.html`
+* `generate-wiki.ps1` — portal/search artifacts refreshed; generated pages include `lit-anthropic-prompt-engineering.html`, `anthropic-xml-prompt-structuring.html`, and `anthropic-xml-tags-cheat-sheet.html`
 * `generate-dashboard.ps1` — dashboard regenerated successfully
+
+## [2026-05-20] Chronicler — Anthropic XML Tags Cheat Sheet
+
+**Directive**: Add a compact operator-facing cheat sheet for Claude XML-style prompt tags, grounded in the Anthropic prompt-engineering docs already captured in the vault.
+
+**Note Created (1):**
+* [[anthropic-xml-tags-cheat-sheet]] — Compact reference note with canonical tag skeleton, recommended tag roles, single-task / backgrounded / few-shot / multi-document patterns, and do/don’t guidance.
+
+**Graph Wired:**
+* [[anthropic-moc]] — added the cheat sheet under core APIs & features
+* [[agentic-frameworks-moc]] — added the cheat sheet under Communication & Formatting
+* [[index]] — expanded the Anthropic API section with the cheat-sheet entry
+* [[anthropic-xml-prompt-structuring]] — linked the concept note down to the new compact operator reference
+
+**Validation / regeneration:**
+* `audit-yanp.ps1` — all notes compliant
+* `check-broken-links.ps1` — no broken links; graph integrity remains 100%
+* `generate-wiki.ps1` — portal/search artifacts refreshed; `anthropic-xml-tags-cheat-sheet.html` present
+* `generate-dashboard.ps1` — dashboard regenerated successfully (431 total notes; health score 100)
 
 ## [2026-05-19] Chronicler — ADK Depth, Modular RAG Hardening, Handoff Chronicle
 
