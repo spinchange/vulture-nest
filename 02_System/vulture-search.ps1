@@ -1,214 +1,399 @@
 <#
 .SYNOPSIS
-    The Vulture Engine: Graph-Aware Discovery (Optimized & Ranked)
+    The Vulture Engine: graph-aware discovery with optional semantic rank fusion.
 .DESCRIPTION
-    A specialized retrieval engine that uses a weighted ranking model to surface 
-    relevant knowledge and tools. Leverages the PoShWiKi graph for second-order discovery.
+    Combines lexical note matching, semantic similarity from stored embeddings,
+    and second-order graph expansion to produce a ranked context packet.
 #>
 
-Param(
-    [Parameter(Mandatory=$true)]
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true)]
     [string]$Query,
-    [switch]$Semantic
+
+    [switch]$Semantic,
+
+    [ValidateRange(1, 100)]
+    [int]$SemanticCandidates = 12,
+
+    [ValidateRange(0.1, 25.0)]
+    [double]$SemanticWeight = 12.0
 )
+
 $ErrorActionPreference = 'Stop'
 
 try {
     $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
     $VaultRoot = Split-Path -Parent $PSScriptRoot
-    $wikiPath = Join-Path $VaultRoot "01_Wiki"
-    $registryPath = Join-Path $VaultRoot "02_System/tool-registry.md"
-    $dbPath = $env:POSHWIKI_DB_PATH
-    if ([string]::IsNullOrWhiteSpace($dbPath)) { $dbPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/wiki.db" }
+    $WikiPath = Join-Path $VaultRoot "01_Wiki"
+    $RegistryPath = Join-Path $VaultRoot "02_System/tool-registry.md"
+    $DbPath = $env:POSHWIKI_DB_PATH
+    if ([string]::IsNullOrWhiteSpace($DbPath)) {
+        $DbPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/wiki.db"
+    }
     $LibPath = Join-Path $VaultRoot "00_Raw/PoShWiKi/lib"
 
-# --- 1. Load SQLite Assemblies ---
-function Import-SqliteAssemblies {
-    $dlls = @("SQLitePCLRaw.core.dll", "SQLitePCLRaw.provider.e_sqlite3.dll", "SQLitePCLRaw.batteries_v2.dll", "Microsoft.Data.Sqlite.dll")
-    foreach ($dll in $dlls) {
-        $path = Join-Path $LibPath $dll
-        if (Test-Path $path) {
+    function Import-SqliteAssemblies {
+        $dlls = @(
+            "SQLitePCLRaw.core.dll",
+            "SQLitePCLRaw.provider.e_sqlite3.dll",
+            "SQLitePCLRaw.batteries_v2.dll",
+            "Microsoft.Data.Sqlite.dll"
+        )
+
+        foreach ($dll in $dlls) {
+            $path = Join-Path $LibPath $dll
+            if (-not (Test-Path $path)) {
+                continue
+            }
+
             try {
                 [System.Reflection.Assembly]::LoadFrom($path) | Out-Null
             } catch {
                 Add-Type -Path $path -ErrorAction SilentlyContinue
             }
         }
-    }
-    $os = if ($IsWindows) { "win" } elseif ($IsLinux) { "linux" } else { "osx" }
-    $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
-    $nativeLibName = if ($IsWindows) { "e_sqlite3.dll" } elseif ($IsMacOS) { "libe_sqlite3.dylib" } else { "libe_sqlite3.so" }
-    $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLibName"
-    if (Test-Path $nativePath) {
-        try {
-            [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
-        } catch {}
-    }
-    try { [SQLitePCL.Batteries]::Init() } catch {}
-}
-    Import-SqliteAssemblies
 
-# --- 2. Ranking & Retrieval Functions ---
-function Get-SemanticNeighbors([string]$queryText, [int]$topN = 8) {
-    $apiKey = $env:GEMINI_API_KEY
-    if ([string]::IsNullOrWhiteSpace($apiKey)) { return @() }
-
-    $embedUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=$apiKey"
-    $body     = @{ model = "models/gemini-embedding-001"; content = @{ parts = @(@{ text = $queryText }) } } | ConvertTo-Json -Depth 4 -Compress
-    try {
-        $resp     = Invoke-RestMethod -Uri $embedUrl -Method Post -Body $body -ContentType "application/json"
-        $queryVec = [double[]]$resp.embedding.values
-    } catch { return @() }
-
-    # Normalize query vector
-    $qMag = 0.0; foreach ($v in $queryVec) { $qMag += $v * $v }
-    $qMag = [Math]::Sqrt($qMag)
-    if ($qMag -gt 0) { for ($k = 0; $k -lt $queryVec.Length; $k++) { $queryVec[$k] /= $qMag } }
-
-    # Load stored embeddings
-    $conn = [Microsoft.Data.Sqlite.SqliteConnection]::new("Data Source=$dbPath")
-    $conn.Open()
-    $embRows = @()
-    try {
-        $cmd = $conn.CreateCommand(); $cmd.CommandText = "SELECT NoteName, Embedding FROM NoteEmbeddings"
-        $reader = $cmd.ExecuteReader()
-        while ($reader.Read()) { $embRows += [PSCustomObject]@{ Name = $reader.GetString(0); Emb = $reader.GetString(1) } }
-    } finally { $conn.Close() }
-
-    if ($embRows.Count -eq 0) { return @() }
-
-    $results = [System.Collections.Generic.List[PSCustomObject]]::new()
-    foreach ($row in $embRows) {
-        $vec = [double[]]($row.Emb | ConvertFrom-Json)
-        $mag = 0.0; foreach ($v in $vec) { $mag += $v * $v }
-        $mag = [Math]::Sqrt($mag)
-        if ($mag -eq 0) { continue }
-        $dot = 0.0
-        for ($k = 0; $k -lt $queryVec.Length; $k++) { $dot += $queryVec[$k] * ($vec[$k] / $mag) }
-        $results.Add([PSCustomObject]@{ Name = $row.Name; Similarity = $dot }) | Out-Null
-    }
-
-    return $results | Sort-Object Similarity -Descending | Select-Object -First $topN
-}
-function Get-GraphContext([string[]]$SeedNotes) {
-    if ($SeedNotes.Count -eq 0) { return @() }
-    $connString = "Data Source=$dbPath"
-    $conn = [Microsoft.Data.Sqlite.SqliteConnection]::new($connString)
-    try {
-        $conn.Open()
-        # Single query to get all neighbors and their incoming link counts (Hub Score)
-        $inClause = "'$($SeedNotes -join "','")'"
-        $sql = @"
-            WITH Seeds AS (SELECT value as Name FROM (SELECT $inClause as list) CROSS JOIN json_each('["' || replace(list, "','", '","') || '"]')),
-                 Neighbors AS (
-                    SELECT Target as Related, Source as Via FROM Links WHERE Source IN (SELECT Name FROM Seeds)
-                    UNION
-                    SELECT Source as Related, Target as Via FROM Links WHERE Target IN (SELECT Name FROM Seeds)
-                 ),
-                 HubScores AS (
-                    SELECT Target as Note, COUNT(*) as Incoming FROM Links GROUP BY Target
-                 )
-            SELECT n.Related, n.Via, COALESCE(h.Incoming, 0) as HubWeight
-            FROM Neighbors n
-            LEFT JOIN HubScores h ON n.Related = h.Note
-            WHERE n.Related NOT IN (SELECT Name FROM Seeds)
-"@
-        $cmd = $conn.CreateCommand(); $cmd.CommandText = $sql
-        $reader = $cmd.ExecuteReader()
-        $rawRelated = @()
-        while ($reader.Read()) {
-            $rawRelated += [PSCustomObject]@{
-                Note      = $reader.GetString(0)
-                Via       = $reader.GetString(1)
-                HubWeight = $reader.GetInt32(2)
+        $os = if ($IsWindows) { "win" } elseif ($IsLinux) { "linux" } else { "osx" }
+        $arch = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant()
+        $nativeLibName = if ($IsWindows) { "e_sqlite3.dll" } elseif ($IsMacOS) { "libe_sqlite3.dylib" } else { "libe_sqlite3.so" }
+        $nativePath = Join-Path $LibPath "runtimes/$os-$arch/native/$nativeLibName"
+        if (Test-Path $nativePath) {
+            try {
+                [Runtime.InteropServices.NativeLibrary]::Load($nativePath) | Out-Null
+            } catch {
             }
         }
-        return $rawRelated
-    } catch { return @() } finally { $conn.Close() }
-}
 
-# --- 3. Execution ---
-    Write-Host "`n=== VULTURE ENGINE: RANKED CONTEXT FOR '$($Query.ToUpper())' ===" -ForegroundColor Cyan
+        try {
+            [SQLitePCL.Batteries]::Init()
+        } catch {
+        }
+    }
 
-# Tokenize query for better matching
+    function Normalize-Vector {
+        param(
+            [Parameter(Mandatory = $true)]
+            [double[]]$Vector
+        )
+
+        $magnitude = 0.0
+        foreach ($value in $Vector) {
+            $magnitude += $value * $value
+        }
+
+        $magnitude = [Math]::Sqrt($magnitude)
+        if ($magnitude -eq 0) {
+            return $null
+        }
+
+        $normalized = [double[]]::new($Vector.Length)
+        for ($index = 0; $index -lt $Vector.Length; $index++) {
+            $normalized[$index] = $Vector[$index] / $magnitude
+        }
+
+        return $normalized
+    }
+
+    function Get-NoteEmbeddings {
+        $rows = [System.Collections.Generic.List[object]]::new()
+        $connection = [Microsoft.Data.Sqlite.SqliteConnection]::new("Data Source=$DbPath")
+        try {
+            $connection.Open()
+            $command = $connection.CreateCommand()
+            $command.CommandText = "SELECT NoteName, Embedding FROM NoteEmbeddings"
+            $reader = $command.ExecuteReader()
+            while ($reader.Read()) {
+                $rawVector = [double[]]($reader.GetString(1) | ConvertFrom-Json)
+                $normalized = Normalize-Vector -Vector $rawVector
+                if ($null -eq $normalized) {
+                    continue
+                }
+
+                $rows.Add([PSCustomObject]@{
+                    Name       = $reader.GetString(0)
+                    Normalized = $normalized
+                }) | Out-Null
+            }
+        } finally {
+            $connection.Close()
+        }
+
+        return $rows
+    }
+
+    function Get-QueryEmbedding {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$QueryText
+        )
+
+        $apiKey = $env:GEMINI_API_KEY
+        if ([string]::IsNullOrWhiteSpace($apiKey)) {
+            return $null
+        }
+
+        $embedUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=$apiKey"
+        $body = @{
+            model = "models/gemini-embedding-001"
+            content = @{
+                parts = @(@{ text = $QueryText })
+            }
+        } | ConvertTo-Json -Depth 4 -Compress
+
+        try {
+            $response = Invoke-RestMethod -Uri $embedUrl -Method Post -Body $body -ContentType "application/json"
+            return Normalize-Vector -Vector ([double[]]$response.embedding.values)
+        } catch {
+            return $null
+        }
+    }
+
+    function Get-SemanticNeighbors {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$QueryText,
+
+            [Parameter(Mandatory = $true)]
+            [System.Collections.IEnumerable]$Embeddings,
+
+            [int]$TopN = 8
+        )
+
+        $queryVector = Get-QueryEmbedding -QueryText $QueryText
+        if ($null -eq $queryVector) {
+            return @()
+        }
+
+        $results = [System.Collections.Generic.List[object]]::new()
+        foreach ($row in $Embeddings) {
+            $dot = 0.0
+            for ($index = 0; $index -lt $queryVector.Length; $index++) {
+                $dot += $queryVector[$index] * $row.Normalized[$index]
+            }
+
+            $results.Add([PSCustomObject]@{
+                Name       = $row.Name
+                Similarity = $dot
+            }) | Out-Null
+        }
+
+        return $results |
+            Sort-Object Similarity -Descending |
+            Select-Object -First $TopN
+    }
+
+    function Get-GraphContext {
+        param(
+            [string[]]$SeedNotes
+        )
+
+        if ($SeedNotes.Count -eq 0) {
+            return @()
+        }
+
+        $connection = [Microsoft.Data.Sqlite.SqliteConnection]::new("Data Source=$DbPath")
+        try {
+            $connection.Open()
+            $quotedSeeds = $SeedNotes | ForEach-Object { "'" + $_.Replace("'", "''") + "'" }
+            $inClause = $quotedSeeds -join ","
+            $sql = @"
+WITH SeedNotes AS (
+    SELECT value AS Name
+    FROM json_each('["' || replace('$($SeedNotes -join "','")', ',', '","') || '"]')
+),
+Neighbors AS (
+    SELECT Target AS Related, Source AS Via FROM Links WHERE Source IN ($inClause)
+    UNION
+    SELECT Source AS Related, Target AS Via FROM Links WHERE Target IN ($inClause)
+),
+HubScores AS (
+    SELECT Target AS Note, COUNT(*) AS Incoming
+    FROM Links
+    GROUP BY Target
+)
+SELECT
+    n.Related,
+    n.Via,
+    COALESCE(h.Incoming, 0) AS HubWeight
+FROM Neighbors n
+LEFT JOIN HubScores h ON n.Related = h.Note
+WHERE n.Related NOT IN ($inClause)
+"@
+            $command = $connection.CreateCommand()
+            $command.CommandText = $sql
+            $reader = $command.ExecuteReader()
+            $related = [System.Collections.Generic.List[object]]::new()
+            while ($reader.Read()) {
+                $related.Add([PSCustomObject]@{
+                    Note      = $reader.GetString(0)
+                    Via       = $reader.GetString(1)
+                    HubWeight = $reader.GetInt32(2)
+                }) | Out-Null
+            }
+
+            return $related
+        } catch {
+            return @()
+        } finally {
+            $connection.Close()
+        }
+    }
+
+    Import-SqliteAssemblies
+
+    Write-Host "`n=== VULTURE ENGINE: RANKED CONTEXT FOR '$($Query.ToUpperInvariant())' ===" -ForegroundColor Cyan
+
     $tokens = $Query.Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries)
+    $embeddings = @()
+    $semanticResults = @()
+    $semanticByName = @{}
 
-# Primary Search with basic scoring
-    $primaryScores = @{}
-    $MdFiles = Get-ChildItem -Path $wikiPath -Filter *.md
-    foreach ($file in $MdFiles) {
-        $score = 0
+    if ($Semantic) {
+        $embeddings = Get-NoteEmbeddings
+        if ($embeddings.Count -gt 0) {
+            $semanticResults = Get-SemanticNeighbors -QueryText $Query -Embeddings $embeddings -TopN $SemanticCandidates
+            foreach ($result in $semanticResults) {
+                $semanticByName[$result.Name] = $result.Similarity
+            }
+        }
+    }
+
+    $rankedPrimary = [System.Collections.Generic.List[object]]::new()
+    $markdownFiles = Get-ChildItem -Path $WikiPath -Filter *.md
+    foreach ($file in $markdownFiles) {
+        $lexicalScore = 0
         $name = $file.BaseName
         $content = Get-Content $file.FullName -Raw
 
         foreach ($token in $tokens) {
-            $t = [regex]::Escape($token)
-            if ($name -match $t) { $score += 10 }
-            if ($content -match "aliases: .*$t") { $score += 8 }
-            if ($content -match "(?m)^# .*$t") { $score += 5 }
-            if ($content -match $t) { $score += 1 }
+            $escaped = [regex]::Escape($token)
+            if ($name -match $escaped) { $lexicalScore += 10 }
+            if ($content -match "aliases: .*$escaped") { $lexicalScore += 8 }
+            if ($content -match "(?m)^# .*$escaped") { $lexicalScore += 5 }
+            if ($content -match $escaped) { $lexicalScore += 1 }
         }
 
-        if ($score -gt 0) { $primaryScores[$name] = $score }
+        $semanticSimilarity = 0.0
+        if ($semanticByName.ContainsKey($name)) {
+            $semanticSimilarity = [double]$semanticByName[$name]
+        }
+
+        $semanticScore = if ($Semantic -and $semanticSimilarity -gt 0) {
+            [Math]::Round($semanticSimilarity * $SemanticWeight, 2)
+        } else {
+            0.0
+        }
+
+        $totalScore = [Math]::Round($lexicalScore + $semanticScore, 2)
+        if ($totalScore -gt 0) {
+            $rankedPrimary.Add([PSCustomObject]@{
+                Name               = $name
+                LexicalScore       = $lexicalScore
+                SemanticSimilarity = $semanticSimilarity
+                SemanticScore      = $semanticScore
+                TotalScore         = $totalScore
+            }) | Out-Null
+        }
     }
 
-    $sortedPrimary = $primaryScores.GetEnumerator() | Sort-Object Value -Descending
-    $topSeeds = $sortedPrimary | Select-Object -First 5 -ExpandProperty Key
+    $sortedPrimary = $rankedPrimary | Sort-Object `
+        @{ Expression = "TotalScore"; Descending = $true }, `
+        @{ Expression = "LexicalScore"; Descending = $true }, `
+        @{ Expression = "Name"; Descending = $false }
+    $topSeeds = @($sortedPrimary | Select-Object -First 5 -ExpandProperty Name)
 
-    # Graph expansion
-    $relatedRaw = Get-GraphContext -SeedNotes $topSeeds
+    $primaryScoreByName = @{}
+    foreach ($entry in $sortedPrimary) {
+        $primaryScoreByName[$entry.Name] = $entry.TotalScore
+    }
+
     $relatedScores = @{}
-    foreach ($rel in $relatedRaw) {
-        # Score = (Connection to seed weight) + (Hub weight) + (MOC bonus)
-        $seedWeight = $primaryScores[$rel.Via]
-        if ($null -eq $seedWeight) { $seedWeight = 1 }
-
-        $current = if ($relatedScores.ContainsKey($rel.Note)) { $relatedScores[$rel.Note] } else { 0 }
-        $mocBonus = if ($rel.Note -match "-moc$") { 15 } else { 0 }
-
-        $relatedScores[$rel.Note] = $current + $seedWeight + $rel.HubWeight + $mocBonus
-    }
-
-    # --- 4. Semantic Search (optional) ---
-    $semanticResults = @()
-    if ($Semantic) {
-        $semanticResults = Get-SemanticNeighbors -queryText $Query
-    }
-
-    # --- 5. Tool Search ---
-    $tools = if (Test-Path $registryPath) {
-        $regContent = Get-Content $registryPath -Raw
-        $regContent -split '(?=## )' | Where-Object {
-            $block = $_; $tokens | Where-Object { $block -match [regex]::Escape($_) }
-        } | ForEach-Object { if ($_ -match "## (.*)") { $matches[1].Trim() } }
-    }
-
-# --- 5. Output ---
-    Write-Host "`n[PRIMARY KNOWLEDGE]" -ForegroundColor Yellow
-    if ($sortedPrimary) {
-        $sortedPrimary | Select-Object -First 8 | ForEach-Object {
-            Write-Host " - [[$($_.Key)]] (Score: $($_.Value))"
+    $relatedRaw = Get-GraphContext -SeedNotes $topSeeds
+    foreach ($related in $relatedRaw) {
+        $seedWeight = if ($primaryScoreByName.ContainsKey($related.Via)) {
+            [double]$primaryScoreByName[$related.Via]
+        } else {
+            1.0
         }
-    } else { Write-Host " - No primary matches." }
+
+        $semanticBoost = if ($semanticByName.ContainsKey($related.Note)) {
+            [Math]::Round([double]$semanticByName[$related.Note] * ($SemanticWeight / 2.0), 2)
+        } else {
+            0.0
+        }
+
+        $mocBonus = if ($related.Note -match "-moc$") { 15 } else { 0 }
+        $existing = if ($relatedScores.ContainsKey($related.Note)) { [double]$relatedScores[$related.Note] } else { 0.0 }
+        $relatedScores[$related.Note] = [Math]::Round($existing + $seedWeight + $related.HubWeight + $mocBonus + $semanticBoost, 2)
+    }
+
+    $tools = if (Test-Path $RegistryPath) {
+        $registryContent = Get-Content $RegistryPath -Raw
+        $registryContent -split '(?=## )' |
+            Where-Object {
+                $block = $_
+                ($tokens | Where-Object { $block -match [regex]::Escape($_) }).Count -gt 0
+            } |
+            ForEach-Object {
+                if ($_ -match "## (.*)") {
+                    $matches[1].Trim()
+                }
+            }
+    }
+
+    $displayedPrimary = @($sortedPrimary | Select-Object -First 8)
+
+    Write-Host "`n[PRIMARY KNOWLEDGE]" -ForegroundColor Yellow
+    if ($displayedPrimary.Count -gt 0) {
+        $displayedPrimary | ForEach-Object {
+            if ($Semantic) {
+                Write-Host (" - [[{0}]] (Rank: {1:N2}; Lexical: {2}; Semantic: {3:F3})" -f $_.Name, $_.TotalScore, $_.LexicalScore, $_.SemanticSimilarity)
+            } else {
+                Write-Host (" - [[{0}]] (Score: {1})" -f $_.Name, $_.LexicalScore)
+            }
+        }
+    } else {
+        Write-Host " - No primary matches."
+    }
 
     Write-Host "`n[SECOND-ORDER DISCOVERY (Ranked Graph)]" -ForegroundColor Green
     if ($relatedScores.Count -gt 0) {
-        $relatedScores.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 10 | ForEach-Object {
-            Write-Host " - [[$($_.Key)]] (Rank: $($_.Value))"
-        }
-    } else { Write-Host " - No graph neighbors identified." }
+        $relatedScores.GetEnumerator() |
+            Sort-Object Value -Descending |
+            Select-Object -First 10 |
+            ForEach-Object {
+                Write-Host (" - [[{0}]] (Rank: {1:N2})" -f $_.Key, $_.Value)
+            }
+    } else {
+        Write-Host " - No graph neighbors identified."
+    }
 
     if ($Semantic) {
-        Write-Host "`n[SEMANTIC NEIGHBORS]" -ForegroundColor Magenta
-        if ($semanticResults.Count -gt 0) {
-            $semanticResults | ForEach-Object {
-                Write-Host (" - [[$($_.Name)]] (Sim: {0:F3})" -f $_.Similarity)
+        Write-Host "`n[SEMANTIC SEEDS]" -ForegroundColor Magenta
+        $displayedSemanticSeeds = @(
+            $displayedPrimary |
+                Where-Object { $_.SemanticSimilarity -gt 0 } |
+                Sort-Object `
+                    @{ Expression = "SemanticSimilarity"; Descending = $true }, `
+                    @{ Expression = "TotalScore"; Descending = $true }, `
+                    @{ Expression = "Name"; Descending = $false }
+        )
+        if ($displayedSemanticSeeds.Count -gt 0) {
+            $displayedSemanticSeeds | ForEach-Object {
+                Write-Host (" - [[{0}]] (Sim: {1:F3})" -f $_.Name, $_.SemanticSimilarity)
             }
-        } else { Write-Host " - No embeddings found. Run sync-embeddings.ps1 first." }
+        } else {
+            Write-Host " - Semantic ranking unavailable. Ensure GEMINI_API_KEY and NoteEmbeddings are present."
+        }
     }
 
     Write-Host "`n[AVAILABLE TOOLS]" -ForegroundColor Yellow
-    if ($tools) { $tools | ForEach-Object { Write-Host " - Match: $_" } } else { Write-Host " - No tool matches." }
+    if ($tools) {
+        $tools | ForEach-Object { Write-Host " - Match: $_" }
+    } else {
+        Write-Host " - No tool matches."
+    }
 
     Write-Host "`n=== PACKET COMPLETE ===" -ForegroundColor Cyan
 } catch {
