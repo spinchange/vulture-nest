@@ -4,6 +4,8 @@
 .DESCRIPTION
     Generates a new experiment directory and pre-fills entry.md with
     frontmatter and section headings for runs, debates, and evaluations.
+    Optionally scaffolds a Tier-2-compliant PowerShell runner inside the
+    experiment directory.
 .EXAMPLE
     pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System/new-experiment.ps1 -Slug demo
 #>
@@ -18,7 +20,12 @@ param(
 
     [string[]]$Participants = @("human"),
 
-    [string]$Hypothesis = ""
+    [string]$Hypothesis = "",
+
+    [switch]$IncludeScript,
+
+    [ValidatePattern('^[A-Za-z0-9._-]+\.ps1$')]
+    [string]$ScriptName = "run.ps1"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -82,6 +89,40 @@ $Hypothesis
 "@
 
     Set-Content -Path $entryPath -Value $frontmatter -Encoding utf8
+
+    if ($IncludeScript) {
+        $scriptPath = Join-Path $dir $ScriptName
+        $scriptTemplate = @"
+<#
+.SYNOPSIS
+    Experiment runner scaffold for $Slug.
+.DESCRIPTION
+    Tier-2-compliant entrypoint for experiment automation captured under 04_Experiments.
+#>
+
+[CmdletBinding()]
+param()
+
+\$ErrorActionPreference = 'Stop'
+
+try {
+    \$experimentRoot = Split-Path -Parent \$MyInvocation.MyCommand.Definition
+    \$entryPath = Join-Path \$experimentRoot "entry.md"
+
+    Write-Host "Running experiment scaffold: $Slug" -ForegroundColor Cyan
+    Write-Host "Entry note: \$entryPath" -ForegroundColor DarkGray
+
+    # Replace this block with experiment-specific logic and log durable outputs
+    # under the local results/ directory to keep artifacts attached to the run.
+} catch {
+    Write-Error "$ScriptName failed: \$_"
+    exit 1
+}
+"@
+
+        Set-Content -Path $scriptPath -Value $scriptTemplate -Encoding utf8
+    }
+
     Write-Host "Created: $entryPath" -ForegroundColor Green
 } catch {
     Write-Error "new-experiment.ps1 failed: $_"

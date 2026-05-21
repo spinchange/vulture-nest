@@ -101,7 +101,12 @@ Codex will implement `02_System/new-experiment.ps1`:
 ```powershell
 New-Experiment -Slug "verbalized-sampling-v2" -Type "run" -Participants @("claude", "human")
 # Creates: 04_Experiments/2026-04-27_verbalized-sampling-v2/entry.md
+
+New-Experiment -Slug "semantic-ranking-probe" -Type "run" -IncludeScript
+# Also creates: 04_Experiments/2026-04-27_semantic-ranking-probe/run.ps1
 ```
+
+If `-IncludeScript` is used, the generated `run.ps1` starts with Tier-2 hardening defaults: `$ErrorActionPreference = 'Stop'` and a top-level `try/catch`.
 
 ---
 
