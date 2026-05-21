@@ -464,10 +464,10 @@ LIMIT 25;
 
     function Get-GitStats {
         try {
-            $recentCommits = (& git rev-list --count --since='7 days ago' HEAD 2>$null).Trim()
-            $headShort = (& git rev-parse --short HEAD 2>$null).Trim()
+            $recentCommits = (& git -C $VaultRoot rev-list --count --since='7 days ago' HEAD 2>$null).Trim()
+            $headShort = (& git -C $VaultRoot rev-parse --short HEAD 2>$null).Trim()
             $recentCommitLines = @(
-                & git log --since='7 days ago' --pretty=format:'%h %s' --max-count=8 2>$null
+                & git -C $VaultRoot log --since='7 days ago' --pretty=format:'%h %s' --max-count=8 2>$null
             )
 
             if ([string]::IsNullOrWhiteSpace($recentCommits)) {
