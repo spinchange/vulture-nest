@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Community Report Generator — Vulture Portal</title>
+  <title>Anthropic XML Tags Cheat Sheet — Vulture Portal</title>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -533,7 +533,7 @@
       <span class="sep">/</span>
       <a href="sitemap.html">SITEMAP</a>
       <span class="sep">/</span>
-      <span>Community Report Generator</span>
+      <span>Anthropic XML Tags Cheat Sheet</span>
       <div class="topbar-search">
         <input
           id="portal-search"
@@ -549,14 +549,15 @@
     <!-- ── Zone 1: Metadata ────────────────────────────────────── -->
     <header class="metadata-zone">
       <div class="kicker">NOTE</div>
-      <h1 class="note-title">Community Report Generator</h1>
+      <h1 class="note-title">Anthropic XML Tags Cheat Sheet</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Community Report Generator</span></span>
+        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Anthropic XML Tags Cheat Sheet</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-20</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">source</span><span class="fm-val">[[lit-anthropic-prompt-engineering]]</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gpt-5.4</span></span>
       </div>
     </header>
 
@@ -565,215 +566,126 @@
 
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
-        <h1>Community Report Generator</h1>
-<p><strong>Context:</strong> The <a href="hierarchical-graph-synthesis.html" class="wikilink">hierarchical-graph-synthesis</a> spec defines *that* Level-1 Community Reports should exist and outlines the Summarizer role (Claude). This spec defines *how* an agent implements the Summarizer: the exact algorithm from k-means clustering of note embeddings through to a saved, linked Community Report note.</p>
-<hr>
-<h2>1. Inputs</h2>
-<p>The generator operates on three data sources available from the <a href="semantic-embedding-pipeline.html" class="wikilink">semantic-embedding-pipeline</a>:</p>
-<table>
-<thead><tr>
-<th>Source</th>
-<th>SQLite Table</th>
-<th>Key Columns</th>
-</tr></thead><tbody>
-<tr>
-<td>Note embeddings</td>
-<td><code>NoteEmbeddings</code></td>
-<td><code>note_id</code>, <code>embedding</code> (float array)</td>
-</tr>
-<tr>
-<td>Wikilink graph</td>
-<td><code>Links</code></td>
-<td><code>source_id</code>, <code>target_id</code>, <code>weight</code></td>
-</tr>
-<tr>
-<td>Note metadata</td>
-<td><code>Notes</code></td>
-<td><code>note_id</code>, <code>title</code>, <code>type</code>, <code>status</code>, <code>file_path</code></td>
-</tr>
-</tbody>
-</table>
-<p>Only notes with <code>status = active</code> and <code>type IN (&#39;permanent&#39;, &#39;literature&#39;, &#39;community&#39;)</code> are eligible for clustering. Fleeting, spec, and handoff notes are excluded — they represent process artifacts, not settled knowledge.</p>
-<hr>
-<h2>2. Clustering Algorithm</h2>
-<h3>2.1 Hybrid Edge Weight Construction</h3>
-<p>Pure embedding similarity misses structural intent (explicit wikilinks). Pure wikilink graphs miss semantic proximity. The generator combines both:</p>
-<pre><code>W(i, j) = α &#183; CosineSim(embed_i, embed_j) + (1 - α) &#183; LinkWeight(i, j)</code></pre>
-<p>Where:</p>
+        <h1>Anthropic XML Tags Cheat Sheet</h1>
+<p>A compact reference for using <strong>XML-style prompt tags</strong> with Claude.</p>
+<h2>Canonical skeleton</h2>
+<pre><code>&lt;instructions&gt;
+State exactly what Claude should do.
+&lt;/instructions&gt;
+
+&lt;context&gt;
+Background facts, constraints, or domain assumptions.
+&lt;/context&gt;
+
+&lt;examples&gt;
+  &lt;example&gt;
+    &lt;input&gt;Example input&lt;/input&gt;
+    &lt;output&gt;Example output&lt;/output&gt;
+  &lt;/example&gt;
+&lt;/examples&gt;
+
+&lt;input&gt;
+The live task or source material.
+&lt;/input&gt;</code></pre>
+<h2>Recommended tag roles</h2>
 <ul>
-<li><code>α = 0.6</code> — semantic signal is weighted higher than structural signal.
+<li><code>&lt;instructions&gt;</code> — operative directions
 </li>
-<li><code>CosineSim</code> is computed between normalized embedding vectors.
+<li><code>&lt;context&gt;</code> — non-operative background
 </li>
-<li><code>LinkWeight(i, j) = 1.0</code> if a wikilink exists between i and j (bidirectional), <code>0.0</code> otherwise.
+<li><code>&lt;examples&gt;</code> — container for demonstrations
+</li>
+<li><code>&lt;example&gt;</code> — one demonstration pair or case
+</li>
+<li><code>&lt;input&gt;</code> — the live item Claude should process
+</li>
+<li><code>&lt;documents&gt;</code> / <code>&lt;document&gt;</code> — repeated source documents
 </li>
 </ul>
-<p>Edges below <code>W &lt; 0.35</code> are pruned before clustering to keep the graph sparse.</p>
-<h3>2.2 K-Means on Embeddings (Level-1)</h3>
-<p>For Level-1 reports (major domain clusters), use k-means directly on the embedding vectors:</p>
-<pre><code>from sklearn.cluster import KMeans
-import numpy as np
+<p>The exact names are flexible. Anthropic&#39;s stable recommendation is to use <strong>descriptive tags consistently</strong>.</p>
+<h2>Good default patterns</h2>
+<h3>Single task</h3>
+<pre><code>&lt;instructions&gt;
+Summarize the argument in 5 bullets.
+&lt;/instructions&gt;
 
-# Load embeddings for eligible notes
-embeddings = load_embeddings(db, eligible_note_ids)  # shape: (N, D)
+&lt;input&gt;
+...
+&lt;/input&gt;</code></pre>
+<h3>Task with background constraints</h3>
+<pre><code>&lt;instructions&gt;
+Extract safety-relevant claims only.
+&lt;/instructions&gt;
 
-# Determine k: one cluster per expected domain (~8 for this vault)
-k = estimate_k(embeddings, method=&quot;elbow&quot;, k_range=range(4, 16))
+&lt;context&gt;
+Ignore marketing language and rhetorical flourishes.
+&lt;/context&gt;
 
-kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
-labels = kmeans.fit_predict(embeddings)</code></pre>
-<p><strong>Why k-means over Leiden?</strong> K-means on dense embedding vectors is deterministic (given <code>random_state</code>), requires no graph construction, and produces balanced clusters aligned with semantic meaning. Leiden on the wikilink graph is sparser and better suited for Level-2 (sub-community) detection where explicit links are the signal.</p>
-<h3>2.3 Level-2 Sub-Clusters (Leiden)</h3>
-<p>Within each Level-1 cluster, apply the Leiden community detection algorithm to the hybrid-weighted subgraph to identify tighter sub-communities:</p>
-<pre><code>import igraph as ig
-import leidenalg
+&lt;input&gt;
+...
+&lt;/input&gt;</code></pre>
+<h3>Few-shot prompting</h3>
+<pre><code>&lt;instructions&gt;
+Rewrite each passage in plain language.
+&lt;/instructions&gt;
 
-# Build igraph from hybrid edge weights for notes in this L1 cluster
-g = build_subgraph(hybrid_weights, cluster_note_ids)
-partition = leidenalg.find_partition(
-    g, leidenalg.ModularityVertexPartition,
-    weights=&#39;weight&#39;, seed=42
-)</code></pre>
-<p>Level-2 clusters are the inputs to the most detailed community reports.</p>
-<hr>
-<h2>3. Report Generation</h2>
-<h3>3.1 Agent Prompt Protocol</h3>
-<p>For each cluster (whether Level-1 or Level-2), the Summarizer agent receives:</p>
-<pre><code>SYSTEM:
-You are the Synthesizer agent for the vulture-nest knowledge vault.
-Generate a Community Report for the following cluster of notes.
-Output format: Markdown with mandatory sections (Theme, Entities, Claims, Gaps, Tags).
+&lt;examples&gt;
+  &lt;example&gt;
+    &lt;input&gt;The physician commenced the procedure.&lt;/input&gt;
+    &lt;output&gt;The doctor began the procedure.&lt;/output&gt;
+  &lt;/example&gt;
+&lt;/examples&gt;
 
-USER:
-Cluster ID: {cluster_id}
-Level: {1 | 2}
-Member Notes ({n} total):
-{for each note: &quot;- `[[{note_id}]]` ({type}): {title} — {one-line summary}&quot;}
+&lt;input&gt;
+The committee rendered its determination.
+&lt;/input&gt;</code></pre>
+<h3>Multi-document prompting</h3>
+<pre><code>&lt;instructions&gt;
+Compare the documents and list disagreements.
+&lt;/instructions&gt;
 
-Parent Cluster (if Level-2): `[[{parent_community_report}]]`
-
-Generate the Community Report now.</code></pre>
-<h3>3.2 Required Report Sections</h3>
-<table>
-<thead><tr>
-<th>Section</th>
-<th>Purpose</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Theme</strong></td>
-<td>1-2 sentence distillation of the cluster&#39;s core knowledge domain</td>
-</tr>
-<tr>
-<td><strong>Primary Entities</strong></td>
-<td>Key concepts, protocols, tools, or agents discussed across member notes</td>
-</tr>
-<tr>
-<td><strong>Key Claims</strong></td>
-<td>3-7 bullet assertions that represent the cluster&#39;s collective stance</td>
-</tr>
-<tr>
-<td><strong>Internal Tensions</strong></td>
-<td>Contradictions or unresolved debates between member notes</td>
-</tr>
-<tr>
-<td><strong>Knowledge Gaps</strong></td>
-<td>What the cluster *implies* but has not yet captured</td>
-</tr>
-<tr>
-<td><strong>Member Notes</strong></td>
-<td>Wikilinked list of all member notes</td>
-</tr>
-<tr>
-<td><strong>Tags</strong></td>
-<td>3-5 kebab-case tags for cross-cluster retrieval</td>
-</tr>
-</tbody>
-</table>
-<h3>3.3 Report Frontmatter</h3>
-<pre><code>---
-title: &#39;Community Report: {theme_title}&#39;
-author: claude-sonnet-4-6
-date: &#39;{generation_date}&#39;
-status: active
-type: community
-cluster_id: &#39;{cluster_id}&#39;
-level: {1 | 2}
-parent_cluster: &#39;{parent_cluster_id | null}&#39;
-member_count: {n}
-aliases:
-  - community-{cluster_id}
----</code></pre>
-<hr>
-<h2>4. Registration and Linking</h2>
-<p>After generation, the report must be integrated into the vault graph:</p>
-<ol>
-<li><strong>Save</strong> to <code>01_Wiki/community-reports/{cluster_id}.md</code>.
-</li>
-<li><strong>Add wikilinks</strong> from the report to all member notes (via <code><a href="note_id.html" class="wikilink">note_id</a></code> in the Members section).
-</li>
-<li><strong>Back-link</strong> each member note by appending <code>- </code><a href="community-reports/%7Bcluster_id%7D.html" class="wikilink">community-reports/{cluster_id}</a>`` to its References section.
-</li>
-<li><strong>Index entry:</strong> Add a line to <code>01_Wiki/index.md</code> under <code>## Emergent Communities</code>.
-</li>
-<li><strong>Embed link</strong> from Level-2 report to its Level-1 parent report.
-</li>
-</ol>
-<hr>
-<h2>5. Regeneration Policy</h2>
-<p>Community reports are <strong>invalidated</strong> when:</p>
+&lt;documents&gt;
+  &lt;document index=&quot;1&quot;&gt;
+    ...
+  &lt;/document&gt;
+  &lt;document index=&quot;2&quot;&gt;
+    ...
+  &lt;/document&gt;
+&lt;/documents&gt;</code></pre>
+<h2>Do / don&#39;t</h2>
+<p><strong>Do</strong></p>
 <ul>
-<li>A member note&#39;s content changes significantly (embedding drift &gt; 0.15 from cluster centroid).
+<li>keep each region semantically distinct
 </li>
-<li>A new note is added whose embedding falls within 0.10 cosine distance of the cluster centroid.
+<li>use nested tags when the source material is naturally nested
 </li>
-<li>The vault grows by more than 10% in note count since the last clustering run.
+<li>separate examples from live input
+</li>
+<li>keep tag names stable throughout the prompt
 </li>
 </ul>
-<p>The <a href="hierarchical-graph-synthesis%233-addressing-the-learned-representation-gap.html" class="wikilink">co-occurrence tracker</a> adjusts edge weights after every retrieval session; re-clustering is triggered when total edge weight delta exceeds a threshold (configurable, default: 5%).</p>
-<hr>
-<h2>6. Multi-Agent Role Assignment</h2>
-<p>Per the <a href="hierarchical-graph-synthesis%234-multi-agent-role-assignment.html" class="wikilink">role assignment</a> in the synthesis spec:</p>
-<table>
-<thead><tr>
-<th>Agent</th>
-<th>Role</th>
-<th>Input</th>
-<th>Output</th>
-</tr></thead><tbody>
-<tr>
-<td><strong>Gemini (Ingester)</strong></td>
-<td>Embedding + link extraction</td>
-<td>Raw source files</td>
-<td><code>NoteEmbeddings</code>, <code>Links</code> tables</td>
-</tr>
-<tr>
-<td><strong>Claude (Summarizer)</strong></td>
-<td>Cluster report generation</td>
-<td>Cluster membership lists</td>
-<td>Community Report markdown</td>
-</tr>
-<tr>
-<td><strong>Codex (Auditor)</strong></td>
-<td>Integrity verification</td>
-<td>Report + member notes</td>
-<td>Diff + YANP compliance check</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2>References</h2>
+<p><strong>Don&#39;t</strong></p>
 <ul>
-<li><a href="hierarchical-graph-synthesis.html" class="wikilink">hierarchical-graph-synthesis</a>
+<li>rely on tags to replace unclear instructions
 </li>
-<li><a href="semantic-embedding-pipeline.html" class="wikilink">semantic-embedding-pipeline</a>
+<li>mix demonstrations and live data in the same block
 </li>
-<li><a href="graphrag-concepts.html" class="wikilink">graphrag-concepts</a>
+<li>treat this as a strict parser contract
 </li>
-<li><a href="karpathy-vision-gap-analysis.html" class="wikilink">karpathy-vision-gap-analysis</a>
+<li>assume the prompt must be valid XML
 </li>
-<li><a href="capability-lattice-spec.html" class="wikilink">capability-lattice-spec</a>
+</ul>
+<h2>Mental model</h2>
+<p>Think of XML tags here as <strong>legibility markup for the model</strong>, not as a machine-validated schema. The goal is to make prompt boundaries obvious so Claude does not confuse instructions, context, examples, and live input.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="lit-anthropic-prompt-engineering.html" class="wikilink">lit-anthropic-prompt-engineering</a>
 </li>
-<li><a href="index.html" class="wikilink">index</a>
+<li><a href="anthropic-xml-prompt-structuring.html" class="wikilink">anthropic-xml-prompt-structuring</a>
+</li>
+<li><a href="anthropic-messages-api.html" class="wikilink">anthropic-messages-api</a>
+</li>
+<li><a href="chat-templates.html" class="wikilink">chat-templates</a>
 </li>
 </ul>
       </main>
@@ -789,30 +701,17 @@ aliases:
             <span class="graph-section-label">Links To This Note</span>
 <ul>
 <li><a href="agentic-frameworks-moc.html" class="">agentic-frameworks-moc</a></li>
-<li><a href="claude-blueprint-handoff-2026-04-27.html" class="">claude-blueprint-handoff-2026-04-27</a></li>
-<li><a href="claude-community-summary-handoff.html" class="">claude-community-summary-handoff</a></li>
-<li><a href="claude-synthesis-handoff-2026-04-27.html" class="">claude-synthesis-handoff-2026-04-27</a></li>
-<li><a href="core-patterns-moc.html" class="">core-patterns-moc</a></li>
-<li><a href="gemini-build-sprint-handoff.html" class="">gemini-build-sprint-handoff</a></li>
+<li><a href="anthropic-moc.html" class="">anthropic-moc</a></li>
+<li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
 <li><a href="index.html" class="">index</a></li>
 <li><a href="log.html" class="">log</a></li>
-<li><a href="spec-firecrawl-pgvector-pipeline.html" class="">spec-firecrawl-pgvector-pipeline</a></li>
-<li><a href="spec-knowledge-gardening.html" class="">spec-knowledge-gardening</a></li>
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
-<li><a href="capability-lattice-spec.html" class="">capability-lattice-spec</a></li>
-<li><a href="community-reports/%7Bcluster_id%7D.html" class="">community-reports/{cluster_id}</a></li>
-<li><a href="graphrag-concepts.html" class="">graphrag-concepts</a></li>
-<li><a href="hierarchical-graph-synthesis.html" class="">hierarchical-graph-synthesis</a></li>
-<li><a href="hierarchical-graph-synthesis%233-addressing-the-learned-representation-gap.html" class="">hierarchical-graph-synthesis#3-addressing-the-learned-representation-gap</a></li>
-<li><a href="hierarchical-graph-synthesis%234-multi-agent-role-assignment.html" class="">hierarchical-graph-synthesis#4-multi-agent-role-assignment</a></li>
-<li><a href="index.html" class="">index</a></li>
-<li><a href="karpathy-vision-gap-analysis.html" class="">karpathy-vision-gap-analysis</a></li>
-<li><a href="note_id.html" class="">note_id</a></li>
-<li><a href="semantic-embedding-pipeline.html" class="">semantic-embedding-pipeline</a></li>
-<li><a href="%7Bnote_id%7D.html" class="">{note_id}</a></li>
-<li><a href="%7Bparent_community_report%7D.html" class="">{parent_community_report}</a></li>
+<li><a href="anthropic-messages-api.html" class="">anthropic-messages-api</a></li>
+<li><a href="anthropic-xml-prompt-structuring.html" class="">anthropic-xml-prompt-structuring</a></li>
+<li><a href="chat-templates.html" class="">chat-templates</a></li>
+<li><a href="lit-anthropic-prompt-engineering.html" class="">lit-anthropic-prompt-engineering</a></li>
 </ul>
           </div>
         </div>
