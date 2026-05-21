@@ -23,6 +23,7 @@ def _table_for_path(path: str) -> str:
     mapping = {
         "/rest/v1/source_pages": "source_pages",
         "/rest/v1/source_chunks": "source_chunks",
+        "/rest/v1/source_events": "source_events",
     }
     table = mapping.get(path)
     if not table:

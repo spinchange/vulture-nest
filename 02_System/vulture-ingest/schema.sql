@@ -18,6 +18,17 @@ CREATE TABLE IF NOT EXISTS source_pages (
     verified_at   TIMESTAMPTZ,
     promoted_at   TIMESTAMPTZ,
     promoted_note_path TEXT,
+    proposed_by   TEXT,
+    proposed_at   TIMESTAMPTZ,
+    mapped_at     TIMESTAMPTZ,
+    approved_at   TIMESTAMPTZ,
+    approval_mode TEXT,
+    crawl_job_id  TEXT,
+    indexed_at    TIMESTAMPTZ,
+    indexed_by    TEXT,
+    verified_by   TEXT,
+    promoted_by   TEXT,
+    provenance_context JSONB NOT NULL DEFAULT '{}'::jsonb,
     domain        TEXT GENERATED ALWAYS AS (
         split_part(regexp_replace(url, 'https?://', ''), '/', 1)
     ) STORED
@@ -26,6 +37,9 @@ CREATE TABLE IF NOT EXISTS source_pages (
 CREATE INDEX IF NOT EXISTS idx_source_pages_url ON source_pages(url);
 CREATE INDEX IF NOT EXISTS idx_source_pages_domain ON source_pages(domain);
 CREATE INDEX IF NOT EXISTS idx_source_pages_hash ON source_pages(content_hash);
+CREATE INDEX IF NOT EXISTS idx_source_pages_status ON source_pages(status);
+CREATE INDEX IF NOT EXISTS idx_source_pages_indexed_by ON source_pages(indexed_by);
+CREATE INDEX IF NOT EXISTS idx_source_pages_promoted_by ON source_pages(promoted_by);
 
 CREATE TABLE IF NOT EXISTS source_chunks (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -51,6 +65,25 @@ CREATE INDEX IF NOT EXISTS idx_chunks_domain ON source_chunks(domain);
 CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON source_chunks
     USING hnsw (embedding extensions.vector_cosine_ops)
     WITH (m = 16, ef_construction = 64);
+
+CREATE TABLE IF NOT EXISTS source_events (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    page_id         UUID REFERENCES source_pages(id) ON DELETE CASCADE,
+    source_url      TEXT NOT NULL,
+    lifecycle_stage TEXT NOT NULL,
+    event_type      TEXT NOT NULL,
+    acting_agent    TEXT NOT NULL DEFAULT 'codex-engineer',
+    requested_by    TEXT,
+    human_approved  BOOLEAN,
+    note_path       TEXT,
+    details         JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_source_events_page_id ON source_events(page_id);
+CREATE INDEX IF NOT EXISTS idx_source_events_source_url ON source_events(source_url);
+CREATE INDEX IF NOT EXISTS idx_source_events_stage ON source_events(lifecycle_stage);
+CREATE INDEX IF NOT EXISTS idx_source_events_agent ON source_events(acting_agent);
 
 CREATE OR REPLACE FUNCTION match_documents(
     query_embedding extensions.vector(1536),

@@ -127,11 +127,13 @@ def test_index_crawled_source_upserts_page_and_chunks(monkeypatch):
         if method == "GET" and path == "/rest/v1/source_pages":
             return []
         if method == "POST" and path == "/rest/v1/source_pages":
-            return [{"id": "page-1", "url": "https://docs.example.com/ref", "content_hash": "page-hash", "crawled_at": "2026-04-30T00:00:00Z", "status": "Indexed"}]
+            return [{"id": "page-1", "url": "https://docs.example.com/ref", "content_hash": "page-hash", "crawled_at": "2026-04-30T00:00:00Z", "status": "Indexed", "indexed_by": "codex-engineer", "indexed_at": "2026-04-30T00:01:00Z"}]
         if method == "DELETE" and path == "/rest/v1/source_chunks":
             return {}
         if method == "POST" and path == "/rest/v1/source_chunks":
             return [{"id": "chk-1", "chunk_index": 0, "section_heading": "Intro"}]
+        if method == "POST" and path == "/rest/v1/source_events":
+            return []
         raise AssertionError((method, path, payload, params, prefer))
 
     monkeypatch.setattr(server, "_supabase_request", fake_supabase_request)
@@ -149,9 +151,12 @@ def test_index_crawled_source_upserts_page_and_chunks(monkeypatch):
     assert payload["page_id"] == "page-1"
     page_upsert = next(call for call in calls if call[0] == "POST" and call[1] == "/rest/v1/source_pages")
     assert page_upsert[2]["status"] == "Indexed"
+    assert page_upsert[2]["indexed_by"] == "codex-engineer"
     chunk_insert = next(call for call in calls if call[0] == "POST" and call[1] == "/rest/v1/source_chunks")
     assert chunk_insert[2][0]["page_id"] == "page-1"
     assert chunk_insert[2][0]["source_url"] == "https://docs.example.com/ref"
+    event_insert = next(call for call in calls if call[0] == "POST" and call[1] == "/rest/v1/source_events")
+    assert event_insert[2]["event_type"] == "chunked_embedded"
 
 
 def test_index_crawled_source_skips_reembedding_when_hash_unchanged(monkeypatch):
@@ -161,9 +166,11 @@ def test_index_crawled_source_skips_reembedding_when_hash_unchanged(monkeypatch)
         if method == "GET" and path == "/rest/v1/source_pages":
             return [{"id": "page-1", "content_hash": content_hash, "crawled_at": "2026-04-29T00:00:00Z", "status": "Indexed"}]
         if method == "POST" and path == "/rest/v1/source_pages":
-            return [{"id": "page-1", "url": "https://docs.example.com/ref", "content_hash": content_hash, "crawled_at": "2026-04-30T00:00:00Z", "status": "Indexed"}]
+            return [{"id": "page-1", "url": "https://docs.example.com/ref", "content_hash": content_hash, "crawled_at": "2026-04-30T00:00:00Z", "status": "Indexed", "indexed_by": "codex-engineer", "indexed_at": "2026-04-30T00:01:00Z"}]
         if method == "GET" and path == "/rest/v1/source_chunks":
             return [{"id": "chk-1", "chunk_index": 0}]
+        if method == "POST" and path == "/rest/v1/source_events":
+            return []
         raise AssertionError((method, path, payload, params, prefer))
 
     monkeypatch.setattr(server, "_supabase_request", fake_supabase_request)
@@ -234,6 +241,8 @@ def test_verify_source_index_flags_stale_evidence_and_mismatched_provenance(monk
                     "crawled_at": "2025-01-01T00:00:00Z",
                 }
             ]
+        if method == "POST" and path == "/rest/v1/source_events":
+            return []
         if method == "PATCH" and path == "/rest/v1/source_pages":
             updates.append(payload)
             return {}
@@ -265,6 +274,8 @@ def test_promote_synthesis_candidate_validates_provenance_and_writes_note(monkey
             return [{"id": "page-1", "url": "https://docs.example.com/ref", "status": "Synthesized"}]
         if method == "GET" and path == "/rest/v1/source_chunks":
             return [{"id": "chk-1", "page_id": "page-1", "source_url": "https://docs.example.com/ref", "chunk_index": 0}]
+        if method == "POST" and path == "/rest/v1/source_events":
+            return []
         if method == "PATCH" and path == "/rest/v1/source_pages":
             patch_calls.append(payload)
             return {}
@@ -285,3 +296,4 @@ def test_promote_synthesis_candidate_validates_provenance_and_writes_note(monkey
     assert 'provenance:' in promoted_text
     assert '"page-1"' in promoted_text
     assert patch_calls[0]["status"] == "Promoted"
+    assert patch_calls[0]["promoted_by"] == "claude-chronicler"

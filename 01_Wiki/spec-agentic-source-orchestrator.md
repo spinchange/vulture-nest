@@ -116,6 +116,16 @@ provenance_agent: "claude-chronicler"
 
 This creates a stable link between the **Wiki (Permanent Knowledge)** and the **Sidecar (Evidence Chunks)**.
 
+At the storage layer, the sidecar also maintains agentic lifecycle provenance:
+- `source_pages` records the latest proposer, approval mode, indexing agent, verification agent, promotion agent, and a JSON `provenance_context`.
+- `source_events` is the append-only audit stream for lifecycle transitions such as `mapped`, `indexed`, `verification_passed`, and `promotion_written`.
+
+The design intent is split-brain safe:
+- `source_pages` gives the current state snapshot for retrieval and dashboards.
+- `source_events` preserves the ordered history needed for seam review, operator audit, and role-separation checks.
+
+For live databases, additive changes to this sidecar schema should ship as versioned SQL files under `02_System/vulture-ingest/migrations/` rather than relying on a full replay of `schema.sql`. `schema.sql` remains the fresh-install baseline; migration files are the contract for in-place upgrades. Applied migrations are recorded in `schema_migrations` so operators can audit which upgrades have been run against a given ingest database.
+
 ---
 ## References
 - [[protocol-source-ingestion-runbook]] — Operational procedures and multi-agent role sequence

@@ -91,6 +91,7 @@ TOOL_DEFINITIONS = [
             "type": "object",
             "properties": {
                 "url": {"type": "string"},
+                "requested_by": {"type": "string", "default": "unknown"},
                 "include_paths": {"type": "array", "items": {"type": "string"}},
                 "exclude_paths": {"type": "array", "items": {"type": "string"}},
                 "expected_pages": {"type": "integer", "minimum": 1, "default": 25},
@@ -107,6 +108,7 @@ TOOL_DEFINITIONS = [
             "type": "object",
             "properties": {
                 "url": {"type": "string"},
+                "requested_by": {"type": "string", "default": "unknown"},
                 "include_paths": {"type": "array", "items": {"type": "string"}},
                 "exclude_paths": {"type": "array", "items": {"type": "string"}},
                 "expected_pages": {"type": "integer", "minimum": 1, "default": 25},
@@ -135,6 +137,9 @@ TOOL_DEFINITIONS = [
                 "etag": {"type": "string"},
                 "last_modified": {"type": "string"},
                 "embeddings": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+                "acting_agent": {"type": "string", "default": "codex-engineer"},
+                "requested_by": {"type": "string"},
+                "human_approved": {"type": "boolean"},
             },
         },
     },
@@ -160,6 +165,7 @@ TOOL_DEFINITIONS = [
             "properties": {
                 "page_id": {"type": "string"},
                 "url": {"type": "string"},
+                "acting_agent": {"type": "string", "default": "codex-engineer"},
             },
         },
     },
@@ -497,6 +503,32 @@ def _validate_provenance_records(provenance_block: dict[str, Any]) -> dict[str, 
     return {"pages": pages, "chunks": chunks}
 
 
+def _record_source_event(
+    *,
+    source_url: str,
+    lifecycle_stage: str,
+    event_type: str,
+    acting_agent: str,
+    page_id: str | None = None,
+    requested_by: str | None = None,
+    human_approved: bool | None = None,
+    note_path: str | None = None,
+    details: dict[str, Any] | None = None,
+) -> None:
+    payload = {
+        "page_id": page_id,
+        "source_url": source_url,
+        "lifecycle_stage": lifecycle_stage,
+        "event_type": event_type,
+        "acting_agent": acting_agent,
+        "requested_by": requested_by,
+        "human_approved": human_approved,
+        "note_path": note_path,
+        "details": details or {},
+    }
+    _db_request("POST", "/rest/v1/source_events", payload=payload)
+
+
 def propose_source_intake(
     *,
     url: str,
@@ -529,6 +561,7 @@ def propose_source_intake(
 def orchestrate_ingestion(
     *,
     url: str,
+    requested_by: str = "unknown",
     include_paths: list[str] | None = None,
     exclude_paths: list[str] | None = None,
     expected_pages: int = 25,
@@ -549,42 +582,53 @@ def orchestrate_ingestion(
     include_paths = include_paths or []
     exclude_paths = exclude_paths or []
     if dry_run:
-        return {
+        result = {
             "status": "mapped",
             "mode": "dry_run",
             "url": url,
             "domain": gate["domain"],
+            "requested_by": requested_by,
             "estimated_pages": expected_pages,
             "estimated_credits": estimated_credits,
             "include_paths": include_paths,
             "exclude_paths": exclude_paths,
             "next_state": "approved" if human_approved else "awaiting_approval",
         }
+    else:
+        payload = {
+            "url": url,
+            "limit": expected_pages,
+            "includePaths": include_paths,
+            "excludePaths": exclude_paths,
+        }
+        response = _json_request("POST", "/map", payload)
+        urls = response.get("links") or response.get("urls") or []
+        mapped_pages = len(urls) if isinstance(urls, list) else expected_pages
+        result = {
+            "status": "mapped",
+            "mode": "live",
+            "url": url,
+            "domain": gate["domain"],
+            "requested_by": requested_by,
+            "estimated_pages": mapped_pages,
+            "estimated_credits": _estimate_credits(mapped_pages),
+            "mapped_urls": urls,
+            "next_state": "approved" if human_approved else "awaiting_approval",
+        }
 
-    payload = {
-        "url": url,
-        "limit": expected_pages,
-        "includePaths": include_paths,
-        "excludePaths": exclude_paths,
+    result["agentic_provenance"] = {
+        "stage": "mapped",
+        "requested_by": requested_by,
+        "mapped_at": _isoformat(_utcnow()),
+        "human_approved": human_approved,
     }
-    response = _json_request("POST", "/map", payload)
-    urls = response.get("links") or response.get("urls") or []
-    mapped_pages = len(urls) if isinstance(urls, list) else expected_pages
-    return {
-        "status": "mapped",
-        "mode": "live",
-        "url": url,
-        "domain": gate["domain"],
-        "estimated_pages": mapped_pages,
-        "estimated_credits": _estimate_credits(mapped_pages),
-        "mapped_urls": urls,
-        "next_state": "approved" if human_approved else "awaiting_approval",
-    }
+    return result
 
 
 def execute_source_crawl(
     *,
     url: str,
+    requested_by: str = "unknown",
     include_paths: list[str] | None = None,
     exclude_paths: list[str] | None = None,
     expected_pages: int = 25,
@@ -607,16 +651,24 @@ def execute_source_crawl(
     include_paths = include_paths or []
     exclude_paths = exclude_paths or []
     if dry_run:
-        return {
+        result = {
             "status": "approved" if human_approved else "blocked",
             "mode": "dry_run",
             "url": url,
             "domain": gate["domain"],
+            "requested_by": requested_by,
             "estimated_pages": expected_pages,
             "estimated_credits": estimated_credits,
             "would_call": "POST /crawl",
             "next_state": "crawled" if human_approved else "awaiting_approval",
         }
+        result["agentic_provenance"] = {
+            "stage": "approved" if human_approved else "blocked",
+            "requested_by": requested_by,
+            "approved_at": _isoformat(_utcnow()) if human_approved else None,
+            "approval_mode": "human" if human_approved else "policy_blocked",
+        }
+        return result
 
     crawl_payload = {
         "url": url,
@@ -643,6 +695,12 @@ def execute_source_crawl(
             credits_used=estimated_credits,
             pages_crawled=result["page_count"],
         )
+        result["agentic_provenance"] = {
+            "stage": "crawled",
+            "requested_by": requested_by,
+            "approved_at": _isoformat(_utcnow()) if human_approved else None,
+            "approval_mode": "human" if human_approved else "policy",
+        }
         return result
 
     job = _json_request("POST", "/crawl", crawl_payload)
@@ -661,16 +719,25 @@ def execute_source_crawl(
                 credits_used=estimated_credits,
                 pages_crawled=len(pages),
             )
-            return {
+            result = {
                 "status": "crawled",
                 "mode": "live",
                 "url": url,
                 "domain": gate["domain"],
+                "requested_by": requested_by,
                 "job_id": job_id,
                 "page_count": len(pages),
                 "pages": pages,
                 "next_state": "indexed",
             }
+            result["agentic_provenance"] = {
+                "stage": "crawled",
+                "requested_by": requested_by,
+                "approved_at": _isoformat(_utcnow()) if human_approved else None,
+                "approval_mode": "human" if human_approved else "policy",
+                "crawl_job_id": job_id,
+            }
+            return result
         time.sleep(poll_interval_seconds)
 
     raise RuntimeError(f"Crawl job {job_id} did not complete in time. Last response: {last_response}")
@@ -689,6 +756,9 @@ def index_crawled_source(
     etag: str | None = None,
     last_modified: str | None = None,
     embeddings: list[list[float]] | None = None,
+    acting_agent: str = "codex-engineer",
+    requested_by: str | None = None,
+    human_approved: bool | None = None,
 ) -> dict[str, Any]:
     from chunker import chunk_markdown, sha256
 
@@ -725,12 +795,19 @@ def index_crawled_source(
         "last_modified": page["last_modified"],
         "content_hash": page_hash,
         "status": "Indexed",
+        "indexed_at": _isoformat(_utcnow()),
+        "indexed_by": acting_agent,
+        "provenance_context": {
+            "requested_by": requested_by,
+            "human_approved": human_approved,
+            "last_indexed_by": acting_agent,
+        },
     }
     upserted_pages = _db_request(
         "POST",
         "/rest/v1/source_pages",
         payload=page_row,
-        params={"on_conflict": "url", "select": "id,url,content_hash,crawled_at,status"},
+        params={"on_conflict": "url", "select": "id,url,content_hash,crawled_at,status,indexed_by,indexed_at"},
         prefer="resolution=merge-duplicates,return=representation",
     )
     indexed_page = upserted_pages[0]
@@ -741,6 +818,16 @@ def index_crawled_source(
             "/rest/v1/source_chunks",
             params={"select": "id,chunk_index", "page_id": f"eq.{indexed_page['id']}"},
         )
+        _record_source_event(
+            page_id=indexed_page["id"],
+            source_url=page["url"],
+            lifecycle_stage="indexed",
+            event_type="hash_unchanged",
+            acting_agent=acting_agent,
+            requested_by=requested_by,
+            human_approved=human_approved,
+            details={"content_changed": False},
+        )
         return {
             "status": "indexed",
             "page_id": indexed_page["id"],
@@ -748,6 +835,11 @@ def index_crawled_source(
             "chunk_count": len(existing_chunks),
             "reindexed": False,
             "content_changed": False,
+            "agentic_provenance": {
+                "indexed_at": indexed_page.get("indexed_at"),
+                "indexed_by": acting_agent,
+                "requested_by": requested_by,
+            },
             "next_state": "verified",
         }
 
@@ -790,6 +882,20 @@ def index_crawled_source(
         params={"select": "id,chunk_index,section_heading"},
         prefer="return=representation",
     )
+    _record_source_event(
+        page_id=indexed_page["id"],
+        source_url=page["url"],
+        lifecycle_stage="indexed",
+        event_type="chunked_embedded",
+        acting_agent=acting_agent,
+        requested_by=requested_by,
+        human_approved=human_approved,
+        details={
+            "chunk_count": len(inserted_chunks),
+            "reindexed": prior_row is not None,
+            "content_changed": True,
+        },
+    )
     return {
         "status": "indexed",
         "page_id": indexed_page["id"],
@@ -799,6 +905,11 @@ def index_crawled_source(
         "reindexed": prior_row is not None,
         "content_changed": True,
         "previous_crawled_at": prior_row["crawled_at"] if prior_row else None,
+        "agentic_provenance": {
+            "indexed_at": indexed_page.get("indexed_at"),
+            "indexed_by": acting_agent,
+            "requested_by": requested_by,
+        },
         "next_state": "verified",
     }
 
@@ -853,6 +964,7 @@ def verify_source_index(
     *,
     page_id: str | None = None,
     url: str | None = None,
+    acting_agent: str = "codex-engineer",
 ) -> dict[str, Any]:
     policy = _load_runtime_policy()
     if not page_id and not url:
@@ -938,12 +1050,28 @@ def verify_source_index(
 
     verification_status = "passed" if not any(item["severity"] == "error" for item in findings) else "failed"
     if verification_status == "passed":
+        verified_at = _isoformat(_utcnow())
         _db_request(
             "PATCH",
             "/rest/v1/source_pages",
-            payload={"status": "Verified", "verified_at": _isoformat(_utcnow())},
+            payload={
+                "status": "Verified",
+                "verified_at": verified_at,
+                "verified_by": acting_agent,
+            },
             params={"id": f"eq.{page['id']}"},
         )
+    else:
+        verified_at = None
+
+    _record_source_event(
+        page_id=page["id"],
+        source_url=page["url"],
+        lifecycle_stage="verified" if verification_status == "passed" else "indexed",
+        event_type="verification_passed" if verification_status == "passed" else "verification_failed",
+        acting_agent=acting_agent,
+        details={"finding_codes": [item["code"] for item in findings]},
+    )
 
     return {
         "status": verification_status,
@@ -951,6 +1079,10 @@ def verify_source_index(
         "source_url": page["url"],
         "chunk_count": len(chunks),
         "findings": findings,
+        "agentic_provenance": {
+            "verified_at": verified_at,
+            "verified_by": acting_agent,
+        },
         "next_state": "synthesized" if verification_status == "passed" else "indexed",
     }
 
@@ -996,8 +1128,21 @@ def promote_synthesis_candidate(
                 "status": "Promoted",
                 "promoted_at": promoted_at,
                 "promoted_note_path": str(target),
+                "promoted_by": acting_agent,
             },
             params={"id": f"eq.{page['id']}"},
+        )
+        _record_source_event(
+            page_id=page["id"],
+            source_url=page["url"],
+            lifecycle_stage="promoted",
+            event_type="promotion_written",
+            acting_agent=acting_agent,
+            note_path=str(target),
+            details={
+                "chunk_ids": provenance_block["provenance"]["chunk_ids"],
+                "source_record_ids": provenance_block["provenance"]["source_record_ids"],
+            },
         )
 
     return {
@@ -1005,6 +1150,10 @@ def promote_synthesis_candidate(
         "note_path": str(target),
         "source_record_ids": provenance_block["provenance"]["source_record_ids"],
         "chunk_ids": provenance_block["provenance"]["chunk_ids"],
+        "agentic_provenance": {
+            "promoted_at": promoted_at,
+            "promoted_by": acting_agent,
+        },
         "next_state": "promoted",
     }
 
