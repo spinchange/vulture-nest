@@ -2786,6 +2786,39 @@
 <li><strong>Status</strong>: The ingest sidecar now has a lightweight migration ledger instead of a one-off migration runner.
 </li>
 </ul>
+<h2>[2026-05-20] Codex — Operator Migration Notes and Dashboard Git-Stats Guard</h2>
+<ul>
+<li><strong>Directive</strong>: Push the completed commit stack, then harden the operator path for ingest migrations and prevent the dashboard commit-strip fallback from recurring.
+</li>
+<li><strong>Changes</strong>:
+<ul>
+<li>
+<ul>
+<li>Pushed <code>main</code> through <code>35288a05</code> to <code>origin</code>.
+</li>
+<li>Updated <a href="protocol-source-ingestion-runbook.html" class="wikilink">protocol-source-ingestion-runbook</a> and <a href="codex-supabase-schema-ingestion.html" class="wikilink">codex-supabase-schema-ingestion</a> with explicit fresh-install versus in-place migration instructions.
+</li>
+<li>Fixed <code>02_System/generate-dashboard.ps1</code> to anchor git queries to <code>$VaultRoot</code> and added <code>02_System/test_generate_dashboard.py</code> as a regression guard.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Verification</strong>:
+<ul>
+<li>
+<ul>
+<li><code>pytest 02_System/test_generate_dashboard.py -q</code>
+</li>
+<li><code>pytest 02_System/test_vulture_ingest.py -q</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Operator migration guidance is explicit and the dashboard commit-strip regression now has a test guard.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->
@@ -3053,6 +3086,7 @@
 <li><a href="productivity-roadmap-2026-04-27.html" class="">productivity-roadmap-2026-04-27</a></li>
 <li><a href="programming-languages-moc.html" class="">programming-languages-moc</a></li>
 <li><a href="project-definition-framework.html" class="">project-definition-framework</a></li>
+<li><a href="protocol-source-ingestion-runbook.html" class="">protocol-source-ingestion-runbook</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="ps-broken-link-checker.html" class="">ps-broken-link-checker</a></li>
 <li><a href="ps-calculated-properties.html" class="">ps-calculated-properties</a></li>

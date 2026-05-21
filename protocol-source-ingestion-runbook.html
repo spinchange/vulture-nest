@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Source Ingestion Runbook</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Source Ingestion Runbook</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">codex</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-05-01</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Source Ingestion Runbook</span></span>
       </div>
     </header>
 
@@ -588,6 +588,38 @@
 <p>Use live credential checks only when needed:</p>
 <pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\check-mcp-health.ps1 -LiveServices</code></pre>
 <p>Use <code>-LiveFirecrawl</code> only for explicit Firecrawl credential validation, because it calls the external service.</p>
+<h2>Schema State</h2>
+<p>Before indexing into Supabase or a local Postgres sidecar, confirm whether the target database is:</p>
+<ul>
+<li>a fresh install with no ingest tables yet
+</li>
+<li>an existing install that already has <code>source_pages</code> and <code>source_chunks</code>
+</li>
+</ul>
+<p>Use the right path for the state you are in:</p>
+<ul>
+<li>Fresh database: apply <code>02_System/vulture-ingest/schema.sql</code>
+</li>
+<li>Existing database: apply versioned files from <code>02_System/vulture-ingest/migrations/</code>
+</li>
+</ul>
+<p>Do not replay <code>schema.sql</code> as an in-place upgrade strategy once a live ingest database already exists.</p>
+<h3>Fresh Install</h3>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\vulture-ingest\apply-schema.ps1</code></pre>
+<h3>Existing Database Upgrade</h3>
+<pre><code>pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\vulture-ingest\apply-migration.ps1</code></pre>
+<p>The migration runner applies sorted <code>migrations/*.sql</code> files and records successful runs in <code>schema_migrations</code>.</p>
+<h3>Verification</h3>
+<p>After any schema change, verify that:</p>
+<ul>
+<li><code>source_pages</code> is visible through PostgREST
+</li>
+<li><code>source_events</code> is visible through PostgREST
+</li>
+<li><code>schema_migrations</code> reflects the applied migration set
+</li>
+</ul>
+<p>If <code>apply-migration.ps1</code> is used, the runner performs this verification automatically.</p>
 <h2>Intake Packet</h2>
 <p>The Librarian intake should include:</p>
 <ul>
@@ -722,6 +754,7 @@
 <li><a href="firecrawl-map-capabilities.html" class="">firecrawl-map-capabilities</a></li>
 <li><a href="firecrawl-scrape-capabilities.html" class="">firecrawl-scrape-capabilities</a></li>
 <li><a href="foundational-vault-docs-summary-2026-05-04.html" class="">foundational-vault-docs-summary-2026-05-04</a></li>
+<li><a href="log.html" class="">log</a></li>
 <li><a href="spec-agentic-source-orchestrator.html" class="">spec-agentic-source-orchestrator</a></li>
 <li><a href="spec-agentic-source-orchestrator-v2.html" class="">spec-agentic-source-orchestrator-v2</a></li>
 <li><a href="specifications-moc.html" class="">specifications-moc</a></li>

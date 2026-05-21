@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Codex: Supabase Schema Ingestion</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
-<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
-<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex: Supabase Schema Ingestion</span></span>
+        <span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val"></span></span>
+<span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
+<span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-30</span></span>
+<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">spec</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Codex: Supabase Schema Ingestion</span></span>
       </div>
     </header>
 
@@ -566,9 +566,16 @@
       <!-- Zone 2: Content -->
       <main class="content-zone" id="content">
         <h1>Codex: Supabase Schema Ingestion</h1>
-<p><strong>Context:</strong> The <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> requires a specific PostgreSQL schema in Supabase to function (tables: <code>source_pages</code>, <code>source_chunks</code>; function: <code>match_documents</code>). Manual SQL execution is to be avoided.</p>
+<p><strong>Context:</strong> The <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> requires a specific PostgreSQL schema in Supabase to function (tables: <code>source_pages</code>, <code>source_chunks</code>, <code>source_events</code>; function: <code>match_documents</code>). Manual SQL execution is to be avoided where an automated path is available.</p>
 <h2>Mission for Codex</h2>
-<p>Ingest and apply the schema located at <code>02_System/vulture-ingest/schema.sql</code> to the active Supabase instance.</p>
+<p>Choose the correct database action for the active Supabase instance:</p>
+<ul>
+<li>Fresh install: apply <code>02_System/vulture-ingest/schema.sql</code>
+</li>
+<li>Existing ingest database: apply pending files under <code>02_System/vulture-ingest/migrations/</code>
+</li>
+</ul>
+<p>The sidecar now tracks applied upgrades in <code>schema_migrations</code>, so Codex should favor the migration path whenever the base tables already exist.</p>
 <h3>Execution Strategy (PowerShell)</h3>
 <p>Use the following protocol to bridge the schema gap:</p>
 <ol>
@@ -586,19 +593,40 @@
 </li>
 </ul>
 </li>
-<li><strong>Verification:</strong> After application, execute a <code>GET</code> request to <code>/rest/v1/source_pages?select=id&amp;limit=1</code> to confirm the table is visible to PostgREST.
+<li><strong>Verification:</strong> After application, execute <code>GET</code> requests to confirm <code>source_pages</code>, <code>source_events</code>, and <code>schema_migrations</code> are visible to PostgREST.
 </li>
 </ol>
 <h2>Schema Reference</h2>
 <p>The authoritative DDL is maintained at: <code>02_System/vulture-ingest/schema.sql</code></p>
+<h2>Migration Reference</h2>
+<p>For in-place upgrades, the authoritative incremental path is:</p>
+<ul>
+<li><code>02_System/vulture-ingest/apply-migration.ps1</code>
+</li>
+<li><code>02_System/vulture-ingest/migrations/*.sql</code>
+</li>
+</ul>
+<p>The migration runner applies sorted SQL files and records each successful file in <code>schema_migrations</code>.</p>
 <h3>Manual Bridge (The &quot;One-Time Fight&quot;)</h3>
 <p>If the automated execution strategy is blocked by missing credentials (e.g., <code>DATABASE_URL</code>) or restricted API access, the following manual step is required to unblock the entire pipeline:</p>
 <ol>
 <li><strong>Open the Supabase SQL Editor:</strong> <a href="https://supabase.com/dashboard/project/xvzuvsoeeznwmiopsoqj/sql/new">https://supabase.com/dashboard/project/xvzuvsoeeznwmiopsoqj/sql/new</a>
 </li>
-<li><strong>Paste &amp; Run the DDL:</strong> Copy the content from <code>02_System/vulture-ingest/schema.sql</code> and click <strong>Run</strong>.
+<li><strong>Choose the correct SQL source:</strong>
+<ul>
+<li>
+<ul>
+<li>Fresh database: copy <code>02_System/vulture-ingest/schema.sql</code>
 </li>
-<li><strong>Signal Completion:</strong> Once the &quot;Success&quot; message appears, tell the agent: <strong>&quot;Schema applied.&quot;</strong>
+<li>Existing database: copy the next required file from <code>02_System/vulture-ingest/migrations/</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Run the SQL:</strong> Click <strong>Run</strong>.
+</li>
+<li><strong>Signal Completion:</strong> Once the &quot;Success&quot; message appears, tell the agent which path was used, e.g. <strong>&quot;Schema applied.&quot;</strong> or <strong>&quot;Migration applied.&quot;</strong>
 </li>
 </ol>
 <h2>Status Update (2026-04-30)</h2>
