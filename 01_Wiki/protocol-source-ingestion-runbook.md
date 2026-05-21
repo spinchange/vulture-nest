@@ -42,6 +42,44 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\check-mcp-health.ps1 -Li
 
 Use `-LiveFirecrawl` only for explicit Firecrawl credential validation, because it calls the external service.
 
+## Schema State
+
+Before indexing into Supabase or a local Postgres sidecar, confirm whether the target database is:
+
+- a fresh install with no ingest tables yet
+- an existing install that already has `source_pages` and `source_chunks`
+
+Use the right path for the state you are in:
+
+- Fresh database: apply `02_System/vulture-ingest/schema.sql`
+- Existing database: apply versioned files from `02_System/vulture-ingest/migrations/`
+
+Do not replay `schema.sql` as an in-place upgrade strategy once a live ingest database already exists.
+
+### Fresh Install
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\vulture-ingest\apply-schema.ps1
+```
+
+### Existing Database Upgrade
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File 02_System\vulture-ingest\apply-migration.ps1
+```
+
+The migration runner applies sorted `migrations/*.sql` files and records successful runs in `schema_migrations`.
+
+### Verification
+
+After any schema change, verify that:
+
+- `source_pages` is visible through PostgREST
+- `source_events` is visible through PostgREST
+- `schema_migrations` reflects the applied migration set
+
+If `apply-migration.ps1` is used, the runner performs this verification automatically.
+
 ## Intake Packet
 
 The Librarian intake should include:

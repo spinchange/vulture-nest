@@ -1336,3 +1336,14 @@ Successfully linked these domains into [[agentic-frameworks-moc]].
     * The runner now bootstraps and writes to `schema_migrations` so applied upgrades are recorded.
     * Added `02_System/vulture-ingest/migrations/README.md` to define the migration convention.
 * **Status**: The ingest sidecar now has a lightweight migration ledger instead of a one-off migration runner.
+
+## [2026-05-20] Codex — Operator Migration Notes and Dashboard Git-Stats Guard
+* **Directive**: Push the completed commit stack, then harden the operator path for ingest migrations and prevent the dashboard commit-strip fallback from recurring.
+* **Changes**:
+    * Pushed `main` through `35288a05` to `origin`.
+    * Updated [[protocol-source-ingestion-runbook]] and [[codex-supabase-schema-ingestion]] with explicit fresh-install versus in-place migration instructions.
+    * Fixed `02_System/generate-dashboard.ps1` to anchor git queries to `$VaultRoot` and added `02_System/test_generate_dashboard.py` as a regression guard.
+* **Verification**:
+    * `pytest 02_System/test_generate_dashboard.py -q`
+    * `pytest 02_System/test_vulture_ingest.py -q`
+* **Status**: Operator migration guidance is explicit and the dashboard commit-strip regression now has a test guard.
