@@ -2744,6 +2744,48 @@
 </li>
 </ul>
 <p><strong>Status</strong>: ADK/RAG updates verified and published to the portal.</p>
+<h2>[2026-05-20] Codex — Vulture Ingest Migration Path Added</h2>
+<ul>
+<li><strong>Directive</strong>: Add a real migration path for existing ingest databases after the agentic provenance schema expansion.
+</li>
+<li><strong>Changes</strong>:
+<ul>
+<li>
+<ul>
+<li>Created <code>02_System/vulture-ingest/migrations/2026-05-20_agentic_provenance.sql</code> with additive <code>ALTER TABLE ... ADD COLUMN IF NOT EXISTS</code> updates for <code>source_pages</code> plus <code>source_events</code> creation.
+</li>
+<li>Added <code>02_System/vulture-ingest/apply-migration.ps1</code> to apply versioned SQL through the same RPC or <code>psql</code> paths already used for schema application.
+</li>
+<li>Updated <a href="spec-agentic-source-orchestrator.html" class="wikilink">spec-agentic-source-orchestrator</a> to declare <code>schema.sql</code> as the fresh-install baseline and <code>migrations/</code> as the in-place upgrade contract.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: Existing ingest DBs now have an explicit additive upgrade path for the provenance expansion.
+</li>
+</ul>
+<h2>[2026-05-20] Codex — Migration Ledger Added</h2>
+<ul>
+<li><strong>Directive</strong>: Extend the new migration path with durable tracking for repeated and future ingest upgrades.
+</li>
+<li><strong>Changes</strong>:
+<ul>
+<li>
+<ul>
+<li><code>02_System/vulture-ingest/apply-migration.ps1</code> now applies all sorted <code>migrations/*.sql</code> files instead of a single hard-coded file.
+</li>
+<li>The runner now bootstraps and writes to <code>schema_migrations</code> so applied upgrades are recorded.
+</li>
+<li>Added <code>02_System/vulture-ingest/migrations/README.md</code> to define the migration convention.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Status</strong>: The ingest sidecar now has a lightweight migration ledger instead of a one-off migration runner.
+</li>
+</ul>
       </main>
 
       <!-- Zone 3: Graph Discovery -->

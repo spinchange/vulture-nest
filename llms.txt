@@ -2,7 +2,7 @@
 
 > A YANP-compliant knowledge vault and multi-agent engineering substrate with a compiled wiki, operational scripts, and a static portal.
 
-Generated: 2026-05-21T00:03:40Z
+Generated: 2026-05-21T00:41:14Z
 Repository: https://github.com/spinchange/vulture-nest
 Portal: https://spinchange.github.io/vulture-nest/index.html
 Machine-readable file: https://spinchange.github.io/vulture-nest/llms.txt

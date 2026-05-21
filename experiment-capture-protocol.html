@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Experiment Capture Protocol</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Experiment Capture Protocol</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">experiment-logging, debate-log-format, lab-notebook-protocol</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-27</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">claude-sonnet-4-6</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Experiment Capture Protocol</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">experiment-logging, debate-log-format, lab-notebook-protocol</span></span>
       </div>
     </header>
 
@@ -626,7 +626,11 @@ aliases: []
 <h2>New-Experiment Scaffolding</h2>
 <p>Codex will implement <code>02_System/new-experiment.ps1</code>:</p>
 <pre><code>New-Experiment -Slug &quot;verbalized-sampling-v2&quot; -Type &quot;run&quot; -Participants @(&quot;claude&quot;, &quot;human&quot;)
-# Creates: 04_Experiments/2026-04-27_verbalized-sampling-v2/entry.md</code></pre>
+# Creates: 04_Experiments/2026-04-27_verbalized-sampling-v2/entry.md
+
+New-Experiment -Slug &quot;semantic-ranking-probe&quot; -Type &quot;run&quot; -IncludeScript
+# Also creates: 04_Experiments/2026-04-27_semantic-ranking-probe/run.ps1</code></pre>
+<p>If <code>-IncludeScript</code> is used, the generated <code>run.ps1</code> starts with Tier-2 hardening defaults: <code>$ErrorActionPreference = &#39;Stop&#39;</code> and a top-level <code>try/catch</code>.</p>
 <hr>
 <h2>Relationship to Main Vault</h2>
 <ul>

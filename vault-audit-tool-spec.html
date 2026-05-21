@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">Vault Audit Tool Spec</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Vault Audit Tool Spec</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-maintenance-spec, vault-tool-schema</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">Vault Audit Tool Spec</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">agent-maintenance-spec, vault-tool-schema</span></span>
       </div>
     </header>
 
@@ -593,6 +593,20 @@
 <li><strong>Outputs:</strong> A list of orphan note basenames or a success message.
 </li>
 </ul>
+<h2>3. Tier-2 Compliance Auditor</h2>
+<ul>
+<li><strong>File:</strong> <code>02_System/test-tier-compliance.ps1</code>
+</li>
+<li><strong>Description:</strong> Audits Tier-2 PowerShell automation in both <code>02_System/</code> and <code>04_Experiments/</code>, enforcing two hardening invariants: <code>$ErrorActionPreference = &#39;Stop&#39;</code> and a top-level <code>try/catch</code>.
+</li>
+<li><strong>Execution Command:</strong> <code>powershell.exe -ExecutionPolicy Bypass -File 02_System/test-tier-compliance.ps1</code>
+</li>
+<li><strong>Inputs:</strong> None.
+</li>
+<li><strong>Outputs:</strong> A PSCustomObject table with scope, relative path, and compliance status per script.
+</li>
+</ul>
+<p>Experimental runners created via <code>02_System/new-experiment.ps1 -IncludeScript</code> start from a compliant scaffold so ad hoc tooling does not bypass the Tier-2 contract.</p>
 <h2>Usage Guide for Agents</h2>
 <p>When an agent enters this vault to perform an <strong><a href="wiki-pattern-operations.html" class="wikilink">Ingest</a></strong> or <strong><a href="agent-evaluation.html" class="wikilink">Online Evaluation</a></strong>, it should run the <strong>YANP Compliance Auditor</strong> after every file modification to ensure protocol integrity.</p>
 <hr>

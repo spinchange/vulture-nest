@@ -551,12 +551,12 @@
       <div class="kicker">NOTE</div>
       <h1 class="note-title">PS: Vulture Search</h1>
       <div class="frontmatter">
-        <span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PS: Vulture Search</span></span>
-<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-vulture-search, vulture-search.ps1, context-packet</span></span>
+        <span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
+<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
 <span class="fm-field"><span class="fm-key">date</span><span class="fm-val">2026-04-24</span></span>
 <span class="fm-field"><span class="fm-key">status</span><span class="fm-val status-active">active</span></span>
-<span class="fm-field"><span class="fm-key">type</span><span class="fm-val">permanent</span></span>
-<span class="fm-field"><span class="fm-key">author</span><span class="fm-val">gemini-cli</span></span>
+<span class="fm-field"><span class="fm-key">title</span><span class="fm-val">PS: Vulture Search</span></span>
+<span class="fm-field"><span class="fm-key">aliases</span><span class="fm-val">ps-vulture-search, vulture-search.ps1, context-packet</span></span>
       </div>
     </header>
 
@@ -575,6 +575,7 @@
 <li><strong>Capability Pass</strong>: Scans <code>02_System/tool-registry.md</code> to identify scripts that can act on the search subject.
 </li>
 </ol>
+<p>When <code>-Semantic</code> is enabled, the knowledge pass no longer emits semantic neighbors as an isolated appendix. It fuses lexical ranking with cosine similarity from <code>NoteEmbeddings</code>, using the same normalized-vector approach as <a href="auto-link.ps1.html" class="wikilink">auto-link.ps1</a>. This means the primary seed set used for graph expansion is influenced by both explicit token matches and nearby conceptual notes.</p>
 <h2>The Context Packet</h2>
 <p>The script outputs a &quot;Context Packet&quot; which provides an agent with:</p>
 <ul>
@@ -582,9 +583,12 @@
 </li>
 <li>Specific tools to execute to complete the task.
 </li>
+<li>Ranked graph neighbors whose seed weights can include semantic lift, not just literal term overlap.
+</li>
 </ul>
 <h2>Usage</h2>
-<pre><code>powershell.exe -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query &quot;[[rust]]&quot;</code></pre>
+<pre><code>powershell.exe -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query &quot;[[rust]]&quot;
+powershell.exe -ExecutionPolicy Bypass -File 02_System/vulture-search.ps1 -Query &quot;pipeline provenance&quot; -Semantic</code></pre>
 <hr>
 <h2>References</h2>
 <ul>
@@ -613,6 +617,7 @@
 </ul>
 <span class="graph-section-label">Links From This Note</span>
 <ul>
+<li><a href="auto-link.ps1.html" class="">auto-link.ps1</a></li>
 <li><a href="hybrid-retrieval-spec.html" class="">hybrid-retrieval-spec</a></li>
 <li><a href="ps-automation-spec.html" class="">ps-automation-spec</a></li>
 <li><a href="rust.html" class="">rust</a></li>
